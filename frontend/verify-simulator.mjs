@@ -9,7 +9,7 @@ const ps=s=>execFileSync('powershell.exe',['-NoProfile','-Command',s],{encoding:
 try{
  let page;for(let i=0;i<60;i++){try{page=(await(await fetch('http://127.0.0.1:9223/json/list')).json()).find(p=>p.type==='page');}catch{}if(page)break;await delay(500);}if(!page)throw Error('WebView unavailable');
  ws=new WebSocket(page.webSocketDebuggerUrl);await new Promise((r,j)=>{ws.onopen=r;ws.onerror=j;});let seq=0;const pending=new Map();ws.onmessage=e=>{const d=JSON.parse(e.data);if(pending.has(d.id)){pending.get(d.id)(d);pending.delete(d.id);}};
- const call=(method,params={})=>new Promise((r,j)=>{const id=++seq;pending.set(id,d=>d.error?j(d.error):r(d.result));ws.send(JSON.stringify({id,method,params}));});
+ const call=(method,params={})=>new Promise((r,j)=>{const id=++seq;const timer=setTimeout(()=>j(Error('CDP timeout '+method)),15000);pending.set(id,d=>{clearTimeout(timer);d.error?j(d.error):r(d.result);});ws.send(JSON.stringify({id,method,params}));});
  const run=async expression=>{const r=await call('Runtime.evaluate',{expression,returnByValue:true,awaitPromise:true});if(r.exceptionDetails)throw Error(JSON.stringify(r.exceptionDetails));return r.result.value;};
  const wait=async expression=>{for(let i=0;i<160;i++){if(await run(expression))return;await delay(250);}throw Error('Timeout '+expression+'\n'+await run('document.body.innerText'));};
  const phase=state=>wait(`document.querySelector('.simulator [role=status]')?.textContent===${JSON.stringify(state)}`);

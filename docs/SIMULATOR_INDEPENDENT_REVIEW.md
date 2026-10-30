@@ -44,6 +44,19 @@ Planned assertions against actual files and responses:
 
 The exact `catalog.layouts.length === 2` assertion is explicitly a fixture-configuration check for this handoff, not a universal product layout-count requirement. Original JPEG header dimensions are derived from `catalog.captureWidth`/`captureHeight`, not hardcoded. The harness also requires stale-generation rejection (`-32004`) and verifies finish clears selected indices, frame identity, and all composition/print previews so a later session cannot inherit stale selection/frame state.
 
+### UUID artifact safety adaptation
+
+The pending rerun no longer assumes compatibility aliases named `composition.png` or `print-image.png`. Immediately before and after `frame.select`, it compares the session directory and requires exactly one newly published `composition-<UUID>.png` and one `print-image-<UUID>.png`; that frame-selection pair is checked separately for header dimensions and rendered-preview publication. Pre-existing/temp/obsolete generations are not selected as current.
+
+Current source authority shows the first `print.confirmDryRun` legitimately recomposes. Therefore the harness separately compares directory sets immediately before and after the first confirmation, requires exactly one new confirmed UUID pair, and treats that new pair as authoritative for delivery. Only after the first confirmation does it snapshot hashes and artifact names. It then:
+
+- parses both the frame-selection pair and confirmed authoritative pair's PNG signature/IHDR dimensions;
+- checks the authoritative snapshot's composition/print preview fields are JPEG data URLs with valid dimension headers (correlation is limited to publication/state timing because scaled JPEG pixels cannot be hash-equal to source PNGs);
+- hashes the confirmed authoritative pair immediately before and after duplicate dry-run confirmation;
+- requires no additional UUID composition/print artifacts to appear on duplicate confirmation.
+
+The harness does not assert that first confirmation reuses the frame-selection pair. This adaptation does not claim full image decoding or pixel equivalence; backend ImageIO tests remain the full-decode evidence.
+
 ## Authority and contract mismatch found before execution
 
 Per task direction, the narrow backend implementation and source rules are treated as execution authority. `docs/SIMULATOR_IPC_CONTRACT.md` is internally inconsistent with current implementation:

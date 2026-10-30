@@ -109,6 +109,7 @@ class SimulatorSessionTest {
             // Simulate unavailable decoder input without corrupting an original: replace fixture overlay output directory.
             val overlay=out.resolve(c.sid).resolve("synthetic-transparent-frame.png")
             Files.delete(overlay); Files.createDirectory(overlay)
+            Files.writeString(overlay.resolve("block-write.txt"),"synthetic failure fixture")
             assertFails { c.call("frame.select","frameId" to "synthetic-border") }
             assertTrue(c.call("session.getState")["previewDataUrl"].isJsonNull)
             assertEquals(-32001,assertFailsWith<SimulatorError> { c.call("frame.confirm") }.code)

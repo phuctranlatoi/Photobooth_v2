@@ -174,30 +174,56 @@ PAYMENT_PENDING --session.back--> SELECTING_QUANTITY
 ```typescript
 // session.start — idempotent by sessionId
 method: "session.start"
-params: { sessionId: string; layoutId: string; commandId: string; }
+params: { sessionId: string; layoutId: string; generationId?: string; commandId: string; }
 result: { sessionId: string; state: "SELECTING"; layout: LayoutMode; commandId: string; }
 
 // session.confirmSetup — SELECTING → SELECTING_QUANTITY only
 method: "session.confirmSetup"
-params: { sessionId: string; commandId: string; }
+params: { sessionId: string; generationId?: string; commandId: string; }
 result: { sessionId: string; state: "SELECTING_QUANTITY"; commandId: string; }
 // Error: -32001 if state != SELECTING
 
-// session.getState — polling fallback, no commandId
+// session.getState — polling authoritative snapshot, no commandId
 method: "session.getState"
-params: { sessionId: string; }
-result: { sessionId: string; state: SessionState; capturedCount: number; selectedCount: number; selectedIndices: number[]; layout: LayoutMode; pricing: PricingSnapshot; }
+params: { sessionId: string; generationId?: string; }
+result: {
+  sessionId: string;
+  generationId: string | null;
+  state: SessionState;
+  layout: LayoutMode;
+  pricing: PricingSnapshot;
+  quantity: number;
+  paid: boolean;
+  capturedCount: number;
+  selectedCount: number;
+  selectedIndices: number[];
+  shotIndex: number;
+  secondsRemaining: number;
+  totalShots: number;
+  shots: Array<{ shotIndex: number; shotId: string; preview: string }>;
+  frameId: string | null;
+  previewDataUrl: string | null;
+  compositionDataUrl: string | null;
+  printImageDataUrl: string | null;
+  livePreviewDataUrl: string | null;
+  userConfirmed: boolean;
+  printAccepted: false;
+  revenueRecorded: false;
+  simulator: true;
+  failure: string | null;
+}
 
 // session.cancel — ONLY allowed in SELECTING_PHOTOS, EDITING
 method: "session.cancel"
-params: { sessionId: string; commandId: string; }
-result: { cancelled: true; commandId: string; }
+params: { sessionId: string; generationId?: string; commandId: string; }
+result: { cancelled: true; state: "IDLE"; commandId: string; }
 // Error: -32001 if state not in {SELECTING_PHOTOS, EDITING}
 
-// session.finish — from FINISHED/DELIVERY/any terminal, resets to IDLE
+// session.finish — ONLY from DELIVERY → IDLE
 method: "session.finish"
-params: { sessionId: string; commandId: string; }
+params: { sessionId: string; generationId?: string; commandId: string; }
 result: { sessionId: string; state: "IDLE"; commandId: string; }
+// Error: -32001 if state != DELIVERY
 ```
 
 ### 5.3 Layout & Quantity (Pricing Frozen at Confirm Setup)
@@ -205,14 +231,14 @@ result: { sessionId: string; state: "IDLE"; commandId: string; }
 ```typescript
 // session.setLayout — only in SELECTING
 method: "session.setLayout"
-params: { sessionId: string; layoutId: string; commandId: string; }
+params: { sessionId: string; layoutId: string; generationId?: string; commandId: string; }
 result: { layout: LayoutMode; commandId: string; }
 // Error: -32001 if state != SELECTING
 
-// session.setQuantity — only in SELECTING_QUANTITY, sanitizes per PricingCalculator
+// session.setQuantity — only in SELECTING_QUANTITY, sanitizes per PricingCalculator; auto-advances to PAYMENT_PENDING
 method: "session.setQuantity"
-params: { sessionId: string; quantity: Int; commandId: string; }
-result: { quantity: Int; pricing: PricingSnapshot; commandId: string; }
+params: { sessionId: string; quantity: number; generationId?: string; commandId: string; }
+result: { quantity: number; pricing: PricingSnapshot; commandId: string; }
 // Error: -32001 if state != SELECTING_QUANTITY
 ```
 
@@ -221,10 +247,10 @@ result: { quantity: Int; pricing: PricingSnapshot; commandId: string; }
 ```typescript
 // payment.mockComplete — only in PAYMENT_PENDING
 method: "payment.mockComplete"
-params: { sessionId: string; commandId: string; }
+params: { sessionId: string; generationId?: string; commandId: string; }
 result: { paid: true; commandId: string; }
 // Error: -32001 if state != PAYMENT_PENDING
-// No PayOS, no QR, no real payment. Sets internal paid=true, advances to PREPARING.
+// No PayOS, no QR, no real payment. Sets internal paid=true; auto-advances PREPARING → LIVE_VIEW after 1600ms.
 ```
 
 ### 5.5 Capture Flow (SimulatorCamera) — Polling via session.getState Only
@@ -267,21 +293,21 @@ result: { state: "EDITING"; commandId: string; }
 ### 5.7 Frame & Preview (SimulatorCompositor)
 
 ```typescript
-// frame.list — only in EDITING
+// frame.list — only in EDITING, no commandId
 method: "frame.list"
-params: { sessionId: string; }
+params: { sessionId: string; generationId?: string; }
 result: { frames: FrameOption[]; }
 // FrameOption: { id: string; name: string; thumbDataUrl: string; }  // thumb ≤1 MiB
 
 // frame.select — only in EDITING
 method: "frame.select"
-params: { sessionId: string; frameId: string; commandId: string; }
+params: { sessionId: string; generationId?: string; frameId: string; commandId: string; }
 result: { previewDataUrl: string; commandId: string; }
-// Generates print-image preview via SimulatorCompositor, returns data URL
+// Generates print-image preview via SimulatorCompositor, returns data URL; stays EDITING
 
 // frame.confirm — only in EDITING
 method: "frame.confirm"
-params: { sessionId: string; commandId: string; }
+params: { sessionId: string; generationId?: string; commandId: string; }
 result: { state: "PRINT_PENDING"; previewDataUrl: string; commandId: string; }
 // Error: -32001 if state != EDITING or no frame selected
 ```
@@ -291,26 +317,27 @@ result: { state: "PRINT_PENDING"; previewDataUrl: string; commandId: string; }
 ```typescript
 // print.confirmDryRun — only in PRINT_PENDING
 method: "print.confirmDryRun"
-params: { sessionId: string; commandId: string; }
-result: { state: "FINISHED"; compositionDataUrl: string; printImageDataUrl: string; commandId: string; }
+params: { sessionId: string; generationId?: string; commandId: string; }
+result: { state: "DELIVERY"; compositionDataUrl: string; printImageDataUrl: string; commandId: string; }
 // - Generates composition + print image via SimulatorCompositor
 // - Returns both as data URLs (≤1 MiB each)
-// - **No printer job submitted, no revenue recognized**
+// - **No printer job submitted, no revenue recognized** (userConfirmed=true, accepted=false, revenue=false)
 // - Inactivity auto-print: false (backend does not auto-advance)
+// - DELIVERY is terminal state; only session.finish valid from here
 
 // print.confirmReal — NOT IMPLEMENTED in simulator (returns -32601)
 // Real print path requires Hardware POC gate (Canon + DNP validated)
 ```
 
-### 5.9 Back Navigation (Guarded)
+### 5.9 Back Navigation (Guarded) — Source-Derived Edges Only
 
 ```typescript
-// session.back — guarded edges only
+// session.back — source-derived edges only
 method: "session.back"
-params: { sessionId: string; commandId: string; }
+params: { sessionId: string; generationId?: string; commandId: string; }
 result: { state: SessionState; commandId: string; }
-// Legal: EDITING→SELECTING_PHOTOS, SELECTING_PHOTOS→SELECTING_QUANTITY, SELECTING_QUANTITY→SELECTING, SELECTING→IDLE
-// Error: -32001 for any other transition
+// Legal: SELECTING→IDLE, SELECTING_QUANTITY→SELECTING, PAYMENT_PENDING→SELECTING_QUANTITY, EDITING→SELECTING_PHOTOS, PRINT_PENDING→EDITING
+// Error: -32001 for any other transition (SELECTING_PHOTOS→SELECTING_QUANTITY intentionally forbidden)
 ```
 
 ---
@@ -332,12 +359,13 @@ result: { state: SessionState; commandId: string; }
 
 ---
 
-## 7. Inactivity & Timeout Behavior
+## 7. Inactivity & Timeout Behavior (Superseded)
 
 - **SELECTING_PHOTOS / EDITING**: 30s inactivity timer (configurable)
-- **On timeout in SELECTING_PHOTOS**: Backend auto-fills missing selections from captured order (first available), chooses first frame if empty, calls `startPrinting(userConfirmed=false)` → **auto-print=false in simulator** (state → FINISHED, no revenue, no print job)
+- **On timeout in SELECTING_PHOTOS**: Backend auto-fills missing selections from captured order (first available), chooses first frame if empty, renders to DELIVERY with **userConfirmed=false**, no print acceptance or revenue
 - **On timeout in EDITING**: Auto-select first frame → PRINT_PENDING (awaits manual confirmDryRun)
-- **Timer resets** on any user command in these states
+- **Timer resets** on successful user mutations, not polling
+- **See `docs/SIMULATOR_SESSION_RESULTS.md` for authoritative behavior**
 
 ---
 
@@ -394,7 +422,7 @@ result: { state: SessionState; commandId: string; }
 
 ---
 
-## 11. Acceptance Criteria (Simulator Contract Complete)
+## 11. Acceptance Criteria (Superseded — See `SIMULATOR_SESSION_RESULTS.md`)
 
 | # | Criterion | Evidence |
 |---|-----------|----------|
@@ -402,50 +430,51 @@ result: { state: SessionState; commandId: string; }
 | 2 | `session.start` → `SELECTING`, layout frozen, pricing frozen | Integration test |
 | 3 | `session.setLayout` / `setQuantity` guarded, pricing from `PricingCalculator` | Unit test |
 | 4 | `payment.mockComplete` advances `PAYMENT_PENDING` → `PREPARING` → `LIVE_VIEW` (1600ms) | Integration test |
-| 5 | `capture.startSequence` + polling `capture.getProgress` returns countdown → shots (data URLs) → COMPLETE → `SELECTING_PHOTOS` | Integration test |
+| 5 | `capture.startSequence` + polling `session.getState` returns countdown → shots (data URLs) → `SELECTING_PHOTOS` | Integration test |
 | 6 | `selection.toggle` capped at `selectCount`; `selection.confirm` requires exact count | Unit test |
 | 7 | `frame.list` → `frame.select` → `frame.confirm` generates preview via `SimulatorCompositor` | Integration test |
-| 8 | `print.confirmDryRun` returns composition+print data URLs, **no printer job, no revenue** | Integration test |
+| 8 | `print.confirmDryRun` returns composition+print data URLs, **no printer job, no revenue** (→ DELIVERY, userConfirmed=true, accepted=false, revenue=false) | Integration test |
 | 9 | `session.back` only on legal edges; `session.cancel` only in `SELECTING_PHOTOS`/`EDITING` | Unit test |
-| 10 | Inactivity timeout in `SELECTING_PHOTOS` → auto-fill + FINISHED (no print) | Integration test |
+| 10 | Inactivity timeout in `SELECTING_PHOTOS` → auto-fill + DELIVERY (userConfirmed=false, no print) | Integration test |
 | 11 | Duplicate `commandId` returns same result without side effects | Unit test |
 | 12 | All frames ≤1 MiB, data URLs only, originals retained in session dir | Manual verification |
-| 13 | `health.check` works unchanged; `availableMethods` includes simulator methods; Rust health validation accepts extended list | Unit test + manual |
+| 13 | `health.check` works unchanged; `availableMethods` remains legacy singleton `["health.check"]` | Unit test + manual |
 
 ---
 
-## 12. Exact Method Allowlist (No Extensions)
+## 12. Exact Method Allowlist (No Extensions) — Implementation Authority
 
 **Queries (no commandId):**
 - `catalog.get`
 - `device.getStatus`
-- `session.getState`
-- `capture.getProgress`
+- `session.getState` (authoritative snapshot including `shots[]`, `previewDataUrl`, `compositionDataUrl`, `printImageDataUrl`, `livePreviewDataUrl`)
 - `frame.list`
-- `health.check` (existing, backwards-compatible)
+- `health.check` (existing, backwards-compatible; `availableMethods` remains legacy singleton `["health.check"]`)
 
-**Mutating (require commandId, idempotent):**
+**Mutating (require `commandId` inside params, idempotent):**
 - `session.start`
 - `session.confirmSetup`
 - `session.setLayout`
-- `session.setQuantity`
-- `session.back`
-- `session.cancel`
-- `session.finish`
-- `payment.mockComplete`
+- `session.setQuantity` (auto-advances to PAYMENT_PENDING)
+- `session.back` (source-derived edges only)
+- `session.cancel` (only SELECTING_PHOTOS, EDITING)
+- `session.finish` (only DELIVERY → IDLE)
+- `payment.mockComplete` (auto-advances PREPARING → LIVE_VIEW after 1600ms)
 - `capture.startSequence`
 - `selection.toggle`
 - `selection.confirm`
 - `frame.select`
 - `frame.confirm`
-- `print.confirmDryRun`
+- `print.confirmDryRun` (→ DELIVERY, userConfirmed=true, accepted=false, revenue=false)
 
 **Explicitly NOT in simulator:**
 - `print.confirmReal` (returns -32601)
 - `session.transition` (arbitrary targetState not allowed)
 - `capture.abort` (paid capture cannot be aborted to IDLE)
+- `capture.getProgress` (poll via `session.getState` only)
 - `liveView.subscribe` / any streaming
 - `beauty.*` / `payment.real.*` / `cloud.*` / `neon.*`
+- No FINISHED state (DELIVERY is terminal)
 
 ---
 
@@ -474,6 +503,6 @@ result: { state: SessionState; commandId: string; }
 
 ## 15. Status
 
-**CONTRACT FINAL WITH CORRECTIONS** — Ready for implementation by Backend Engineer (SimulatorIpcServer extending HealthBridge) and Frontend Lead (bridge.ts + UI wiring using owned `simulator-contract.ts`). No further approval needed. User authorized V2 builds. Proceed to implementation.
+**⚠️ SUPERSEDED DRAFT** — Implementation authority is `docs/SIMULATOR_SESSION_RESULTS.md` (backend handoff). This document contains draft contradictions fixed by implementers. Final reviewer signoff pending. Do not implement from this draft.
 
-**Next deliverable:** `SimulatorIpcServer.kt` implementation + updated `bridge.rs`/`main.rs` to spawn simulator backend + frontend integration tests.
+**Next deliverable:** Final reviewer signoff on `SIMULATOR_SESSION_RESULTS.md` as authoritative contract.

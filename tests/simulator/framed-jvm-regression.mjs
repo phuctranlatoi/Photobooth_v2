@@ -91,6 +91,16 @@ async function originals(ids, catalog) {
   files.forEach(f=>assert(jpegDimensions(f.bytes).join('x')===configuredDimensions,`${f.name} JPEG header dimensions match catalog`));
   return {dir,files,hashes:files.map(f=>sha(f.bytes))};
 }
+async function generatedPairs(dir) {
+  const names=await readdir(dir);
+  const compositions=names.filter(n=>/^composition-[0-9a-f-]{36}\.png$/i.test(n)).sort();
+  const printImages=names.filter(n=>/^print-image-[0-9a-f-]{36}\.png$/i.test(n)).sort();
+  return {compositions,printImages};
+}
+function dataUrlBytes(value, kind) {
+  const match=typeof value==='string'&&value.match(/^data:image\/jpeg;base64,([A-Za-z0-9+/=]+)$/);
+  assert(match,`${kind} is bounded JPEG data URL`); return Buffer.from(match[1],'base64');
+}
 async function full(layout, catalog) {
   const ids=await enterLive(layout.id); const captured=await capture(ids);
   assert(captured.layout.id===layout.id && captured.layout.shotCount===layout.shotCount && captured.layout.selectCount===layout.selectCount && captured.layout.countdownSeconds===layout.countdownSeconds,'layout remains catalog-configured');
@@ -98,25 +108,45 @@ async function full(layout, catalog) {
   for(let i=0;i<layout.selectCount;i++) await rpc('selection.toggle',mutation(ids.sessionId,ids.generationId,{shotIndex:i}));
   await rpc('selection.confirm',mutation(ids.sessionId,ids.generationId));
   const frames=await rpc('frame.list',ids); assert(frames.frames.length>0,'frame list');
+  const artifactsBefore=await generatedPairs(before.dir);
   await rpc('frame.select',mutation(ids.sessionId,ids.generationId,{frameId:frames.frames[0].id}));
+  const artifactsAfterSelect=await generatedPairs(before.dir);
+  const newCompositions=artifactsAfterSelect.compositions.filter(n=>!artifactsBefore.compositions.includes(n));
+  const newPrintImages=artifactsAfterSelect.printImages.filter(n=>!artifactsBefore.printImages.includes(n));
+  assert(newCompositions.length===1&&newPrintImages.length===1,'frame.select publishes exactly one new UUID composition/print pair');
+  const selectedCompositionPath=resolve(before.dir,newCompositions[0]), selectedPaperPath=resolve(before.dir,newPrintImages[0]);
+  const expectedComp=layout.printSizeLabel==='5x15'?'1184x3580':'2368x3580';
+  assert(pngDimensions(await readFile(selectedCompositionPath)).join('x')===expectedComp,'frame-selection composition header dimensions');
+  assert(pngDimensions(await readFile(selectedPaperPath)).join('x')==='2452x3658','frame-selection paper header dimensions');
+  const editing=await rpc('session.getState',ids);
+  const compositionPreview=dataUrlBytes(editing.compositionDataUrl,'composition preview');
+  const printPreview=dataUrlBytes(editing.printImageDataUrl,'print preview');
+  assert(jpegDimensions(compositionPreview).every(n=>n>0)&&jpegDimensions(printPreview).every(n=>n>0),'published previews have JPEG dimension headers');
   await rpc('frame.confirm',mutation(ids.sessionId,ids.generationId));
+  const artifactsBeforeConfirm=await generatedPairs(before.dir);
   const confirm=mutation(ids.sessionId,ids.generationId); const first=await rpc('print.confirmDryRun',confirm);
-  const compositionPath=resolve(before.dir,'composition.png'), paperPath=resolve(before.dir,'print-image.png');
+  const artifactsAfterConfirm=await generatedPairs(before.dir);
+  const confirmedCompositions=artifactsAfterConfirm.compositions.filter(n=>!artifactsBeforeConfirm.compositions.includes(n));
+  const confirmedPrintImages=artifactsAfterConfirm.printImages.filter(n=>!artifactsBeforeConfirm.printImages.includes(n));
+  assert(confirmedCompositions.length===1&&confirmedPrintImages.length===1,'first confirm publishes exactly one new UUID composition/print pair');
+  const compositionPath=resolve(before.dir,confirmedCompositions[0]), paperPath=resolve(before.dir,confirmedPrintImages[0]);
   const outputHashesBeforeDuplicate={composition:sha(await readFile(compositionPath)),printImage:sha(await readFile(paperPath))};
+  const artifactsBeforeDuplicate=await generatedPairs(before.dir);
   const duplicate=await rpc('print.confirmDryRun',confirm);
   const outputHashesAfterDuplicate={composition:sha(await readFile(compositionPath)),printImage:sha(await readFile(paperPath))};
+  const artifactsAfterDuplicate=await generatedPairs(before.dir);
   assert(JSON.stringify(first)===JSON.stringify(duplicate),'duplicate confirm returns byte-equivalent JSON value');
   assert(JSON.stringify(outputHashesBeforeDuplicate)===JSON.stringify(outputHashesAfterDuplicate),'duplicate confirm leaves composition and print files byte-identical');
+  assert(JSON.stringify(artifactsBeforeDuplicate)===JSON.stringify(artifactsAfterDuplicate),'duplicate confirm creates no additional generated artifacts');
   assert(first.state==='DELIVERY'&&first.userConfirmed===true&&first.printAccepted===false&&first.revenueRecorded===false,'manual dryrun delivery/no print/no revenue');
   const after=await originals(ids,catalog); assert(JSON.stringify(before.hashes)===JSON.stringify(after.hashes),'original hashes unchanged');
   const composition=await readFile(compositionPath), paper=await readFile(paperPath);
-  const expectedComp=layout.printSizeLabel==='5x15'?'1184x3580':'2368x3580';
   assert(pngDimensions(composition).join('x')===expectedComp,'composition dimensions'); assert(pngDimensions(paper).join('x')==='2452x3658','paper dimensions');
   await rejected('print.confirmDryRun',mutation(ids.sessionId,ids.generationId),-32001);
   await rejected('session.getState',{sessionId:ids.sessionId,generationId:randomUUID()},-32004);
   await rpc('session.finish',mutation(ids.sessionId,ids.generationId)); const idle=await rpc('session.getState',ids);
   assert(idle.state==='IDLE'&&idle.selectedCount===0&&idle.selectedIndices.length===0&&idle.frameId===null&&idle.previewDataUrl===null&&idle.compositionDataUrl===null&&idle.printImageDataUrl===null,'finish resets selection/frame/images to IDLE');
-  console.log('FULL',layout.id,{fixture:true,originals:before.files.length,captureHeaderDimensions:`${catalog.captureWidth}x${catalog.captureHeight}`,compositionHeaderDimensions:expectedComp,paperHeaderDimensions:'2452x3658',originalHashesUnchanged:true,duplicateOutputHashesUnchanged:true,noRevenue:true});
+  console.log('FULL',layout.id,{fixture:true,frameSelectionArtifacts:[newCompositions[0],newPrintImages[0]],confirmedAuthoritativeArtifacts:[confirmedCompositions[0],confirmedPrintImages[0]],originals:before.files.length,captureHeaderDimensions:`${catalog.captureWidth}x${catalog.captureHeight}`,compositionHeaderDimensions:expectedComp,paperHeaderDimensions:'2452x3658',previewJpegHeaders:true,originalHashesUnchanged:true,duplicateOutputHashesUnchanged:true,duplicateCreatedArtifacts:false,noRevenue:true});
 }
 
 try {
