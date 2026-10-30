@@ -2,6 +2,8 @@
 
 Status: **REAL HARDWARE NOT TESTED**. Offline disabled-port/fake-boundary tests passed (see `HARDWARE_PORT_INDEPENDENT_REVIEW.md`), but they are not discovery, spooler, cut or output evidence. This remains a future plan, not authorization. No printer discovery, driver inspection, device access, spooler reset, driver setting changes or print was performed. V1 remains read-only; all synthetic fixtures, outputs and logs must live in V2-owned locations. Never record customer photos, credentials or printer secrets.
 
+The isolated Hot Folder's synthetic stable/decode tests also do not authorize or establish a real camera producer workflow. Late-file shot ownership, restart-persistent deduplication and trusted-writer assumptions must be resolved before real mode.
+
 ## Stage 1 — offline, default dry run
 
 After the architect contract exists, build fixture-based compositor tests without device enumeration or any submit call. Use synthetic indexed/color-grid captures and overlays, QR on/off, absolute and grid slots, portraits/landscapes, all supported size branches and both aligned and deliberately out-of-order slot indices. Compare V1-derived and V2 outputs pixel-exactly where runtime/font/image decoding permits, otherwise document tolerances and compare dimensions, placement, crop, bleed, rotation and color. Assert dimensions and offsets in `06_PRINTER_DNP_RX1HS_AUDIT.md`; compare preview to the actual generated page and explicitly document expected QR/padding differences. Test LUT/Beauty success/fallback without customer data.

@@ -1,4 +1,5 @@
 [package]
+default-run = "le-souvenir-v2"
 name = "le-souvenir-v2"
 version = "0.1.0"
 edition = "2021"

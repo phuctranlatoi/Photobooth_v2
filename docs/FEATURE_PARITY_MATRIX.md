@@ -28,7 +28,7 @@
 | C03 | Live View retry/null/reconnect races (`05_CAMERA...:18`) | Bounded latest-frame, unplug/stale/race tests | BLOCKED hardware |
 | C04 | SafeShoot retries/transfer callbacks can have uncertain duplicate outcome (`05_CAMERA...:19-20`) | No blind retry; identity/timeout/multi-format tests | BLOCKED hardware |
 | C05 | Webcam preference/largest size/16:9; no close (`05_CAMERA...:24`) | Lifecycle and mock/real unplug/repeat tests | PARTIAL name enumeration/crop preview only; no capture/device |
-| C06 | Hot Folder fixed wait/delete; weak readiness/order (`05_CAMERA...:25`) | V2-only stable size/mtime/decode, duplicate/late/order tests | PARTIAL path/snapshot candidates; readiness/order/repeat absent |
+| C06 | Hot Folder fixed wait/delete; weak readiness/order (`05_CAMERA...:25`) | V2-only stable size/mtime/decode, duplicate/late/order tests | PASS-AUTOMATED isolated synthetic readiness/duplicate/baseline; real mode/restart/late ownership NOT RUN |
 | C07 | CLI and EOS Utility automation; EOS Utility not active factory mode (`05_CAMERA...:26-27`) | NEEDS DECISION; timeout/security/licensing | NOT STARTED |
 | I01 | Effect/LUT then mirror/JPEG; aspect parameter unused (`07_IMAGE...:7-9`) | Exact gradient/mirror/resolution/corrupt fixtures | NOT STARTED |
 | I02 | Traced path does not retain untouched camera bytes (`05_CAMERA...:29-31`) | Safety adaptation: immutable transfer plus compatible derivative | SIGNOFF REQUIRED |

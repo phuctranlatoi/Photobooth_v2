@@ -63,3 +63,24 @@ Webcam only enumerates names; it lacks V1 default selection, best-size open, fra
 | Physical output comparison to V1 | NOT-RUN | No print |
 
 V1 was inspected through read-only file tools only; no V1 command/build/write, secrets or photos. No hardware or production service was accessed.
+
+## Appendix — isolated Hot Folder final review
+
+Independent execution used the requested V2-local `backend/test-foundation.ps1`. The first direct PowerShell invocation exited **1 before Gradle execution was accepted by the shell** because `$ErrorActionPreference='Stop'` promoted Gradle's stderr `Picked up JAVA_TOOL_OPTIONS` line to `NativeCommandError`; log: `backend/independent-final-24-tests.log`. This is a runner/shell interaction, not a test failure. The same script was then launched through a fresh `powershell.exe` with output redirected by `cmd.exe`:
+
+```powershell
+cmd.exe /d /c "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\test-foundation.ps1 > independent-final-24-tests-rerun.log 2>&1"
+```
+
+Exit **0**, `BUILD SUCCESSFUL in 9s`, six tasks up-to-date. Independent XML aggregation command reported **8 suites, 24 tests, 0 failures, 0 errors, 0 skipped**. This was an incremental test invocation, not `--rerun-tasks`; the immediately prior independent full rerun covered 22 tests, while the two new Hot Folder tests are accepted from current XML/up-to-date Gradle evidence. Logs remain V2-local.
+
+Static review of `IsolatedHotFolder.kt` and its two tests establishes only the synthetic-fixture boundary:
+
+- authorization is checked at `beginShot` before input enumeration (`38-44`) and on every polling iteration before filesystem reads (`59-64`);
+- input/output must be pre-existing, non-symlink, disjoint directories under the real V2 root and carry synthetic fixture prefixes (`16-34`);
+- timeout uses `System.nanoTime`, validates a 1–60,000 ms bound, supports cancellation/interruption, and closes the active shot (`55-95`);
+- candidates require stable size/mtime over two observations, unchanged attributes during byte snapshot, JPEG SOI/EOI and successful ImageIO decode (`64-80`);
+- publication is complete-byte, atomic no-overwrite via temp + hard link; source input is never deleted (`83-87`). Test cleanup deletes its own synthetic fixtures, not adapter input behavior;
+- one active shot per adapter and baseline exclusion are tested; duplicate content/name tracking is in-memory only.
+
+Important limitations: this is **not a real Hot Folder mode**. A late file arriving after the next shot starts is indistinguishable from that shot; duplicate state is not restart-persistent and same-content legitimate captures are suppressed; the 32 MiB compressed bound does not limit decoded pixel dimensions; stable metadata/EOI/decode are readiness heuristics; trusted local writers are assumed and symlink race resistance is incomplete. No production profile wiring, real producer, long-session, crash/restart, malicious filesystem or customer data test was run. Status remains **PASS-AUTOMATED synthetic fixture / NOT-RUN real mode**.

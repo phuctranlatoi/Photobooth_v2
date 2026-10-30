@@ -9,7 +9,7 @@
 | G3 | Guarded backend commands and immutable snapshots | Architect/backend | PASS-SIMULATED narrow simulator; initial contract remains inconsistent with actual handoff |
 | G4 | Versioned authenticated host↔sidecar IPC | Architect | Health-only PASS; simulator methods extend same private stdio; HMAC deferred |
 | G5 | Synthetic compositor/LUT/mirror/alpha fixtures | Backend/tester | PARTIAL PASS: simulator compositor files/dedup; LUT/Beauty/pixel parity not covered |
-| G6 | V2-only Hot Folder readiness/order/duplicate tests | Camera/tester | PARTIAL skeleton only; readiness/order/duplicate tests NOT RUN |
+| G6 | V2-only Hot Folder readiness/order/duplicate tests | Camera/tester | PASS-AUTOMATED synthetic fixture; real producer/restart/late-file ownership NOT RUN |
 | G7 | Canon loader/lifecycle/license proof | Camera/architect/legal | PARTIAL disabled reflection; capture/reconnect/disposal/native/license BLOCKED |
 | G8 | Printer dry-run identity/geometry/idempotency | Printer/tester | PARTIAL fake boundary/printable; spooler/media/cut/physical DNP BLOCKED |
 | G9 | Payment/revenue/cloud mock tests | Backend/tester | Simulator only: `payment.mockComplete` (no PayOS/QR) |

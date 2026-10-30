@@ -71,3 +71,9 @@ From V2 `backend`, ran Gradle `test --rerun-tasks` with V2-local temp/cache/proj
 - PARTIAL: Canon reflected method names match exact V1 usages, but V2 lacks shutter/transfer/reconnect/end-live-view/disposal parity.
 - BLOCKED/NOT-RUN: native Canon, webcam device, Hot Folder readiness, DNP spool/cut/physical output, Mini-PC performance and V1 physical comparison.
 - Task1 narrow bridge and Task2 framed-JVM/mounted-WebView simulator passes are recorded in their independent reviews; neither is hardware evidence.
+
+## 2026-10-30 isolated Hot Folder final check
+
+Requested `backend/test-foundation.ps1`: initial direct invocation exit 1 because its Stop policy treated Gradle's `JAVA_TOOL_OPTIONS` stderr as `NativeCommandError`; no test failure inferred. Rerun through fresh PowerShell with redirected output exited **0**, `BUILD SUCCESSFUL in 9s`, tasks up-to-date. XML aggregation: **8 suites, 24 tests, 0 failures/errors/skips**. Logs: `backend/independent-final-24-tests.log` and `backend/independent-final-24-tests-rerun.log`.
+
+`IsolatedHotFolderTest` adds two synthetic tests for authorization/path denial, partial-write stability/decode, deterministic candidate handling, duplicate suppression, baseline late-file exclusion, cancellation, timeout, no-overwrite and source retention. **PASS-AUTOMATED synthetic fixture only**; real Hot Folder producer, restart persistence and cross-shot late-file ownership remain NOT-RUN.
