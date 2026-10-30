@@ -6,16 +6,16 @@
 |---|---|---|---|
 | G1 | Correct audit authority and consolidated matrix | Tester-reviewer | DONE; gate remains FAIL |
 | G2 | Isolated foundation characterization | Backend/reviewer | PASS-AUTOMATED narrow scope: independent 5-test run exit 0 |
-| G3 | Guarded backend commands and immutable snapshots | Architect/backend | **CONTRACT NOT FINALIZED** — `SIMULATOR_IPC_CONTRACT.md` reviewer mismatch open; backend impl IN PROGRESS |
+| G3 | Guarded backend commands and immutable snapshots | Architect/backend | PASS-SIMULATED narrow simulator; initial contract remains inconsistent with actual handoff |
 | G4 | Versioned authenticated host↔sidecar IPC | Architect | Health-only PASS; simulator methods extend same private stdio; HMAC deferred |
-| G5 | Synthetic compositor/LUT/mirror/alpha fixtures | Backend/tester | **AWAITING BACKEND** (`SimulatorCompositor` integration via `frame.select`/`print.confirmDryRun`) |
-| G6 | V2-only Hot Folder readiness/order/duplicate tests | Camera/tester | NOT STARTED |
-| G7 | Canon loader/lifecycle/license proof | Camera/architect/legal | BLOCKED (B-001) |
-| G8 | Printer dry-run identity/geometry/idempotency | Printer/tester | NOT STARTED; physical DNP BLOCKED |
+| G5 | Synthetic compositor/LUT/mirror/alpha fixtures | Backend/tester | PARTIAL PASS: simulator compositor files/dedup; LUT/Beauty/pixel parity not covered |
+| G6 | V2-only Hot Folder readiness/order/duplicate tests | Camera/tester | PARTIAL skeleton only; readiness/order/duplicate tests NOT RUN |
+| G7 | Canon loader/lifecycle/license proof | Camera/architect/legal | PARTIAL disabled reflection; capture/reconnect/disposal/native/license BLOCKED |
+| G8 | Printer dry-run identity/geometry/idempotency | Printer/tester | PARTIAL fake boundary/printable; spooler/media/cut/physical DNP BLOCKED |
 | G9 | Payment/revenue/cloud mock tests | Backend/tester | Simulator only: `payment.mockComplete` (no PayOS/QR) |
 | G10 | Accepted Beauty manifest/hashes/licenses | Owner/backend/legal | BLOCKED (B-002, B-003) |
 | G11 | Full Admin gaps: Tools/events/settings/revenue | UI/backend/tester | PARTIAL |
-| G12 | 16:10 React UI and touch/scaling tests | UI/frontend/tester | NOT STARTED |
+| G12 | 16:10 React UI and touch/scaling tests | UI/frontend/tester | PASS-SIMULATED two CSS viewports/screenshots; physical touch/DPI NOT RUN |
 | G13 | Gradle distribution provenance | Build/reviewer | **PASS** — HTTPS publisher SHA-256 exactly matches local ZIP |
 | G14 | Packaging/JRE/native/model/driver coexistence | Architect/tester | BLOCKED |
 | G15 | Health-only private bridge proof | Frontend/backend/architect/tester | **PASS-AUTOMATED/PASS-SIMULATED** — backend 10 tests (5 foundation + 3 bridge + 2), frontend 4 tests, Rust compile, bridge-probe real JVM roundtrip, Tauri window launch/close |

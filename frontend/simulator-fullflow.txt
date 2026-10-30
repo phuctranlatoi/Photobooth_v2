@@ -1,6 +1,41 @@
-HOST 19536
+HOST 30060
 welcome-0 {"viewport":[1280,800],"images":[],"buttons":[{"text":"Start simulator session","rect":[68.80000305175781,446.4875183105469,263,62]},{"text":"Start simulator session","rect":[407.0625,446.4875183105469,274,62]}]}
 payment-0 {"viewport":[1280,800],"images":[],"buttons":[{"text":"Simulate payment approval","rect":[32,309.6000061035156,1214,62]},{"text":"Back","rect":[32,385.6000061035156,1214,62]}]}
 live-0 {"viewport":[1280,800],"images":[{"alt":"Live synthetic simulator preview","natural":[320,180],"rect":[858,402]}],"buttons":[{"text":"Start capture","rect":[938,247.1999969482422,284,62]}]}
 selection-0 {"viewport":[1280,800],"images":[{"alt":"Complete simulator original 1","natural":[240,135],"rect":[369,176]},{"alt":"Complete simulator original 2","natural":[240,135],"rect":[369,176]},{"alt":"Complete simulator original 3","natural":[240,135],"rect":[369,176]}],"buttons":[{"text":"Selected ✓ 1","rect":[32,267.6000061035156,393,254]},{"text":"Selected ✓ 2","rect":[442.6625061035156,267.6000061035156,393,254]},{"text":"Select 3","rect":[853.3250122070312,267.6000061035156,393,254]},{"text":"Continue to frames","rect":[32,535.2000122070312,1214,62]},{"text":"•••","rect":[32,653.2000122070312,1214,62]}]}
 print-preview-0 {"viewport":[1280,800],"images":[{"alt":"Authoritative Kotlin composed dryrun preview","natural":[402,600],"rect":[188,280]}],"buttons":[{"text":"Confirm dryrun","rect":[32,613.6000366210938,1214,62]},{"text":"Back","rect":[32,689.6000366210938,1214,62]}]}
+RELOAD PREVIEW recovered 0
+delivery-0 {"viewport":[1280,800],"images":[{"alt":"Authoritative Kotlin composed dryrun preview","natural":[402,600],"rect":[188,280]}],"buttons":[{"text":"Finish simulator session","rect":[32,613.6000366210938,1214,62]}]}
+DELIVERY DOM Bridge diagnostics
+SIMULATOR SAMPLE
+No real payment · No paper printing · No revenue
+
+DELIVERY
+
+Dryrun complete
+
+Manually confirmed. Generated files only. Print accepted: no. Revenue recorded: no. No simulator delivery link.
+
+Finish simulator session
+welcome-1 {"viewport":[1920,1200],"images":[],"buttons":[{"text":"Start simulator session","rect":[328.8000183105469,471.0375061035156,263,62]},{"text":"Start simulator session","rect":[667.0625,471.0375061035156,274,62]}]}
+payment-1 {"viewport":[1920,1200],"images":[],"buttons":[{"text":"Simulate payment approval","rect":[292,309.6000061035156,1334,62]},{"text":"Back","rect":[292,385.6000061035156,1334,62]}]}
+live-1 {"viewport":[1920,1200],"images":[{"alt":"Live synthetic simulator preview","natural":[320,180],"rect":[948,662]}],"buttons":[{"text":"Start capture","rect":[1288,247.1999969482422,314,62]}]}
+selection-1 {"viewport":[1920,1200],"images":[{"alt":"Complete simulator original 1","natural":[240,135],"rect":[229,264]},{"alt":"Complete simulator original 2","natural":[240,135],"rect":[229,264]},{"alt":"Complete simulator original 3","natural":[240,135],"rect":[229,264]},{"alt":"Complete simulator original 4","natural":[240,135],"rect":[229,264]},{"alt":"Complete simulator original 5","natural":[240,135],"rect":[229,264]}],"buttons":[{"text":"Selected ✓ 1","rect":[292,267.6000061035156,253,342]},{"text":"Selected ✓ 2","rect":[562.4000244140625,267.6000061035156,253,342]},{"text":"Selected ✓ 3","rect":[832.7999877929688,267.6000061035156,253,342]},{"text":"Selected ✓ 4","rect":[1103.2000732421875,267.6000061035156,253,342]},{"text":"Select 5","rect":[1373.5999755859375,267.6000061035156,253,342]},{"text":"Continue to frames","rect":[292,623.2000122070312,1334,62]},{"text":"•••","rect":[292,741.2000122070312,1334,62]}]}
+print-preview-1 {"viewport":[1920,1200],"images":[{"alt":"Authoritative Kotlin composed dryrun preview","natural":[402,600],"rect":[281,420]}],"buttons":[{"text":"Confirm dryrun","rect":[292,753.6000366210938,1334,62]},{"text":"Back","rect":[292,829.6000366210938,1334,62]}]}
+RELOAD PREVIEW recovered 1
+delivery-1 {"viewport":[1920,1200],"images":[{"alt":"Authoritative Kotlin composed dryrun preview","natural":[402,600],"rect":[281,420]}],"buttons":[{"text":"Finish simulator session","rect":[292,753.6000366210938,1334,62]}]}
+DELIVERY DOM Bridge diagnostics
+SIMULATOR SAMPLE
+No real payment · No paper printing · No revenue
+
+DELIVERY
+
+Dryrun complete
+
+Manually confirmed. Generated files only. Print accepted: no. Revenue recorded: no. No simulator delivery link.
+
+Finish simulator session
+ACTIVE JVM { ProcessId: 35416, Name: 'java.exe' }
+CLOSE True
+HOST EXIT 0
+JVM terminated

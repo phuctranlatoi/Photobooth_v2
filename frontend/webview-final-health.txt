@@ -1,0 +1,50 @@
+HOST PID 38088
+WEBVIEW http://127.0.0.1:1420/ LE SOUVENIR · V2 bridge
+INITIAL DOCUMENT {"url":"http://127.0.0.1:1420/","text":"LE SOUVENIR\nV2 · ARCHITECTURE PROOF\n\nA little moment. A lasting memory.\n\nMake room\nfor a memory.\n\nA new home for your favourite moments.\nThe experience is taking shape.\n\nStart your session\n\nCustomer integration pending. Sessions, camera, payment and printing are not available in this build.\n\nPRIVATE STDIO BRIDGE\nBehind the experience.\n\nThis diagnostic sends only health.check to the actual Kotlin/JVM backend through the desktop host.\n\nSimulator · health only\n\nNo live preview. No device access.\nNo customer or production actions.\n\nNot checked\nCheck JVM bridge\n\nA response proves this roundtrip only, not continuous health, packaging, Canon or printer support.\n\nReturn to simulator\nDesigned for moments together.\nIndependent V2 development build · not for customer use"}
+CLICK Check JVM bridge
+RENDERED UI
+LE SOUVENIR
+V2 · ARCHITECTURE PROOF
+
+A little moment. A lasting memory.
+
+Make room
+for a memory.
+
+A new home for your favourite moments.
+The experience is taking shape.
+
+Start your session
+
+Customer integration pending. Sessions, camera, payment and printing are not available in this build.
+
+PRIVATE STDIO BRIDGE
+Behind the experience.
+
+This diagnostic sends only health.check to the actual Kotlin/JVM backend through the desktop host.
+
+Simulator · health only
+
+No live preview. No device access.
+No customer or production actions.
+
+JVM responded · simulator confirmed
+Backend process
+14572
+JVM version
+21.0.12
+Protocol
+v1 · health.check only
+Reported JVM uptime
+331 ms
+Check again
+
+A response proves this roundtrip only, not continuous health, packaging, Canon or printer support.
+
+Return to simulator
+Designed for moments together.
+Independent V2 development build · not for customer use
+ACTUAL JVM { ProcessId: 14572, ParentProcessId: 29360, Name: 'java.exe' } LAUNCHER { ProcessId: 29360, ParentProcessId: 38088, Name: 'cmd.exe' }
+WINDOW CLOSE True
+HOST EXIT 0
+JVM PID 14572 terminated

@@ -62,3 +62,12 @@ See `BRIDGE_MILESTONE_REVIEW.md` for commands and security/lifecycle analysis.
 | Print output comparison with V1 | NOT-RUN | No output generated or physical media used. |
 
 > `PASS-AUTOMATED` above means a deterministic tool-assisted static source read established the narrow fact stated. It does **not** mean a compiled test, runtime flow, simulation, or hardware test passed.
+
+## 2026-10-30 Task3 independent disabled-port rerun
+
+From V2 `backend`, ran Gradle `test --rerun-tasks` with V2-local temp/cache/project cache. Exit **0**, `BUILD SUCCESSFUL in 53s`; 22 tests, 0 failures/errors. Log: `backend/independent-hardware-port-test.log`.
+
+- PASS-AUTOMATED: default denial before Canon/webcam reflection and before printer facade/image access; fake printer validation; printable BufferedImage geometry.
+- PARTIAL: Canon reflected method names match exact V1 usages, but V2 lacks shutter/transfer/reconnect/end-live-view/disposal parity.
+- BLOCKED/NOT-RUN: native Canon, webcam device, Hot Folder readiness, DNP spool/cut/physical output, Mini-PC performance and V1 physical comparison.
+- Task1 narrow bridge and Task2 framed-JVM/mounted-WebView simulator passes are recorded in their independent reviews; neither is hardware evidence.

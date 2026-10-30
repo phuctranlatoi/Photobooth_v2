@@ -24,11 +24,11 @@
 | S18 | Local sale UNIQUE session and pending sync (`SalesRepository`; docs `04/08`) | API ack-loss/idempotency/restart tests | NOT STARTED; deployed API unknown |
 | S19 | Reset plus late mutable background tasks (`controller:853-986`) | Generation isolation/recovery tests | NOT STARTED |
 | C01 | Camera precedence Native→CLI→Hot Folder→Webcam, constructed once (`controller:63-68`) | Explicit profile/status and serialized reconfigure | NOT STARTED; Admin mismatch |
-| C02 | Canon JVM/JNA EDSDK first-camera/message-loop lifecycle (`05_CAMERA...`) | Serialized ownership/disposal/deadlines | BLOCKED DLL provenance/license/device |
+| C02 | Canon JVM/JNA EDSDK first-camera/message-loop lifecycle (`05_CAMERA...`) | Serialized ownership/disposal/deadlines | PARTIAL disabled reflection; no capture/reconnect/message-loop/device; BLOCKED DLL/license |
 | C03 | Live View retry/null/reconnect races (`05_CAMERA...:18`) | Bounded latest-frame, unplug/stale/race tests | BLOCKED hardware |
 | C04 | SafeShoot retries/transfer callbacks can have uncertain duplicate outcome (`05_CAMERA...:19-20`) | No blind retry; identity/timeout/multi-format tests | BLOCKED hardware |
-| C05 | Webcam preference/largest size/16:9; no close (`05_CAMERA...:24`) | Lifecycle and mock/real unplug/repeat tests | NOT STARTED |
-| C06 | Hot Folder fixed wait/delete; weak readiness/order (`05_CAMERA...:25`) | V2-only stable size/mtime/decode, duplicate/late/order tests | NOT STARTED |
+| C05 | Webcam preference/largest size/16:9; no close (`05_CAMERA...:24`) | Lifecycle and mock/real unplug/repeat tests | PARTIAL name enumeration/crop preview only; no capture/device |
+| C06 | Hot Folder fixed wait/delete; weak readiness/order (`05_CAMERA...:25`) | V2-only stable size/mtime/decode, duplicate/late/order tests | PARTIAL path/snapshot candidates; readiness/order/repeat absent |
 | C07 | CLI and EOS Utility automation; EOS Utility not active factory mode (`05_CAMERA...:26-27`) | NEEDS DECISION; timeout/security/licensing | NOT STARTED |
 | I01 | Effect/LUT then mirror/JPEG; aspect parameter unused (`07_IMAGE...:7-9`) | Exact gradient/mirror/resolution/corrupt fixtures | NOT STARTED |
 | I02 | Traced path does not retain untouched camera bytes (`05_CAMERA...:29-31`) | Safety adaptation: immutable transfer plus compatible derivative | SIGNOFF REQUIRED |
@@ -36,7 +36,7 @@
 | I04 | DesktopCompositor fixed geometry/slot order/crop/bleed (`07_IMAGE...:21-27`) | Exact synthetic geometry/alpha tests | NOT STARTED |
 | I05 | QR absent master, present print; paired strips (`07_IMAGE...:27`) | Exact raster tests | NOT STARTED |
 | I06 | Compose preview can differ from final raster (`06_PRINTER...:34`) | Authoritative preview/final crop comparison | FAIL RISK |
-| P01 | Java PrinterJob; substring match and default fallback (`DesktopIoServices.kt:36-91`) | Exact identity; reject ambiguity/missing; dry-run | NOT STARTED |
+| P01 | Java PrinterJob; substring match and default fallback (`DesktopIoServices.kt:36-91`) | Exact identity; reject ambiguity/missing; dry-run | PARTIAL disabled/fake tests; exact-name safety adaptation; no spooler |
 | P02 | Copies only; default page/stretch/rotation; no media/DPI/cut/status (`06_PRINTER...`) | Driver/spooler characterization; truthful status | BLOCKED hardware |
 | P03 | 5x15 sheets use integer copies/2, odd rounds down (`controller:762-776`) | Odd/even regression or product decision | NOT STARTED |
 | P04 | No RX1HS-specific 2-inch cut evidence (`06_PRINTER...:18`) | Vendor/operator and authorized output comparison | BLOCKED |
@@ -45,14 +45,14 @@
 | B03 | API and direct-Neon mode; direct mode can ALTER TABLE (`08:23-29`) | Approved shared API; prohibit automatic migrations | BLOCKED owner/architecture |
 | B04 | Money uses Long/decimal strings (`08:21`) | Serialization/malformed/overflow tests | NOT STARTED |
 | B05 | Local server unauthenticated on `0.0.0.0` (`LocalFileServer.kt:25-67`) | Do not reuse for IPC; reviewed signed delivery/loopback | FAIL SECURITY |
-| U01 | All customer screen contracts (`UI_SCREEN_CONTRACTS.md:36-50`) | 1280×800/1920×1200, 100/125/150%, loading/repeat/touch tests | NOT STARTED |
+| U01 | All customer screen contracts (`UI_SCREEN_CONTRACTS.md:36-50`) | 1280×800/1920×1200, 100/125/150%, loading/repeat/touch tests | PARTIAL simulator screenshots at 1280×800/1920×1200; no physical DPI/touch/all screens |
 | U02 | Hidden Admin and readiness bypass (`Main:77-119`; UI contract) | Operator protection; bypass cannot imply hardware ready | NOT STARTED |
 | U03 | Admin Frames/Layouts/Settings/Tools/Colors/Revenue (`AdminScreen:123-242`) | Full protected workbench and persistence/error tests | PARTIAL; Tools/events incomplete |
 | U04 | Settings edit limited fields, `.env`, restart (`SettingsTabContent`; controller `999-1029`) | V2-only validated settings, secret separation, ACL/precedence tests | NOT STARTED |
 | U05 | Layout price/shot/countdown update via Firebase (`controller:1033-1052`) | Mock persistence/error/reload tests | NOT STARTED; durability unknown |
 | U06 | LUT/effect and Canon parameter controls | Preserve source-supported controls only; error tests | PARTIAL SOURCE AUDIT |
 | K01 | Isolated foundation layout/pricing/legacy state/simulator | Characterization only | PASS-AUTOMATED: independent 5 tests, exit 0 |
-| K02 | Health-only host↔Kotlin bridge: private inherited framed stdio, fixed method, simulator child | Framing/validation/timeout/cleanup plus live WebView invoke | PASS-AUTOMATED backend validation/build; PASS-SIMULATED standalone Rust→real JVM; WebView invoke/forced cleanup NOT RUN; broader authenticated session IPC not implemented |
+| K02 | Host↔Kotlin private inherited framed stdio simulator child | Framing/validation/timeout/cleanup plus live WebView invoke | PASS-AUTOMATED/PASS-SIMULATED normal WebView and two-layout simulator; abrupt/hung cleanup NOT RUN |
 | K03 | Installer/JRE/Canon DLL/ONNX/driver coexistence | Clean install/recovery/licenses | BLOCKED |
 
 ## Gate summary

@@ -1,6 +1,6 @@
 # Printer hardware validation plan
 
-Status: **NOT TESTED**. This is a future plan, not authorization. No printer discovery, driver inspection, device access, spooler reset, driver setting changes or print was performed. V1 remains read-only; all synthetic fixtures, outputs and logs must live in V2-owned locations. Never record customer photos, credentials or printer secrets.
+Status: **REAL HARDWARE NOT TESTED**. Offline disabled-port/fake-boundary tests passed (see `HARDWARE_PORT_INDEPENDENT_REVIEW.md`), but they are not discovery, spooler, cut or output evidence. This remains a future plan, not authorization. No printer discovery, driver inspection, device access, spooler reset, driver setting changes or print was performed. V1 remains read-only; all synthetic fixtures, outputs and logs must live in V2-owned locations. Never record customer photos, credentials or printer secrets.
 
 ## Stage 1 — offline, default dry run
 

@@ -20,6 +20,7 @@ export function Simulator(){
   const generation=useRef(sessionStorage.getItem('v2-simulator-generation')??'');
   const epoch=useRef(0);
   const lock=useRef(false),alive=useRef(true);
+  const intent=useRef(false);
   useEffect(()=>{setCancel(false);setFrames([]);},[s?.state,s?.layout.id,s?.generationId]);
   async function refresh(){
     if(!session.current)return;
@@ -42,7 +43,9 @@ export function Simulator(){
     void poll();return()=>{alive.current=false;++epoch.current;clearTimeout(timer);};
   },[]);
   async function command(method:SimulatorMethod,extra:object={}){
-    if(lock.current)return;lock.current=true;setBusy(true);setError('');
+    if(intent.current)return;intent.current=true;setBusy(true);setError('');
+    while(lock.current&&alive.current)await new Promise(r=>setTimeout(r,20));
+    if(!alive.current){intent.current=false;return;}lock.current=true;
     try{
       if(method==='session.start'){session.current=crypto.randomUUID();generation.current=crypto.randomUUID();sessionStorage.setItem('v2-simulator-session',session.current);sessionStorage.setItem('v2-simulator-generation',generation.current);setPreview('');setProgress(undefined);}
       const commandId=crypto.randomUUID();
@@ -55,7 +58,7 @@ export function Simulator(){
         session.current='';generation.current='';sessionStorage.removeItem('v2-simulator-session');sessionStorage.removeItem('v2-simulator-generation');setPreview('');setProgress(undefined);setFrames([]);setSnapshot(undefined);
       }else await refresh();
       setCancel(false);
-    }catch(e){if(alive.current)setError(String(e));}finally{lock.current=false;if(alive.current)setBusy(false);}
+    }catch(e){if(alive.current)setError(String(e));}finally{lock.current=false;intent.current=false;if(alive.current)setBusy(false);}
   }
   const state=s?.state??(session.current?'CONNECTING':'IDLE');
   const button=(label:string,method:SimulatorMethod,params:object={},disabled=false)=><button className="check" disabled={busy||!!error||disabled} onClick={()=>void command(method,params)}>{label}</button>;
