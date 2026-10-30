@@ -1,0 +1,8 @@
+{
+  "fixtureNotice": "V2 synthetic fixtures; fields follow V1 BoothModels.kt and pricing uses copied PricingCalculator. Counts/times are test choices, not real bundles.",
+  "layouts": [
+    {"id":"strip-2","title":"Synthetic strip fixture","shotCount":3,"selectCount":2,"countdownSeconds":1,"printSizeLabel":"5x15","family":"Column","gridColumns":1},
+    {"id":"grid-4","title":"Synthetic grid fixture","shotCount":5,"selectCount":4,"countdownSeconds":2,"printSizeLabel":"10x15","family":"Grid","gridColumns":2}
+  ],
+  "defaultLayoutId":"strip-2","sourceCount":3,"previewWidth":320,"previewHeight":180,"captureWidth":1920,"captureHeight":1080,"inactivitySeconds":30
+}

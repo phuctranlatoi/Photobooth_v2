@@ -2,10 +2,12 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { ArrowUpRight, CheckCircle2, CircleAlert, Cable, FlaskConical } from 'lucide-react';
 import { bridge, type Bridge, type Health } from './bridge';
+import { Simulator } from './Simulator';
 export function App({ client = bridge }: { client?: Bridge }) {
   const [health, setHealth] = useState<Health>();
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  const [diagnostics,setDiagnostics]=useState(false);
   const latch = useRef(false), mounted = useRef(true);
   const reduce = useReducedMotion();
   useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
@@ -16,6 +18,7 @@ export function App({ client = bridge }: { client?: Bridge }) {
     catch (e) { if (mounted.current) setError(typeof e === 'string' ? e : e instanceof Error ? e.message : 'Bridge unavailable'); }
     finally { latch.current = false; if (mounted.current) setBusy(false); }
   }
+  if(client===bridge&&!diagnostics)return <div className="simulator-app"><button className="diagnostic-toggle" onClick={()=>setDiagnostics(true)}>Bridge diagnostics</button><Simulator/></div>;
   return <div className="kiosk">
     <header><span className="wordmark">LE SOUVENIR</span><span className="badge"><FlaskConical size={18}/> V2 · ARCHITECTURE PROOF</span></header>
     <main>
@@ -31,6 +34,6 @@ export function App({ client = bridge }: { client?: Bridge }) {
         <button className="check" onClick={check} disabled={busy}>{busy ? 'Checking…' : health ? 'Check again' : 'Check JVM bridge'}<ArrowUpRight size={22} aria-hidden="true"/></button>
         <p className="caption">A response proves this roundtrip only, not continuous health, packaging, Canon or printer support.</p>
       </motion.section>
-    </main><footer><span>Designed for moments together.</span><span>Independent V2 development build · not for customer use</span></footer>
+     </main>{client===bridge&&<button className="check" onClick={()=>setDiagnostics(false)}>Return to simulator</button>}<footer><span>Designed for moments together.</span><span>Independent V2 development build · not for customer use</span></footer>
   </div>;
 }

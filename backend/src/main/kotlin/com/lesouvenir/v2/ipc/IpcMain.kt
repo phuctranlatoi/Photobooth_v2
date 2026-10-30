@@ -13,7 +13,7 @@ const val MAX_FRAME = 1_048_576
 /** Health-only bridge. Unrecoverable framing errors emit one error then close;
  * an oversize body is never allocated or mistaken for the next frame header.
  */
-class HealthBridge {
+class HealthBridge(private val sessions: SimulatorSessionEngine? = null) {
     private fun error(id: String, code: Int, message: String) = envelope(id).apply {
         add("error", JsonObject().apply { addProperty("code", code); addProperty("message", message) })
     }
@@ -45,10 +45,16 @@ class HealthBridge {
             }
             val version = req["protocolVersion"]
             if (!version.isJsonPrimitive || !version.asJsonPrimitive.isNumber || version.toString() != "1" ||
-                !req["params"].isJsonObject || req["params"].asJsonObject.size() != 0) {
+                !req["params"].isJsonObject) {
                 return error(id, -32602, "Invalid params or protocolVersion")
             }
-            if (string("method") != "health.check") return error(id, -32601, "Method not found")
+            if (string("method") != "health.check") {
+                val engine = sessions ?: return error(id, -32601, "Method not found")
+                return try { envelope(id).apply { add("result", engine.dispatch(string("method")!!, req["params"].asJsonObject)) } }
+                catch (failure: SimulatorError) { error(id, failure.code, failure.message ?: "Simulator error") }
+                catch (_: Exception) { error(id, -32603, "Simulator operation failed") }
+            }
+            if (req["params"].asJsonObject.size() != 0) return error(id, -32602, "Invalid params")
             return envelope(id).apply {
                 add("result", JsonObject().apply {
                     addProperty("status", "ok"); addProperty("protocolVersion", 1)
@@ -66,7 +72,8 @@ class HealthBridge {
         val sink = DataOutputStream(output.buffered())
         fun send(value: JsonObject) {
             val bytes = value.toString().toByteArray(Charsets.UTF_8)
-            sink.writeInt(bytes.size); sink.write(bytes); sink.flush()
+            val bounded = if (bytes.size <= MAX_FRAME) bytes else error(value["id"].asString, -32603, "Response exceeds limit").toString().toByteArray(Charsets.UTF_8)
+            sink.writeInt(bounded.size); sink.write(bounded); sink.flush()
         }
         while (true) {
             val first = source.read()
@@ -90,5 +97,5 @@ fun main(args: Array<String>) {
         System.err.println("Bridge requires --simulator only")
         kotlin.system.exitProcess(2)
     }
-    HealthBridge().serve(System.`in`, System.out)
+    SimulatorSessionEngine.production().use { HealthBridge(it).serve(System.`in`, System.out) }
 }

@@ -1,0 +1,61 @@
+HOST PID 22804
+WEBVIEW http://127.0.0.1:1420/ LE SOUVENIR · V2 bridge
+INITIAL DOCUMENT {"url":"http://127.0.0.1:1420/","text":"LE SOUVENIR\nV2 · ARCHITECTURE PROOF\n\nA little moment. A lasting memory.\n\nMake room\nfor a memory.\n\nA new home for your favourite moments.\nThe experience is taking shape.\n\nStart your session\n\nCustomer integration pending. Sessions, camera, payment and printing are not available in this build.\n\nPRIVATE STDIO BRIDGE\nBehind the experience.\n\nThis diagnostic sends only health.check to the actual Kotlin/JVM backend through the desktop host.\n\nSimulator · health only\n\nNo live preview. No device access.\nNo customer or production actions.\n\nNot checked\nCheck JVM bridge\n\nA response proves this roundtrip only, not continuous health, packaging, Canon or printer support.\n\nSIMULATOR SAMPLE\nNo real payment · No paper printing · No revenue\n\nIDLE\n\nA simulator memory.\n\nFixture layouts only. No bundles, Beauty or real camera.\n\nDesigned for moments together.\nIndependent V2 development build · not for customer use"}
+CLICK Check JVM bridge
+RENDERED UI
+LE SOUVENIR
+V2 · ARCHITECTURE PROOF
+
+A little moment. A lasting memory.
+
+Make room
+for a memory.
+
+A new home for your favourite moments.
+The experience is taking shape.
+
+Start your session
+
+Customer integration pending. Sessions, camera, payment and printing are not available in this build.
+
+PRIVATE STDIO BRIDGE
+Behind the experience.
+
+This diagnostic sends only health.check to the actual Kotlin/JVM backend through the desktop host.
+
+Simulator · health only
+
+No live preview. No device access.
+No customer or production actions.
+
+JVM responded · simulator confirmed
+Backend process
+17312
+JVM version
+21.0.12
+Protocol
+v1 · health.check only
+Reported JVM uptime
+195 ms
+Check again
+
+A response proves this roundtrip only, not continuous health, packaging, Canon or printer support.
+
+SIMULATOR SAMPLE
+No real payment · No paper printing · No revenue
+
+IDLE
+
+Backend rejected request: {"code":-32601,"message":"Method not found"}
+
+Reconcile status — do not replay
+A simulator memory.
+
+Fixture layouts only. No bundles, Beauty or real camera.
+
+Designed for moments together.
+Independent V2 development build · not for customer use
+ACTUAL JVM { ProcessId: 17312, ParentProcessId: 31716, Name: 'java.exe' } LAUNCHER { ProcessId: 31716, ParentProcessId: 22804, Name: 'cmd.exe' }
+WINDOW CLOSE True
+HOST EXIT 0
+JVM PID 17312 terminated

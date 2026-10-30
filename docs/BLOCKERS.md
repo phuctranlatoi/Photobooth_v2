@@ -7,7 +7,7 @@
 | **B-001** | Canon EDSDK redistribution license | Cannot bundle DLLs; users must install EOS Utility | Legal / Vendor | 🔴 **BLOCKED** | Contact Canon Vietnam ISV program; prepare HotFolder fallback |
 | **B-002** | BiSeNet ONNX model license | Commercial use unclear; beauty parsing may be unlicensed | Legal | 🔴 **BLOCKED** | Legal review; prepare YuNet-only fallback (detection only) |
 | **B-003** | SCRFD ONNX model license | Alternative detector license unclear | Legal | 🔴 **BLOCKED** | Legal review; use YuNet only |
-| **B-004** | Tauri v2 + JVM sidecar + JNA + Windows message pump unproven | Core architecture risk; may need Electron fallback | Architect | 🟡 **POC PLANNED** | Milestone 2 POC (HARDWARE_POC_PLAN.md) |
+| **B-004** | Tauri v2 + JVM sidecar + JNA + Windows message pump unproven | Core architecture risk; may need Electron fallback | Architect | 🟡 **POC PLANNED** | Milestone 2 POC (HARDWARE_POC_PLAN.md); health-only bridge PASS |
 | **B-005** | DNP RX1HS driver as prerequisite | App cannot print without user-installed driver | Release | 🟡 **DOCUMENTED** | Document in requirements; test with DNP SDK if available |
 
 ---
@@ -27,6 +27,16 @@
 
 ---
 
+## Integration Blockers (Task2)
+
+| ID | Blocker | Impact | Owner | Status | Resolution Path |
+|----|---------|--------|-------|--------|-----------------|
+| **I-001** | Contract draft discrepancies between backend `SimulatorIpcServer` impl and frontend `simulator-contract.ts` | Backend/frontend wire format mismatch stalls simulator session tests | Backend Engineer / Frontend Lead | 🟡 **IN PROGRESS** | Implementers reconcile exact JSON-RPC params/results; Architect does not edit frontend types |
+| **I-002** | Live WebView `invoke('health_check')` → Rust → JVM | **RESOLVED (narrow)** — CDP harness: mounted React → Tauri `health_check` → JVM PID 17520, `CloseMainWindow=True`, host exit 0, JVM terminated. Abrupt parent kill / hung child / `taskkill /T` fallback **NOT TESTED**. | Frontend Lead / Tester-Reviewer | 🟢 **RESOLVED (exact tested scenario only)** | Verified via `docs/DESKTOP_BRIDGE_INDEPENDENT_REVIEW.md` CDP harness. Broader simulator session invoke still requires backend impl. |
+| **I-003** | Window-close with active JVM child cleanup | **RESOLVED (normal close)** — CDP harness: `CloseMainWindow=True`, host exit 0, JVM PID terminated. **Abrupt parent kill / hung child / `taskkill /T` fallback NOT TESTED**. | Architect / Tester-Reviewer | 🟢 **RESOLVED (normal close only)** | Verified via `docs/DESKTOP_BRIDGE_INDEPENDENT_REVIEW.md`. Fallback/abrupt tests remain separate gap. |
+
+---
+
 ## Resolved / Accepted
 
 | ID | Item | Resolution |
@@ -35,6 +45,7 @@
 | **A-002** | Firebase Admin SDK in backend | Deferred to Milestone 4; simulator excludes |
 | **A-003** | Neon direct JDBC in backend | Deferred to Milestone 4; simulator excludes |
 | **A-004** | PaymentService (PayOS) in backend | Deferred to Milestone 4; simulator excludes |
+| **A-005** | Gradle 8.14.3 publisher checksum | **RESOLVED** — HTTPS SHA-256 exactly matches local ZIP |
 
 ---
 
@@ -60,9 +71,10 @@
 5. If legal → Legal review + fallback design
 6. Update status weekly in PROGRESS.md
 7. Gate 2 (Hardware POC) requires B-001, B-004 resolved or fallback proven
+8. Task2 (Simulator Session) requires I-001, I-002 resolved
 ```
 
 ---
 
 *Last Updated: 2026-10-30*  
-*Next Review: Milestone 2 POC completion*
+*Next Review: Task2 (Simulator Session) completion*

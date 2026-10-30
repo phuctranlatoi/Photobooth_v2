@@ -1,0 +1,20 @@
+# Printer port prerequisite boundary
+
+**Planning only; no printer port is authorized until the simulator passes.** No module integration, driver capability, queue status, or physical printing is verified. This checklist is not approval to enumerate or print. V1 paths below are relative to its read-only `src/main/kotlin/com/phuctran/photobooth/desktop/`.
+
+## Surgical reuse checklist
+
+- [ ] Characterize `services/DesktopIoServices.kt:22-24,36-91`, `PrinterService.printImage` and `SystemPrinterService.printImage`; copy only the necessary printing behavior into V2, not unrelated camera/upload interfaces or V1 configuration. Dependencies: `Path`, `ImageIO`, `PrinterJob`, `Printable`, `PageFormat`, `Graphics2D`, `HashPrintRequestAttributeSet`, `Copies` from the JDK `java.desktop` module. `OrientationRequested`, `MediaSizeName`, `MediaPrintableArea` and `Paper` are imported but not applied as print attributes.
+- [ ] Preserve and test `defaultPage`, requested full-paper imageable area, actual callback imageable coordinates, one-page result, orientation mismatch 90-degree rotation, and V1 stretch into callback dimensions. This is not aspect-preserving scaling; driver clamping remains unknown. `Copies` is the only submitted request attribute. A successful `print()` return is not proof of physical completion.
+- [ ] Treat V1 lookup (`lookupPrintServices`, first case-insensitive substring, silent default fallback; `:43-49`) as a documented **unsafe behavior not to copy**: fail closed on missing or ambiguous configured identity. Printer discovery itself must be separately authorized and backend-controlled.
+- [ ] Derive sheet quantity explicitly from `controller/DesktopBoothController.kt:758-791`: strips `max(1, requestedCopies / 2)` integer division, other layouts `max(1, requestedCopies)`. Odd strip counts truncate in V1; require a product decision before changing or exposing this behavior.
+- [ ] Consume the independently validated print raster from `imaging/DesktopCompositor.kt:29-187,197-271`; its custom-frame subset is in `SimulatorCompositor`. Do not resize source captures before composition, reapply LUT/Beauty, or mistake the separate V1 preview for the output raster. QR/default-frame parity is not yet implemented in the simulator. See `SIMULATOR_PRINT_IMPLEMENTATION.md` and `06_PRINTER_DNP_RX1HS_AUDIT.md`.
+- [ ] Do not infer a cut command from two-up strips. No RX1HS cut API, media selection, queue ID/status, retries, job naming, or physical completion detection is established in the V1 print service. Keep unsupported capability unknown; no invented driver settings. Confirm SDK/driver redistribution rights before packaging.
+
+## Mandatory gate and acceptance before any later integration
+
+- [ ] Simulator tests and V1-versus-V2 raster/preview comparisons pass first; authorizing a future port is a separate decision.
+- [ ] Design the architect IPC/runtime authorization so physical submission is **disabled by default**, backend-enforced, and requires explicit operator/user authorization for the specific prepared job and device. A caller-controlled request flag alone is not authorization. Keep discovery authorization separate. Actual permission API and persistence are not yet implemented.
+- [ ] Unit no-job test with an injected fake job factory: disabled/default, missing/expired authorization, malformed job, and unapproved printer all return typed denial **before** `PrinterJob.getPrinterJob`, lookup or submission; factory/lookup/print invocation counts remain zero. No real Java print service is used by tests.
+- [ ] Simulate successful submission, exceptions, duplicate taps and ambiguous post-submit failures with injected fakes. Persist idempotency and require operator reconciliation rather than auto-retry when submission is uncertain. Queue confirmation needs a separately evidenced implementation, not a fabricated success.
+- [ ] Any physical RX1HS test requires separate explicit authorization stating media and expected paper consumption; no hardware enumeration, driver change, spooler reset or physical print is authorized by this document.

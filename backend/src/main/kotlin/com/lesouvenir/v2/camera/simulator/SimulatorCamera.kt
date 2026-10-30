@@ -25,11 +25,18 @@ class SimulatorCamera(
 ) {
     private val root: Path
     private val latest = AtomicReference<SimulatorPreview?>(null)
-    private val sources = mutableMapOf<Int, ByteArray>()
+    // One cached fixture only, independent of the number of configured sources.
+    private var cachedSource: Pair<Int, ByteArray>? = null
+
+    companion object {
+        const val MAX_FIXTURE_SOURCES = 64
+        const val MAX_PREVIEW_BYTES = 384 * 1024
+    }
 
     init {
         authorization.requireSyntheticCapturePermission()
-        require(sourceCount > 0 && width in 1..4096 && height in 1..4096)
+        require(sourceCount in 1..MAX_FIXTURE_SOURCES) { "Synthetic fixture source count out of range" }
+        require(width in 1..4096 && height in 1..4096)
         require(previewWidth in 1..640 && previewHeight in 1..640)
         root = workspace.toRealPath()
         require(root.fileName.toString().equals("PhotoboothDesktop_v2", ignoreCase = true)) {
@@ -42,7 +49,8 @@ class SimulatorCamera(
         return "synthetic-$index"
     }
 
-    private fun jpeg(index: Int): ByteArray = sources.getOrPut(index) {
+    private fun jpeg(index: Int): ByteArray {
+        cachedSource?.let { if (it.first == index) return it.second }
         val image = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
         val graphics = image.createGraphics()
         try {
@@ -51,10 +59,12 @@ class SimulatorCamera(
             graphics.color = Color.WHITE
             graphics.drawString(id(index), 10, 24)
         } finally { graphics.dispose() }
-        ByteArrayOutputStream().use { out ->
+        val bytes = ByteArrayOutputStream().use { out ->
             check(ImageIO.write(image, "jpeg", out)) { "JPEG encoder unavailable" }
             out.toByteArray()
         }
+        cachedSource = index to bytes
+        return bytes
     }
 
     /** Publishes one downscaled JPEG; the previous preview is discarded. */
@@ -68,6 +78,7 @@ class SimulatorCamera(
         val bytes = ByteArrayOutputStream().use { out ->
             check(ImageIO.write(thumb, "jpeg", out)); out.toByteArray()
         }
+        check(bytes.size <= MAX_PREVIEW_BYTES) { "Synthetic preview exceeds frame budget" }
         latest.set(SimulatorPreview(index, identity, bytes))
     }
 

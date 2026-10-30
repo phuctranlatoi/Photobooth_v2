@@ -354,4 +354,33 @@ Hardware POC (Canon, DNP) may fail or be unavailable. Need to prove architecture
 
 ---
 
+## ADR-013: Simulator IPC Contract Corrections (2026-10-30)
+
+**Date**: 2026-10-30  
+**Status**: Accepted (Contract NOT Finalized — Reviewer Mismatch Open)
+
+### Context
+Initial `SIMULATOR_IPC_CONTRACT.md` included unsolicited async events on StdOut and generic `session.transition`/`capture.abort` methods that violate backend-sole-authority and V1 guardrails.
+
+### Corrections Applied
+1. **No unsolicited StdOut frames** — StdOut carries only request responses. Frontend polls `capture.getProgress` for snapshots (returns `CaptureShotResult[]` with data URLs ≤1 MiB).
+2. **No arbitrary state transitions** — `session.transition(targetState)` removed. Named command `session.confirmSetup` (SELECTING→SELECTING_QUANTITY) only.
+3. **No capture abort to IDLE** — `capture.abort` removed. Paid capture completes or times out; backend manages internal state.
+4. **Health backwards-compatible** — `health.check` unchanged; `availableMethods` advertises simulator methods; Rust validation updated by Frontend Lead.
+5. **Frontend owns immutable IDs** — `generationId` (per load, sessionStorage), `sessionId` (per `session.start`) — frontend-generated UUID v4, backend validates format/rejects reuse.
+6. **No simulator revenue** — `print.confirmDryRun` returns data URLs only, never submits print job, never records revenue. `payment.mockComplete` simulator-only. Inactivity auto-print=false.
+7. **Force parent kill gap documented** — `Drop`/`taskkill` not guaranteed on abrupt parent death (Windows). Known gap, not contract blocker.
+
+### Exact Allowlist (No Count Claims)
+**Queries (no commandId):** `catalog.get`, `device.getStatus`, `session.getState`, `capture.getProgress`, `frame.list`, `health.check`
+**Mutating (require commandId, idempotent):** `session.start`, `session.confirmSetup`, `session.setLayout`, `session.setQuantity`, `session.back`, `session.cancel`, `session.finish`, `payment.mockComplete`, `capture.startSequence`, `selection.toggle`, `selection.confirm`, `frame.select`, `frame.confirm`, `print.confirmDryRun`
+
+### Implementation Status
+- **Contract NOT finalized** — `docs/SIMULATOR_IPC_CONTRACT.md` reviewer mismatch open; implementers reconciling exact wire format
+- **Frontend types** in `frontend/src/shared/simulator-contract.ts` (owned by Frontend Lead, Architect does not edit)
+- **Backend implementation** `SimulatorIpcServer.kt` extending `HealthBridge` — IN PROGRESS (Task2)
+- **Integration blocker** — Contract draft discrepancies remain integration blocker until backend/frontend agree on exact wire format
+
+---
+
 *All ADRs recorded in `docs/ADR/` as individual files for version control.*

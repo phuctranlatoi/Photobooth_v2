@@ -33,9 +33,11 @@ try {
     return result.result.value;
   };
   for (let i = 0; i < 40; i++) {
+    await evaluate(`Array.from(document.querySelectorAll('button')).find(b=>b.textContent==='Bridge diagnostics')?.click()`);
     if (await evaluate(`!!Array.from(document.querySelectorAll('button')).find(b=>b.textContent.includes('Check JVM bridge'))`)) break;
     await delay(250);
   }
+  console.log('INITIAL DOCUMENT', await evaluate('JSON.stringify({url:location.href,text:document.body.innerText})'));
   console.log('CLICK', await evaluate(`(()=>{const b=Array.from(document.querySelectorAll('button')).find(b=>b.textContent.includes('Check JVM bridge'));if(!b)throw Error('React button missing');b.click();b.click();return b.textContent})()`));
   let text;
   for (let i = 0; i < 60; i++) {

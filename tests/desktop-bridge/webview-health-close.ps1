@@ -38,7 +38,7 @@ try {
         }
     } 'the native Tauri window'
 
-    if ($window.Current.Name -and $window.Current.Name -ne 'LE SOUVENIR · V2 architecture proof') {
+    if ($window.Current.Name -and $window.Current.Name -notmatch '^LE SOUVENIR . V2 architecture proof$') {
         throw "Unexpected native window title: $($window.Current.Name)"
     }
 
