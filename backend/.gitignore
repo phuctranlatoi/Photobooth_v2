@@ -1,0 +1,8 @@
+.toolchain/
+.toolchain-home/
+.gradle-user-home/
+.gradle-project/
+.tmp/
+.kotlin/
+build/
+*.log

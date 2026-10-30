@@ -1,0 +1,17 @@
+# Never commit credentials or generated output
+.env
+.env.*
+!.env.example
+node_modules/
+dist/
+build/
+.gradle/
+out/
+*.log
+*.tmp
+
+# Private datasets / camera photos
+customer-photos/
+customer-archive/
+captures/
+sessions/

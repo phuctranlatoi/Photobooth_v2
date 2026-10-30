@@ -1,0 +1,768 @@
+{
+    "$schema":  "https://opencode.ai/config.json",
+    "default_agent":  "orchestrator",
+    "model":  "9router/cx/gpt-6.1-sol",
+    "permissions":  [
+                        {
+                            "action":  "read",
+                            "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/build/Cloudinary_Archive_*/*",
+                            "effect":  "deny"
+                        },
+                        {
+                            "action":  "edit",
+                            "resource":  "*",
+                            "effect":  "allow"
+                        },
+                        {
+                            "action":  "external_directory",
+                            "resource":  "*",
+                            "effect":  "ask"
+                        },
+                        {
+                            "action":  "external_directory",
+                            "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*",
+                            "effect":  "allow"
+                        },
+                        {
+                            "action":  "read",
+                            "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*",
+                            "effect":  "allow"
+                        },
+                        {
+                            "action":  "read",
+                            "resource":  "*.env",
+                            "effect":  "deny"
+                        },
+                        {
+                            "action":  "read",
+                            "resource":  "*.env.*",
+                            "effect":  "deny"
+                        },
+                        {
+                            "action":  "read",
+                            "resource":  "*.env.example",
+                            "effect":  "allow"
+                        },
+                        {
+                            "action":  "read",
+                            "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/.env*",
+                            "effect":  "deny"
+                        },
+                        {
+                            "action":  "read",
+                            "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*/.env*",
+                            "effect":  "deny"
+                        },
+                        {
+                            "action":  "read",
+                            "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/build/Cloudinary_Archive_*",
+                            "effect":  "deny"
+                        },
+                        {
+                            "action":  "edit",
+                            "resource":  "E:/HK1_2026_2027/PhotoboothDesktop",
+                            "effect":  "deny"
+                        },
+                        {
+                            "action":  "edit",
+                            "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*",
+                            "effect":  "deny"
+                        },
+                        {
+                            "action":  "shell",
+                            "resource":  "*",
+                            "effect":  "ask"
+                        },
+                        {
+                            "action":  "subagent",
+                            "resource":  "*",
+                            "effect":  "deny"
+                        }
+                    ],
+    "agents":  {
+                   "orchestrator":  {
+                                        "mode":  "primary",
+                                        "model":  "9router/cx/gpt-6.1-sol",
+                                        "permissions":  [
+                                                            {
+                                                                "action":  "external_directory",
+                                                                "resource":  "*",
+                                                                "effect":  "ask"
+                                                            },
+                                                            {
+                                                                "action":  "external_directory",
+                                                                "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*",
+                                                                "effect":  "allow"
+                                                            },
+                                                            {
+                                                                "action":  "read",
+                                                                "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*",
+                                                                "effect":  "allow"
+                                                            },
+                                                            {
+                                                                "action":  "read",
+                                                                "resource":  "*.env",
+                                                                "effect":  "deny"
+                                                            },
+                                                            {
+                                                                "action":  "read",
+                                                                "resource":  "*.env.*",
+                                                                "effect":  "deny"
+                                                            },
+                                                            {
+                                                                "action":  "read",
+                                                                "resource":  "*.env.example",
+                                                                "effect":  "allow"
+                                                            },
+                                                            {
+                                                                "action":  "read",
+                                                                "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/.env*",
+                                                                "effect":  "deny"
+                                                            },
+                                                            {
+                                                                "action":  "read",
+                                                                "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*/.env*",
+                                                                "effect":  "deny"
+                                                            },
+                                                            {
+                                                                "action":  "read",
+                                                                "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/build/Cloudinary_Archive_*",
+                                                                "effect":  "deny"
+                                                            },
+                                                            {
+                                                                "action":  "edit",
+                                                                "resource":  "E:/HK1_2026_2027/PhotoboothDesktop",
+                                                                "effect":  "deny"
+                                                            },
+                                                            {
+                                                                "action":  "edit",
+                                                                "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*",
+                                                                "effect":  "deny"
+                                                            },
+                                                            {
+                                                                "action":  "subagent",
+                                                                "resource":  "*",
+                                                                "effect":  "deny"
+                                                            },
+                                                            {
+                                                                "action":  "edit",
+                                                                "resource":  "*",
+                                                                "effect":  "deny"
+                                                            },
+                                                            {
+                                                                "action":  "shell",
+                                                                "resource":  "*",
+                                                                "effect":  "deny"
+                                                            },
+                                                            {
+                                                                "action":  "subagent",
+                                                                "resource":  "legacy-auditor",
+                                                                "effect":  "allow"
+                                                            },
+                                                            {
+                                                                "action":  "subagent",
+                                                                "resource":  "architect",
+                                                                "effect":  "allow"
+                                                            },
+                                                            {
+                                                                "action":  "subagent",
+                                                                "resource":  "ui-designer",
+                                                                "effect":  "allow"
+                                                            },
+                                                            {
+                                                                "action":  "subagent",
+                                                                "resource":  "frontend-coder",
+                                                                "effect":  "allow"
+                                                            },
+                                                            {
+                                                                "action":  "subagent",
+                                                                "resource":  "camera-engineer",
+                                                                "effect":  "allow"
+                                                            },
+                                                            {
+                                                                "action":  "subagent",
+                                                                "resource":  "printer-engineer",
+                                                                "effect":  "allow"
+                                                            },
+                                                            {
+                                                                "action":  "subagent",
+                                                                "resource":  "backend-engineer",
+                                                                "effect":  "allow"
+                                                            },
+                                                            {
+                                                                "action":  "subagent",
+                                                                "resource":  "tester-reviewer",
+                                                                "effect":  "allow"
+                                                            }
+                                                        ]
+                                    },
+                   "legacy-auditor":  {
+                                          "mode":  "subagent",
+                                          "model":  "9router/ollama/gpt-oss:120b",
+                                          "permissions":  [
+                                                              {
+                                                                  "action":  "external_directory",
+                                                                  "resource":  "*",
+                                                                  "effect":  "ask"
+                                                              },
+                                                              {
+                                                                  "action":  "external_directory",
+                                                                  "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*",
+                                                                  "effect":  "allow"
+                                                              },
+                                                              {
+                                                                  "action":  "read",
+                                                                  "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*",
+                                                                  "effect":  "allow"
+                                                              },
+                                                              {
+                                                                  "action":  "read",
+                                                                  "resource":  "*.env",
+                                                                  "effect":  "deny"
+                                                              },
+                                                              {
+                                                                  "action":  "read",
+                                                                  "resource":  "*.env.*",
+                                                                  "effect":  "deny"
+                                                              },
+                                                              {
+                                                                  "action":  "read",
+                                                                  "resource":  "*.env.example",
+                                                                  "effect":  "allow"
+                                                              },
+                                                              {
+                                                                  "action":  "read",
+                                                                  "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/.env*",
+                                                                  "effect":  "deny"
+                                                              },
+                                                              {
+                                                                  "action":  "read",
+                                                                  "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*/.env*",
+                                                                  "effect":  "deny"
+                                                              },
+                                                              {
+                                                                  "action":  "read",
+                                                                  "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/build/Cloudinary_Archive_*",
+                                                                  "effect":  "deny"
+                                                              },
+                                                              {
+                                                                  "action":  "edit",
+                                                                  "resource":  "E:/HK1_2026_2027/PhotoboothDesktop",
+                                                                  "effect":  "deny"
+                                                              },
+                                                              {
+                                                                  "action":  "edit",
+                                                                  "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*",
+                                                                  "effect":  "deny"
+                                                              },
+                                                              {
+                                                                  "action":  "subagent",
+                                                                  "resource":  "*",
+                                                                  "effect":  "deny"
+                                                              },
+                                                              {
+                                                                  "action":  "shell",
+                                                                  "resource":  "*",
+                                                                  "effect":  "ask"
+                                                              }
+                                                          ]
+                                      },
+                   "architect":  {
+                                     "mode":  "subagent",
+                                     "model":  "9router/ollama/nemotron-3-ultra",
+                                     "permissions":  [
+                                                         {
+                                                             "action":  "external_directory",
+                                                             "resource":  "*",
+                                                             "effect":  "ask"
+                                                         },
+                                                         {
+                                                             "action":  "external_directory",
+                                                             "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*",
+                                                             "effect":  "allow"
+                                                         },
+                                                         {
+                                                             "action":  "read",
+                                                             "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*",
+                                                             "effect":  "allow"
+                                                         },
+                                                         {
+                                                             "action":  "read",
+                                                             "resource":  "*.env",
+                                                             "effect":  "deny"
+                                                         },
+                                                         {
+                                                             "action":  "read",
+                                                             "resource":  "*.env.*",
+                                                             "effect":  "deny"
+                                                         },
+                                                         {
+                                                             "action":  "read",
+                                                             "resource":  "*.env.example",
+                                                             "effect":  "allow"
+                                                         },
+                                                         {
+                                                             "action":  "read",
+                                                             "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/.env*",
+                                                             "effect":  "deny"
+                                                         },
+                                                         {
+                                                             "action":  "read",
+                                                             "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*/.env*",
+                                                             "effect":  "deny"
+                                                         },
+                                                         {
+                                                             "action":  "read",
+                                                             "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/build/Cloudinary_Archive_*",
+                                                             "effect":  "deny"
+                                                         },
+                                                         {
+                                                             "action":  "edit",
+                                                             "resource":  "E:/HK1_2026_2027/PhotoboothDesktop",
+                                                             "effect":  "deny"
+                                                         },
+                                                         {
+                                                             "action":  "edit",
+                                                             "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*",
+                                                             "effect":  "deny"
+                                                         },
+                                                         {
+                                                             "action":  "subagent",
+                                                             "resource":  "*",
+                                                             "effect":  "deny"
+                                                         },
+                                                         {
+                                                             "action":  "shell",
+                                                             "resource":  "*",
+                                                             "effect":  "ask"
+                                                         }
+                                                     ]
+                                 },
+                   "ui-designer":  {
+                                       "mode":  "subagent",
+                                       "model":  "9router/cx/gpt-6.1-sol",
+                                       "permissions":  [
+                                                           {
+                                                               "action":  "external_directory",
+                                                               "resource":  "*",
+                                                               "effect":  "ask"
+                                                           },
+                                                           {
+                                                               "action":  "external_directory",
+                                                               "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*",
+                                                               "effect":  "allow"
+                                                           },
+                                                           {
+                                                               "action":  "read",
+                                                               "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*",
+                                                               "effect":  "allow"
+                                                           },
+                                                           {
+                                                               "action":  "read",
+                                                               "resource":  "*.env",
+                                                               "effect":  "deny"
+                                                           },
+                                                           {
+                                                               "action":  "read",
+                                                               "resource":  "*.env.*",
+                                                               "effect":  "deny"
+                                                           },
+                                                           {
+                                                               "action":  "read",
+                                                               "resource":  "*.env.example",
+                                                               "effect":  "allow"
+                                                           },
+                                                           {
+                                                               "action":  "read",
+                                                               "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/.env*",
+                                                               "effect":  "deny"
+                                                           },
+                                                           {
+                                                               "action":  "read",
+                                                               "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*/.env*",
+                                                               "effect":  "deny"
+                                                           },
+                                                           {
+                                                               "action":  "read",
+                                                               "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/build/Cloudinary_Archive_*",
+                                                               "effect":  "deny"
+                                                           },
+                                                           {
+                                                               "action":  "edit",
+                                                               "resource":  "E:/HK1_2026_2027/PhotoboothDesktop",
+                                                               "effect":  "deny"
+                                                           },
+                                                           {
+                                                               "action":  "edit",
+                                                               "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*",
+                                                               "effect":  "deny"
+                                                           },
+                                                           {
+                                                               "action":  "subagent",
+                                                               "resource":  "*",
+                                                               "effect":  "deny"
+                                                           },
+                                                           {
+                                                               "action":  "shell",
+                                                               "resource":  "*",
+                                                               "effect":  "ask"
+                                                           }
+                                                       ]
+                                   },
+                   "frontend-coder":  {
+                                          "mode":  "subagent",
+                                          "model":  "9router/cx/gpt-6.1-sol",
+                                          "permissions":  [
+                                                              {
+                                                                  "action":  "external_directory",
+                                                                  "resource":  "*",
+                                                                  "effect":  "ask"
+                                                              },
+                                                              {
+                                                                  "action":  "external_directory",
+                                                                  "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*",
+                                                                  "effect":  "allow"
+                                                              },
+                                                              {
+                                                                  "action":  "read",
+                                                                  "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*",
+                                                                  "effect":  "allow"
+                                                              },
+                                                              {
+                                                                  "action":  "read",
+                                                                  "resource":  "*.env",
+                                                                  "effect":  "deny"
+                                                              },
+                                                              {
+                                                                  "action":  "read",
+                                                                  "resource":  "*.env.*",
+                                                                  "effect":  "deny"
+                                                              },
+                                                              {
+                                                                  "action":  "read",
+                                                                  "resource":  "*.env.example",
+                                                                  "effect":  "allow"
+                                                              },
+                                                              {
+                                                                  "action":  "read",
+                                                                  "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/.env*",
+                                                                  "effect":  "deny"
+                                                              },
+                                                              {
+                                                                  "action":  "read",
+                                                                  "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*/.env*",
+                                                                  "effect":  "deny"
+                                                              },
+                                                              {
+                                                                  "action":  "read",
+                                                                  "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/build/Cloudinary_Archive_*",
+                                                                  "effect":  "deny"
+                                                              },
+                                                              {
+                                                                  "action":  "edit",
+                                                                  "resource":  "E:/HK1_2026_2027/PhotoboothDesktop",
+                                                                  "effect":  "deny"
+                                                              },
+                                                              {
+                                                                  "action":  "edit",
+                                                                  "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*",
+                                                                  "effect":  "deny"
+                                                              },
+                                                              {
+                                                                  "action":  "subagent",
+                                                                  "resource":  "*",
+                                                                  "effect":  "deny"
+                                                              },
+                                                              {
+                                                                  "action":  "shell",
+                                                                  "resource":  "*",
+                                                                  "effect":  "ask"
+                                                              }
+                                                          ]
+                                      },
+                   "camera-engineer":  {
+                                           "mode":  "subagent",
+                                           "model":  "9router/cx/gpt-6.1-terra",
+                                           "permissions":  [
+                                                               {
+                                                                   "action":  "external_directory",
+                                                                   "resource":  "*",
+                                                                   "effect":  "ask"
+                                                               },
+                                                               {
+                                                                   "action":  "external_directory",
+                                                                   "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*",
+                                                                   "effect":  "allow"
+                                                               },
+                                                               {
+                                                                   "action":  "read",
+                                                                   "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*",
+                                                                   "effect":  "allow"
+                                                               },
+                                                               {
+                                                                   "action":  "read",
+                                                                   "resource":  "*.env",
+                                                                   "effect":  "deny"
+                                                               },
+                                                               {
+                                                                   "action":  "read",
+                                                                   "resource":  "*.env.*",
+                                                                   "effect":  "deny"
+                                                               },
+                                                               {
+                                                                   "action":  "read",
+                                                                   "resource":  "*.env.example",
+                                                                   "effect":  "allow"
+                                                               },
+                                                               {
+                                                                   "action":  "read",
+                                                                   "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/.env*",
+                                                                   "effect":  "deny"
+                                                               },
+                                                               {
+                                                                   "action":  "read",
+                                                                   "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*/.env*",
+                                                                   "effect":  "deny"
+                                                               },
+                                                               {
+                                                                   "action":  "read",
+                                                                   "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/build/Cloudinary_Archive_*",
+                                                                   "effect":  "deny"
+                                                               },
+                                                               {
+                                                                   "action":  "edit",
+                                                                   "resource":  "E:/HK1_2026_2027/PhotoboothDesktop",
+                                                                   "effect":  "deny"
+                                                               },
+                                                               {
+                                                                   "action":  "edit",
+                                                                   "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*",
+                                                                   "effect":  "deny"
+                                                               },
+                                                               {
+                                                                   "action":  "subagent",
+                                                                   "resource":  "*",
+                                                                   "effect":  "deny"
+                                                               },
+                                                               {
+                                                                   "action":  "shell",
+                                                                   "resource":  "*",
+                                                                   "effect":  "ask"
+                                                               }
+                                                           ]
+                                       },
+                   "printer-engineer":  {
+                                            "mode":  "subagent",
+                                            "model":  "9router/cx/gpt-6.1-terra",
+                                            "permissions":  [
+                                                                {
+                                                                    "action":  "external_directory",
+                                                                    "resource":  "*",
+                                                                    "effect":  "ask"
+                                                                },
+                                                                {
+                                                                    "action":  "external_directory",
+                                                                    "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*",
+                                                                    "effect":  "allow"
+                                                                },
+                                                                {
+                                                                    "action":  "read",
+                                                                    "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*",
+                                                                    "effect":  "allow"
+                                                                },
+                                                                {
+                                                                    "action":  "read",
+                                                                    "resource":  "*.env",
+                                                                    "effect":  "deny"
+                                                                },
+                                                                {
+                                                                    "action":  "read",
+                                                                    "resource":  "*.env.*",
+                                                                    "effect":  "deny"
+                                                                },
+                                                                {
+                                                                    "action":  "read",
+                                                                    "resource":  "*.env.example",
+                                                                    "effect":  "allow"
+                                                                },
+                                                                {
+                                                                    "action":  "read",
+                                                                    "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/.env*",
+                                                                    "effect":  "deny"
+                                                                },
+                                                                {
+                                                                    "action":  "read",
+                                                                    "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*/.env*",
+                                                                    "effect":  "deny"
+                                                                },
+                                                                {
+                                                                    "action":  "read",
+                                                                    "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/build/Cloudinary_Archive_*",
+                                                                    "effect":  "deny"
+                                                                },
+                                                                {
+                                                                    "action":  "edit",
+                                                                    "resource":  "E:/HK1_2026_2027/PhotoboothDesktop",
+                                                                    "effect":  "deny"
+                                                                },
+                                                                {
+                                                                    "action":  "edit",
+                                                                    "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*",
+                                                                    "effect":  "deny"
+                                                                },
+                                                                {
+                                                                    "action":  "subagent",
+                                                                    "resource":  "*",
+                                                                    "effect":  "deny"
+                                                                },
+                                                                {
+                                                                    "action":  "shell",
+                                                                    "resource":  "*",
+                                                                    "effect":  "ask"
+                                                                }
+                                                            ]
+                                        },
+                   "backend-engineer":  {
+                                            "mode":  "subagent",
+                                            "model":  "9router/cx/gpt-6.1-sol",
+                                            "permissions":  [
+                                                                {
+                                                                    "action":  "external_directory",
+                                                                    "resource":  "*",
+                                                                    "effect":  "ask"
+                                                                },
+                                                                {
+                                                                    "action":  "external_directory",
+                                                                    "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*",
+                                                                    "effect":  "allow"
+                                                                },
+                                                                {
+                                                                    "action":  "read",
+                                                                    "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*",
+                                                                    "effect":  "allow"
+                                                                },
+                                                                {
+                                                                    "action":  "read",
+                                                                    "resource":  "*.env",
+                                                                    "effect":  "deny"
+                                                                },
+                                                                {
+                                                                    "action":  "read",
+                                                                    "resource":  "*.env.*",
+                                                                    "effect":  "deny"
+                                                                },
+                                                                {
+                                                                    "action":  "read",
+                                                                    "resource":  "*.env.example",
+                                                                    "effect":  "allow"
+                                                                },
+                                                                {
+                                                                    "action":  "read",
+                                                                    "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/.env*",
+                                                                    "effect":  "deny"
+                                                                },
+                                                                {
+                                                                    "action":  "read",
+                                                                    "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*/.env*",
+                                                                    "effect":  "deny"
+                                                                },
+                                                                {
+                                                                    "action":  "read",
+                                                                    "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/build/Cloudinary_Archive_*",
+                                                                    "effect":  "deny"
+                                                                },
+                                                                {
+                                                                    "action":  "edit",
+                                                                    "resource":  "E:/HK1_2026_2027/PhotoboothDesktop",
+                                                                    "effect":  "deny"
+                                                                },
+                                                                {
+                                                                    "action":  "edit",
+                                                                    "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*",
+                                                                    "effect":  "deny"
+                                                                },
+                                                                {
+                                                                    "action":  "subagent",
+                                                                    "resource":  "*",
+                                                                    "effect":  "deny"
+                                                                },
+                                                                {
+                                                                    "action":  "shell",
+                                                                    "resource":  "*",
+                                                                    "effect":  "ask"
+                                                                }
+                                                            ]
+                                        },
+                   "tester-reviewer":  {
+                                           "mode":  "subagent",
+                                           "model":  "9router/cx/gpt-5.6-sol-review",
+                                           "permissions":  [
+                                                               {
+                                                                   "action":  "external_directory",
+                                                                   "resource":  "*",
+                                                                   "effect":  "ask"
+                                                               },
+                                                               {
+                                                                   "action":  "external_directory",
+                                                                   "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*",
+                                                                   "effect":  "allow"
+                                                               },
+                                                               {
+                                                                   "action":  "read",
+                                                                   "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*",
+                                                                   "effect":  "allow"
+                                                               },
+                                                               {
+                                                                   "action":  "read",
+                                                                   "resource":  "*.env",
+                                                                   "effect":  "deny"
+                                                               },
+                                                               {
+                                                                   "action":  "read",
+                                                                   "resource":  "*.env.*",
+                                                                   "effect":  "deny"
+                                                               },
+                                                               {
+                                                                   "action":  "read",
+                                                                   "resource":  "*.env.example",
+                                                                   "effect":  "allow"
+                                                               },
+                                                               {
+                                                                   "action":  "read",
+                                                                   "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/.env*",
+                                                                   "effect":  "deny"
+                                                               },
+                                                               {
+                                                                   "action":  "read",
+                                                                   "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*/.env*",
+                                                                   "effect":  "deny"
+                                                               },
+                                                               {
+                                                                   "action":  "read",
+                                                                   "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/build/Cloudinary_Archive_*",
+                                                                   "effect":  "deny"
+                                                               },
+                                                               {
+                                                                   "action":  "edit",
+                                                                   "resource":  "E:/HK1_2026_2027/PhotoboothDesktop",
+                                                                   "effect":  "deny"
+                                                               },
+                                                               {
+                                                                   "action":  "edit",
+                                                                   "resource":  "E:/HK1_2026_2027/PhotoboothDesktop/*",
+                                                                   "effect":  "deny"
+                                                               },
+                                                               {
+                                                                   "action":  "subagent",
+                                                                   "resource":  "*",
+                                                                   "effect":  "deny"
+                                                               },
+                                                               {
+                                                                   "action":  "shell",
+                                                                   "resource":  "*",
+                                                                   "effect":  "ask"
+                                                               }
+                                                           ]
+                                       }
+               }
+}

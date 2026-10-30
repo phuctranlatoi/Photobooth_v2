@@ -1,0 +1,12 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "LE SOUVENIR V2 Bridge",
+  "version": "0.1.0",
+  "identifier": "com.lesouvenir.v2.bridge",
+  "build": { "frontendDist": "../frontend/dist", "devUrl": "http://127.0.0.1:1420" },
+  "app": {
+    "windows": [{ "title": "LE SOUVENIR · V2 architecture proof", "width": 1280, "height": 800, "minWidth": 720, "minHeight": 500, "dataDirectory": "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\src-tauri\\.webview-data" }],
+    "security": { "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src ipc: http://ipc.localhost http://127.0.0.1:1420 ws://127.0.0.1:1420" }
+  },
+  "bundle": { "active": false }
+}

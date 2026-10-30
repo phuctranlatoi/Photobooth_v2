@@ -1,0 +1,92 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "default_agent": "orchestrator",
+  "permissions": [
+    {
+      "action": "external_directory",
+      "resource": "*",
+      "effect": "ask"
+    },
+    {
+      "action": "external_directory",
+      "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
+      "effect": "allow"
+    },
+    {
+      "action": "read",
+      "resource": "*.env",
+      "effect": "deny"
+    },
+    {
+      "action": "read",
+      "resource": "*.env.*",
+      "effect": "deny"
+    },
+    {
+      "action": "read",
+      "resource": "*.env.example",
+      "effect": "allow"
+    },
+    {
+      "action": "read",
+      "resource": "E:/HK1_2026_2027/PhotoboothDesktop/.env*",
+      "effect": "deny"
+    },
+    {
+      "action": "edit",
+      "resource": "*",
+      "effect": "allow"
+    },
+    {
+      "action": "edit",
+      "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
+      "effect": "deny"
+    },
+    {
+      "action": "shell",
+      "resource": "*",
+      "effect": "ask"
+    },
+    {
+      "action": "subagent",
+      "resource": "*",
+      "effect": "deny"
+    }
+  ],
+  "agents": {
+    "orchestrator": {
+      "mode": "primary",
+      "permissions": [
+        {
+          "action": "subagent",
+          "resource": "*",
+          "effect": "allow"
+        }
+      ]
+    },
+    "legacy-auditor": {
+      "mode": "subagent"
+    },
+    "architect": {
+      "mode": "subagent"
+    },
+    "ui-designer": {
+      "mode": "subagent"
+    },
+    "frontend-coder": {
+      "mode": "subagent"
+    },
+    "camera-engineer": {
+      "mode": "subagent"
+    },
+    "printer-engineer": {
+      "mode": "subagent"
+    },
+    "backend-engineer": {
+      "mode": "subagent"
+    },
+    "tester-reviewer": {
+      "mode": "subagent"
+    }
+  }
+}
