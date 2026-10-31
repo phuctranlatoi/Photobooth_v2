@@ -1,0 +1,36 @@
+{
+  "viewport": [
+    1280,
+    800
+  ],
+  "scrollWidth": 1280,
+  "clientWidth": 1280,
+  "controls": [
+    {
+      "text": "Operator · local dev",
+      "w": 134.2375030517578,
+      "h": 48,
+      "disabled": false
+    },
+    {
+      "text": "Bridge diagnostics",
+      "w": 127.0374984741211,
+      "h": 48,
+      "disabled": false
+    },
+    {
+      "text": "Reconcile status — do not replay",
+      "w": 1151.2000732421875,
+      "h": 64,
+      "disabled": false
+    },
+    {
+      "text": "Explore the collection ↗",
+      "w": 460,
+      "h": 80,
+      "disabled": true
+    }
+  ],
+  "images": [],
+  "text": "Operator · local dev\nBridge diagnostics\nLE SOUVENIR\nTHE PHOTO STUDIO\nSIMULATOR SAMPLE\nNo real payment · No paper printing · No revenue\nA LITTLE MOMENT. A LASTING MEMORY.\nIDLE\n\nSet V2_JAVA_HOME to an installed Java 21 runtime (machine JAVA_HOME may be Java 11)\n\nReconcile status — do not replay\n\nPORTRAITS OF TOGETHERNESS / VOL. 02\n\nHere, now.\nYours forever.\n\nStep inside. Make a little room for joy.\nA photo studio for moments worth keeping.\n\nExplore the collection\n↗\n\nA connected synthetic experience. No real camera or purchase.\n\nLE\nSOU\nVENIR\nMEMORIES, IN THE MAKING.\n\nGood company.\nBeautiful little memories.\n\nMade for moments together.\nLE SOUVENIR / INDEPENDENT V2"
+}

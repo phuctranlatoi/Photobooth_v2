@@ -1,0 +1,7 @@
+{
+  "viewports": [{"width":1280,"height":800},{"width":1920,"height":1200}],
+  "touchTargetMinimumCssPx": 44,
+  "customerStates": ["idle","studio-layout","studio-effect","quantity","payment-loading","payment-error","prepare","live-view","countdown","capturing","photo-selection-empty","photo-selection","photo-preview","frame-empty","frame-selection","confirm-print","printing","delivery","recovery","out-of-service"],
+  "adminStates": ["frames-empty","frames","layouts-empty","layouts","settings","tools","colors","revenue-loading","revenue-empty","revenue-error","revenue"],
+  "prohibited": ["direct-rpc","invoke-tauri-command","storage-state-injection","second-cdp-listener","real-payment","real-print","camera-capture","cloud-write","database-write"]
+}

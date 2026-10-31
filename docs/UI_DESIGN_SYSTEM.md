@@ -1,6 +1,6 @@
 # LE SOUVENIR V2 — editorial touch design system
 
-Phase 1 design handoff · 2026-10-30 · documentation only. Ownership: UI designer. No app implementation, font files, hardware tests, or visual screenshots are delivered here. Companion: `UI_SCREEN_CONTRACTS.md`. These two filenames are the delegated scope; they supersede no other audit document.
+Implementation handoff · 2026-10-30 · documentation only. Ownership in this task: `UI_DESIGN_SYSTEM.md`, `UI_IMPLEMENTATION_MATRIX.md`, `UI_VISUAL_REVIEW.md`. Read actual `App.tsx`, `Simulator.tsx`, `shared/connected-simulator.ts`, `SIMULATOR_SESSION_RESULTS.md` and existing simulator UI review. An executable simulator now exists; earlier statements below saying no executable UI exists are superseded by this paragraph. No new screenshot, physical touch, DPI, hardware or production validation is claimed. Keep existing frontend/project and request-driven integration. `SIMULATOR_SESSION_RESULTS.md` is executable API authority; the IPC draft is not. Companion screen-by-screen implementation: `UI_IMPLEMENTATION_MATRIX.md`.
 
 ## 1. Direction and alternatives
 
@@ -8,7 +8,7 @@ Phase 1 design handoff · 2026-10-30 · documentation only. Ownership: UI design
 
 **Option B — Contact sheet / overhead countdown.** Welcome centers the wordmark above a contact sheet of layout/bundle examples; Start spans its bottom edge. Capture puts a full-width numeric countdown band above the live preview with a compact bottom shutter. Better for very wide camera feeds, but the overhead band consumes vertical image height on a scaled 16:10 screen and the contact sheet competes with the primary action. Retain as a layout experiment, not a different flow.
 
-Choose A for distance readability and predictable finger reach. Both options have identical controller commands and gates. No additional welcome tour, capture confirmation, standalone finish, or payment-success route is introduced. Imagery must be synthetic/authorized editorial samples or actual permitted frame thumbnails, never copied customer photos.
+Choose A for distance readability and predictable finger reach. Both options have identical controller commands and gates. No additional welcome tour, capture confirmation, standalone finish, or payment-success route is introduced. Imagery must be synthetic/authorized editorial samples or actual permitted frame thumbnails, never copied customer photos. Current catalog has fixture layouts, not bundles: the gallery must therefore use labeled schematic layout cards, not pretend to show event bundle photography. Welcome Start uses `session.start` with the selected catalog layout and still enters SELECTING; it must not skip setup or mock payment.
 
 ## 2. Tokens (proposed V2 presentation, not V1 business defaults)
 

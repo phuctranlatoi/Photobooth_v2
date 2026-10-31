@@ -22,10 +22,11 @@ class SimulatorSessionEngine(
     private val tickMillis: Long = 1000,
     private val prepareMillis: Long = 1600,
     private val inactivityMillis: Long = config["inactivitySeconds"].asLong * 1000,
-    private val outputRoot: Path = workspace.resolve("backend/build/simulator-sessions")
+    private val outputRoot: Path = workspace.resolve("backend/build/simulator-sessions"),
+    private val localOperatorEnabled: Boolean = false
 ): AutoCloseable {
     private val gson = GsonBuilder().serializeNulls().create()
-    private val layouts = config["layouts"].asJsonArray.map { value ->
+    private fun readLayouts() = config["layouts"].asJsonArray.map { value ->
         val o = value.asJsonObject
         val size = o["printSizeLabel"].asString
         val defaults = LayoutMode(o["id"].asString, o["title"].asString, "Synthetic fixture", "Generated V2 test assets; no real bundle", LayoutFamily.valueOf(o["family"].asString),
@@ -36,6 +37,9 @@ class SimulatorSessionEngine(
         o.entrySet().forEach { merged.add(it.key,it.value) }
         gson.fromJson(merged,LayoutMode::class.java)
     }
+    private var layouts = readLayouts()
+    private val operatorStore = OperatorLayoutStore(workspace)
+    private val settingsStore = OperatorSettingsStore(workspace)
     private val executor = Executors.newSingleThreadScheduledExecutor { r -> Thread(r, "v2-simulator-session").apply { isDaemon=true } }
     private val camera by lazy { SimulatorCamera(SimulatorAuthorization(enabled), workspace, config["sourceCount"].asInt,
         config["captureWidth"].asInt, config["captureHeight"].asInt, config["previewWidth"].asInt, config["previewHeight"].asInt) }
@@ -49,6 +53,30 @@ class SimulatorSessionEngine(
     private var remaining = 0
     private var activeSequence = false
     private var activity = System.nanoTime()
+    private var pendingTimerMillis: Long? = null
+    private val timerBudgets = mutableMapOf<String, Long>()
+    private var timerState = ""
+    private fun configuredBudget(target: String): Long = if (!settingsStore.persisted) inactivityMillis else
+        settingsStore.settings[when(target) {
+            "SELECTING_PHOTOS" -> "photoSelectionTimeoutSeconds"
+            "EDITING" -> "frameSelectionTimeoutSeconds"
+            else -> "postCaptureTimeoutSeconds"
+        }].asLong * 1000
+    private fun synchronizeTimer(previous: String, interaction: Boolean) {
+        val now=System.nanoTime()
+        if(previous!=state) {
+            if(state=="IDLE") { timerBudgets.clear(); timerState=""; activity=now; return }
+            if(state=="PRINT_PENDING" && timerState.isNotEmpty()) return
+            if(timerState in setOf("SELECTING_PHOTOS","EDITING")) {
+                timerBudgets[timerState]=((timerBudgets[timerState] ?: configuredBudget(timerState)) - TimeUnit.NANOSECONDS.toMillis(now-activity)).coerceAtLeast(0)
+            }
+            timerState=if(state in setOf("SELECTING_PHOTOS","EDITING","PRINT_PENDING")) state else ""
+            if(timerState.isNotEmpty()) timerBudgets.putIfAbsent(timerState,configuredBudget(timerState))
+            activity=now
+        } else if(interaction && timerState.isNotEmpty()) {
+            timerBudgets[timerState]=configuredBudget(timerState); activity=now
+        }
+    }
     private var failure: String? = null
     private val shots = mutableListOf<Path>()
     private val selected = linkedSetOf<Int>()
@@ -60,11 +88,20 @@ class SimulatorSessionEngine(
     private val dedup = linkedMapOf<String, Pair<String, JsonObject>>()
     private var job: ScheduledFuture<*>? = null
     init {
+        operatorStore.load(config)
+        layouts = readLayouts()
+        layout = layouts.first()
         require(layouts.isNotEmpty() && layouts.map { it.id }.distinct().size == layouts.size)
         layouts.forEach { require(it.shotCount in 1..12 && it.selectCount in 1..it.shotCount && it.countdownSeconds in 0..30) }
         require(outputRoot.toAbsolutePath().normalize().startsWith(workspace.toAbsolutePath().normalize()))
         executor.scheduleWithFixedDelay({ synchronized(this) {
-            if (state in setOf("SELECTING_PHOTOS", "EDITING") && TimeUnit.NANOSECONDS.toMillis(System.nanoTime()-activity) >= inactivityMillis) {
+            val timeout = if (!settingsStore.persisted) inactivityMillis else settingsStore.settings[when(state) {
+                "SELECTING_PHOTOS" -> "photoSelectionTimeoutSeconds"
+                "EDITING" -> "frameSelectionTimeoutSeconds"
+                else -> "postCaptureTimeoutSeconds"
+            }].asLong * 1000
+            val effectiveTimeout = timerBudgets[timerState] ?: timeout
+            if (state in setOf("SELECTING_PHOTOS", "EDITING", "PRINT_PENDING") && TimeUnit.NANOSECONDS.toMillis(System.nanoTime()-activity) >= effectiveTimeout) {
                 try {
                     shots.indices.forEach { if(selected.size < layout.selectCount) selected.add(it) }
                     frameId = frameId ?: "synthetic-border"
@@ -96,6 +133,40 @@ class SimulatorSessionEngine(
     }
 
     @Synchronized fun dispatch(method: String, p: JsonObject): JsonObject {
+        if(method.startsWith("operator.")) {
+            if(!localOperatorEnabled) bad(-32010,"Local development operator mode disabled; production ACL unavailable")
+            return when(method) {
+                "operator.getSettings" -> {
+                    if(p.size()!=0) bad(-32602,"Invalid parameters")
+                    settingsStore.response().apply {
+                        addProperty("effectiveTimerSource",if(settingsStore.persisted) "PERSISTED_SETTINGS" else "LEGACY_SIMULATOR_FIXTURE")
+                        add("effectiveTimeoutSeconds",obj("photoSelection" to configuredBudget("SELECTING_PHOTOS")/1000.0,
+                            "frameSelection" to configuredBudget("EDITING")/1000.0,"postCapture" to configuredBudget("PRINT_PENDING")/1000.0))
+                    }
+                }
+                "operator.updateSettings" -> {
+                    guard("IDLE")
+                    settingsStore.update(p)
+                    settingsStore.response().apply { addProperty("saved",true) }
+                }
+                "operator.getStatus" -> {
+                    if(p.size()!=0) bad(-32602,"Invalid parameters")
+                    obj("accessMode" to "LOCAL_DEVELOPMENT_ONLY", "productionAdminAcl" to false,
+                        "state" to state, "canEditLayouts" to (state=="IDLE"), "simulator" to true,
+                        "layouts" to layouts, "pricingEditable" to false,
+                        "capabilities" to mapOf("simulatorStudio" to true,"simulatorLayoutSettings" to true,
+                            "nativeCamera" to false,"nativePrint" to false,"beauty" to false,"effects" to false,
+                            "cloudAlbumQr" to false,"revenue" to false,"paymentSettings" to false,"productionAdminAcl" to false))
+                }
+                "operator.updateLayout" -> {
+                    guard("IDLE")
+                    operatorStore.update(config,p)
+                    layouts=readLayouts(); layout=layouts.first()
+                    obj("saved" to true,"appliesTo" to "NEXT_SESSION","layouts" to layouts,"simulator" to true)
+                }
+                else -> bad(-32601,"Method not found")
+            }
+        }
         val fields = schemas[method] ?: bad(-32601,"Method not found")
         val extra = p.keySet() - fields - setOf("generationId")
         if(extra.isNotEmpty() || !p.keySet().containsAll(fields)) bad(-32602,"Invalid parameters")
@@ -118,6 +189,7 @@ class SimulatorSessionEngine(
         if(mutation) dedup[key]?.let { if(it.first!=signature) bad(-32602,"commandId reused with different request"); return it.second.deepCopy() }
         if(mutation && dedup.size>=2048) bad(-32004,"Command limit reached; restart simulator")
         var result: JsonObject? = null
+        val previousState=state
         when(method) {
             "session.start" -> {
                 if(requested==sid && state!="IDLE" && gen==generation) return snapshot().apply { addProperty("commandId",cid) }
@@ -142,13 +214,13 @@ class SimulatorSessionEngine(
             "selection.confirm" -> { guard("SELECTING_PHOTOS"); if(selected.size!=layout.selectCount) bad(-32001,"Exact selection required"); state="EDITING" }
             "frame.list" -> { guard("EDITING"); return obj("frames" to listOf(mapOf("id" to "synthetic-border","name" to "V2 generated transparent test frame","thumbDataUrl" to frameThumb()))) }
             "frame.select" -> { guard("EDITING"); if(text(p,"frameId")!="synthetic-border") bad(-32602,"Unknown frame"); frameId="synthetic-border"; compose() }
-            "frame.confirm" -> { guard("EDITING"); if(frameId==null || composition==null || printImage==null) bad(-32001,"Complete current composition required"); state="PRINT_PENDING" }
+            "frame.confirm" -> { guard("EDITING"); if(frameId==null || composition==null || printImage==null) bad(-32001,"Complete current composition required"); pendingTimerMillis=if(settingsStore.persisted) settingsStore.settings["frameSelectionTimeoutSeconds"].asLong*1000 else inactivityMillis; state="PRINT_PENDING" }
             "print.confirmDryRun" -> { guard("PRINT_PENDING"); complete(true); result=snapshot().apply { addProperty("compositionDataUrl",data(composition!!,600)); addProperty("printImageDataUrl",data(printImage!!,600)) } }
             "session.back" -> { state=when(state) { "SELECTING" -> "IDLE"; "SELECTING_QUANTITY" -> "SELECTING"; "PAYMENT_PENDING" -> "SELECTING_QUANTITY"; "EDITING" -> "SELECTING_PHOTOS"; "PRINT_PENDING" -> "EDITING"; else -> bad(-32001,"Back not permitted") }; if(state=="IDLE") reset() }
             "session.cancel" -> { guard("SELECTING_PHOTOS","EDITING"); reset(); result=obj("cancelled" to true,"state" to state) }
             "session.finish" -> { guard("DELIVERY"); reset() }
         }
-        activity=System.nanoTime()
+        synchronizeTimer(previousState,method in setOf("selection.toggle","frame.select"))
         val answer=(result ?: snapshot()).apply { addProperty("commandId",cid) }
         if(mutation) dedup[key]=signature to answer.deepCopy()
         return answer
@@ -166,7 +238,7 @@ class SimulatorSessionEngine(
             schedule(1) {
                 val shot=camera.capture(shots.size % config["sourceCount"].asInt,directory(),"shot-${UUID.randomUUID()}")
                 shots.add(shot.original)
-                if(shots.size==layout.shotCount) { state="SELECTING_PHOTOS"; activeSequence=false; activity=System.nanoTime() }
+                if(shots.size==layout.shotCount) { val previous=state; state="SELECTING_PHOTOS"; activeSequence=false; synchronizeTimer(previous,false) }
                 else { state="LIVE_VIEW"; schedule(1) { countdown() } }
             }
         }
@@ -213,7 +285,8 @@ class SimulatorSessionEngine(
             while(root!=null && root.fileName?.toString()!="PhotoboothDesktop_v2") root=root.parent
             val workspace=root ?: error("V2 workspace unavailable")
             val config=JsonParser.parseString(Files.readString(workspace.resolve("backend/config/simulator-layouts.json"))).asJsonObject
-            return SimulatorSessionEngine(workspace,config,System.getenv("SIMULATOR_CAPTURE_ENABLED")=="true")
+            return SimulatorSessionEngine(workspace,config,System.getenv("SIMULATOR_CAPTURE_ENABLED")=="true",
+                localOperatorEnabled=System.getenv("V2_LOCAL_OPERATOR_ENABLED")=="true")
         }
     }
 }

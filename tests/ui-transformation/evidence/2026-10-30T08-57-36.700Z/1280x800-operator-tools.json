@@ -1,0 +1,126 @@
+{
+  "viewport": [
+    1280,
+    800
+  ],
+  "scrollWidth": 1280,
+  "clientWidth": 1280,
+  "controls": [
+    {
+      "text": "Close operator",
+      "w": 106.0250015258789,
+      "h": 48,
+      "disabled": false
+    },
+    {
+      "text": "Bridge diagnostics",
+      "w": 127.0374984741211,
+      "h": 48,
+      "disabled": false
+    },
+    {
+      "text": "Return to customer",
+      "w": 185.47500610351562,
+      "h": 64,
+      "disabled": false
+    },
+    {
+      "text": "Frames",
+      "w": 100.0625,
+      "h": 64,
+      "disabled": false
+    },
+    {
+      "text": "Layouts",
+      "w": 103.6624984741211,
+      "h": 64,
+      "disabled": false
+    },
+    {
+      "text": "Settings",
+      "w": 106.4625015258789,
+      "h": 64,
+      "disabled": false
+    },
+    {
+      "text": "Tools",
+      "w": 85.8375015258789,
+      "h": 64,
+      "disabled": false
+    },
+    {
+      "text": "Colors",
+      "w": 94.48750305175781,
+      "h": 64,
+      "disabled": false
+    },
+    {
+      "text": "Revenue",
+      "w": 109.5875015258789,
+      "h": 64,
+      "disabled": false
+    },
+    {
+      "text": "Measured PNG import",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "Prepunched template import",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "Slot geometry",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "Layout metadata",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "QR position",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "QR size",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "Generate code",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "Copy code",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "Save template",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "Calculator & maintenance unavailable",
+      "w": 1135.2000732421875,
+      "h": 64,
+      "disabled": true
+    }
+  ],
+  "images": [],
+  "text": "Close operator\nBridge diagnostics\n\nLE SOUVENIR / PRIVATE WORKSPACE\n\nBehind the moments.\nReturn to customer\n\nSIMULATOR · Local development only. Not a production Admin ACL. No hardware or live services.\n\nFrames\nLayouts\nSettings\nTools\nColors\nRevenue\n\nSTUDIO OPERATIONS\n\nTools\n\nBackend state: IDLE · LOCAL_DEVELOPMENT_ONLY\n\nCalculator & maintenance\n\nV1 Tools is separate from customer Studio. Maintenance and calculator operations are not exposed by the backend.\n\nUnavailable controls\nMeasured PNG import\nPrepunched template import\nSlot geometry\nLayout metadata\nQR position\nQR size\nGenerate code\nCopy code\nSave template\nUnavailable in this build\nLooking for Studio?\n\nStudio is the customer layout-and-effect setup, not a separate capture or payment bypass. Return to the customer experience to use the connected simulator flow. Effects are unavailable."
+}

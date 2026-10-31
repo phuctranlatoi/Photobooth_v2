@@ -1,6 +1,7 @@
----
+﻿---
 description: Reuses the existing Canon SDK, webcam, Hot Folder and Live View implementation in an isolated Kotlin V2 backend.
 mode: subagent
+model: 9router/cx/gpt-6-luna
 ---
 
 # Role

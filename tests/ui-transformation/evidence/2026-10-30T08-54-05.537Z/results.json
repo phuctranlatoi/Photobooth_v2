@@ -1,0 +1,12 @@
+{
+  "status": "FAIL",
+  "cdp": "http://127.0.0.1:9223",
+  "operatorEnabled": false,
+  "failures": [
+    {
+      "message": "runner aborted",
+      "detail": "Error: Timed out waiting for test id welcome-start\nOperator · local dev\nBridge diagnostics\nLE SOUVENIR\nTHE PHOTO STUDIO\nSIMULATOR SAMPLE\nNo real payment · No paper printing · No revenue\nA LITTLE MOMENT. A LASTING MEMORY.\nIDLE\n\nSet V2_JAVA_HOME to an installed Java 21 runtime (machine JAVA_HOME may be Java 11)\n\nReconcile status — do not replay\n\nPORTRAITS OF TOGETHERNESS / VOL. 02\n\nHere, now.\nYours forever.\n\nStep inside. Make a little room for joy.\nA photo studio for moments worth keeping.\n\nExplore the collection\n↗\n\nA connected synthetic experience. No real camera or purchase.\n\nLE\nSOU\nVENIR\nMEMORIES, IN THE MAKING.\n\nGood company.\nBeautiful little memories.\n\nMade for moments together.\nLE SOUVENIR / INDEPENDENT V2\n    at wait (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/ui-transformation/mounted-tauri-cdp.mjs:56:9)\n    at async clickTestId (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/ui-transformation/mounted-tauri-cdp.mjs:66:3)\n    at async completeCustomer (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/ui-transformation/mounted-tauri-cdp.mjs:99:3)\n    at async file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/ui-transformation/mounted-tauri-cdp.mjs:179:5"
+    }
+  ],
+  "observations": []
+}

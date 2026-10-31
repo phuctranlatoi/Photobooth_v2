@@ -1,0 +1,142 @@
+{
+  "viewport": [
+    1280,
+    800
+  ],
+  "text": "Backend timer source: PERSISTED_SETTINGS · effective photo/frame/post: 130 / 80 / 90 seconds. Editable values below are desired next-session configuration, not proof of active device settings.\n\nVẬN HÀNH THIẾT BỊ\nCài đặt hệ thống Kiosk\n\nĐiều chỉnh thiết bị và thời gian tương tác cho từng lượt chụp.\n\nKhởi động lại ứng dụng sau khi lưu để áp dụng cấu hình.\nNguồn Camera\nHot Folder · cấu hình\nMáy in Windows\nĐang tắt · cấu hình\nĐồng bộ Đám mây\nNgoại tuyến\nKiosk\nChưa cung cấp\nIn ấn & Xuất ảnh\nMáy in Windows\n\nGửi ảnh tới hộp thoại in Windows khi bật.\n\nKhông khả dụng: in thật bị chặn trong simulator.\n\nNguồn Camera & Thu nhận ảnh\n○ Webcam / DroidCam\nCamera kết nối trực tiếp\n● Thư mục ảnh (Hot Folder)\nẢnh do phần mềm camera xuất ra\n\nCấu hình chờ áp dụng; camera thật bị chặn.\n\nĐường dẫn Hot Folder\nChọn thư mục\nThời gian tương tác tại Kiosk\n\nĐiều chỉnh thời gian để khách chọn ảnh và khung. 0 giây sẽ tự động tiếp tục.\n\nChọn ảnh\n\nThời gian khách chọn ảnh\n\n−\n130 giây\n+\nChọn khung\n\nThời gian khách chọn khung\n\n−\n80 giây\n+\nSau khi chụp (dự phòng)\n\nThời gian chờ sau lượt chụp\n\n−\n90 giây\n+\nCấu hình bổ sung\n\nTên máy in, Booth ID và Port được cấu hình trong tệp .env.\n\nLưu cài đặt\nTải lại cài đặt",
+  "documentOverflow": 0,
+  "controls": [
+    {
+      "testid": "settings-print",
+      "name": "",
+      "type": "checkbox",
+      "text": "",
+      "value": "on",
+      "checked": false,
+      "disabled": false,
+      "w": 48,
+      "h": 48
+    },
+    {
+      "testid": "settings-camera-webcam",
+      "name": "",
+      "type": "BUTTON",
+      "text": "○ Webcam / DroidCamCamera kết nối trực tiếp",
+      "value": "",
+      "disabled": false,
+      "w": 557.6000366210938,
+      "h": 76.4000015258789
+    },
+    {
+      "testid": "settings-camera-hot-folder",
+      "name": "",
+      "type": "BUTTON",
+      "text": "● Thư mục ảnh (Hot Folder)Ảnh do phần mềm camera xuất ra",
+      "value": "",
+      "disabled": false,
+      "w": 557.6000366210938,
+      "h": 76.4000015258789
+    },
+    {
+      "testid": "settings-hot-folder-path",
+      "name": "",
+      "type": "INPUT",
+      "text": "",
+      "value": "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\backend\\build\\hot-folder",
+      "checked": false,
+      "disabled": false,
+      "w": 990.1749877929688,
+      "h": 56
+    },
+    {
+      "testid": "",
+      "name": "",
+      "type": "BUTTON",
+      "text": "Chọn thư mục",
+      "value": "",
+      "disabled": true,
+      "w": 127.0250015258789,
+      "h": 64
+    },
+    {
+      "testid": "settings-photo-minus",
+      "name": "",
+      "type": "BUTTON",
+      "text": "−",
+      "value": "",
+      "disabled": false,
+      "w": 52,
+      "h": 52
+    },
+    {
+      "testid": "settings-photo-plus",
+      "name": "",
+      "type": "BUTTON",
+      "text": "+",
+      "value": "",
+      "disabled": false,
+      "w": 52,
+      "h": 52
+    },
+    {
+      "testid": "settings-frame-minus",
+      "name": "",
+      "type": "BUTTON",
+      "text": "−",
+      "value": "",
+      "disabled": false,
+      "w": 52,
+      "h": 52
+    },
+    {
+      "testid": "settings-frame-plus",
+      "name": "",
+      "type": "BUTTON",
+      "text": "+",
+      "value": "",
+      "disabled": false,
+      "w": 52,
+      "h": 52
+    },
+    {
+      "testid": "settings-post-minus",
+      "name": "",
+      "type": "BUTTON",
+      "text": "−",
+      "value": "",
+      "disabled": false,
+      "w": 52,
+      "h": 52
+    },
+    {
+      "testid": "settings-post-plus",
+      "name": "",
+      "type": "BUTTON",
+      "text": "+",
+      "value": "",
+      "disabled": false,
+      "w": 52,
+      "h": 52
+    },
+    {
+      "testid": "settings-save",
+      "name": "",
+      "type": "BUTTON",
+      "text": "Lưu cài đặt",
+      "value": "",
+      "disabled": false,
+      "w": 135.875,
+      "h": 56
+    },
+    {
+      "testid": "settings-reload",
+      "name": "",
+      "type": "BUTTON",
+      "text": "Tải lại cài đặt",
+      "value": "",
+      "disabled": false,
+      "w": 1168.800048828125,
+      "h": 52
+    }
+  ]
+}

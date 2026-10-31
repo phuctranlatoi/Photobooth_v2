@@ -1,0 +1,6 @@
+{
+  "status": "PASS-SIMULATED",
+  "scope": "mounted source-derived test-id discovery; mutation phase follows only after owners final; no hardware, payment, DB, upload, print, or hidden RPC",
+  "failures": [],
+  "observations": []
+}

@@ -1,0 +1,14 @@
+[
+    {
+        "path":  "backend\\config\\operator-settings.json",
+        "before":  "596EE4752C0B03EC45D421CABBC14E68E9831D52ECE15320B9345FF94BF815DC",
+        "after":  "596EE4752C0B03EC45D421CABBC14E68E9831D52ECE15320B9345FF94BF815DC",
+        "restored":  true
+    },
+    {
+        "path":  "backend\\config\\local-operator-layouts.json",
+        "before":  "9D8087212CF371AF9A6B0522EFCC217E8F8E46C1E589F7E8F6B14B2F7D053870",
+        "after":  "9D8087212CF371AF9A6B0522EFCC217E8F8E46C1E589F7E8F6B14B2F7D053870",
+        "restored":  true
+    }
+]

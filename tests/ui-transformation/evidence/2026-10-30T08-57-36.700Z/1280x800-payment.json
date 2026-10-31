@@ -1,0 +1,36 @@
+{
+  "viewport": [
+    1280,
+    800
+  ],
+  "scrollWidth": 1280,
+  "clientWidth": 1280,
+  "controls": [
+    {
+      "text": "Operator · local dev",
+      "w": 134.2375030517578,
+      "h": 48,
+      "disabled": false
+    },
+    {
+      "text": "Bridge diagnostics",
+      "w": 127.0374984741211,
+      "h": 48,
+      "disabled": false
+    },
+    {
+      "text": "Simulate payment approval↗",
+      "w": 422.7250061035156,
+      "h": 64,
+      "disabled": false
+    },
+    {
+      "text": "Back←",
+      "w": 131.6875,
+      "h": 63.60000228881836,
+      "disabled": false
+    }
+  ],
+  "images": [],
+  "text": "Operator · local dev\nBridge diagnostics\nLE SOUVENIR\nTHE PHOTO STUDIO\nSIMULATOR SAMPLE\nNo real payment · No paper printing · No revenue\nA LITTLE MOMENT. A LASTING MEMORY.\nPAYMENT PENDING\n\n03 / A SIMULATOR CHECKPOINT\n\nSimulator payment\n\nA test-only approval, never a real payment confirmation.\n\n↗\nNo payment QR\n\nThis experience does not create a PayOS order or connect to a live payment provider.\n\nYOUR SESSION\n\nSynthetic strip fixture\nCopies\n2\nTest amount\n70,000 VND\n\nNo money will be charged.\n\nSimulate payment approval\n↗\nBack\n←\nMade for moments together.\nLE SOUVENIR / INDEPENDENT V2"
+}

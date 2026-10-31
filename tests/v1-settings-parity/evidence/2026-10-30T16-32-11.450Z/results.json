@@ -1,0 +1,17 @@
+{
+  "status": "FAIL",
+  "scope": "mounted source-derived test-id discovery; mutation phase follows only after owners final; no hardware, payment, DB, upload, print, or hidden RPC",
+  "failures": [
+    {
+      "caseId": "SET-SELECTORS",
+      "message": "1280x800: final mounted control lacks required stable data-testid settings-hot-folder-path",
+      "detail": ""
+    },
+    {
+      "caseId": "SET-SELECTORS",
+      "message": "1920x1200: final mounted control lacks required stable data-testid settings-hot-folder-path",
+      "detail": ""
+    }
+  ],
+  "observations": []
+}

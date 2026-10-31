@@ -3,11 +3,13 @@ import { motion, useReducedMotion } from 'motion/react';
 import { ArrowUpRight, CheckCircle2, CircleAlert, Cable, FlaskConical } from 'lucide-react';
 import { bridge, type Bridge, type Health } from './bridge';
 import { Simulator } from './Simulator';
+import { Operator } from './Operator';
 export function App({ client = bridge }: { client?: Bridge }) {
   const [health, setHealth] = useState<Health>();
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [diagnostics,setDiagnostics]=useState(false);
+  const [operator,setOperator]=useState(false);
   const latch = useRef(false), mounted = useRef(true);
   const reduce = useReducedMotion();
   useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
@@ -18,7 +20,7 @@ export function App({ client = bridge }: { client?: Bridge }) {
     catch (e) { if (mounted.current) setError(typeof e === 'string' ? e : e instanceof Error ? e.message : 'Bridge unavailable'); }
     finally { latch.current = false; if (mounted.current) setBusy(false); }
   }
-  if(client===bridge&&!diagnostics)return <div className="simulator-app"><button className="diagnostic-toggle" onClick={()=>setDiagnostics(true)}>Bridge diagnostics</button><Simulator/></div>;
+   if(client===bridge&&!diagnostics)return <div className="simulator-app">{!operator&&import.meta.env.DEV&&<div className="diagnostic-toggle"><button data-testid="operator-entry" onClick={()=>setOperator(true)}>Operator · local dev</button><button onClick={()=>setDiagnostics(true)}>Bridge diagnostics</button></div>}<div hidden={operator}><Simulator onOperator={()=>setOperator(true)}/></div>{operator&&<Operator onClose={()=>setOperator(false)}/>}</div>;
   return <div className="kiosk">
     <header><span className="wordmark">LE SOUVENIR</span><span className="badge"><FlaskConical size={18}/> V2 · ARCHITECTURE PROOF</span></header>
     <main>
@@ -37,3 +39,4 @@ export function App({ client = bridge }: { client?: Bridge }) {
      </main>{client===bridge&&<button className="check" onClick={()=>setDiagnostics(false)}>Return to simulator</button>}<footer><span>Designed for moments together.</span><span>Independent V2 development build · not for customer use</span></footer>
   </div>;
 }
+

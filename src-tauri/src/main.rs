@@ -21,7 +21,7 @@ fn main(){
 }
 #[tauri::command]
 async fn simulator_request(state:tauri::State<'_,Shared>,method:String,params:serde_json::Value)->Result<serde_json::Value,String>{
-    if !matches!(method.as_str(),"catalog.get"|"device.getStatus"|"session.start"|"session.confirmSetup"|"session.getState"|"session.cancel"|"session.finish"|"session.setLayout"|"session.setQuantity"|"session.back"|"payment.mockComplete"|"capture.startSequence"|"selection.toggle"|"selection.confirm"|"frame.list"|"frame.select"|"frame.confirm"|"print.confirmDryRun"){return Err("Method not permitted by simulator host".into())}
+    if !matches!(method.as_str(),"operator.getSettings"|"operator.updateSettings"|"operator.getStatus"|"operator.updateLayout"|"catalog.get"|"device.getStatus"|"session.start"|"session.confirmSetup"|"session.getState"|"session.cancel"|"session.finish"|"session.setLayout"|"session.setQuantity"|"session.back"|"payment.mockComplete"|"capture.startSequence"|"selection.toggle"|"selection.confirm"|"frame.list"|"frame.select"|"frame.confirm"|"print.confirmDryRun"){return Err("Method not permitted by simulator host".into())}
     if !params.is_object(){return Err("Simulator params must be an object".into())}
     let shared=state.inner().clone();
     tauri::async_runtime::spawn_blocking(move||{

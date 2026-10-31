@@ -1,0 +1,1 @@
+const ws=new WebSocket(process.argv[2]);let id=0;ws.onopen=()=>ws.send(JSON.stringify({id:++id,method:'Runtime.evaluate',params:{expression:'document.body.innerText',returnByValue:true}}));ws.onmessage=e=>{console.log(JSON.parse(e.data).result?.result?.value||e.data);process.exit()};

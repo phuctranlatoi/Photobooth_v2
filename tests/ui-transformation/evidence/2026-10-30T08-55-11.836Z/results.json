@@ -1,0 +1,12 @@
+{
+  "status": "FAIL",
+  "cdp": "http://127.0.0.1:9223",
+  "operatorEnabled": false,
+  "failures": [
+    {
+      "message": "runner aborted",
+      "detail": "Error: Timed out waiting for enabled UI control “Start simulator session”\nOperator · local dev\nBridge diagnostics\nLE SOUVENIR\nTHE PHOTO STUDIO\nSIMULATOR SAMPLE\nNo real payment · No paper printing · No revenue\nA LITTLE MOMENT. A LASTING MEMORY.\nIDLE\n\nTHE FIXTURE COLLECTION\n\nFind your format.\n\nBackend-provided simulator layouts, not purchasable bundles.\n\n01\nSynthetic strip fixture\n\n3 captures · select 2 · 1s · 5x15\n\nStart simulator session\n↗\n02\nSynthetic grid fixture\n\n5 captures · select 4 · 2s · 10x15\n\nStart simulator session\n↗\nBack to welcome\nMade for moments together.\nLE SOUVENIR / INDEPENDENT V2\n    at wait (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/ui-transformation/mounted-tauri-cdp.mjs:56:9)\n    at async click (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/ui-transformation/mounted-tauri-cdp.mjs:60:3)\n    at async completeCustomer (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/ui-transformation/mounted-tauri-cdp.mjs:101:3)\n    at async file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/ui-transformation/mounted-tauri-cdp.mjs:179:5"
+    }
+  ],
+  "observations": []
+}

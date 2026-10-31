@@ -1,0 +1,28 @@
+{
+  "status": "PASS-SIMULATED",
+  "failures": [],
+  "observations": [
+    {
+      "viewport": [
+        1280,
+        800
+      ],
+      "before": "140 giây",
+      "after": "150 giây",
+      "saveAck": true,
+      "reload": true,
+      "implicitBack": true
+    },
+    {
+      "viewport": [
+        1920,
+        1200
+      ],
+      "before": "150 giây",
+      "after": "160 giây",
+      "saveAck": true,
+      "reload": true,
+      "implicitBack": true
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "status": "PASS-SIMULATED",
+  "cdp": "http://127.0.0.1:9223",
+  "operatorEnabled": false,
+  "failures": [],
+  "observations": [
+    {
+      "message": "1280x800: operator mutation not executed",
+      "detail": "Inherited host/JVM V2_LOCAL_OPERATOR_ENABLED is not exactly true"
+    },
+    {
+      "message": "1920x1200: operator mutation not executed",
+      "detail": "Inherited host/JVM V2_LOCAL_OPERATOR_ENABLED is not exactly true"
+    }
+  ]
+}

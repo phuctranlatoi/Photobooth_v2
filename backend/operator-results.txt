@@ -1,0 +1,20 @@
+tests=27 failures=0
+4A3743B7CFEA7A686A63AF5D3C3392ACC63E7249BC7D580C4B1849075317D8F8
+installed health=ok pid=15400; catalogLayouts=2; confirmSetup=SELECTING_QUANTITY; session.transition=-32601
+EOF exit=0
+
+
+Algorithm : SHA256
+Hash      : 4A3743B7CFEA7A686A63AF5D3C3392ACC63E7249BC7D580C4B1849075317D8F8
+Path      : E:\HK1_2026_2027\PhotoboothDesktop_v2\backend\build\install\backend\lib\lesouvenir-v2-backend-foundation.ja
+            r
+
+
+
+
+FullName                                                                                                     LastWriteT
+                                                                                                             imeUtc    
+--------                                                                                                     ----------
+E:\HK1_2026_2027\PhotoboothDesktop_v2\backend\build\install\backend\lib\lesouvenir-v2-backend-foundation.jar 10/30/2...
+
+

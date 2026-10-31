@@ -1,0 +1,61 @@
+{
+  "viewport": [
+    1280,
+    800
+  ],
+  "scrollWidth": 1280,
+  "clientWidth": 1280,
+  "controls": [
+    {
+      "text": "Operator · local dev",
+      "w": 134.2375030517578,
+      "h": 48,
+      "disabled": false
+    },
+    {
+      "text": "Bridge diagnostics",
+      "w": 127.0374984741211,
+      "h": 48,
+      "disabled": false
+    },
+    {
+      "text": "V2 generated transparent test frame ✓",
+      "w": 501.2124938964844,
+      "h": 213.10000610351562,
+      "disabled": false
+    },
+    {
+      "text": "Continue to preview↗",
+      "w": 970.8624877929688,
+      "h": 64,
+      "disabled": false
+    },
+    {
+      "text": "Back←",
+      "w": 131.6875,
+      "h": 63.60000228881836,
+      "disabled": false
+    },
+    {
+      "text": "Session menu",
+      "w": 64,
+      "h": 64,
+      "disabled": false
+    }
+  ],
+  "images": [
+    {
+      "alt": "Generated frame thumbnail",
+      "naturalWidth": 240,
+      "naturalHeight": 360,
+      "complete": true
+    },
+    {
+      "alt": "Authoritative Kotlin composed dryrun preview",
+      "naturalWidth": 402,
+      "naturalHeight": 600,
+      "complete": true
+    }
+  ],
+  "text": "Operator · local dev\nBridge diagnostics\nLE SOUVENIR\nTHE PHOTO STUDIO\nSIMULATOR SAMPLE\nNo real payment · No paper printing · No revenue\nA LITTLE MOMENT. A LASTING MEMORY.\nEDITING\n\n05 / THE FINISHING TOUCH\n\nChoose simulator frame\n\nA beautiful border for your favourite moments. The preview is composed by Kotlin, not reconstructed in the browser.\n\nV2 generated transparent test frame ✓\n\nSynthetic strip fixture · 2 copies\n\nContinue to preview\n↗\nBack\n←\n\nWhen inactivity expires, Kotlin selects remaining photos and runs a dryrun automatically.\n\n•••\nMade for moments together.\nLE SOUVENIR / INDEPENDENT V2"
+}

@@ -1,0 +1,32 @@
+{
+  "authority": [
+    "V1 src/main/kotlin/com/phuctran/photobooth/desktop/ui/screens/SettingsTabContent.kt",
+    "V1 src/main/kotlin/com/phuctran/photobooth/desktop/ui/screens/AdminScreen.kt:78-86,100-101,227-235",
+    "V1 src/main/kotlin/com/phuctran/photobooth/desktop/config/DesktopBoothConfig.kt:7-35,45-88",
+    "V1 src/main/kotlin/com/phuctran/photobooth/desktop/config/SettingsManager.kt:6-39",
+    "V1 src/main/kotlin/com/phuctran/photobooth/desktop/controller/DesktopBoothController.kt:245-310,999-1030"
+  ],
+  "controls": [
+    {"id":"enableSystemPrint","type":"switch","default":false,"persistenceKey":"ENABLE_SYSTEM_PRINT","apply":"activeConfig immediately controls later print submission; device/driver is not reinitialized","safety":"test only with false; enabling could submit physical output in a non-simulator session"},
+    {"id":"cameraSource","type":"two clickable option cards","default":"hot-folder","values":["webcam-or-droidcam","hot-folder"],"persistenceKey":"USE_HOT_FOLDER","apply":"capture service is constructor-selected, so source change requires restart despite activeConfig update"},
+    {"id":"hotFolderPath","type":"single-line text plus native directory chooser","default":"E:\\Photobooth\\HotFolder","visibleWhen":"cameraSource=hot-folder","persistenceKey":"HOT_FOLDER_PATH","validation":"none in UI/save","apply":"requires restart; no folder access occurs merely by saving"},
+    {"id":"photoSelectionTimeoutSeconds","type":"10-second stepper","default":90,"min":0,"max":3600,"persistenceKey":"PHOTO_SELECTION_TIMEOUT_SECONDS","apply":"activeConfig immediately supplies the next SELECTING_PHOTOS timer; zero invokes timeout handler without countdown delay"},
+    {"id":"frameSelectionTimeoutSeconds","type":"10-second stepper","default":60,"min":0,"max":3600,"persistenceKey":"FRAME_SELECTION_TIMEOUT_SECONDS","apply":"activeConfig immediately supplies the next EDITING timer; zero invokes timeout handler without countdown delay"},
+    {"id":"postCaptureTimeoutSeconds","type":"10-second stepper","default":90,"min":0,"max":3600,"persistenceKey":"POST_CAPTURE_TIMEOUT_SECONDS","apply":"fallback selected by startInactivityTimer for a timed state other than SELECTING_PHOTOS/EDITING; on PRINT_PENDING it starts only when inactivityJob is null, so an existing retained frame-timer job/budget is not replaced"},
+    {"id":"canonIsoAvTv","type":"three live device dropdowns","visibleWhen":"nativeCamera != null","persistenceKey":null,"apply":"immediate native camera setter; not part of Save settings"},
+    {"id":"canonWhiteBalance","type":"hardcoded dropdown","visibleWhen":"nativeCamera != null","values":["Auto","Daylight","Cloudy","Tungsten (V1 enum token is misspelled Tangsten)","Fluorescent"],"persistenceKey":null,"apply":"immediate one-way native camera setter; displayed initial state is unsynchronized"},
+    {"id":"canonPictureStyle","type":"hardcoded dropdown","visibleWhen":"nativeCamera != null","values":["Standard","Portrait","Landscape","Neutral","Faithful","Monochrome","Auto"],"persistenceKey":null,"apply":"immediate one-way native camera setter; displayed initial state is unsynchronized"},
+    {"id":"save","type":"button","behavior":"writes six keys, then updates activeConfig; shows local success for 3 seconds regardless of controller write result because callback returns Unit"},
+    {"id":"adminBack","type":"48x48 clickable circle","behavior":"implicitly calls saveSettings before leaving Admin"}
+  ],
+  "behaviorRules": [
+    "On selection timeout, V1 fills remaining selections from captured order, chooses first frame only if current frame id is empty, then calls startPrinting(userConfirmed=false).",
+    "SELECTING_PHOTOS and EDITING keep remainingPhotoTime/remainingFrameTime across state changes/back navigation until explicitly cleared; ordinary interaction calls resetInactivityTimer, clears only the current state's retained budget, and restarts that state's full configured timer.",
+    "PRINT_PENDING starts a timer only when inactivityJob is null. If the EDITING frame timer job survives into PRINT_PENDING, its existing frame budget remains authoritative; postCaptureTimeoutSeconds is only a fallback when a fresh non-selection timer is started. Do not assert that it delays capture or always governs PRINT_PENDING.",
+    "The timeout path is auto-print, not merely auto-advance; revenue is separately gated by userConfirmed and accepted print job.",
+    "SettingsManager preserves blank/comment/unrelated lines, replaces matching keys, appends absent keys, and adds a final newline.",
+    "Loader precedence is working .env, then app-data .env, then process environment (later maps win); save target is config.envSource or working .env.",
+    "Malformed timeout values fall back to defaults but valid negative/over-3600 values are not clamped by the loader. The stepper itself constrains UI-generated values to 0..3600.",
+    "V1 says restart after save. Some activeConfig consumers change immediately, but camera source/service does not; parity testing must distinguish stored, activeConfig-applied, and hardware-applied."
+  ]
+}

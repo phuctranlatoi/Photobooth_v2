@@ -1,0 +1,31 @@
+{
+  "viewport": [
+    1920,
+    1200
+  ],
+  "scrollWidth": 1920,
+  "clientWidth": 1920,
+  "controls": [
+    {
+      "text": "Operator · local dev",
+      "w": 134.2375030517578,
+      "h": 48,
+      "disabled": false
+    },
+    {
+      "text": "Bridge diagnostics",
+      "w": 127.0374984741211,
+      "h": 48,
+      "disabled": false
+    }
+  ],
+  "images": [
+    {
+      "alt": "Live synthetic simulator preview",
+      "naturalWidth": 320,
+      "naturalHeight": 180,
+      "complete": true
+    }
+  ],
+  "text": "Operator · local dev\nBridge diagnostics\nLE SOUVENIR\nTHE PHOTO STUDIO\nSIMULATOR SAMPLE\nNo real payment · No paper printing · No revenue\nA LITTLE MOMENT. A LASTING MEMORY.\nCOUNTDOWN\nSIMULATOR CAMERA · synthetic Live View\n\nPhoto 0/3\n\n1\n\nGet ready\n\nMade for moments together.\nLE SOUVENIR / INDEPENDENT V2"
+}

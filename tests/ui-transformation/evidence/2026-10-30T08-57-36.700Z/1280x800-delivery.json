@@ -1,0 +1,37 @@
+{
+  "viewport": [
+    1280,
+    800
+  ],
+  "scrollWidth": 1280,
+  "clientWidth": 1280,
+  "controls": [
+    {
+      "text": "Operator · local dev",
+      "w": 134.2375030517578,
+      "h": 48,
+      "disabled": false
+    },
+    {
+      "text": "Bridge diagnostics",
+      "w": 127.0374984741211,
+      "h": 48,
+      "disabled": false
+    },
+    {
+      "text": "Finish simulator session↗",
+      "w": 437.0625,
+      "h": 64,
+      "disabled": false
+    }
+  ],
+  "images": [
+    {
+      "alt": "Authoritative Kotlin composed dryrun preview",
+      "naturalWidth": 402,
+      "naturalHeight": 600,
+      "complete": true
+    }
+  ],
+  "text": "Operator · local dev\nBridge diagnostics\nLE SOUVENIR\nTHE PHOTO STUDIO\nSIMULATOR SAMPLE\nNo real payment · No paper printing · No revenue\nA LITTLE MOMENT. A LASTING MEMORY.\nDELIVERY\n\nA LITTLE MOMENT, BEAUTIFULLY COMPOSED\n\nDryrun complete\n\nThank you for making a memory with us.\n\n✓\nThat was lovely.\n\nManually confirmed. Generated files only. Print accepted: no. Revenue recorded: no.\n\nNo simulator delivery link.\n\nFinish simulator session\n↗\nMade for moments together.\nLE SOUVENIR / INDEPENDENT V2"
+}

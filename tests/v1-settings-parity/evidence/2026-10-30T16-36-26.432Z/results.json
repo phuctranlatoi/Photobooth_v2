@@ -1,0 +1,17 @@
+{
+  "status": "FAIL",
+  "scope": "mounted source-derived test-id discovery; mutation phase follows only after owners final; no hardware, payment, DB, upload, print, or hidden RPC",
+  "failures": [
+    {
+      "caseId": "SET-TOUCH",
+      "message": "1280x800: enabled targets below 48x48",
+      "detail": "[{\"testid\":\"settings-print\",\"name\":\"\",\"type\":\"checkbox\",\"text\":\"\",\"value\":\"on\",\"checked\":false,\"disabled\":false,\"w\":13,\"h\":13}]"
+    },
+    {
+      "caseId": "SET-TOUCH",
+      "message": "1920x1200: enabled targets below 48x48",
+      "detail": "[{\"testid\":\"settings-print\",\"name\":\"\",\"type\":\"checkbox\",\"text\":\"\",\"value\":\"on\",\"checked\":false,\"disabled\":false,\"w\":13,\"h\":13}]"
+    }
+  ],
+  "observations": []
+}

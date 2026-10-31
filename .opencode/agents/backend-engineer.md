@@ -1,6 +1,7 @@
----
+﻿---
 description: Integrates Kotlin session state machine, image pipeline, Beauty, PayOS, QR, Cloudinary and existing Neon API into V2.
 mode: subagent
+model: 9router/cx/gpt-6-sol
 ---
 
 # Role

@@ -1,0 +1,73 @@
+{
+  "viewport": [
+    1280,
+    800
+  ],
+  "scrollWidth": 1280,
+  "clientWidth": 1280,
+  "controls": [
+    {
+      "text": "Operator · local dev",
+      "w": 134.2375030517578,
+      "h": 48,
+      "disabled": false
+    },
+    {
+      "text": "Bridge diagnostics",
+      "w": 127.0374984741211,
+      "h": 48,
+      "disabled": false
+    },
+    {
+      "text": "Selected 1 ✓ · photo 1",
+      "w": 378.9250183105469,
+      "h": 248.10000610351562,
+      "disabled": false
+    },
+    {
+      "text": "Selected 2 ✓ · photo 2",
+      "w": 378.9375,
+      "h": 248.10000610351562,
+      "disabled": false
+    },
+    {
+      "text": "Select · photo 3",
+      "w": 378.9250183105469,
+      "h": 248.10000610351562,
+      "disabled": false
+    },
+    {
+      "text": "Continue to frames↗",
+      "w": 1057.5374755859375,
+      "h": 64,
+      "disabled": false
+    },
+    {
+      "text": "Session menu",
+      "w": 64,
+      "h": 64,
+      "disabled": false
+    }
+  ],
+  "images": [
+    {
+      "alt": "Complete simulator original 1",
+      "naturalWidth": 240,
+      "naturalHeight": 135,
+      "complete": true
+    },
+    {
+      "alt": "Complete simulator original 2",
+      "naturalWidth": 240,
+      "naturalHeight": 135,
+      "complete": true
+    },
+    {
+      "alt": "Complete simulator original 3",
+      "naturalWidth": 240,
+      "naturalHeight": 135,
+      "complete": true
+    }
+  ],
+  "text": "Operator · local dev\nBridge diagnostics\nLE SOUVENIR\nTHE PHOTO STUDIO\nSIMULATOR SAMPLE\nNo real payment · No paper printing · No revenue\nA LITTLE MOMENT. A LASTING MEMORY.\nSELECTING PHOTOS\n\n04 / YOUR FAVOURITE MOMENTS\n\nChoose moments · 2/2\n\nTap in the order you would like your photos to appear.\n\nSelected 1 ✓ · photo 1\nSelected 2 ✓ · photo 2\nSelect · photo 3\n\n2 of 2 selected\n\nContinue to frames\n↗\n\nWhen inactivity expires, Kotlin selects remaining photos and runs a dryrun automatically.\n\n•••\nMade for moments together.\nLE SOUVENIR / INDEPENDENT V2"
+}

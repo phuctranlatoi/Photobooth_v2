@@ -1,0 +1,42 @@
+{
+  "viewport": [
+    1280,
+    800
+  ],
+  "scrollWidth": 1280,
+  "clientWidth": 1280,
+  "controls": [
+    {
+      "text": "Operator · local dev",
+      "w": 134.2375030517578,
+      "h": 48,
+      "disabled": false
+    },
+    {
+      "text": "Bridge diagnostics",
+      "w": 127.0374984741211,
+      "h": 48,
+      "disabled": false
+    },
+    {
+      "text": "Start simulator session↗",
+      "w": 538.7999877929688,
+      "h": 64,
+      "disabled": false
+    },
+    {
+      "text": "Start simulator session↗",
+      "w": 538.7999877929688,
+      "h": 64,
+      "disabled": false
+    },
+    {
+      "text": "Back to welcome",
+      "w": 1184.800048828125,
+      "h": 64,
+      "disabled": false
+    }
+  ],
+  "images": [],
+  "text": "Operator · local dev\nBridge diagnostics\nLE SOUVENIR\nTHE PHOTO STUDIO\nSIMULATOR SAMPLE\nNo real payment · No paper printing · No revenue\nA LITTLE MOMENT. A LASTING MEMORY.\nIDLE\n\nTHE FIXTURE COLLECTION\n\nFind your format.\n\nBackend-provided simulator layouts, not purchasable bundles.\n\n01\nSynthetic strip fixture\n\n3 captures · select 2 · 1s · 5x15\n\nStart simulator session\n↗\n02\nSynthetic grid fixture\n\n5 captures · select 4 · 2s · 10x15\n\nStart simulator session\n↗\nBack to welcome\nMade for moments together.\nLE SOUVENIR / INDEPENDENT V2"
+}

@@ -1,6 +1,7 @@
----
+﻿---
 description: Designs independent React + Tauri or Electron frontend and Kotlin sidecar with reliable Windows IPC.
 mode: subagent
+model: 9router/ag/claude-opus-4-6-thinking#medium
 ---
 
 # Role

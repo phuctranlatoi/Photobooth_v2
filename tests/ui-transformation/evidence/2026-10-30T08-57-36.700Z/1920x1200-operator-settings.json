@@ -1,0 +1,180 @@
+{
+  "viewport": [
+    1920,
+    1200
+  ],
+  "scrollWidth": 1920,
+  "clientWidth": 1920,
+  "controls": [
+    {
+      "text": "Close operator",
+      "w": 106.0250015258789,
+      "h": 48,
+      "disabled": false
+    },
+    {
+      "text": "Bridge diagnostics",
+      "w": 127.0374984741211,
+      "h": 48,
+      "disabled": false
+    },
+    {
+      "text": "Return to customer",
+      "w": 185.47500610351562,
+      "h": 64,
+      "disabled": false
+    },
+    {
+      "text": "Frames",
+      "w": 100.0625,
+      "h": 64,
+      "disabled": false
+    },
+    {
+      "text": "Layouts",
+      "w": 103.6624984741211,
+      "h": 64,
+      "disabled": false
+    },
+    {
+      "text": "Settings",
+      "w": 106.4625015258789,
+      "h": 64,
+      "disabled": false
+    },
+    {
+      "text": "Tools",
+      "w": 85.8375015258789,
+      "h": 64,
+      "disabled": false
+    },
+    {
+      "text": "Colors",
+      "w": 94.48750305175781,
+      "h": 64,
+      "disabled": false
+    },
+    {
+      "text": "Revenue",
+      "w": 109.5875015258789,
+      "h": 64,
+      "disabled": false
+    },
+    {
+      "text": "Camera source · DSLR / webcam / Hot Folder",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "ISO",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "Av",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "Tv",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "White balance",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "Picture style",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "Selection inactivity timeout",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "Frame inactivity timeout",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "Camera · ISO / Av / Tv / WB / picture style unavailable",
+      "w": 388.6000061035156,
+      "h": 64,
+      "disabled": true
+    },
+    {
+      "text": "Printer selection",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "Media size",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "Cut mode",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "Printer · media / cut unavailable",
+      "w": 388.6000061035156,
+      "h": 64,
+      "disabled": true
+    },
+    {
+      "text": "Beauty preset",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "Effect selection",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "Beauty & effects unavailable",
+      "w": 388.6000061035156,
+      "h": 64,
+      "disabled": true
+    },
+    {
+      "text": "Payment configuration",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "Album delivery",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "Payment & album unavailable",
+      "w": 388.6000061035156,
+      "h": 64,
+      "disabled": true
+    }
+  ],
+  "images": [],
+  "text": "Close operator\nBridge diagnostics\n\nLE SOUVENIR / PRIVATE WORKSPACE\n\nBehind the moments.\nReturn to customer\n\nSIMULATOR · Local development only. Not a production Admin ACL. No hardware or live services.\n\nFrames\nLayouts\nSettings\nTools\nColors\nRevenue\n\nSTUDIO OPERATIONS\n\nSettings\n\nBackend state: IDLE · LOCAL_DEVELOPMENT_ONLY\n\nCamera · ISO / Av / Tv / WB / picture style\n\nNative camera settings and DSLR / webcam / Hot Folder source selection are not available through the simulator contract.\n\nUnavailable controls\nCamera source · DSLR / webcam / Hot Folder\nISO\nAv\nTv\nWhite balance\nPicture style\nSelection inactivity timeout\nFrame inactivity timeout\nUnavailable in this build\nPrinter · media / cut\n\nNative printer discovery, media settings and cut operations require hardware verification and authorization.\n\nUnavailable controls\nPrinter selection\nMedia size\nCut mode\nUnavailable in this build\nBeauty & effects\n\nBeauty, presets and effect settings have no operator mutation contract.\n\nUnavailable controls\nBeauty preset\nEffect selection\nUnavailable in this build\nPayment & album\n\nProduction payment configuration and cloud album delivery are unavailable. No secrets are accepted here.\n\nUnavailable controls\nPayment configuration\nAlbum delivery\nUnavailable in this build\nLooking for Studio?\n\nStudio is the customer layout-and-effect setup, not a separate capture or payment bypass. Return to the customer experience to use the connected simulator flow. Effects are unavailable."
+}

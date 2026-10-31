@@ -1,0 +1,16 @@
+{
+  "status": "PASS-SIMULATED",
+  "cdp": "http://127.0.0.1:9223",
+  "operatorEnabled": true,
+  "failures": [],
+  "observations": [
+    {
+      "message": "1280x800: V2-local layout update/revert exercised through visible form",
+      "detail": "layout-strip-2-save"
+    },
+    {
+      "message": "1920x1200: V2-local layout update/revert exercised through visible form",
+      "detail": "layout-strip-2-save"
+    }
+  ]
+}

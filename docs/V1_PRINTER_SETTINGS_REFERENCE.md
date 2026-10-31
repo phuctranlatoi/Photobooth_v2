@@ -1,0 +1,32 @@
+# V1 printer settings reference (source-only)
+
+Scope: read-only V1 source inspection; no configuration files, photos, printer discovery, driver access or hardware operations. Paths below are relative to V1 `src/main/kotlin/com/phuctran/photobooth/desktop/`. This records behavior, not proof of physical output.
+
+## Visible controls versus configuration
+
+| Item | Actual V1 behavior | Source |
+|---|---|---|
+| Windows printer switch | `SettingsTabContent` section “In ấn & Xuất ảnh”: `Switch(checked = enablePrint, onCheckedChange = onEnablePrintChange)`. Status card reflects local switch state, not printer health. UI says it sends to a Windows print dialog, but service code calls `printJob.print` directly, without a dialog. | `ui/screens/SettingsTabContent.kt:50-64`; `services/DesktopIoServices.kt:36-90` |
+| Printer names | `printerNameStrip` and `printerNameFull` appear only as conditional nonblank informational chips; no name editor or printer selector. UI says names are configured in `.env`. | `ui/screens/SettingsTabContent.kt:65-70,127-136` |
+| Save | “Lưu cài đặt” invokes callback and immediately shows saved text for 3 seconds, even if persistence subsequently fails; screen asks for restart. | `ui/screens/SettingsTabContent.kt:40-48,127-137` |
+| Other printer controls | No media, paper size, orientation, margins, DPI, cutter, queue, test-print or printer-status control in this settings section. Quantity is a separate customer flow, not a device setting. | `ui/screens/SettingsTabContent.kt:50-71`; `ui/screens/QuantityScreen.kt:27` |
+
+`AdminScreen` initializes remembered `enablePrint` from `config.enableSystemPrint`, changes local state on toggle, and passes it on save (`ui/screens/AdminScreen.kt:78-86,227-235`). The switch is Boolean; no printer-specific validation is performed there.
+
+## Defaults, loading, saving and restart
+
+- `DesktopBoothConfig.enableSystemPrint = false`, `printerNameStrip = ""`, `printerNameFull = ""` (`config/DesktopBoothConfig.kt:7-16,29-33`). Loader maps `ENABLE_SYSTEM_PRINT`, `PRINTER_NAME_STRIP`, `PRINTER_NAME_FULL` (`:68,84-85`). Boolean parser trims and ignores case; true: `1,true,yes,y,on`; false: `0,false,no,n,off`; invalid/missing defaults false (`:118-124`). Names default empty and have no validation or normalization at load.
+- Loader precedence is working-directory dotenv, then app-data dotenv, then process environment; later values override earlier (`config/DesktopBoothConfig.kt:45-54`). Therefore process environment can override a saved value at next launch. No actual file contents were inspected.
+- `DesktopBoothController.saveDeviceSettings` writes `ENABLE_SYSTEM_PRINT` and camera/time settings, **not** printer names. It selects `config.envSource` or working-directory dotenv, calls `SettingsManager.updateSettings`, and on success sets `activeConfig.value = config.copy(...)`; on failure sets an error status (`controller/DesktopBoothController.kt:997-1030`). `SettingsManager` replaces matching keys or appends missing ones, and creates the file if absent (`config/SettingsManager.kt:8-38`).
+- Despite the restart instruction, the print branch reads `activeConfig.value.enableSystemPrint` at submission, so a successful save affects that branch in the running process (`controller/DesktopBoothController.kt:762-772,1018-1027`). Other subsystems may still need restart; do not imply every setting hot-reloads.
+- **V2 safety requirement:** persisted `enableSystemPrint` is not authorization. A separate backend-enforced production-print gate must default closed and remain independent of the stored switch; no UI toggle alone can authorize real printing.
+
+## Paper, orientation, copies and cut contract
+
+- `DesktopCompositor.renderFinal` recognizes strip labels containing `5x15` or `5 x 15`, then landscape `15x10` or `15 x 10`; otherwise uses portrait (`imaging/DesktopCompositor.kt:36-58`). `renderScale=2` is described in a source comment as 600 DPI; the code creates PNG pixel dimensions, not an explicit printer DPI request.
+- Strip master is 1184×3580 px; its print canvas is 2452×3658 px, with two identical strips at (28,54) and (1216,54), each 1184×3580, 4 px gap. Landscape 15×10 master 3580×2368, print canvas 3658×2452, origin (54,28). Other/portrait master 2368×3580, print canvas 2452×3658, origin (28,54). Canvas background is white; source slots use center crop with a 4 px total added bleed (`imaging/DesktopCompositor.kt:48-82,110-186`). QR, when available, is added to print canvas source after master save (`:99-108`).
+- `PricingCalculator.allowedOptions` provides 2–50 even quantities for strips and 2–50 for full; `sanitizeQuantity` adjusts strip odd quantities upward (`model/PricingCalculator.kt:17-26`). Controller converts strip requested copies to integer `requestedCopies / 2`, at least one sheet; full copies equal requested copies, at least one (`controller/DesktopBoothController.kt:762-774`).
+- V1 duplicates strips side-by-side; the inspected service does **not** issue a 2-inch cut command or set a cutter option. Paper/cutter configuration and physical cut outcome are not established by these sources; do not invent a driver option or claim success.
+- `SystemPrinterService.printImage` validates file existence and image readability; optional nonblank printer name is case-insensitive **substring** matched against `PrinterJob.lookupPrintServices()`, first match; unmatched or null retains job default silently (`services/DesktopIoServices.kt:37-49`). Name collisions and swapped/default devices are therefore unsafe to treat as verified selection.
+- Service requests `Copies(copies)` only; takes `defaultPage()`, sets imageable area to full paper dimensions, and draws one page. It compares image/paper landscape, rotates 90° on mismatch, then stretches to imageable width/height; no aspect-preserving fit or explicit crop at this stage (`services/DesktopIoServices.kt:51-86`). Imports of `OrientationRequested`, `MediaSizeName`, `MediaPrintableArea` are not actual requests (`:8-12`). No explicit media, orientation, DPI, cut, or printer-specific setting is submitted; driver may constrain the requested area.
+- `printJob.print(attributes)` returning successfully yields “sent” and controller marks `accepted`; exceptions produce an error string. Inspected code has no job ID, queue confirmation or retry (`services/DesktopIoServices.kt:88-90`; `controller/DesktopBoothController.kt:774-790`). Return is not proof of paper output.

@@ -1,0 +1,12 @@
+{
+  "status": "FAIL",
+  "cdp": "http://127.0.0.1:9223",
+  "operatorEnabled": false,
+  "failures": [
+    {
+      "message": "runner aborted",
+      "detail": "Error: {\"exceptionId\":1,\"text\":\"Uncaught\",\"lineNumber\":0,\"columnNumber\":73,\"scriptId\":\"61\",\"exception\":{\"type\":\"object\",\"subtype\":\"error\",\"className\":\"SyntaxError\",\"description\":\"SyntaxError: Unexpected end of input\",\"objectId\":\"-2422053947693755765.2.2\"}}\n    at run (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/ui-transformation/mounted-tauri-cdp.mjs:50:38)\n    at async completeCustomer (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/ui-transformation/mounted-tauri-cdp.mjs:117:20)\n    at async file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/ui-transformation/mounted-tauri-cdp.mjs:179:5"
+    }
+  ],
+  "observations": []
+}

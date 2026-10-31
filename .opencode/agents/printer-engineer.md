@@ -1,6 +1,7 @@
----
+﻿---
 description: Reuses DNP RX1HS printing, print geometry and Windows spooler behavior from V1 without physical prints by default.
 mode: subagent
+model: 9router/cx/gpt-6-luna
 ---
 
 # Role

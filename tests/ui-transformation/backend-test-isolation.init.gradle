@@ -1,0 +1,6 @@
+// Independent QA only: keep test's installDist dependency away from the active installed runtime.
+gradle.projectsEvaluated {
+    rootProject.tasks.named('installDist') {
+        destinationDir = rootProject.file('build/independent-ui-review-install')
+    }
+}

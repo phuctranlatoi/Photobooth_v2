@@ -1,0 +1,43 @@
+{
+  "viewport": [
+    1280,
+    800
+  ],
+  "scrollWidth": 1280,
+  "clientWidth": 1280,
+  "controls": [
+    {
+      "text": "Operator · local dev",
+      "w": 134.2375030517578,
+      "h": 48,
+      "disabled": false
+    },
+    {
+      "text": "Bridge diagnostics",
+      "w": 127.0374984741211,
+      "h": 48,
+      "disabled": false
+    },
+    {
+      "text": "Confirm dryrun↗",
+      "w": 430.7250061035156,
+      "h": 64,
+      "disabled": false
+    },
+    {
+      "text": "Back←",
+      "w": 131.6875,
+      "h": 63.60000228881836,
+      "disabled": false
+    }
+  ],
+  "images": [
+    {
+      "alt": "Authoritative Kotlin composed dryrun preview",
+      "naturalWidth": 402,
+      "naturalHeight": 600,
+      "complete": true
+    }
+  ],
+  "text": "Operator · local dev\nBridge diagnostics\nLE SOUVENIR\nTHE PHOTO STUDIO\nSIMULATOR SAMPLE\nNo real payment · No paper printing · No revenue\nA LITTLE MOMENT. A LASTING MEMORY.\nPRINT PENDING\n\n06 / ONE LAST LOOK\n\nPreview · dryrun\n\nYour actual composed output, with its original proportions preserved.\n\nREADY TO COMPOSE YOUR KEEPSAKE\n\nSynthetic strip fixture\nCopies\n2\nFrame\nsynthetic-border\n\nNo paper will print. No sale will be recorded.\n\nConfirm dryrun\n↗\nBack\n←\nMade for moments together.\nLE SOUVENIR / INDEPENDENT V2"
+}

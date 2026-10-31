@@ -1,0 +1,11 @@
+{
+  "status": "FAIL",
+  "failures": [
+    {
+      "caseId": "SET-MUTATION",
+      "message": "mounted mutation failed",
+      "detail": "Error: Timeout: save ack\n    at wait (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/frontend/verify-settings-mutation.mjs:11:149)\n    at async file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/frontend/verify-settings-mutation.mjs:14:943"
+    }
+  ],
+  "observations": []
+}

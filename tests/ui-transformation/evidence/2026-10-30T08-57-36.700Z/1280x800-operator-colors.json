@@ -1,0 +1,120 @@
+{
+  "viewport": [
+    1280,
+    800
+  ],
+  "scrollWidth": 1280,
+  "clientWidth": 1280,
+  "controls": [
+    {
+      "text": "Close operator",
+      "w": 106.0250015258789,
+      "h": 48,
+      "disabled": false
+    },
+    {
+      "text": "Bridge diagnostics",
+      "w": 127.0374984741211,
+      "h": 48,
+      "disabled": false
+    },
+    {
+      "text": "Return to customer",
+      "w": 185.47500610351562,
+      "h": 64,
+      "disabled": false
+    },
+    {
+      "text": "Frames",
+      "w": 100.0625,
+      "h": 64,
+      "disabled": false
+    },
+    {
+      "text": "Layouts",
+      "w": 103.6624984741211,
+      "h": 64,
+      "disabled": false
+    },
+    {
+      "text": "Settings",
+      "w": 106.4625015258789,
+      "h": 64,
+      "disabled": false
+    },
+    {
+      "text": "Tools",
+      "w": 85.8375015258789,
+      "h": 64,
+      "disabled": false
+    },
+    {
+      "text": "Colors",
+      "w": 94.48750305175781,
+      "h": 64,
+      "disabled": false
+    },
+    {
+      "text": "Revenue",
+      "w": 109.5875015258789,
+      "h": 64,
+      "disabled": false
+    },
+    {
+      "text": "Color name",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "Description",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "Color adjustment sliders",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "Intensity",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "Import LUT",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "Enable LUT",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "Delete LUT",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "Save color",
+      "w": 110,
+      "h": 48,
+      "disabled": true
+    },
+    {
+      "text": "LUT & color library unavailable",
+      "w": 1135.2000732421875,
+      "h": 64,
+      "disabled": true
+    }
+  ],
+  "images": [],
+  "text": "Close operator\nBridge diagnostics\n\nLE SOUVENIR / PRIVATE WORKSPACE\n\nBehind the moments.\nReturn to customer\n\nSIMULATOR · Local development only. Not a production Admin ACL. No hardware or live services.\n\nFrames\nLayouts\nSettings\nTools\nColors\nRevenue\n\nSTUDIO OPERATIONS\n\nColors\n\nBackend state: IDLE · LOCAL_DEVELOPMENT_ONLY\n\nLUT & color library\n\nLUT import, removal and color adjustment require a backend asset-management contract.\n\nUnavailable controls\nColor name\nDescription\nColor adjustment sliders\nIntensity\nImport LUT\nEnable LUT\nDelete LUT\nSave color\nUnavailable in this build\nLooking for Studio?\n\nStudio is the customer layout-and-effect setup, not a separate capture or payment bypass. Return to the customer experience to use the connected simulator flow. Effects are unavailable."
+}
