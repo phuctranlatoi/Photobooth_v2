@@ -1,4 +1,18 @@
-# Printer hardware validation plan
+# Hardware Validation Plan and Current Evidence
+
+## 2026-10-31 independent status
+
+| Case | Status | Evidence |
+|---|---|---|
+| Canon initialization/session/Live View/capture/transfer/disposal | BLOCKED | No authorized device run or current command. Synthetic/reflection tests are not hardware evidence. |
+| USB unplug/replug and repeated capture | BLOCKED | No safe operator-supervised setup. |
+| Real Hot Folder writer/readiness/restart ownership | NOT-RUN | Synthetic coverage only: historical 24-test result described in `TEST_RESULTS.md:75-79`; source tests do not establish a real producer. |
+| DNP discovery/status | BLOCKED | Requires explicit read-only hardware authorization; no enumeration performed in this review. |
+| 5×15/10×15 spool/cut/physical output | BLOCKED | No print authorization. No paper was submitted or consumed. |
+| Mini-PC CPU/GPU/memory and countdown/Live View impact | NOT-RUN | No Mini PC runtime access. |
+| Physical output comparison with V1 | NOT-RUN | No V2 physical output and no V1 execution permitted. |
+
+No shell or hardware action was performed on 2026-10-31. The stages below remain a plan, not authorization.
 
 Status: **REAL HARDWARE NOT TESTED**. Offline disabled-port/fake-boundary tests passed (see `HARDWARE_PORT_INDEPENDENT_REVIEW.md`), but they are not discovery, spooler, cut or output evidence. This remains a future plan, not authorization. No printer discovery, driver inspection, device access, spooler reset, driver setting changes or print was performed. V1 remains read-only; all synthetic fixtures, outputs and logs must live in V2-owned locations. Never record customer photos, credentials or printer secrets.
 

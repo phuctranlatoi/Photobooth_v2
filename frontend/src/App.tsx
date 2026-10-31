@@ -3,6 +3,7 @@ import { motion, useReducedMotion } from 'motion/react';
 import { ArrowUpRight, CheckCircle2, CircleAlert, Cable, FlaskConical } from 'lucide-react';
 import { bridge, type Bridge, type Health } from './bridge';
 import { Simulator } from './Simulator';
+import { KioskSimulator } from './KioskSimulator';
 import { Operator } from './Operator';
 export function App({ client = bridge }: { client?: Bridge }) {
   const [health, setHealth] = useState<Health>();
@@ -20,7 +21,7 @@ export function App({ client = bridge }: { client?: Bridge }) {
     catch (e) { if (mounted.current) setError(typeof e === 'string' ? e : e instanceof Error ? e.message : 'Bridge unavailable'); }
     finally { latch.current = false; if (mounted.current) setBusy(false); }
   }
-   if(client===bridge&&!diagnostics)return <div className="simulator-app">{!operator&&import.meta.env.DEV&&<div className="diagnostic-toggle"><button data-testid="operator-entry" onClick={()=>setOperator(true)}>Operator · local dev</button><button onClick={()=>setDiagnostics(true)}>Bridge diagnostics</button></div>}<div hidden={operator}><Simulator onOperator={()=>setOperator(true)}/></div>{operator&&<Operator onClose={()=>setOperator(false)}/>}</div>;
+   if(client===bridge&&!diagnostics)return <KioskSimulator/>;
   return <div className="kiosk">
     <header><span className="wordmark">LE SOUVENIR</span><span className="badge"><FlaskConical size={18}/> V2 · ARCHITECTURE PROOF</span></header>
     <main>

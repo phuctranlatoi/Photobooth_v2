@@ -1,5 +1,60 @@
 # TASK_BOARD.md
 
+## Superseding active milestone board (2026-11-01)
+
+| Task | Status | Verification |
+|---|---|---|
+| Milestones 1–6 baseline migration/integration | **COMPLETED / VERIFIED** | Current automated baseline and migrated UI/operator inventory are complete for this scope. |
+| Frontend regression | **COMPLETED / PASS-AUTOMATED** | `npm test`: 7/7 files, 29/29 tests, exit 0. |
+| Frontend production build | **COMPLETED / PASS-AUTOMATED** | `npm run build`: TypeScript + Vite build exit 0; 2,014 modules. |
+| Backend regression | **COMPLETED / PASS-AUTOMATED** | Forced offline Gradle run: 12/12 suites, 42/42 tests, no failures/errors/skips. |
+| Timeout fixture isolation | **COMPLETED / VERIFIED** | `timeoutAutoPrintNoSaleAndCancelMatrix()` passes in fresh JUnit XML. |
+| Customer/operator migration inventory | **COMPLETED / VERIFIED** | 11 customer screens; 6 operator tabs; Tools and Settings migrated. |
+| Real Canon DSLR validation | **BLOCKED / NOT-RUN** | Requires explicit operator authorization and safe hardware setup. |
+| Real DNP printer/output validation | **BLOCKED / NOT-RUN** | Requires explicit authorization; no physical print was submitted. |
+| Physical touch, installer, production providers, licensing | **OPEN RELEASE GATES** | Automated green status does not satisfy these gates. |
+
+**Current automated regressions: 0. Overall product release remains blocked by the non-automated gates above.** Older board snapshots below are historical and superseded for active-task status.
+
+## Current evidence status (2026-10-31)
+
+| Item | Current status |
+|---|---|
+| Frontend | Reported actual: 20 tests / 6 files passed; build passed. Not rerun for this note. |
+| Backend | Reported actual: 42 tests, 1 failure. Not rerun for this note. |
+| Implementation | Three attempts remain **BLOCKED** pending an independently verified checkpoint; no app edits authorized. |
+| Master audit | 17-state enumeration correction/acceptance unresolved; earlier accepted-Beauty claim rejected. |
+| Next gate | Actual V2 source snapshot, with manifest and hash verification; only then consider source-copy/implementation work. No speculative source-copy. |
+
+No V1 forensic untouched claim is supported by these statuses.
+
+## Current checkpoint / next work (2026-10-31; reported, not independently rerun)
+
+| Item | Status | Acceptance / constraint |
+|---|---|---|
+| V2 checkpoint | Initial HEAD-only claim **REJECTED**; conditional archive included stale tests. Architect correction in progress. | Must produce and independently verify recoverable-source manifest before app edits. Backend conditional implementation attempt is **BLOCKED** because no verified backup manifest exists. |
+| Frontend | Reported 20 tests / 6 files pass; build pass. | Preserve as reported evidence; no rerun in this documentation update. |
+| Backend | Reported 42 tests, one failure; shared settings fixture/state across six engines diagnosed. | Approved test-only change: isolate six engine fixtures and offline harness. Retain persisted shared-settings integration coverage. |
+| Legacy audit | Four auditor docs produced; independent review rejected unsupported accepted-Beauty claims, unreliable Tools taxonomy, and missing config coverage. | Auditor correction in progress; no full audit completion claim. |
+| Frontend/camera slices | Conditional, awaiting verified snapshot. | No app edits before checkpoint verification; no background completion promise. |
+
+Next task order: verified checkpoint → test-only isolation fix with integration assertions → architect-approved bounded slices. Specialist source-linked docs are source inventories only.
+
+## Coordination snapshot (2026-10-31; reported status, not gate evidence)
+
+| Workstream | Reported agent/status | Scope note |
+|---|---|---|
+| Legacy inventory | legacy-auditor `ses_e70a11911ffeZ8XCL7SqnXDk7b` — inventory | Not a claim of full audit completion. |
+| Architecture checkpoint | architect `ses_e709d20e1ffewRrzeoisMXvDQ9` — pending | No checkpoint approval/completion claimed. |
+| Camera baseline | camera `ses_e709cf659ffePXgtKXyGcPQnQG` — audit complete | Audit report only; no physical camera proof. |
+| Printer baseline | printer — audit complete | See `PRINTER_BASELINE_INVENTORY.md`; no printer/device operation or physical print. |
+| UI baseline | UI `ses_e709bb9fbffeESyRONVXSFWre1` — source comparison complete | See `UI_BASELINE_COMPARISON.md`; source comparison, not screenshot or mounted parity. |
+| Static review | tester `ses_e709ba21effeLwcg8O494bXq3n` — static review complete | See `MIGRATION_TEST_RESULTS.md`; no new test run implied. |
+| Backend baseline | backend `ses_e709b7eccffeDobwsekw4JVqZj` — audit complete | Audit only, not full implementation. |
+| Frontend slice | frontend `ses_e7098a611ffelkffCXMgKv6Z5i` — preparing slice | No slice completion claimed. |
+
+User authorization now permits scoped V2-only shell checkpoint/offline tests/builds, with all temp/cache/output paths confined to V2. No V1 execution, production integration, hardware/device operation, or physical print is authorized. V1 untouched forensic verification remains **NOT VERIFIED**; agent reports describe read-only work only. Preserve existing source; no redesign in this baseline task.
+
 ## Independent gated work board
 
 | ID | Deliverable | Owner | Status / acceptance |

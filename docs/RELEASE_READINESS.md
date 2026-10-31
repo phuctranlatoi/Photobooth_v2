@@ -1,35 +1,72 @@
 # Release Readiness Checklist — V2
 
+## Independent gate decision — 2026-10-31
+
+**VERDICT: BLOCK RELEASE.** A scoped offline pre-change baseline was run: frontend tests/build exited 0, but the fresh backend run executed 42 tests with 1 timeout failure. Synthetic evidence does not establish full baseline parity, real hardware, production integrations, installed persistence, kiosk touch usability, packaging, recovery, or legal redistribution.
+
+### Release blockers by severity
+
+| Severity | Finding | Required release evidence |
+|---|---|---|
+| CRITICAL | No real Canon/DNP validation; print success and revenue cannot be certified from mocks. | Authorized Canon lifecycle/unplug/repeat tests and supervised DNP 5×15/10×15 queue plus physical-output evidence, with no uncertain retry. |
+| CRITICAL | Production PayOS/Neon/Cloudinary paths are intentionally untested. | Approved sandbox/non-production E2E proving signature verification, idempotency, reconciliation, no secret logging and revenue only after confirmed accepted print. No production write. |
+| HIGH | Fresh backend baseline fails 1/42; wrapper also mishandles benign Gradle stderr. | Diagnose the timeout without silently changing behavior, repair/approve harness handling, then rerun changed slice and full offline suite. Frontend test/build currently pass. |
+| HIGH | Full V1 screen/state/settings parity is not demonstrated by current synthetic subset. | Traceable regression matrix for every audited V1 path, cancellation and timeout, with reviewer signoff for any architectural change. |
+| HIGH | Installed settings persistence, power loss, crash/restart and duplicate confirmation across restart remain unproven. | Clean-install and recovery tests using V2 identity/paths only. |
+| HIGH | 16:10 physical touchscreen, scaling, target size, overflow, feedback, rapid taps and preview aspect are untested. | Operator-observed kiosk run on target display plus screenshots/video and measurements. |
+| MEDIUM | Isolation is source/script constrained but not forensically proven. | Pre/post V1 metadata/hash snapshot by an authorized external procedure, while never reading secrets/customer data or executing V1. |
+| MEDIUM | Canon SDK, ONNX/model, JRE/JNA and other redistribution rights remain unresolved. | Written legal/license disposition and installer manifest before distribution. |
+
+### Isolation finding
+
+Static evidence supports narrow V2 confinement: `backend/test-foundation.ps1:3-12` places temp, Gradle home, user home and project cache under V2 and invokes a V2-local Gradle distribution; `OperatorSettingsTest.kt:41` writes synthetic settings beneath V2 build output; simulator session outputs resolve beneath the V2 repository (`SimulatorSessionTest.kt:10-12,35-36`). `smoke-installed.ps1:8-15` starts only V2 `build/install/backend/bin` in simulator mode.
+
+This does **not** prove V1 was untouched. Static reading cannot observe prior processes, OS-level writes, child-process behavior, dependency/plugin behavior, junctions/symlinks, or filesystem changes outside inspected paths. No pre/post V1 snapshot was taken, and this review intentionally did not read V1 `.env`, customer images, runtime data, or execute any V1 command. `opencode.json` contains V1 path strings as deny/permission resources; path references alone are not writes, and the configuration is not an OS sandbox.
+
+### Signoff
+
+Release requires QA/reviewer, architect, camera/printer engineer, release engineer, legal/license owner and product owner signoff. Any IPC/session-authority, persistence, print/revenue boundary, or hardware lifecycle change requires explicit architectural reviewer signoff and targeted regression evidence.
+
+### Checkpoint/recovery gate — PENDING
+
+The currently reviewed `docs/CHECKPOINT.md` is **rejected as recovery evidence**: it identifies HEAD but does not prove an archive or exact manifest exists, conditionally says “If a manual checkpoint archive was created,” omits recovery coverage for the recorded dirty/untracked tree, and cites stale 10/4 passing counts instead of the fresh backend 42-with-1-failure and frontend 20-pass evidence. Its verified labels must not be used for release assurance.
+
+Do not use its `git checkout` instruction on the dirty working tree; checkout does not back up untracked or concurrent modified work and is not a validated recovery procedure. Release/checkpoint gate remains pending the architect's actual `.checkpoints` archive, hashes/manifest, dirty-file coverage and a non-destructive restore validation in a separate V2-owned location. No forensic claim that V1 was untouched is made.
+
+Backend and camera conditional implementation tasks correctly stopped **BLOCKED** at this gate. `CHECKPOINT+` was a filename misunderstanding; acceptance requires corrected `docs/CHECKPOINT.md` plus the architect-created `.checkpoints` source snapshot and manifest, independently verified before source changes. QA is not creating a duplicate backup. Current test evidence remains frontend 20/20 passed and backend 42 run with 1 failure.
+
 ## Milestone Gates (from AGENTS.md)
 
 | Gate | Name | Status | Evidence Required |
 |------|------|--------|-------------------|
-| **1** | Legacy Audit | 🟡 In Progress | All V1 features inventoried; docs written to V2 |
-| **2** | Hardware Bridge Proof | 🔲 Not Started | IPC works, Canon SDK loads, DNP enumerated, sidecar packages |
-| **3** | Touchscreen Design System | 🔲 Not Started | Component library + mock-state UI complete |
-| **4** | Feature Integration | 🔲 Not Started | Real backend connected; all flows E2E |
-| **5** | Release Readiness | 🔲 Not Started | Installer, kiosk verified, rollback tested |
+| **1** | Legacy Audit | ❌ REVIEW BLOCKED | Corrected source-linked inventory and row-level parity evidence; document existence/title is insufficient |
+| **2** | Hardware Bridge Proof | ⏳ PENDING / NOT ACCEPTED | IPC lifecycle plus real authorized Canon/DNP evidence and packaging; old reports are historical only |
+| **3** | Touchscreen Design System | ⏳ PENDING / NOT ACCEPTED | Current component evidence plus physical 16:10 touchscreen acceptance |
+| **4** | Feature Integration | ⏳ PENDING / NOT ACCEPTED | Real backend and all audited flows E2E; simulator evidence is insufficient |
+| **5** | Release Readiness | ❌ BLOCKED | Installer, kiosk, recovery, legal and real-hardware gates |
 
 ---
 
-## Gate 1: Legacy Audit — Current Status
+## Gate 1: Legacy Audit — Historical documents, not current acceptance
+
+`docs/PROGRESS.md` identifies historical documentation as unreliable. The rows below record artifact availability only; they do not establish correctness, completeness, checkpoint coverage, source acceptance, or a passed gate. Summary/master matrix titles such as “complete,” “full,” or “master” do not prove row-level coverage.
 
 | Deliverable | Status | Location |
 |-------------|--------|----------|
-| V1 Architecture Audit | ✅ Complete | `docs/01_V1_ARCHITECTURE_AUDIT.md` |
-| Feature & Screen Inventory | ✅ Complete | `docs/02_V1_FEATURE_AND_SCREEN_INVENTORY.md` |
-| Feature Parity Matrix | ⚠️ Needs Correction | `docs/03_FEATURE_PARITY_MATRIX.md` (per QA_REPORT.md) |
-| Admin & Settings Audit | 🟡 Partial | `docs/09_ADMIN_STUDIO_SETTINGS_AUDIT.md` |
-| **V2 Architecture** | ✅ Complete | `docs/V2_ARCHITECTURE.md` |
-| **IPC Contracts** | ✅ Complete | `docs/IPC_CONTRACTS.md` |
-| **Hardware POC Plan** | ✅ Complete | `docs/HARDWARE_POC_PLAN.md` |
-| **Data Flow** | ✅ Complete | `docs/DATA_FLOW.md` |
-| **Dependency & License Audit** | ✅ Complete | `docs/DEPENDENCY_AND_LICENSE_AUDIT.md` |
-| **Release Architecture** | ✅ Complete | `docs/RELEASE_ARCHITECTURE.md` |
-| **Blockers** | ✅ Complete | `docs/BLOCKERS.md` |
-| **Decisions (ADR)** | ✅ Complete | `docs/DECISIONS.md` |
+| V1 Architecture Audit | Historical artifact — review required | `docs/01_V1_ARCHITECTURE_AUDIT.md` |
+| Feature & Screen Inventory | Historical artifact — superseded/correction required | `docs/02_V1_FEATURE_AND_SCREEN_INVENTORY.md`; newer auditor inventory remains REVIEW BLOCKED |
+| Feature Parity Matrix | Historical artifact — correction required | `docs/03_FEATURE_PARITY_MATRIX.md`; master/full matrix titles do not establish coverage |
+| Admin & Settings Audit | Historical partial artifact | `docs/09_ADMIN_STUDIO_SETTINGS_AUDIT.md` |
+| **V2 Architecture** | Proposal/reference — not accepted by this gate | `docs/V2_ARCHITECTURE.md` |
+| **IPC Contracts** | Reference contract — implementation/architecture signoff still required | `docs/IPC_CONTRACTS.md` |
+| **Hardware POC Plan** | Plan only — not execution evidence | `docs/HARDWARE_POC_PLAN.md` |
+| **Data Flow** | Reference artifact — current-source verification required | `docs/DATA_FLOW.md` |
+| **Dependency & License Audit** | Historical artifact — unresolved licenses remain | `docs/DEPENDENCY_AND_LICENSE_AUDIT.md` |
+| **Release Architecture** | Proposal/reference — not release acceptance | `docs/RELEASE_ARCHITECTURE.md` |
+| **Blockers** | Tracking artifact only | `docs/BLOCKERS.md` |
+| **Decisions (ADR)** | Decision records available; implementation verification separate | `docs/DECISIONS.md` |
 
-### Gate 1 Blockers (from QA_REPORT.md)
+### Gate 1 blockers (historical list plus superseding review)
 1. Feature Parity Matrix has over-claimed coverage — must correct
 2. State machine guard enforcement not verified
 3. Revenue predicate missing (no separate REVENUE state)
@@ -39,7 +76,7 @@
 7. Camera selection logic incomplete in UI
 8. Optional features (video, Firebase, Neon) marked observed but not verified
 
-**Action**: Specialist sub-agents must open all "Observed import" files and add tests before Gate 1 passes.
+The historical list is retained as evidence, but it is not exhaustive or current acceptance criteria. Superseding master-auditor review in `MIGRATION_TEST_RESULTS.md` is **REVIEW BLOCKED**, including corrected 17-member V1 enum accounting, unsupported Beauty acceptance claims, admin/tool taxonomy errors, and missing per-setting test traceability. Gate 1 requires corrected source-linked rows and independent review; creating additional summary matrices does not pass it.
 
 ---
 

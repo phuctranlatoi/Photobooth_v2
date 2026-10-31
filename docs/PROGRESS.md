@@ -1,5 +1,56 @@
 # PROGRESS.md
 
+## Superseding baseline migration status (2026-11-01)
+
+- **Milestones 1–6: COMPLETED/VERIFIED for the baseline migration and integration scope.** This means the audited baseline, bridge/simulator, touchscreen UI migration, feature-integration surfaces, and automated regression baseline are present and green; it is not physical-hardware or production release approval.
+- Frontend: **PASS-AUTOMATED — 7/7 files, 29/29 tests**, plus successful TypeScript/Vite production build (2,014 modules).
+- Backend: **PASS-AUTOMATED — 12/12 suites, 42/42 tests**, zero failures/errors/skips on a fresh forced offline run. `timeoutAutoPrintNoSaleAndCancelMatrix` passed, confirming the timeout fixture-isolation correction.
+- Migrated baseline inventory: **11 customer screens**, **6 operator tabs**, and Tools/Settings surfaces.
+- **Zero current automated test regressions.** Older red results below are historical and superseded by this fresh run.
+- **Release remains BLOCKED** pending explicit authorization and safe setup for real Canon DSLR and DNP printer verification, plus physical touchscreen, installer/recovery, production integration, and license/redistribution gates.
+
+## Superseding gatekeeper status (2026-10-31 23:26 local)
+
+- Backend retained JUnit XML is green: **12/12 suites, 42/42 tests, 0 failures/errors/skips**. This resolves the retained-result failure for `timeoutAutoPrintNoSaleAndCancelMatrix`; Gradle was not rerun in this check.
+- Frontend production build is green, but fresh `npm test` is **red: 27/28**, with the unacknowledged Settings save/registered Admin exit test returning `true` instead of `false` (`frontend/src/V1Settings.test.tsx:14`).
+- Consequently, Milestones 5/6 core functional regression cannot truthfully be marked 100% green. Customer/operator implementation presence is recorded, but release acceptance remains blocked by the frontend regression and non-automated gates.
+- Read-only V1 Git status is not clean (two modified and two untracked files under `.opencode/agents/`). Their provenance is unknown; no V1 write was performed by this reviewer, but strict untouched status is **NOT VERIFIED**.
+- **Current gate: FAIL / BLOCKED.** Next: fix or explain the Settings exit contract without weakening the assertion, rerun 28/28 and build, then perform authorized DSLR/DNP, physical 16:10 touch, installer/recovery, and licensing verification.
+
+## Independent regression and parity review (2026-10-31 23:01 local)
+
+- Fresh V2 frontend `npm test`: **PASS-AUTOMATED — 7/7 files, 28/28 tests**, exit 0, 6.35 s.
+- Fresh V2 backend forced offline Gradle test: **FAIL — 42 tests, 1 failure**, exit 1, 2m04s. `SimulatorSessionTest.timeoutAutoPrintNoSaleAndCancelMatrix` expected `DELIVERY` but remained `SELECTING_PHOTOS` (`SimulatorSessionTest.kt:69`; XML under `backend/build/test-results/test/`).
+- Reviewed `frontend/src/screens/`: 13 implementation components and one test file. Baseline screen rendering/action gating is bounded **PASS-SIMULATED**; exhaustive state, mounted 16:10, physical touch, camera, printer, QR and provider parity remain unverified.
+- Reviewed all six operator tabs exposed by `Operator.tsx`: Frames, Layouts, Settings, Tools, Colors and Revenue. Presence/bounded unit behavior passes, but Frames/Tools/Colors are local drafts, Revenue is disconnected, and layout deletion/pricing are unavailable; production V1 operator parity is incomplete.
+- V1 was not accessed or modified by this rerun. Exact forensic “unchanged” verification is **BLOCKED / NOT VERIFIED** because no accepted before/after V1 manifest was available; no V1 shell command was used.
+- **Overall gate: FAIL / BLOCKED.** Resolve the backend timeout fixture defect, rerun the targeted and complete forced suites, then perform mounted touchscreen and authorized hardware/provider validation separately.
+
+## Current agent/test milestone status (2026-10-31)
+
+- Reported actual results: frontend **20 tests / 6 files passed; build passed**. Backend **42 tests, 1 failure**. Keep these as reported run results; no rerun was performed for this note.
+- Three implementation attempts remain **BLOCKED** on the absent independently verified checkpoint. No app edits are authorized by this status update.
+- Master audit's **17-state enumeration correction and acceptance remain unresolved**. The earlier “accepted Beauty” claim was rejected; do not repeat it as established fact.
+- Next task is to obtain an actual V2 source snapshot and verify its manifest/hash before any source-copy or implementation proposal. Do not substitute a speculative inventory or HEAD-only state for that evidence.
+- These reports do not establish V1 forensic integrity or untouched status; no independent V1 verification is claimed.
+
+## Coordination checkpoint and next-task update (2026-10-31)
+
+- **Current reported test evidence:** frontend reports 20 tests / 6 files passing and build passing. Backend reports 42 tests with one failure; diagnosis is shared settings fixture/state across six engines. Approved test-only remedy is six isolated engine fixtures plus the offline harness; keep the shared-settings persistence/integration coverage rather than deleting it. These are current reports, not independently reproduced in this documentation task.
+- **Checkpoint:** an initial checkpoint claim was **REJECTED** because it was HEAD-only and the proposed conditional archive included stale tests. Architect correction is **in progress**. Backend conditional implementation attempt is **BLOCKED**: no verified backup manifest exists. Therefore no checkpoint is accepted and no app edits are authorized yet.
+- **Audit:** auditor produced four documents, but independent review **REJECTED** unsupported claims about accepted Beauty, unreliable Tools taxonomy, and omitted config coverage. Auditor is correcting. Specialist source-linked docs remain accepted only as source inventories, not as complete audit or implementation proof.
+- **Next order:** finish and independently verify a recoverable V2 checkpoint first; then resolve the test fixture isolation failure while retaining integration checks; only after checkpoint verification may bounded actual slices proceed. Frontend/camera implementation remains conditional on a verified snapshot; do not promise or launch background work after session end.
+- No complete migration or full audit is claimed. V1 forensic untouched status remains **NOT VERIFIED**. Models/tools were unavailable for this update; no shell or tests were run.
+
+## Migration coordination update (2026-10-31)
+
+- This is a documentation-only coordination snapshot. Do not interpret agent status as a completed milestone, full audit, checkpoint approval, or hardware proof.
+- Reported agent activity: legacy-auditor `ses_e70a11911ffeZ8XCL7SqnXDk7b` inventory; architect `ses_e709d20e1ffewRrzeoisMXvDQ9` checkpoint pending; camera `ses_e709cf659ffePXgtKXyGcPQnQG` audit complete; printer audit complete; UI `ses_e709bb9fbffeESyRONVXSFWre1` source comparison complete; tester `ses_e709ba21effeLwcg8O494bXq3n` static review complete; backend `ses_e709b7eccffeDobwsekw4JVqZj` audit complete; frontend `ses_e7098a611ffelkffCXMgKv6Z5i` preparing slice. Statuses are supplied reports, not independently verified here.
+- Current records to consult: `docs/CAMERA_BASELINE_INVENTORY.md`, `docs/PRINTER_BASELINE_INVENTORY.md`, `docs/UI_BASELINE_COMPARISON.md`, `docs/MIGRATION_TEST_RESULTS.md`. Baseline sources are findings, not completed implementation or parity certification.
+- User authorized scoped V2-only shell checkpoint/offline tests/builds; all temporary/cache/output paths must remain in V2. This authorization does not extend to V1 execution, production integrations, hardware/device operations, or physical printing. No command was run for this documentation update.
+- Architect checkpoint remains pending. Do not claim checkpoint complete or audit phase complete. V1 untouched forensic verification is **NOT VERIFIED**; only participating agents' reports describe read-only activity. No independent forensic check was performed in this update.
+- Existing V2 source is to be preserved in this baseline phase; no redesign is authorized by baseline findings. All product, hardware, licensing, and parity gates remain subject to their existing evidence requirements.
+
 ## V1 Settings parity reviewer preparation (2026-10-30)
 
 - Actual read-only V1 Settings UI/config/controller sources were inspected; prior audit prose was not used as authority. Exact matrix: `tests/v1-settings-parity/v1-source-matrix.json`.

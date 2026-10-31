@@ -1,0 +1,1465 @@
+{
+    "workspace":  "E:\\HK1_2026_2027\\PhotoboothDesktop_v2",
+    "createdUtc":  "2026-10-31T01:08:08.1482111Z",
+    "scope":  "Current dirty V2 source only; no V1 or runtime data",
+    "excluded":  [
+                     ".git",
+                     "node_modules",
+                     "build",
+                     "target",
+                     "dist",
+                     "caches",
+                     "runtime backend/config JSON",
+                     "all .env",
+                     "photos",
+                     "models",
+                     "generated images",
+                     "logs",
+                     "customer data"
+                 ],
+    "count":  206,
+    "files":  [
+                  {
+                      "path":  "agent_templates/architect.md",
+                      "sha256":  "5158e6e8f9c183ae81b7fea2aa698df59701b393af082debb4ce2d00f39b9ede",
+                      "bytes":  3449,
+                      "copySha256":  "5158e6e8f9c183ae81b7fea2aa698df59701b393af082debb4ce2d00f39b9ede",
+                      "verifySha256":  "5158e6e8f9c183ae81b7fea2aa698df59701b393af082debb4ce2d00f39b9ede"
+                  },
+                  {
+                      "path":  "agent_templates/backend-engineer.md",
+                      "sha256":  "348eb6dfa3b2aec7a3386cdee508ab287c2f4d0ec72fd45c8839cf00c1e2502e",
+                      "bytes":  3081,
+                      "copySha256":  "348eb6dfa3b2aec7a3386cdee508ab287c2f4d0ec72fd45c8839cf00c1e2502e",
+                      "verifySha256":  "348eb6dfa3b2aec7a3386cdee508ab287c2f4d0ec72fd45c8839cf00c1e2502e"
+                  },
+                  {
+                      "path":  "agent_templates/camera-engineer.md",
+                      "sha256":  "1d4620ba0be18cf8a8d458940ff0446d450cc5a40262667fabccf601be2b6ce5",
+                      "bytes":  2588,
+                      "copySha256":  "1d4620ba0be18cf8a8d458940ff0446d450cc5a40262667fabccf601be2b6ce5",
+                      "verifySha256":  "1d4620ba0be18cf8a8d458940ff0446d450cc5a40262667fabccf601be2b6ce5"
+                  },
+                  {
+                      "path":  "agent_templates/frontend-coder.md",
+                      "sha256":  "82303b97cc8fc52362c56ba41d671dd0aca9fce7dcf8d74589038f0143770669",
+                      "bytes":  2911,
+                      "copySha256":  "82303b97cc8fc52362c56ba41d671dd0aca9fce7dcf8d74589038f0143770669",
+                      "verifySha256":  "82303b97cc8fc52362c56ba41d671dd0aca9fce7dcf8d74589038f0143770669"
+                  },
+                  {
+                      "path":  "agent_templates/legacy-auditor.md",
+                      "sha256":  "58cdc521f4c689347f5e14f076936e590221166297602087a39e822482d392b8",
+                      "bytes":  3476,
+                      "copySha256":  "58cdc521f4c689347f5e14f076936e590221166297602087a39e822482d392b8",
+                      "verifySha256":  "58cdc521f4c689347f5e14f076936e590221166297602087a39e822482d392b8"
+                  },
+                  {
+                      "path":  "agent_templates/orchestrator.md",
+                      "sha256":  "43682f00cc328ef2f264667011cf002832c712d02949cd099ac348f38e3eaa09",
+                      "bytes":  4410,
+                      "copySha256":  "43682f00cc328ef2f264667011cf002832c712d02949cd099ac348f38e3eaa09",
+                      "verifySha256":  "43682f00cc328ef2f264667011cf002832c712d02949cd099ac348f38e3eaa09"
+                  },
+                  {
+                      "path":  "agent_templates/printer-engineer.md",
+                      "sha256":  "839b0f0d31e325f08b438a7be2341f9c9f35e4d1dbc83328f073b10db04b7ae7",
+                      "bytes":  2523,
+                      "copySha256":  "839b0f0d31e325f08b438a7be2341f9c9f35e4d1dbc83328f073b10db04b7ae7",
+                      "verifySha256":  "839b0f0d31e325f08b438a7be2341f9c9f35e4d1dbc83328f073b10db04b7ae7"
+                  },
+                  {
+                      "path":  "agent_templates/tester-reviewer.md",
+                      "sha256":  "1cd47fac7c00b1939414e92dbf36a3297e01511cf37ff4a424380e142d24128d",
+                      "bytes":  2877,
+                      "copySha256":  "1cd47fac7c00b1939414e92dbf36a3297e01511cf37ff4a424380e142d24128d",
+                      "verifySha256":  "1cd47fac7c00b1939414e92dbf36a3297e01511cf37ff4a424380e142d24128d"
+                  },
+                  {
+                      "path":  "agent_templates/ui-designer.md",
+                      "sha256":  "d38028466033949a672966fcb8a6a097e2a2a93df3c5b313b69e2d469b108bdd",
+                      "bytes":  3298,
+                      "copySha256":  "d38028466033949a672966fcb8a6a097e2a2a93df3c5b313b69e2d469b108bdd",
+                      "verifySha256":  "d38028466033949a672966fcb8a6a097e2a2a93df3c5b313b69e2d469b108bdd"
+                  },
+                  {
+                      "path":  "AGENTS.md",
+                      "sha256":  "5e8e68158bd1ddce056b9c29e8b406235058dfcafee8e512dee6e9d7cf4a7221",
+                      "bytes":  3890,
+                      "copySha256":  "5e8e68158bd1ddce056b9c29e8b406235058dfcafee8e512dee6e9d7cf4a7221",
+                      "verifySha256":  "5e8e68158bd1ddce056b9c29e8b406235058dfcafee8e512dee6e9d7cf4a7221"
+                  },
+                  {
+                      "path":  "backend/build.gradle.kts",
+                      "sha256":  "5d621bf41ae53a0ae3316e06d7a1b6aea0664d60d580cffab59be52cd0742de7",
+                      "bytes":  561,
+                      "copySha256":  "5d621bf41ae53a0ae3316e06d7a1b6aea0664d60d580cffab59be52cd0742de7",
+                      "verifySha256":  "5d621bf41ae53a0ae3316e06d7a1b6aea0664d60d580cffab59be52cd0742de7"
+                  },
+                  {
+                      "path":  "backend/settings.gradle.kts",
+                      "sha256":  "065e27b63e0d77e5b05852f634cd3754246d7016c354779fb3436aa459c9d3bc",
+                      "bytes":  54,
+                      "copySha256":  "065e27b63e0d77e5b05852f634cd3754246d7016c354779fb3436aa459c9d3bc",
+                      "verifySha256":  "065e27b63e0d77e5b05852f634cd3754246d7016c354779fb3436aa459c9d3bc"
+                  },
+                  {
+                      "path":  "backend/smoke-installed.ps1",
+                      "sha256":  "5f3484c225fe874ec83dc550594ac0739e8acb56454062733bc2c366a203b29f",
+                      "bytes":  3080,
+                      "copySha256":  "5f3484c225fe874ec83dc550594ac0739e8acb56454062733bc2c366a203b29f",
+                      "verifySha256":  "5f3484c225fe874ec83dc550594ac0739e8acb56454062733bc2c366a203b29f"
+                  },
+                  {
+                      "path":  "backend/src/main/kotlin/com/lesouvenir/v2/camera/legacy/IsolatedHotFolder.kt",
+                      "sha256":  "13b631f70fcd04400269e3cb293011033a5955fe639bd509ad1166c850a374b5",
+                      "bytes":  6224,
+                      "copySha256":  "13b631f70fcd04400269e3cb293011033a5955fe639bd509ad1166c850a374b5",
+                      "verifySha256":  "13b631f70fcd04400269e3cb293011033a5955fe639bd509ad1166c850a374b5"
+                  },
+                  {
+                      "path":  "backend/src/main/kotlin/com/lesouvenir/v2/camera/legacy/LegacyCameraPort.kt",
+                      "sha256":  "14c7f4315b7c04b5cc35602a79b4f5c674681f6a72c906a4277b0fca11dc584d",
+                      "bytes":  5688,
+                      "copySha256":  "14c7f4315b7c04b5cc35602a79b4f5c674681f6a72c906a4277b0fca11dc584d",
+                      "verifySha256":  "14c7f4315b7c04b5cc35602a79b4f5c674681f6a72c906a4277b0fca11dc584d"
+                  },
+                  {
+                      "path":  "backend/src/main/kotlin/com/lesouvenir/v2/camera/legacy/LegacyOriginalStore.kt",
+                      "sha256":  "ccd220a82cb0b6977e148f48bd1e851902d369e2b3f17fe4c08d1f09101a3bac",
+                      "bytes":  1297,
+                      "copySha256":  "ccd220a82cb0b6977e148f48bd1e851902d369e2b3f17fe4c08d1f09101a3bac",
+                      "verifySha256":  "ccd220a82cb0b6977e148f48bd1e851902d369e2b3f17fe4c08d1f09101a3bac"
+                  },
+                  {
+                      "path":  "backend/src/main/kotlin/com/lesouvenir/v2/camera/simulator/SimulatorCamera.kt",
+                      "sha256":  "572f8afbd0aa52208b76b75bf12033f9ce5888f36d3e02b93098de2d0c7dba40",
+                      "bytes":  5157,
+                      "copySha256":  "572f8afbd0aa52208b76b75bf12033f9ce5888f36d3e02b93098de2d0c7dba40",
+                      "verifySha256":  "572f8afbd0aa52208b76b75bf12033f9ce5888f36d3e02b93098de2d0c7dba40"
+                  },
+                  {
+                      "path":  "backend/src/main/kotlin/com/lesouvenir/v2/foundation/LayoutMode.kt",
+                      "sha256":  "d4213e5f1c5e1c211f9d65e5c90ffdae4ea0d7dd4eeea068352d189230921c12",
+                      "bytes":  2272,
+                      "copySha256":  "d4213e5f1c5e1c211f9d65e5c90ffdae4ea0d7dd4eeea068352d189230921c12",
+                      "verifySha256":  "d4213e5f1c5e1c211f9d65e5c90ffdae4ea0d7dd4eeea068352d189230921c12"
+                  },
+                  {
+                      "path":  "backend/src/main/kotlin/com/lesouvenir/v2/foundation/PricingCalculator.kt",
+                      "sha256":  "04af1c205299dc451cef61b6b79dc1a5fd5894623fd9871d2888719bb83548e2",
+                      "bytes":  1647,
+                      "copySha256":  "04af1c205299dc451cef61b6b79dc1a5fd5894623fd9871d2888719bb83548e2",
+                      "verifySha256":  "04af1c205299dc451cef61b6b79dc1a5fd5894623fd9871d2888719bb83548e2"
+                  },
+                  {
+                      "path":  "backend/src/main/kotlin/com/lesouvenir/v2/foundation/SessionStateMachine.kt",
+                      "sha256":  "330831f3d59e5fbe3f9c9fa2b896b58352afa55ae7dcf8697a71cfc18c38b55a",
+                      "bytes":  824,
+                      "copySha256":  "330831f3d59e5fbe3f9c9fa2b896b58352afa55ae7dcf8697a71cfc18c38b55a",
+                      "verifySha256":  "330831f3d59e5fbe3f9c9fa2b896b58352afa55ae7dcf8697a71cfc18c38b55a"
+                  },
+                  {
+                      "path":  "backend/src/main/kotlin/com/lesouvenir/v2/foundation/SimulatorAuthorization.kt",
+                      "sha256":  "1f56cff64e55a0e11cc158856e40ce0a55851a05c4b8fda467cd6bb76a760f0f",
+                      "bytes":  431,
+                      "copySha256":  "1f56cff64e55a0e11cc158856e40ce0a55851a05c4b8fda467cd6bb76a760f0f",
+                      "verifySha256":  "1f56cff64e55a0e11cc158856e40ce0a55851a05c4b8fda467cd6bb76a760f0f"
+                  },
+                  {
+                      "path":  "backend/src/main/kotlin/com/lesouvenir/v2/integrations/CloudinaryClient.kt",
+                      "sha256":  "bf30112ca090d654bdd2752defcfd428ecd1e2a5413fac5f434b928db7146664",
+                      "bytes":  3116,
+                      "copySha256":  "bf30112ca090d654bdd2752defcfd428ecd1e2a5413fac5f434b928db7146664",
+                      "verifySha256":  "bf30112ca090d654bdd2752defcfd428ecd1e2a5413fac5f434b928db7146664"
+                  },
+                  {
+                      "path":  "backend/src/main/kotlin/com/lesouvenir/v2/integrations/PayOsClient.kt",
+                      "sha256":  "9df7a8d68277b6467e2eb883b8daec85d6e78645dd32d6d451ca16bb7e7f2d1c",
+                      "bytes":  2561,
+                      "copySha256":  "9df7a8d68277b6467e2eb883b8daec85d6e78645dd32d6d451ca16bb7e7f2d1c",
+                      "verifySha256":  "9df7a8d68277b6467e2eb883b8daec85d6e78645dd32d6d451ca16bb7e7f2d1c"
+                  },
+                  {
+                      "path":  "backend/src/main/kotlin/com/lesouvenir/v2/integrations/RevenueRecognition.kt",
+                      "sha256":  "b595eb402340c397af92a367995bd7c2cc546c7ef3e5c598ed283fcb8385479d",
+                      "bytes":  2821,
+                      "copySha256":  "b595eb402340c397af92a367995bd7c2cc546c7ef3e5c598ed283fcb8385479d",
+                      "verifySha256":  "b595eb402340c397af92a367995bd7c2cc546c7ef3e5c598ed283fcb8385479d"
+                  },
+                  {
+                      "path":  "backend/src/main/kotlin/com/lesouvenir/v2/integrations/SafeTransport.kt",
+                      "sha256":  "8880a4858ad8236aa2c9f8ef850cc6dfab4d9ffeaa05fa72b4c02702741d46cc",
+                      "bytes":  5194,
+                      "copySha256":  "8880a4858ad8236aa2c9f8ef850cc6dfab4d9ffeaa05fa72b4c02702741d46cc",
+                      "verifySha256":  "8880a4858ad8236aa2c9f8ef850cc6dfab4d9ffeaa05fa72b4c02702741d46cc"
+                  },
+                  {
+                      "path":  "backend/src/main/kotlin/com/lesouvenir/v2/integrations/SharedApiClients.kt",
+                      "sha256":  "e8f62bb1df4cb5b5e3018f4dd4e9f9e4066f491fd7c6b65e168ea6df1a93dd27",
+                      "bytes":  4165,
+                      "copySha256":  "e8f62bb1df4cb5b5e3018f4dd4e9f9e4066f491fd7c6b65e168ea6df1a93dd27",
+                      "verifySha256":  "e8f62bb1df4cb5b5e3018f4dd4e9f9e4066f491fd7c6b65e168ea6df1a93dd27"
+                  },
+                  {
+                      "path":  "backend/src/main/kotlin/com/lesouvenir/v2/ipc/IpcMain.kt",
+                      "sha256":  "13ea01e8735e5c1c02c454b4e2d2cbac18d40379cdedbbc2f70cdb05689d082a",
+                      "bytes":  5366,
+                      "copySha256":  "13ea01e8735e5c1c02c454b4e2d2cbac18d40379cdedbbc2f70cdb05689d082a",
+                      "verifySha256":  "13ea01e8735e5c1c02c454b4e2d2cbac18d40379cdedbbc2f70cdb05689d082a"
+                  },
+                  {
+                      "path":  "backend/src/main/kotlin/com/lesouvenir/v2/ipc/OperatorLayoutStore.kt",
+                      "sha256":  "99cc39ecfff136aba7e890d9bb8251a3042a9f977b815212fab9f6e92fad6b24",
+                      "bytes":  3446,
+                      "copySha256":  "99cc39ecfff136aba7e890d9bb8251a3042a9f977b815212fab9f6e92fad6b24",
+                      "verifySha256":  "99cc39ecfff136aba7e890d9bb8251a3042a9f977b815212fab9f6e92fad6b24"
+                  },
+                  {
+                      "path":  "backend/src/main/kotlin/com/lesouvenir/v2/ipc/OperatorSettingsStore.kt",
+                      "sha256":  "e77ac5bc7ed434e61746ecda276b16e3cb943f10d61fa82590ba4eceb2258458",
+                      "bytes":  3697,
+                      "copySha256":  "e77ac5bc7ed434e61746ecda276b16e3cb943f10d61fa82590ba4eceb2258458",
+                      "verifySha256":  "e77ac5bc7ed434e61746ecda276b16e3cb943f10d61fa82590ba4eceb2258458"
+                  },
+                  {
+                      "path":  "backend/src/main/kotlin/com/lesouvenir/v2/ipc/SimulatorSessionEngine.kt",
+                      "sha256":  "5dee101c5440bc949637fa0c7526d6712db6cab123ae2d1d85c8ffc4313565ec",
+                      "bytes":  21988,
+                      "copySha256":  "5dee101c5440bc949637fa0c7526d6712db6cab123ae2d1d85c8ffc4313565ec",
+                      "verifySha256":  "5dee101c5440bc949637fa0c7526d6712db6cab123ae2d1d85c8ffc4313565ec"
+                  },
+                  {
+                      "path":  "backend/src/main/kotlin/com/lesouvenir/v2/printing/legacy/LegacyPrinter.kt",
+                      "sha256":  "b2619d8eca4bb06020970a09990b6985f0eefaa45199e6649df49267752fcaaa",
+                      "bytes":  4450,
+                      "copySha256":  "b2619d8eca4bb06020970a09990b6985f0eefaa45199e6649df49267752fcaaa",
+                      "verifySha256":  "b2619d8eca4bb06020970a09990b6985f0eefaa45199e6649df49267752fcaaa"
+                  },
+                  {
+                      "path":  "backend/src/main/kotlin/com/lesouvenir/v2/printing/SimulatorCompositor.kt",
+                      "sha256":  "65c42ab33920eb7485b8e7cd9e5763673be0f54c697e9a30d56f6c13bcd94552",
+                      "bytes":  5406,
+                      "copySha256":  "65c42ab33920eb7485b8e7cd9e5763673be0f54c697e9a30d56f6c13bcd94552",
+                      "verifySha256":  "65c42ab33920eb7485b8e7cd9e5763673be0f54c697e9a30d56f6c13bcd94552"
+                  },
+                  {
+                      "path":  "backend/src/test/kotlin/com/lesouvenir/v2/camera/legacy/IsolatedHotFolderTest.kt",
+                      "sha256":  "df01300d70f5fcc26ce490d062d846aeb07b25307e589fc64207e5d1202f72f7",
+                      "bytes":  3872,
+                      "copySha256":  "df01300d70f5fcc26ce490d062d846aeb07b25307e589fc64207e5d1202f72f7",
+                      "verifySha256":  "df01300d70f5fcc26ce490d062d846aeb07b25307e589fc64207e5d1202f72f7"
+                  },
+                  {
+                      "path":  "backend/src/test/kotlin/com/lesouvenir/v2/camera/legacy/LegacyCameraPortTest.kt",
+                      "sha256":  "f5d99e2562b296cdb2dfcde0a635682720963705dee946365aef7d7e4763f78c",
+                      "bytes":  1896,
+                      "copySha256":  "f5d99e2562b296cdb2dfcde0a635682720963705dee946365aef7d7e4763f78c",
+                      "verifySha256":  "f5d99e2562b296cdb2dfcde0a635682720963705dee946365aef7d7e4763f78c"
+                  },
+                  {
+                      "path":  "backend/src/test/kotlin/com/lesouvenir/v2/camera/simulator/SimulatorCameraTest.kt",
+                      "sha256":  "69a4f5decfb6837be6a90e98554d15f79ab2b704104777c72696f2b9fed8555d",
+                      "bytes":  2928,
+                      "copySha256":  "69a4f5decfb6837be6a90e98554d15f79ab2b704104777c72696f2b9fed8555d",
+                      "verifySha256":  "69a4f5decfb6837be6a90e98554d15f79ab2b704104777c72696f2b9fed8555d"
+                  },
+                  {
+                      "path":  "backend/src/test/kotlin/com/lesouvenir/v2/foundation/FoundationTest.kt",
+                      "sha256":  "8ad452461dbe3a8805b1728b64ae733241fe6b4a002dc579ba41ffb9607a4c17",
+                      "bytes":  2801,
+                      "copySha256":  "8ad452461dbe3a8805b1728b64ae733241fe6b4a002dc579ba41ffb9607a4c17",
+                      "verifySha256":  "8ad452461dbe3a8805b1728b64ae733241fe6b4a002dc579ba41ffb9607a4c17"
+                  },
+                  {
+                      "path":  "backend/src/test/kotlin/com/lesouvenir/v2/integrations/IntegrationContractTest.kt",
+                      "sha256":  "98245593fa8b99658dc9a7761e2e2125e2888b0f943090631e60474a72760cca",
+                      "bytes":  9195,
+                      "copySha256":  "98245593fa8b99658dc9a7761e2e2125e2888b0f943090631e60474a72760cca",
+                      "verifySha256":  "98245593fa8b99658dc9a7761e2e2125e2888b0f943090631e60474a72760cca"
+                  },
+                  {
+                      "path":  "backend/src/test/kotlin/com/lesouvenir/v2/integrations/RevenueRecognitionTest.kt",
+                      "sha256":  "59e68e8ee6aed759940b20adaadfb332bd4b7d9b8bc6fcb9bfc1de8aaaf0ec42",
+                      "bytes":  3174,
+                      "copySha256":  "59e68e8ee6aed759940b20adaadfb332bd4b7d9b8bc6fcb9bfc1de8aaaf0ec42",
+                      "verifySha256":  "59e68e8ee6aed759940b20adaadfb332bd4b7d9b8bc6fcb9bfc1de8aaaf0ec42"
+                  },
+                  {
+                      "path":  "backend/src/test/kotlin/com/lesouvenir/v2/ipc/BridgeTest.kt",
+                      "sha256":  "9d9021ec8ff89b875055dc63a7a8be86f9069ef76efffacbae59534da17fb0a9",
+                      "bytes":  6669,
+                      "copySha256":  "9d9021ec8ff89b875055dc63a7a8be86f9069ef76efffacbae59534da17fb0a9",
+                      "verifySha256":  "9d9021ec8ff89b875055dc63a7a8be86f9069ef76efffacbae59534da17fb0a9"
+                  },
+                  {
+                      "path":  "backend/src/test/kotlin/com/lesouvenir/v2/ipc/OperatorContractTest.kt",
+                      "sha256":  "f5c53813b72318f490b25b2f08675467d005d26beb7629067efc3be6df6da11e",
+                      "bytes":  4981,
+                      "copySha256":  "f5c53813b72318f490b25b2f08675467d005d26beb7629067efc3be6df6da11e",
+                      "verifySha256":  "f5c53813b72318f490b25b2f08675467d005d26beb7629067efc3be6df6da11e"
+                  },
+                  {
+                      "path":  "backend/src/test/kotlin/com/lesouvenir/v2/ipc/OperatorSettingsTest.kt",
+                      "sha256":  "cad7e0244a25dc213f8e960afd82ae5cd04fa05110d47f0c4bdf28d106cc5e88",
+                      "bytes":  4866,
+                      "copySha256":  "cad7e0244a25dc213f8e960afd82ae5cd04fa05110d47f0c4bdf28d106cc5e88",
+                      "verifySha256":  "cad7e0244a25dc213f8e960afd82ae5cd04fa05110d47f0c4bdf28d106cc5e88"
+                  },
+                  {
+                      "path":  "backend/src/test/kotlin/com/lesouvenir/v2/ipc/SimulatorSessionTest.kt",
+                      "sha256":  "9fd191feff3a1eeef0f934623e4cf92ca82497d2ec91b24a9f2247ba9d2fc153",
+                      "bytes":  8683,
+                      "copySha256":  "9fd191feff3a1eeef0f934623e4cf92ca82497d2ec91b24a9f2247ba9d2fc153",
+                      "verifySha256":  "9fd191feff3a1eeef0f934623e4cf92ca82497d2ec91b24a9f2247ba9d2fc153"
+                  },
+                  {
+                      "path":  "backend/src/test/kotlin/com/lesouvenir/v2/printing/legacy/LegacyPrinterTest.kt",
+                      "sha256":  "603ea56b407a9ae6e5b299e1586b19a249dc37c0d90902feb65c3f6652da8a40",
+                      "bytes":  2884,
+                      "copySha256":  "603ea56b407a9ae6e5b299e1586b19a249dc37c0d90902feb65c3f6652da8a40",
+                      "verifySha256":  "603ea56b407a9ae6e5b299e1586b19a249dc37c0d90902feb65c3f6652da8a40"
+                  },
+                  {
+                      "path":  "backend/src/test/kotlin/com/lesouvenir/v2/printing/SimulatorCompositorTest.kt",
+                      "sha256":  "f83b03da9dd81bc1fb031776818302cab8eb90d7496ee4f6583fc5bdef04cf9e",
+                      "bytes":  4213,
+                      "copySha256":  "f83b03da9dd81bc1fb031776818302cab8eb90d7496ee4f6583fc5bdef04cf9e",
+                      "verifySha256":  "f83b03da9dd81bc1fb031776818302cab8eb90d7496ee4f6583fc5bdef04cf9e"
+                  },
+                  {
+                      "path":  "backend/test-foundation.ps1",
+                      "sha256":  "6c2bc897fc7a4f2b6162d6dcfbb20bc9ae88d2e5f12be4492dc02f759a4364c1",
+                      "bytes":  752,
+                      "copySha256":  "6c2bc897fc7a4f2b6162d6dcfbb20bc9ae88d2e5f12be4492dc02f759a4364c1",
+                      "verifySha256":  "6c2bc897fc7a4f2b6162d6dcfbb20bc9ae88d2e5f12be4492dc02f759a4364c1"
+                  },
+                  {
+                      "path":  "docs/01_V1_ARCHITECTURE_AUDIT.md",
+                      "sha256":  "ffe1ff4f4169890ef12386f1415589db2c3352e5a7842ad63c8dc28cc3ceebfe",
+                      "bytes":  6652,
+                      "copySha256":  "ffe1ff4f4169890ef12386f1415589db2c3352e5a7842ad63c8dc28cc3ceebfe",
+                      "verifySha256":  "ffe1ff4f4169890ef12386f1415589db2c3352e5a7842ad63c8dc28cc3ceebfe"
+                  },
+                  {
+                      "path":  "docs/02_V1_FEATURE_AND_SCREEN_INVENTORY.md",
+                      "sha256":  "226bfc5d5de285a90d32ba0ea779d66bab9aa55c2433cc38235f46a3cd71d8e9",
+                      "bytes":  8427,
+                      "copySha256":  "226bfc5d5de285a90d32ba0ea779d66bab9aa55c2433cc38235f46a3cd71d8e9",
+                      "verifySha256":  "226bfc5d5de285a90d32ba0ea779d66bab9aa55c2433cc38235f46a3cd71d8e9"
+                  },
+                  {
+                      "path":  "docs/03_FEATURE_PARITY_MATRIX.md",
+                      "sha256":  "ccea512215a070a9c9119e8d45820e0ce659b4ec399c9216b52606ce7584a831",
+                      "bytes":  16599,
+                      "copySha256":  "ccea512215a070a9c9119e8d45820e0ce659b4ec399c9216b52606ce7584a831",
+                      "verifySha256":  "ccea512215a070a9c9119e8d45820e0ce659b4ec399c9216b52606ce7584a831"
+                  },
+                  {
+                      "path":  "docs/04_SESSION_STATE_MACHINE.md",
+                      "sha256":  "9410af721b7673a2a12b4685675e694d3a999196ad72ff97891f068af50e888c",
+                      "bytes":  6464,
+                      "copySha256":  "9410af721b7673a2a12b4685675e694d3a999196ad72ff97891f068af50e888c",
+                      "verifySha256":  "9410af721b7673a2a12b4685675e694d3a999196ad72ff97891f068af50e888c"
+                  },
+                  {
+                      "path":  "docs/05_CAMERA_AND_NATIVE_SDK_AUDIT.md",
+                      "sha256":  "533d9c4cc851ab5dcec416e8393510c47c3d0bf8faaffaa662d68e116b158d6e",
+                      "bytes":  12570,
+                      "copySha256":  "533d9c4cc851ab5dcec416e8393510c47c3d0bf8faaffaa662d68e116b158d6e",
+                      "verifySha256":  "533d9c4cc851ab5dcec416e8393510c47c3d0bf8faaffaa662d68e116b158d6e"
+                  },
+                  {
+                      "path":  "docs/06_PRINTER_DNP_RX1HS_AUDIT.md",
+                      "sha256":  "20f6b64612d7243531f0ad0b21a803566077a2835d6ea8c13e4a4154709f4296",
+                      "bytes":  7655,
+                      "copySha256":  "20f6b64612d7243531f0ad0b21a803566077a2835d6ea8c13e4a4154709f4296",
+                      "verifySha256":  "20f6b64612d7243531f0ad0b21a803566077a2835d6ea8c13e4a4154709f4296"
+                  },
+                  {
+                      "path":  "docs/07_IMAGE_LUT_BEAUTY_FRAME_AUDIT.md",
+                      "sha256":  "b621252e98001afd5248b70bcccb428a167e02ad8545f2ae1b9b9f134a858d97",
+                      "bytes":  6268,
+                      "copySha256":  "b621252e98001afd5248b70bcccb428a167e02ad8545f2ae1b9b9f134a858d97",
+                      "verifySha256":  "b621252e98001afd5248b70bcccb428a167e02ad8545f2ae1b9b9f134a858d97"
+                  },
+                  {
+                      "path":  "docs/08_PAYMENT_REVENUE_QR_CLOUD_AUDIT.md",
+                      "sha256":  "55e7f36579ae4fa93d084b2b08d3e3eb12b9dd99924eb00499be639ffce2ec3e",
+                      "bytes":  8583,
+                      "copySha256":  "55e7f36579ae4fa93d084b2b08d3e3eb12b9dd99924eb00499be639ffce2ec3e",
+                      "verifySha256":  "55e7f36579ae4fa93d084b2b08d3e3eb12b9dd99924eb00499be639ffce2ec3e"
+                  },
+                  {
+                      "path":  "docs/09_ADMIN_STUDIO_SETTINGS_AUDIT.md",
+                      "sha256":  "5dcceacdcb36c2eef46b78d42d89823d7fe5b7e271203a8aa9fc2e4c6de0ba29",
+                      "bytes":  3861,
+                      "copySha256":  "5dcceacdcb36c2eef46b78d42d89823d7fe5b7e271203a8aa9fc2e4c6de0ba29",
+                      "verifySha256":  "5dcceacdcb36c2eef46b78d42d89823d7fe5b7e271203a8aa9fc2e4c6de0ba29"
+                  },
+                  {
+                      "path":  "docs/ADR/001-frontend-stack.md",
+                      "sha256":  "7a56c96116c38030b1bb14a24e46d0bd651e72579fa046fcf1536e01342c0223",
+                      "bytes":  1174,
+                      "copySha256":  "7a56c96116c38030b1bb14a24e46d0bd651e72579fa046fcf1536e01342c0223",
+                      "verifySha256":  "7a56c96116c38030b1bb14a24e46d0bd651e72579fa046fcf1536e01342c0223"
+                  },
+                  {
+                      "path":  "docs/ADR/002-desktop-shell.md",
+                      "sha256":  "3396f872f197a6d7b56deca643ba3fd19ba5562240f873dfcde574e102121be1",
+                      "bytes":  1019,
+                      "copySha256":  "3396f872f197a6d7b56deca643ba3fd19ba5562240f873dfcde574e102121be1",
+                      "verifySha256":  "3396f872f197a6d7b56deca643ba3fd19ba5562240f873dfcde574e102121be1"
+                  },
+                  {
+                      "path":  "docs/ADR/003-backend-kotlin.md",
+                      "sha256":  "167e86171304cf824b1d418f018c0d13b5bca83c676da862a59453617d2ea70c",
+                      "bytes":  1068,
+                      "copySha256":  "167e86171304cf824b1d418f018c0d13b5bca83c676da862a59453617d2ea70c",
+                      "verifySha256":  "167e86171304cf824b1d418f018c0d13b5bca83c676da862a59453617d2ea70c"
+                  },
+                  {
+                      "path":  "docs/ADR/004-ipc-protocol.md",
+                      "sha256":  "5b6278ea56b144f1372132ca203d8e110a3812f19e329450bcfca4b03b554212",
+                      "bytes":  1114,
+                      "copySha256":  "5b6278ea56b144f1372132ca203d8e110a3812f19e329450bcfca4b03b554212",
+                      "verifySha256":  "5b6278ea56b144f1372132ca203d8e110a3812f19e329450bcfca4b03b554212"
+                  },
+                  {
+                      "path":  "docs/ADR/005-auth-hmac.md",
+                      "sha256":  "62c09209b086346b94b6c5601f2d028e8506c1680126b6883df72ab800e53bcd",
+                      "bytes":  682,
+                      "copySha256":  "62c09209b086346b94b6c5601f2d028e8506c1680126b6883df72ab800e53bcd",
+                      "verifySha256":  "62c09209b086346b94b6c5601f2d028e8506c1680126b6883df72ab800e53bcd"
+                  },
+                  {
+                      "path":  "docs/ADR/006-liveview-transport.md",
+                      "sha256":  "16ad188e7c8896c4b37721cdd18a33c5183272908acb4d50afe2dc09baa139de",
+                      "bytes":  784,
+                      "copySha256":  "16ad188e7c8896c4b37721cdd18a33c5183272908acb4d50afe2dc09baa139de",
+                      "verifySha256":  "16ad188e7c8896c4b37721cdd18a33c5183272908acb4d50afe2dc09baa139de"
+                  },
+                  {
+                      "path":  "docs/ADR/007-state-machine-authority.md",
+                      "sha256":  "7859f750b3a008114e2b288fb2306fadea8a50cf97ab3705ec023daabaa0bd45",
+                      "bytes":  1026,
+                      "copySha256":  "7859f750b3a008114e2b288fb2306fadea8a50cf97ab3705ec023daabaa0bd45",
+                      "verifySha256":  "7859f750b3a008114e2b288fb2306fadea8a50cf97ab3705ec023daabaa0bd45"
+                  },
+                  {
+                      "path":  "docs/ADR/008-idempotency-keys.md",
+                      "sha256":  "d1aeef75990a5403787f8ccbe363b23a98c1752f1f50a0722090cb637695f65f",
+                      "bytes":  632,
+                      "copySha256":  "d1aeef75990a5403787f8ccbe363b23a98c1752f1f50a0722090cb637695f65f",
+                      "verifySha256":  "d1aeef75990a5403787f8ccbe363b23a98c1752f1f50a0722090cb637695f65f"
+                  },
+                  {
+                      "path":  "docs/ADR/009-beauty-bounded.md",
+                      "sha256":  "7a41bd2dd3bd07f32a582d237a7d2cbef45e22a466d3be0322ba88a28e1922f6",
+                      "bytes":  788,
+                      "copySha256":  "7a41bd2dd3bd07f32a582d237a7d2cbef45e22a466d3be0322ba88a28e1922f6",
+                      "verifySha256":  "7a41bd2dd3bd07f32a582d237a7d2cbef45e22a466d3be0322ba88a28e1922f6"
+                  },
+                  {
+                      "path":  "docs/ADR/010-canon-dll-resolution.md",
+                      "sha256":  "7027ccd650b8e9585171f71a574636a193d8a8269d97a2225c00e32bda35cc73",
+                      "bytes":  578,
+                      "copySha256":  "7027ccd650b8e9585171f71a574636a193d8a8269d97a2225c00e32bda35cc73",
+                      "verifySha256":  "7027ccd650b8e9585171f71a574636a193d8a8269d97a2225c00e32bda35cc73"
+                  },
+                  {
+                      "path":  "docs/ADR/011-path-isolation.md",
+                      "sha256":  "ee76179ac1530726a245347ac6c08ea5e298b36619408a814caaa30d3d15bda8",
+                      "bytes":  674,
+                      "copySha256":  "ee76179ac1530726a245347ac6c08ea5e298b36619408a814caaa30d3d15bda8",
+                      "verifySha256":  "ee76179ac1530726a245347ac6c08ea5e298b36619408a814caaa30d3d15bda8"
+                  },
+                  {
+                      "path":  "docs/ADR/012-simulator-mode.md",
+                      "sha256":  "4064c11cf2c247338ae78eb4393a44de056a4344a2ef13d31c50732ea8354c5e",
+                      "bytes":  670,
+                      "copySha256":  "4064c11cf2c247338ae78eb4393a44de056a4344a2ef13d31c50732ea8354c5e",
+                      "verifySha256":  "4064c11cf2c247338ae78eb4393a44de056a4344a2ef13d31c50732ea8354c5e"
+                  },
+                  {
+                      "path":  "docs/ADR/013-tools-slice-priority.md",
+                      "sha256":  "5275406ebee6d10009e70ed783b0fe047614f642c67fc390dd2320d084bfd7d8",
+                      "bytes":  20353,
+                      "copySha256":  "5275406ebee6d10009e70ed783b0fe047614f642c67fc390dd2320d084bfd7d8",
+                      "verifySha256":  "5275406ebee6d10009e70ed783b0fe047614f642c67fc390dd2320d084bfd7d8"
+                  },
+                  {
+                      "path":  "docs/API_MIGRATION_ARCHITECTURE_REVIEW.md",
+                      "sha256":  "39e346b8e35f9599c96a9cf443e930aa17679c1e861cfc36b499390205111bc3",
+                      "bytes":  20399,
+                      "copySha256":  "39e346b8e35f9599c96a9cf443e930aa17679c1e861cfc36b499390205111bc3",
+                      "verifySha256":  "39e346b8e35f9599c96a9cf443e930aa17679c1e861cfc36b499390205111bc3"
+                  },
+                  {
+                      "path":  "docs/API_MIGRATION_TEST_RESULTS.md",
+                      "sha256":  "f919035a93a73a364f8f5dd22b3367df8eacf30566425568fa86ec996f9deae1",
+                      "bytes":  4568,
+                      "copySha256":  "f919035a93a73a364f8f5dd22b3367df8eacf30566425568fa86ec996f9deae1",
+                      "verifySha256":  "f919035a93a73a364f8f5dd22b3367df8eacf30566425568fa86ec996f9deae1"
+                  },
+                  {
+                      "path":  "docs/API_PRINT_REVENUE_BOUNDARY.md",
+                      "sha256":  "022164be9c4f4dd5aea861391194ff44cf29e41364e5733646312d5f237158ca",
+                      "bytes":  4416,
+                      "copySha256":  "022164be9c4f4dd5aea861391194ff44cf29e41364e5733646312d5f237158ca",
+                      "verifySha256":  "022164be9c4f4dd5aea861391194ff44cf29e41364e5733646312d5f237158ca"
+                  },
+                  {
+                      "path":  "docs/ARCHITECTURE_BASELINE_MIGRATION.md",
+                      "sha256":  "093ec18f121ad1fb4422572ff971247d15059884ca640c0bfa7bd24a89cc59f1",
+                      "bytes":  29373,
+                      "copySha256":  "093ec18f121ad1fb4422572ff971247d15059884ca640c0bfa7bd24a89cc59f1",
+                      "verifySha256":  "093ec18f121ad1fb4422572ff971247d15059884ca640c0bfa7bd24a89cc59f1"
+                  },
+                  {
+                      "path":  "docs/AUDIT_CORRECTIONS.md",
+                      "sha256":  "acc103d75b8fb3de6680881ab62f1754a99f2c889101d5b11339e7a46912ff07",
+                      "bytes":  3409,
+                      "copySha256":  "acc103d75b8fb3de6680881ab62f1754a99f2c889101d5b11339e7a46912ff07",
+                      "verifySha256":  "acc103d75b8fb3de6680881ab62f1754a99f2c889101d5b11339e7a46912ff07"
+                  },
+                  {
+                      "path":  "docs/BACKEND_BASELINE_INVENTORY.md",
+                      "sha256":  "480444020b30b6e5e76ccc32c05c57adac41dd6e2ef48724dd075fc85d49b460",
+                      "bytes":  15781,
+                      "copySha256":  "480444020b30b6e5e76ccc32c05c57adac41dd6e2ef48724dd075fc85d49b460",
+                      "verifySha256":  "480444020b30b6e5e76ccc32c05c57adac41dd6e2ef48724dd075fc85d49b460"
+                  },
+                  {
+                      "path":  "docs/BACKEND_BRIDGE_RESULTS.md",
+                      "sha256":  "b33ede51539985dd434145dce518c74aa4d40a98480c512592a84c2d95303aac",
+                      "bytes":  4657,
+                      "copySha256":  "b33ede51539985dd434145dce518c74aa4d40a98480c512592a84c2d95303aac",
+                      "verifySha256":  "b33ede51539985dd434145dce518c74aa4d40a98480c512592a84c2d95303aac"
+                  },
+                  {
+                      "path":  "docs/BACKEND_CONTINUATION_RESULTS.md",
+                      "sha256":  "0c42590c04d5508088c4c038974e1b90cc29db26db74b1e36192add2b2cc4a86",
+                      "bytes":  5566,
+                      "copySha256":  "0c42590c04d5508088c4c038974e1b90cc29db26db74b1e36192add2b2cc4a86",
+                      "verifySha256":  "0c42590c04d5508088c4c038974e1b90cc29db26db74b1e36192add2b2cc4a86"
+                  },
+                  {
+                      "path":  "docs/BACKEND_FOUNDATION_RESULTS.md",
+                      "sha256":  "fde8ec7ef34225c1efbd87d7dde9856e4f8b4fc65365605e14ef5d13f21e284c",
+                      "bytes":  5379,
+                      "copySha256":  "fde8ec7ef34225c1efbd87d7dde9856e4f8b4fc65365605e14ef5d13f21e284c",
+                      "verifySha256":  "fde8ec7ef34225c1efbd87d7dde9856e4f8b4fc65365605e14ef5d13f21e284c"
+                  },
+                  {
+                      "path":  "docs/BASELINE_ASSET_MANIFEST.md",
+                      "sha256":  "93459e4c9556a4be6efe599ceee44fcbf40f701dd0219b7b1c83a3a9441fbcdd",
+                      "bytes":  3377,
+                      "copySha256":  "93459e4c9556a4be6efe599ceee44fcbf40f701dd0219b7b1c83a3a9441fbcdd",
+                      "verifySha256":  "93459e4c9556a4be6efe599ceee44fcbf40f701dd0219b7b1c83a3a9441fbcdd"
+                  },
+                  {
+                      "path":  "docs/BLOCKERS.md",
+                      "sha256":  "579329dbd8c6db988a99622b80c9f2fb10b9325e8cd7a5af82e40f0b423c8ae4",
+                      "bytes":  9730,
+                      "copySha256":  "579329dbd8c6db988a99622b80c9f2fb10b9325e8cd7a5af82e40f0b423c8ae4",
+                      "verifySha256":  "579329dbd8c6db988a99622b80c9f2fb10b9325e8cd7a5af82e40f0b423c8ae4"
+                  },
+                  {
+                      "path":  "docs/BRIDGE_CONTINUATION_REVIEW.md",
+                      "sha256":  "3d4bc5b50f3cbd5c06200c25d438b28cd3fef26c7b94af069bf53fa65cd27076",
+                      "bytes":  15508,
+                      "copySha256":  "3d4bc5b50f3cbd5c06200c25d438b28cd3fef26c7b94af069bf53fa65cd27076",
+                      "verifySha256":  "3d4bc5b50f3cbd5c06200c25d438b28cd3fef26c7b94af069bf53fa65cd27076"
+                  },
+                  {
+                      "path":  "docs/BRIDGE_MILESTONE_REVIEW.md",
+                      "sha256":  "521dbc00cabc09f1a336d0f05c993f2a81377407e4fb732f929b14c365a619f3",
+                      "bytes":  7701,
+                      "copySha256":  "521dbc00cabc09f1a336d0f05c993f2a81377407e4fb732f929b14c365a619f3",
+                      "verifySha256":  "521dbc00cabc09f1a336d0f05c993f2a81377407e4fb732f929b14c365a619f3"
+                  },
+                  {
+                      "path":  "docs/BUSINESS_BASELINE_GATES.md",
+                      "sha256":  "434bc5cbd2844a599e7e172e6bc0dfa44f254d10adf2dd77e4f1091d475e21de",
+                      "bytes":  8895,
+                      "copySha256":  "434bc5cbd2844a599e7e172e6bc0dfa44f254d10adf2dd77e4f1091d475e21de",
+                      "verifySha256":  "434bc5cbd2844a599e7e172e6bc0dfa44f254d10adf2dd77e4f1091d475e21de"
+                  },
+                  {
+                      "path":  "docs/CAMERA_BASELINE_INVENTORY.md",
+                      "sha256":  "67443f4d3e8c610ebc79f7bb7e30fe1bf8fb1f767d25972cbf755968ef454ce5",
+                      "bytes":  10822,
+                      "copySha256":  "67443f4d3e8c610ebc79f7bb7e30fe1bf8fb1f767d25972cbf755968ef454ce5",
+                      "verifySha256":  "67443f4d3e8c610ebc79f7bb7e30fe1bf8fb1f767d25972cbf755968ef454ce5"
+                  },
+                  {
+                      "path":  "docs/CHECKPOINT.md",
+                      "sha256":  "6c0d16186b40574c365877345b1d3aecddf0eee25de648cc047ab885608decdd",
+                      "bytes":  14980,
+                      "copySha256":  "6c0d16186b40574c365877345b1d3aecddf0eee25de648cc047ab885608decdd",
+                      "verifySha256":  "6c0d16186b40574c365877345b1d3aecddf0eee25de648cc047ab885608decdd"
+                  },
+                  {
+                      "path":  "docs/DATA_FLOW.md",
+                      "sha256":  "e2e1796632f15bba5f212a1ea5413599ca53618e48567d3ca812b1afef855128",
+                      "bytes":  13084,
+                      "copySha256":  "e2e1796632f15bba5f212a1ea5413599ca53618e48567d3ca812b1afef855128",
+                      "verifySha256":  "e2e1796632f15bba5f212a1ea5413599ca53618e48567d3ca812b1afef855128"
+                  },
+                  {
+                      "path":  "docs/DECISIONS.md",
+                      "sha256":  "c21a3beb09a6f28163ed1e842ee18f0ae95123bb4d217a2e78445263159f26f6",
+                      "bytes":  16219,
+                      "copySha256":  "c21a3beb09a6f28163ed1e842ee18f0ae95123bb4d217a2e78445263159f26f6",
+                      "verifySha256":  "c21a3beb09a6f28163ed1e842ee18f0ae95123bb4d217a2e78445263159f26f6"
+                  },
+                  {
+                      "path":  "docs/DEPENDENCY_AND_LICENSE_AUDIT.md",
+                      "sha256":  "6e048ddc513de172f3d1130efe07c61c5f1ce13ff16875e320c0768cca60a903",
+                      "bytes":  5736,
+                      "copySha256":  "6e048ddc513de172f3d1130efe07c61c5f1ce13ff16875e320c0768cca60a903",
+                      "verifySha256":  "6e048ddc513de172f3d1130efe07c61c5f1ce13ff16875e320c0768cca60a903"
+                  },
+                  {
+                      "path":  "docs/DESKTOP_BRIDGE_CONTINUATION_RESULTS.md",
+                      "sha256":  "b977cef455e6f2adc92430e3173f6fd0867d105fd464932aff7f386859f6f3ab",
+                      "bytes":  3336,
+                      "copySha256":  "b977cef455e6f2adc92430e3173f6fd0867d105fd464932aff7f386859f6f3ab",
+                      "verifySha256":  "b977cef455e6f2adc92430e3173f6fd0867d105fd464932aff7f386859f6f3ab"
+                  },
+                  {
+                      "path":  "docs/DESKTOP_BRIDGE_INDEPENDENT_REVIEW.md",
+                      "sha256":  "2f03ae6f8890923cbfa13e7d04e976ba19207206d5493bf4e6287c509402596b",
+                      "bytes":  9010,
+                      "copySha256":  "2f03ae6f8890923cbfa13e7d04e976ba19207206d5493bf4e6287c509402596b",
+                      "verifySha256":  "2f03ae6f8890923cbfa13e7d04e976ba19207206d5493bf4e6287c509402596b"
+                  },
+                  {
+                      "path":  "docs/FEATURE_PARITY_MATRIX.md",
+                      "sha256":  "4ce9be85e0300a46d8e848c5422fcd882934819767d56f6cf14a8dc59dd318d5",
+                      "bytes":  8855,
+                      "copySha256":  "4ce9be85e0300a46d8e848c5422fcd882934819767d56f6cf14a8dc59dd318d5",
+                      "verifySha256":  "4ce9be85e0300a46d8e848c5422fcd882934819767d56f6cf14a8dc59dd318d5"
+                  },
+                  {
+                      "path":  "docs/FRONTEND_BASELINE_IMPLEMENTATION.md",
+                      "sha256":  "917ff5513564ffe27398d922da919d82b3259c1f995c1e1fc3809beb1ce21f6c",
+                      "bytes":  7850,
+                      "copySha256":  "917ff5513564ffe27398d922da919d82b3259c1f995c1e1fc3809beb1ce21f6c",
+                      "verifySha256":  "917ff5513564ffe27398d922da919d82b3259c1f995c1e1fc3809beb1ce21f6c"
+                  },
+                  {
+                      "path":  "docs/FRONTEND_BRIDGE_RESULTS.md",
+                      "sha256":  "6c39b8e90fbcc3fa86a38da4e37d79a846e16806af3de88eecb0bd70a1543c10",
+                      "bytes":  5991,
+                      "copySha256":  "6c39b8e90fbcc3fa86a38da4e37d79a846e16806af3de88eecb0bd70a1543c10",
+                      "verifySha256":  "6c39b8e90fbcc3fa86a38da4e37d79a846e16806af3de88eecb0bd70a1543c10"
+                  },
+                  {
+                      "path":  "docs/FRONTEND_SLICE_READINESS.md",
+                      "sha256":  "0fc00da43a3da2a2564936faf51ac6bfdc34a2b1fa62f2401f462d50740ee69b",
+                      "bytes":  16172,
+                      "copySha256":  "0fc00da43a3da2a2564936faf51ac6bfdc34a2b1fa62f2401f462d50740ee69b",
+                      "verifySha256":  "0fc00da43a3da2a2564936faf51ac6bfdc34a2b1fa62f2401f462d50740ee69b"
+                  },
+                  {
+                      "path":  "docs/HARDWARE_POC_PLAN.md",
+                      "sha256":  "64cb82e9b2cd187312d83e6cfbc7ed808518da76a39a3678afb6316980823394",
+                      "bytes":  16570,
+                      "copySha256":  "64cb82e9b2cd187312d83e6cfbc7ed808518da76a39a3678afb6316980823394",
+                      "verifySha256":  "64cb82e9b2cd187312d83e6cfbc7ed808518da76a39a3678afb6316980823394"
+                  },
+                  {
+                      "path":  "docs/HARDWARE_PORT_BUILD_RESULTS.md",
+                      "sha256":  "0fd094bde8a79565271dbe7fa1dc498244253c11de42d53c4036fe5956f81118",
+                      "bytes":  5196,
+                      "copySha256":  "0fd094bde8a79565271dbe7fa1dc498244253c11de42d53c4036fe5956f81118",
+                      "verifySha256":  "0fd094bde8a79565271dbe7fa1dc498244253c11de42d53c4036fe5956f81118"
+                  },
+                  {
+                      "path":  "docs/HARDWARE_PORT_INDEPENDENT_REVIEW.md",
+                      "sha256":  "a5099bc4b704666f53009e2b549f6bcd351656037d25e4d4e9111479959b01e8",
+                      "bytes":  8084,
+                      "copySha256":  "a5099bc4b704666f53009e2b549f6bcd351656037d25e4d4e9111479959b01e8",
+                      "verifySha256":  "a5099bc4b704666f53009e2b549f6bcd351656037d25e4d4e9111479959b01e8"
+                  },
+                  {
+                      "path":  "docs/HARDWARE_VALIDATION.md",
+                      "sha256":  "8f213e57ec1dde36c9bbcca6f34705415c6c0dec672a2af30767520bdc1f08fa",
+                      "bytes":  5823,
+                      "copySha256":  "8f213e57ec1dde36c9bbcca6f34705415c6c0dec672a2af30767520bdc1f08fa",
+                      "verifySha256":  "8f213e57ec1dde36c9bbcca6f34705415c6c0dec672a2af30767520bdc1f08fa"
+                  },
+                  {
+                      "path":  "docs/IPC_CONTRACTS.md",
+                      "sha256":  "b45db9b6618f73a086859324fc9fa974e7d1c028eb44149647b2559b312564f0",
+                      "bytes":  15078,
+                      "copySha256":  "b45db9b6618f73a086859324fc9fa974e7d1c028eb44149647b2559b312564f0",
+                      "verifySha256":  "b45db9b6618f73a086859324fc9fa974e7d1c028eb44149647b2559b312564f0"
+                  },
+                  {
+                      "path":  "docs/LE_SOUVENIR_V2_REBUILD_MASTER_PROMPT.md",
+                      "sha256":  "8abb31a10817d2e7e85279875bcbf767dab864171608f8b60463eed1b04fc6bc",
+                      "bytes":  33184,
+                      "copySha256":  "8abb31a10817d2e7e85279875bcbf767dab864171608f8b60463eed1b04fc6bc",
+                      "verifySha256":  "8abb31a10817d2e7e85279875bcbf767dab864171608f8b60463eed1b04fc6bc"
+                  },
+                  {
+                      "path":  "docs/LEGACY_ARCHITECTURE.md",
+                      "sha256":  "25446e8a1bdcdec569808fb560a7e0dbb692ec7d439c420ae77c08abd3c45144",
+                      "bytes":  5428,
+                      "copySha256":  "25446e8a1bdcdec569808fb560a7e0dbb692ec7d439c420ae77c08abd3c45144",
+                      "verifySha256":  "25446e8a1bdcdec569808fb560a7e0dbb692ec7d439c420ae77c08abd3c45144"
+                  },
+                  {
+                      "path":  "docs/LEGACY_CAMERA_PORT_RESULTS.md",
+                      "sha256":  "08f29eae7e26d593259d8ccb9c638874ddac1fb1176d3464d96e6b206c92dee8",
+                      "bytes":  6791,
+                      "copySha256":  "08f29eae7e26d593259d8ccb9c638874ddac1fb1176d3464d96e6b206c92dee8",
+                      "verifySha256":  "08f29eae7e26d593259d8ccb9c638874ddac1fb1176d3464d96e6b206c92dee8"
+                  },
+                  {
+                      "path":  "docs/LEGACY_PRINTER_PORT_RESULTS.md",
+                      "sha256":  "3aa9108d1e746f9eb8e7239ea83dc94fb218ee423a9bae10308899e1345ea1a8",
+                      "bytes":  2039,
+                      "copySha256":  "3aa9108d1e746f9eb8e7239ea83dc94fb218ee423a9bae10308899e1345ea1a8",
+                      "verifySha256":  "3aa9108d1e746f9eb8e7239ea83dc94fb218ee423a9bae10308899e1345ea1a8"
+                  },
+                  {
+                      "path":  "docs/MIGRATION_TEST_RESULTS.md",
+                      "sha256":  "c796fbf7e786b8dcc3b7826f1673a6e249aff6c0a7a40be982116f97fba13878",
+                      "bytes":  32182,
+                      "copySha256":  "c796fbf7e786b8dcc3b7826f1673a6e249aff6c0a7a40be982116f97fba13878",
+                      "verifySha256":  "c796fbf7e786b8dcc3b7826f1673a6e249aff6c0a7a40be982116f97fba13878"
+                  },
+                  {
+                      "path":  "docs/PARITY_MIGRATION_REVIEW.md",
+                      "sha256":  "d907dfe1504d466e01d6dc1a71233f7c22e200ac83f58b1ac986784d2f7f4b9d",
+                      "bytes":  14552,
+                      "copySha256":  "d907dfe1504d466e01d6dc1a71233f7c22e200ac83f58b1ac986784d2f7f4b9d",
+                      "verifySha256":  "d907dfe1504d466e01d6dc1a71233f7c22e200ac83f58b1ac986784d2f7f4b9d"
+                  },
+                  {
+                      "path":  "docs/PRINT_COMPOSITION_FIXTURE_PLAN.md",
+                      "sha256":  "6beb09bc2e382b33dc084f46e363e065ec6b52340595a9e0af97191ef688a132",
+                      "bytes":  7394,
+                      "copySha256":  "6beb09bc2e382b33dc084f46e363e065ec6b52340595a9e0af97191ef688a132",
+                      "verifySha256":  "6beb09bc2e382b33dc084f46e363e065ec6b52340595a9e0af97191ef688a132"
+                  },
+                  {
+                      "path":  "docs/PRINTER_BASELINE_INVENTORY.md",
+                      "sha256":  "df250436fbbf7764c9797fa95091e11f068b3c36b3507a218d8f3966b51afad5",
+                      "bytes":  7075,
+                      "copySha256":  "df250436fbbf7764c9797fa95091e11f068b3c36b3507a218d8f3966b51afad5",
+                      "verifySha256":  "df250436fbbf7764c9797fa95091e11f068b3c36b3507a218d8f3966b51afad5"
+                  },
+                  {
+                      "path":  "docs/PRINTER_PORT_BOUNDARY.md",
+                      "sha256":  "870eb6500b5a031aafbb67e2d4491f3f03088cf83f29c81b9877134059c44cd0",
+                      "bytes":  4102,
+                      "copySha256":  "870eb6500b5a031aafbb67e2d4491f3f03088cf83f29c81b9877134059c44cd0",
+                      "verifySha256":  "870eb6500b5a031aafbb67e2d4491f3f03088cf83f29c81b9877134059c44cd0"
+                  },
+                  {
+                      "path":  "docs/PROGRESS.md",
+                      "sha256":  "3835aca66afe8485a8171e23de5b3bad7754f8625a1716fdc23eaebbd85fb734",
+                      "bytes":  23815,
+                      "copySha256":  "3835aca66afe8485a8171e23de5b3bad7754f8625a1716fdc23eaebbd85fb734",
+                      "verifySha256":  "3835aca66afe8485a8171e23de5b3bad7754f8625a1716fdc23eaebbd85fb734"
+                  },
+                  {
+                      "path":  "docs/QA_REPORT.md",
+                      "sha256":  "d7df433c5179c32e4444e72d73e9aa46dd9f80bd488a0c8c2cdab74f62ebc807",
+                      "bytes":  3538,
+                      "copySha256":  "d7df433c5179c32e4444e72d73e9aa46dd9f80bd488a0c8c2cdab74f62ebc807",
+                      "verifySha256":  "d7df433c5179c32e4444e72d73e9aa46dd9f80bd488a0c8c2cdab74f62ebc807"
+                  },
+                  {
+                      "path":  "docs/REGRESSION_MATRIX.md",
+                      "sha256":  "dea7726b31f32537fa045479a18726dd50646df1db5dd2209ae9c01ff8ff4e8f",
+                      "bytes":  4368,
+                      "copySha256":  "dea7726b31f32537fa045479a18726dd50646df1db5dd2209ae9c01ff8ff4e8f",
+                      "verifySha256":  "dea7726b31f32537fa045479a18726dd50646df1db5dd2209ae9c01ff8ff4e8f"
+                  },
+                  {
+                      "path":  "docs/RELEASE_ARCHITECTURE.md",
+                      "sha256":  "dbbf3544b0065546521054bb5db6de02b3c0c7b0f5ee8e0834bd57cb0661dd85",
+                      "bytes":  12110,
+                      "copySha256":  "dbbf3544b0065546521054bb5db6de02b3c0c7b0f5ee8e0834bd57cb0661dd85",
+                      "verifySha256":  "dbbf3544b0065546521054bb5db6de02b3c0c7b0f5ee8e0834bd57cb0661dd85"
+                  },
+                  {
+                      "path":  "docs/RELEASE_READINESS.md",
+                      "sha256":  "51af484489386690eb0f7a4a7fc65950abf861e05b5279c869446fd70bb86503",
+                      "bytes":  13900,
+                      "copySha256":  "51af484489386690eb0f7a4a7fc65950abf861e05b5279c869446fd70bb86503",
+                      "verifySha256":  "51af484489386690eb0f7a4a7fc65950abf861e05b5279c869446fd70bb86503"
+                  },
+                  {
+                      "path":  "docs/SECURITY_FINDINGS.md",
+                      "sha256":  "d0820fdbb47c43cfa67e6cface725ae77d5adc73e2f2ea69511d929a4b5f800a",
+                      "bytes":  6435,
+                      "copySha256":  "d0820fdbb47c43cfa67e6cface725ae77d5adc73e2f2ea69511d929a4b5f800a",
+                      "verifySha256":  "d0820fdbb47c43cfa67e6cface725ae77d5adc73e2f2ea69511d929a4b5f800a"
+                  },
+                  {
+                      "path":  "docs/SETTINGS_MIGRATION_MATRIX.md",
+                      "sha256":  "d4de79e2f996c51549be39b6a11eb988a85ace60c456772a3b499014e4acbb20",
+                      "bytes":  22563,
+                      "copySha256":  "d4de79e2f996c51549be39b6a11eb988a85ace60c456772a3b499014e4acbb20",
+                      "verifySha256":  "d4de79e2f996c51549be39b6a11eb988a85ace60c456772a3b499014e4acbb20"
+                  },
+                  {
+                      "path":  "docs/SETTINGS_PARITY_IMPLEMENTATION.md",
+                      "sha256":  "5b8464aecc6daca8139e389b3b9f1b91e929b92c1386575fdadbdff709a97bb7",
+                      "bytes":  4394,
+                      "copySha256":  "5b8464aecc6daca8139e389b3b9f1b91e929b92c1386575fdadbdff709a97bb7",
+                      "verifySha256":  "5b8464aecc6daca8139e389b3b9f1b91e929b92c1386575fdadbdff709a97bb7"
+                  },
+                  {
+                      "path":  "docs/SHELL_FEASIBILITY.md",
+                      "sha256":  "cb9d2418e0dd15e8f6e5c8867417a1dd1159ddcaf99f9293a9f7d8fd6d0c702c",
+                      "bytes":  8475,
+                      "copySha256":  "cb9d2418e0dd15e8f6e5c8867417a1dd1159ddcaf99f9293a9f7d8fd6d0c702c",
+                      "verifySha256":  "cb9d2418e0dd15e8f6e5c8867417a1dd1159ddcaf99f9293a9f7d8fd6d0c702c"
+                  },
+                  {
+                      "path":  "docs/SIMULATOR_CAMERA_RESULTS.md",
+                      "sha256":  "872a4fd4fc540db78852703840e0d29bc4f4ff79a7e08b46bd602c67b4b8944f",
+                      "bytes":  3750,
+                      "copySha256":  "872a4fd4fc540db78852703840e0d29bc4f4ff79a7e08b46bd602c67b4b8944f",
+                      "verifySha256":  "872a4fd4fc540db78852703840e0d29bc4f4ff79a7e08b46bd602c67b4b8944f"
+                  },
+                  {
+                      "path":  "docs/SIMULATOR_FRONTEND_RESULTS.md",
+                      "sha256":  "ce12199275803b743c93590629ca5b3168366d068d6ed8353af0fef9d3d1271b",
+                      "bytes":  8329,
+                      "copySha256":  "ce12199275803b743c93590629ca5b3168366d068d6ed8353af0fef9d3d1271b",
+                      "verifySha256":  "ce12199275803b743c93590629ca5b3168366d068d6ed8353af0fef9d3d1271b"
+                  },
+                  {
+                      "path":  "docs/SIMULATOR_INDEPENDENT_REVIEW.md",
+                      "sha256":  "afc1eb3b45b92370385d250342ceba0e7a8e91c0567ca41aa68f950e8d5bd029",
+                      "bytes":  14950,
+                      "copySha256":  "afc1eb3b45b92370385d250342ceba0e7a8e91c0567ca41aa68f950e8d5bd029",
+                      "verifySha256":  "afc1eb3b45b92370385d250342ceba0e7a8e91c0567ca41aa68f950e8d5bd029"
+                  },
+                  {
+                      "path":  "docs/SIMULATOR_IPC_CONTRACT.md",
+                      "sha256":  "e60b7742aa5ef9a7f51fd4a557814f1d913b156a3e4957500abb4f3fcf80552a",
+                      "bytes":  24620,
+                      "copySha256":  "e60b7742aa5ef9a7f51fd4a557814f1d913b156a3e4957500abb4f3fcf80552a",
+                      "verifySha256":  "e60b7742aa5ef9a7f51fd4a557814f1d913b156a3e4957500abb4f3fcf80552a"
+                  },
+                  {
+                      "path":  "docs/SIMULATOR_PRINT_IMPLEMENTATION.md",
+                      "sha256":  "bc30d38a5823ecc8d6287e8d12901c9169f4d648c74d39c636166f73ef17f00a",
+                      "bytes":  2484,
+                      "copySha256":  "bc30d38a5823ecc8d6287e8d12901c9169f4d648c74d39c636166f73ef17f00a",
+                      "verifySha256":  "bc30d38a5823ecc8d6287e8d12901c9169f4d648c74d39c636166f73ef17f00a"
+                  },
+                  {
+                      "path":  "docs/SIMULATOR_SESSION_RESULTS.md",
+                      "sha256":  "3bacb952e6612abaf22f845b7c9d5e7fdb2266c8568bd028464c639dc026a4da",
+                      "bytes":  13144,
+                      "copySha256":  "3bacb952e6612abaf22f845b7c9d5e7fdb2266c8568bd028464c639dc026a4da",
+                      "verifySha256":  "3bacb952e6612abaf22f845b7c9d5e7fdb2266c8568bd028464c639dc026a4da"
+                  },
+                  {
+                      "path":  "docs/SIMULATOR_UI_HANDOFF.md",
+                      "sha256":  "d1c8cb6559341d179fb53b16f7d994097c0205227a9414c4b8ba4ac0af06492b",
+                      "bytes":  16158,
+                      "copySha256":  "d1c8cb6559341d179fb53b16f7d994097c0205227a9414c4b8ba4ac0af06492b",
+                      "verifySha256":  "d1c8cb6559341d179fb53b16f7d994097c0205227a9414c4b8ba4ac0af06492b"
+                  },
+                  {
+                      "path":  "docs/SIMULATOR_UI_REVIEW.md",
+                      "sha256":  "6a7ed43536ce89091a885b8dc77c1de7a9d40492ba4e62aa770824e5f790f0aa",
+                      "bytes":  18384,
+                      "copySha256":  "6a7ed43536ce89091a885b8dc77c1de7a9d40492ba4e62aa770824e5f790f0aa",
+                      "verifySha256":  "6a7ed43536ce89091a885b8dc77c1de7a9d40492ba4e62aa770824e5f790f0aa"
+                  },
+                  {
+                      "path":  "docs/TASK_BOARD.md",
+                      "sha256":  "8d1dfae74ac1c17a9418ebcbf8c4dff31be2cd380437882c8c937132fa720916",
+                      "bytes":  6890,
+                      "copySha256":  "8d1dfae74ac1c17a9418ebcbf8c4dff31be2cd380437882c8c937132fa720916",
+                      "verifySha256":  "8d1dfae74ac1c17a9418ebcbf8c4dff31be2cd380437882c8c937132fa720916"
+                  },
+                  {
+                      "path":  "docs/TEST_RESULTS.md",
+                      "sha256":  "50a4b8a3c473bf3fc816f6015b01cf95106d7ecb863607aec74de338835b97dc",
+                      "bytes":  9412,
+                      "copySha256":  "50a4b8a3c473bf3fc816f6015b01cf95106d7ecb863607aec74de338835b97dc",
+                      "verifySha256":  "50a4b8a3c473bf3fc816f6015b01cf95106d7ecb863607aec74de338835b97dc"
+                  },
+                  {
+                      "path":  "docs/TIMEOUT_REGRESSION_DIAGNOSIS.md",
+                      "sha256":  "5542bbec3ae3bd34a38febef0d7e385d3a1d847ef0f8b4500a45c562a59bdc4b",
+                      "bytes":  7241,
+                      "copySha256":  "5542bbec3ae3bd34a38febef0d7e385d3a1d847ef0f8b4500a45c562a59bdc4b",
+                      "verifySha256":  "5542bbec3ae3bd34a38febef0d7e385d3a1d847ef0f8b4500a45c562a59bdc4b"
+                  },
+                  {
+                      "path":  "docs/TOOLS_MIGRATION_MATRIX.md",
+                      "sha256":  "8e79ebc4872dab1392a256f1ca011322ea4e68ea6a28fec87e87a204bfa00d31",
+                      "bytes":  27487,
+                      "copySha256":  "8e79ebc4872dab1392a256f1ca011322ea4e68ea6a28fec87e87a204bfa00d31",
+                      "verifySha256":  "8e79ebc4872dab1392a256f1ca011322ea4e68ea6a28fec87e87a204bfa00d31"
+                  },
+                  {
+                      "path":  "docs/TOOLS_PROCESSING_CONTRACT.md",
+                      "sha256":  "eb2bbfe4b20ff6a6aa8b8872e94efef436390ea0466ff51bd3b22fbee68f6549",
+                      "bytes":  14714,
+                      "copySha256":  "eb2bbfe4b20ff6a6aa8b8872e94efef436390ea0466ff51bd3b22fbee68f6549",
+                      "verifySha256":  "eb2bbfe4b20ff6a6aa8b8872e94efef436390ea0466ff51bd3b22fbee68f6549"
+                  },
+                  {
+                      "path":  "docs/TOOLS_UI_LOCAL_SLICE.md",
+                      "sha256":  "8cf6397e90d349faa8b4480d292c7cf51d0667f80d273d0060954db9ccaa5605",
+                      "bytes":  10361,
+                      "copySha256":  "8cf6397e90d349faa8b4480d292c7cf51d0667f80d273d0060954db9ccaa5605",
+                      "verifySha256":  "8cf6397e90d349faa8b4480d292c7cf51d0667f80d273d0060954db9ccaa5605"
+                  },
+                  {
+                      "path":  "docs/UI_BACKEND_RESULTS.md",
+                      "sha256":  "cd5afb51dc123f109424361c9c5dee0e714b26c956ab5816b21634ee5f31372f",
+                      "bytes":  4720,
+                      "copySha256":  "cd5afb51dc123f109424361c9c5dee0e714b26c956ab5816b21634ee5f31372f",
+                      "verifySha256":  "cd5afb51dc123f109424361c9c5dee0e714b26c956ab5816b21634ee5f31372f"
+                  },
+                  {
+                      "path":  "docs/UI_BASELINE_ACCEPTANCE.md",
+                      "sha256":  "00b11cb06cb3c56b53a6791666137c51a0d401f695825119b2af370c51b63497",
+                      "bytes":  12817,
+                      "copySha256":  "00b11cb06cb3c56b53a6791666137c51a0d401f695825119b2af370c51b63497",
+                      "verifySha256":  "00b11cb06cb3c56b53a6791666137c51a0d401f695825119b2af370c51b63497"
+                  },
+                  {
+                      "path":  "docs/UI_BASELINE_COMPARISON.md",
+                      "sha256":  "02b8e6aff81cb6d8f276ed1892b62ea60a8689642d0a3ea2a9d5b27b147c59b5",
+                      "bytes":  20152,
+                      "copySha256":  "02b8e6aff81cb6d8f276ed1892b62ea60a8689642d0a3ea2a9d5b27b147c59b5",
+                      "verifySha256":  "02b8e6aff81cb6d8f276ed1892b62ea60a8689642d0a3ea2a9d5b27b147c59b5"
+                  },
+                  {
+                      "path":  "docs/UI_CAMERA_CONSTRAINTS.md",
+                      "sha256":  "a802e32c970d039ab8f09358aba2c510b4c3912a97f40adde174768ca6886b3b",
+                      "bytes":  3741,
+                      "copySha256":  "a802e32c970d039ab8f09358aba2c510b4c3912a97f40adde174768ca6886b3b",
+                      "verifySha256":  "a802e32c970d039ab8f09358aba2c510b4c3912a97f40adde174768ca6886b3b"
+                  },
+                  {
+                      "path":  "docs/UI_DESIGN_SYSTEM.md",
+                      "sha256":  "3bc7dabcce714c9372fb3cd96cef07fd5765368b5701fb2601eb733c29495510",
+                      "bytes":  10610,
+                      "copySha256":  "3bc7dabcce714c9372fb3cd96cef07fd5765368b5701fb2601eb733c29495510",
+                      "verifySha256":  "3bc7dabcce714c9372fb3cd96cef07fd5765368b5701fb2601eb733c29495510"
+                  },
+                  {
+                      "path":  "docs/UI_FRONTEND_RESULTS.md",
+                      "sha256":  "7f2907db0a0f5f24de42f6116e9425c7350d8bec906388624f3f89321e879fb9",
+                      "bytes":  3929,
+                      "copySha256":  "7f2907db0a0f5f24de42f6116e9425c7350d8bec906388624f3f89321e879fb9",
+                      "verifySha256":  "7f2907db0a0f5f24de42f6116e9425c7350d8bec906388624f3f89321e879fb9"
+                  },
+                  {
+                      "path":  "docs/UI_IMPLEMENTATION_MATRIX.md",
+                      "sha256":  "464981c395487e11a41ef08c49fcb74fb040a1100592e0386b75c92353bc1261",
+                      "bytes":  19792,
+                      "copySha256":  "464981c395487e11a41ef08c49fcb74fb040a1100592e0386b75c92353bc1261",
+                      "verifySha256":  "464981c395487e11a41ef08c49fcb74fb040a1100592e0386b75c92353bc1261"
+                  },
+                  {
+                      "path":  "docs/UI_IMPLEMENTATION_STATUS.md",
+                      "sha256":  "09c25d7bd197da4e6a1a04b83f3aa77a81138b8488f8345a125260b1f337bb15",
+                      "bytes":  4901,
+                      "copySha256":  "09c25d7bd197da4e6a1a04b83f3aa77a81138b8488f8345a125260b1f337bb15",
+                      "verifySha256":  "09c25d7bd197da4e6a1a04b83f3aa77a81138b8488f8345a125260b1f337bb15"
+                  },
+                  {
+                      "path":  "docs/UI_INTEGRATION_REVIEW.md",
+                      "sha256":  "b3e68da7e6ef29cb9cc3e930bc7a20d65b3c5da949c03ba1276528648c287371",
+                      "bytes":  24716,
+                      "copySha256":  "b3e68da7e6ef29cb9cc3e930bc7a20d65b3c5da949c03ba1276528648c287371",
+                      "verifySha256":  "b3e68da7e6ef29cb9cc3e930bc7a20d65b3c5da949c03ba1276528648c287371"
+                  },
+                  {
+                      "path":  "docs/UI_NESTED_CONTROL_EVIDENCE.md",
+                      "sha256":  "81979df74ff95d5278600a40b7af6ea8e0fe680628dd12f781330e22ae5f6f48",
+                      "bytes":  7858,
+                      "copySha256":  "81979df74ff95d5278600a40b7af6ea8e0fe680628dd12f781330e22ae5f6f48",
+                      "verifySha256":  "81979df74ff95d5278600a40b7af6ea8e0fe680628dd12f781330e22ae5f6f48"
+                  },
+                  {
+                      "path":  "docs/UI_OPERATOR_PARITY_DELTA.md",
+                      "sha256":  "9907c4d8b4ac6d8c1fbbe595c8cb240dc82a5371ffe348955d7575da19af6f96",
+                      "bytes":  11498,
+                      "copySha256":  "9907c4d8b4ac6d8c1fbbe595c8cb240dc82a5371ffe348955d7575da19af6f96",
+                      "verifySha256":  "9907c4d8b4ac6d8c1fbbe595c8cb240dc82a5371ffe348955d7575da19af6f96"
+                  },
+                  {
+                      "path":  "docs/UI_OPERATOR_REVIEW.md",
+                      "sha256":  "fce8ad236f1c97402c078c84ac6d688d42bf3d3b1c482ee3ac53a9ac8bc7725d",
+                      "bytes":  8547,
+                      "copySha256":  "fce8ad236f1c97402c078c84ac6d688d42bf3d3b1c482ee3ac53a9ac8bc7725d",
+                      "verifySha256":  "fce8ad236f1c97402c078c84ac6d688d42bf3d3b1c482ee3ac53a9ac8bc7725d"
+                  },
+                  {
+                      "path":  "docs/UI_PARITY_INCREMENT_RESULTS.md",
+                      "sha256":  "91cce47fd433bf6eb1fbfd2bd070a714581ac4eba7b28433354cd4dd7d981b17",
+                      "bytes":  4646,
+                      "copySha256":  "91cce47fd433bf6eb1fbfd2bd070a714581ac4eba7b28433354cd4dd7d981b17",
+                      "verifySha256":  "91cce47fd433bf6eb1fbfd2bd070a714581ac4eba7b28433354cd4dd7d981b17"
+                  },
+                  {
+                      "path":  "docs/UI_PRINT_CONSTRAINTS.md",
+                      "sha256":  "9b3129d8d8f71e4996cbd6592f0b9672af07a20148c74b36bea9a801ed75d469",
+                      "bytes":  3350,
+                      "copySha256":  "9b3129d8d8f71e4996cbd6592f0b9672af07a20148c74b36bea9a801ed75d469",
+                      "verifySha256":  "9b3129d8d8f71e4996cbd6592f0b9672af07a20148c74b36bea9a801ed75d469"
+                  },
+                  {
+                      "path":  "docs/UI_SCREEN_CONTRACTS.md",
+                      "sha256":  "58d7363409a764ec04847636364474ef475d47b2d30261b45dbea9ec3e6b4e3b",
+                      "bytes":  19390,
+                      "copySha256":  "58d7363409a764ec04847636364474ef475d47b2d30261b45dbea9ec3e6b4e3b",
+                      "verifySha256":  "58d7363409a764ec04847636364474ef475d47b2d30261b45dbea9ec3e6b4e3b"
+                  },
+                  {
+                      "path":  "docs/UI_SCREEN_INVENTORY.md",
+                      "sha256":  "dc34fb0972c489b596dffc946f952ad48dac064053950484084e8a4d44c716b8",
+                      "bytes":  11564,
+                      "copySha256":  "dc34fb0972c489b596dffc946f952ad48dac064053950484084e8a4d44c716b8",
+                      "verifySha256":  "dc34fb0972c489b596dffc946f952ad48dac064053950484084e8a4d44c716b8"
+                  },
+                  {
+                      "path":  "docs/UI_TEST_RESULTS.md",
+                      "sha256":  "a7ae09fbe819d467b150682304003cde6936d89f330f05132cbcfedfc6f7ffa3",
+                      "bytes":  25486,
+                      "copySha256":  "a7ae09fbe819d467b150682304003cde6936d89f330f05132cbcfedfc6f7ffa3",
+                      "verifySha256":  "a7ae09fbe819d467b150682304003cde6936d89f330f05132cbcfedfc6f7ffa3"
+                  },
+                  {
+                      "path":  "docs/UI_VISUAL_REVIEW.md",
+                      "sha256":  "52ce0139f8c52a70d830afe6a806cc24fe52f2889dc15ea83aedde6365c5ed6b",
+                      "bytes":  23283,
+                      "copySha256":  "52ce0139f8c52a70d830afe6a806cc24fe52f2889dc15ea83aedde6365c5ed6b",
+                      "verifySha256":  "52ce0139f8c52a70d830afe6a806cc24fe52f2889dc15ea83aedde6365c5ed6b"
+                  },
+                  {
+                      "path":  "docs/V1_ACTION_BEHAVIOR_MATRIX.md",
+                      "sha256":  "1884588a40d6b690306b726ef9b154f05f094556a737777361dc9e685bfd2c39",
+                      "bytes":  4265,
+                      "copySha256":  "1884588a40d6b690306b726ef9b154f05f094556a737777361dc9e685bfd2c39",
+                      "verifySha256":  "1884588a40d6b690306b726ef9b154f05f094556a737777361dc9e685bfd2c39"
+                  },
+                  {
+                      "path":  "docs/V1_COMPLETE_FEATURE_INVENTORY.md",
+                      "sha256":  "87df5d2b71b482ef04ce86fa72dc1302dfaa14998a040440069eb9cc2ef6019d",
+                      "bytes":  19790,
+                      "copySha256":  "87df5d2b71b482ef04ce86fa72dc1302dfaa14998a040440069eb9cc2ef6019d",
+                      "verifySha256":  "87df5d2b71b482ef04ce86fa72dc1302dfaa14998a040440069eb9cc2ef6019d"
+                  },
+                  {
+                      "path":  "docs/V1_COMPLETE_FEATURE_INVENTORY_CORRECTED.md",
+                      "sha256":  "2467fa7a77350da6e5f03699438c3465b7b3cedf610000d8ecdb88d6d4857c06",
+                      "bytes":  23754,
+                      "copySha256":  "2467fa7a77350da6e5f03699438c3465b7b3cedf610000d8ecdb88d6d4857c06",
+                      "verifySha256":  "2467fa7a77350da6e5f03699438c3465b7b3cedf610000d8ecdb88d6d4857c06"
+                  },
+                  {
+                      "path":  "docs/V1_COMPLETE_FEATURE_INVENTORY_FINAL.md",
+                      "sha256":  "6f421313239282d722e9f6160725d9a2ae7f4eb5faf8122a313eaad3150f7460",
+                      "bytes":  12128,
+                      "copySha256":  "6f421313239282d722e9f6160725d9a2ae7f4eb5faf8122a313eaad3150f7460",
+                      "verifySha256":  "6f421313239282d722e9f6160725d9a2ae7f4eb5faf8122a313eaad3150f7460"
+                  },
+                  {
+                      "path":  "docs/V1_EXACT_UI_FLOW_MAP.md",
+                      "sha256":  "1d8349abb4ab73f85c4f526778f8df90a8a43d122c11106567eb005c99677108",
+                      "bytes":  5035,
+                      "copySha256":  "1d8349abb4ab73f85c4f526778f8df90a8a43d122c11106567eb005c99677108",
+                      "verifySha256":  "1d8349abb4ab73f85c4f526778f8df90a8a43d122c11106567eb005c99677108"
+                  },
+                  {
+                      "path":  "docs/V1_EXTERNAL_INTEGRATIONS_MAP.md",
+                      "sha256":  "ae7a354fa386edfe04b62299daeaa650d4f989518879fb10e818b785c058d818",
+                      "bytes":  3264,
+                      "copySha256":  "ae7a354fa386edfe04b62299daeaa650d4f989518879fb10e818b785c058d818",
+                      "verifySha256":  "ae7a354fa386edfe04b62299daeaa650d4f989518879fb10e818b785c058d818"
+                  },
+                  {
+                      "path":  "docs/V1_FIDELITY_FRONTEND_RESULTS.md",
+                      "sha256":  "4edd92b94453459a74ddcbc3593cb7ecef7bff85decc837050c6f352b5e459ec",
+                      "bytes":  5455,
+                      "copySha256":  "4edd92b94453459a74ddcbc3593cb7ecef7bff85decc837050c6f352b5e459ec",
+                      "verifySha256":  "4edd92b94453459a74ddcbc3593cb7ecef7bff85decc837050c6f352b5e459ec"
+                  },
+                  {
+                      "path":  "docs/V1_PARITY_UI_API_MIGRATION.md",
+                      "sha256":  "ea911d9e71c3dba50ceddbcb32520cf4823d07e3a6d87cf42807d838aa0286ab",
+                      "bytes":  21900,
+                      "copySha256":  "ea911d9e71c3dba50ceddbcb32520cf4823d07e3a6d87cf42807d838aa0286ab",
+                      "verifySha256":  "ea911d9e71c3dba50ceddbcb32520cf4823d07e3a6d87cf42807d838aa0286ab"
+                  },
+                  {
+                      "path":  "docs/V1_PRINTER_SETTINGS_REFERENCE.md",
+                      "sha256":  "c2e94d423bc18b3458de1850d5683d0345abd9e565e1b15eda0de50a37382517",
+                      "bytes":  6489,
+                      "copySha256":  "c2e94d423bc18b3458de1850d5683d0345abd9e565e1b15eda0de50a37382517",
+                      "verifySha256":  "c2e94d423bc18b3458de1850d5683d0345abd9e565e1b15eda0de50a37382517"
+                  },
+                  {
+                      "path":  "docs/V1_SETTINGS_PARITY_MATRIX.md",
+                      "sha256":  "00731e8694b34778741c172aeffb50280c19d48d6f53fbf3d7fa30ddb199f941",
+                      "bytes":  21469,
+                      "copySha256":  "00731e8694b34778741c172aeffb50280c19d48d6f53fbf3d7fa30ddb199f941",
+                      "verifySha256":  "00731e8694b34778741c172aeffb50280c19d48d6f53fbf3d7fa30ddb199f941"
+                  },
+                  {
+                      "path":  "docs/V1_SETTINGS_TEST_RESULTS.md",
+                      "sha256":  "440c650147a554b02190ae3116430cbbf39dca6c6bb7acb8fb0642b91908d057",
+                      "bytes":  10848,
+                      "copySha256":  "440c650147a554b02190ae3116430cbbf39dca6c6bb7acb8fb0642b91908d057",
+                      "verifySha256":  "440c650147a554b02190ae3116430cbbf39dca6c6bb7acb8fb0642b91908d057"
+                  },
+                  {
+                      "path":  "docs/V1_TO_V2_API_PARITY.md",
+                      "sha256":  "e2220930c0857111932d7723ada669c72a84361ce7b1045d5c34aa9b6ff64751",
+                      "bytes":  2740,
+                      "copySha256":  "e2220930c0857111932d7723ada669c72a84361ce7b1045d5c34aa9b6ff64751",
+                      "verifySha256":  "e2220930c0857111932d7723ada669c72a84361ce7b1045d5c34aa9b6ff64751"
+                  },
+                  {
+                      "path":  "docs/V1_TO_V2_FULL_PARITY_MATRIX.md",
+                      "sha256":  "c3d3083dbf5007869e4747d7288c94093a714b92f249b02caef5f0d4bc0bad4e",
+                      "bytes":  23186,
+                      "copySha256":  "c3d3083dbf5007869e4747d7288c94093a714b92f249b02caef5f0d4bc0bad4e",
+                      "verifySha256":  "c3d3083dbf5007869e4747d7288c94093a714b92f249b02caef5f0d4bc0bad4e"
+                  },
+                  {
+                      "path":  "docs/V1_TO_V2_FULL_PARITY_MATRIX_CORRECTED.md",
+                      "sha256":  "34decf47cc6176db750db76021391bd82ff501543eba48fdb953a3cb2e5a865b",
+                      "bytes":  16489,
+                      "copySha256":  "34decf47cc6176db750db76021391bd82ff501543eba48fdb953a3cb2e5a865b",
+                      "verifySha256":  "34decf47cc6176db750db76021391bd82ff501543eba48fdb953a3cb2e5a865b"
+                  },
+                  {
+                      "path":  "docs/V1_TO_V2_SCREEN_PARITY.md",
+                      "sha256":  "500c5907f73ae263c72d70cd0873c2e5a5e322d2896d33fedffc9c086fbc4c9b",
+                      "bytes":  9420,
+                      "copySha256":  "500c5907f73ae263c72d70cd0873c2e5a5e322d2896d33fedffc9c086fbc4c9b",
+                      "verifySha256":  "500c5907f73ae263c72d70cd0873c2e5a5e322d2896d33fedffc9c086fbc4c9b"
+                  },
+                  {
+                      "path":  "docs/V1_VISUAL_FIDELITY_REFERENCE.md",
+                      "sha256":  "2ee1cbeb70a6863f4853cbcfe736cda533bb169939df39e50524715804360ae6",
+                      "bytes":  21280,
+                      "copySha256":  "2ee1cbeb70a6863f4853cbcfe736cda533bb169939df39e50524715804360ae6",
+                      "verifySha256":  "2ee1cbeb70a6863f4853cbcfe736cda533bb169939df39e50524715804360ae6"
+                  },
+                  {
+                      "path":  "docs/V2_ARCHITECTURE.md",
+                      "sha256":  "459701021010da48b2aadb0c25e4b2e35e683555ca38dc0959bb780c4e44f9fc",
+                      "bytes":  27354,
+                      "copySha256":  "459701021010da48b2aadb0c25e4b2e35e683555ca38dc0959bb780c4e44f9fc",
+                      "verifySha256":  "459701021010da48b2aadb0c25e4b2e35e683555ca38dc0959bb780c4e44f9fc"
+                  },
+                  {
+                      "path":  "docs/V2_CONFIGURATION_COMPLETION_CONTRACT.md",
+                      "sha256":  "aacdf4e3bb4e7fd8309290d4f3e20af46054e9c1dff11c1cf3d72fe17b4090bc",
+                      "bytes":  11762,
+                      "copySha256":  "aacdf4e3bb4e7fd8309290d4f3e20af46054e9c1dff11c1cf3d72fe17b4090bc",
+                      "verifySha256":  "aacdf4e3bb4e7fd8309290d4f3e20af46054e9c1dff11c1cf3d72fe17b4090bc"
+                  },
+                  {
+                      "path":  "frontend/index.html",
+                      "sha256":  "6d1056218f7bbf8b6dbd59d24f28e3a43fa022ec378a4051b0dd17c4601b9034",
+                      "bytes":  311,
+                      "copySha256":  "6d1056218f7bbf8b6dbd59d24f28e3a43fa022ec378a4051b0dd17c4601b9034",
+                      "verifySha256":  "6d1056218f7bbf8b6dbd59d24f28e3a43fa022ec378a4051b0dd17c4601b9034"
+                  },
+                  {
+                      "path":  "frontend/package.json",
+                      "sha256":  "7d02a842a8be01fd642820308fe7f25ee5284538921184bd1989c1d2b472dc0c",
+                      "bytes":  645,
+                      "copySha256":  "7d02a842a8be01fd642820308fe7f25ee5284538921184bd1989c1d2b472dc0c",
+                      "verifySha256":  "7d02a842a8be01fd642820308fe7f25ee5284538921184bd1989c1d2b472dc0c"
+                  },
+                  {
+                      "path":  "frontend/package-lock.json",
+                      "sha256":  "bcacdfb4214345f2d1f7ac76b611ccf4447100e408b96c70d47ea85b13a3134f",
+                      "bytes":  134039,
+                      "copySha256":  "bcacdfb4214345f2d1f7ac76b611ccf4447100e408b96c70d47ea85b13a3134f",
+                      "verifySha256":  "bcacdfb4214345f2d1f7ac76b611ccf4447100e408b96c70d47ea85b13a3134f"
+                  },
+                  {
+                      "path":  "frontend/src/App.test.tsx",
+                      "sha256":  "640eaa72ff4a137743ca4c666150f8902e9b2eb303dd03c34776dfa4f12dee2a",
+                      "bytes":  2231,
+                      "copySha256":  "640eaa72ff4a137743ca4c666150f8902e9b2eb303dd03c34776dfa4f12dee2a",
+                      "verifySha256":  "640eaa72ff4a137743ca4c666150f8902e9b2eb303dd03c34776dfa4f12dee2a"
+                  },
+                  {
+                      "path":  "frontend/src/App.tsx",
+                      "sha256":  "39ebf6c94c7213f38725c223b4182d200093411de82a2779c0974fb4379b6f60",
+                      "bytes":  4450,
+                      "copySha256":  "39ebf6c94c7213f38725c223b4182d200093411de82a2779c0974fb4379b6f60",
+                      "verifySha256":  "39ebf6c94c7213f38725c223b4182d200093411de82a2779c0974fb4379b6f60"
+                  },
+                  {
+                      "path":  "frontend/src/bridge.ts",
+                      "sha256":  "0227b8c1dca4a0116e2a5d71d909323f237729d53f27eeda4d08b1c10944d569",
+                      "bytes":  521,
+                      "copySha256":  "0227b8c1dca4a0116e2a5d71d909323f237729d53f27eeda4d08b1c10944d569",
+                      "verifySha256":  "0227b8c1dca4a0116e2a5d71d909323f237729d53f27eeda4d08b1c10944d569"
+                  },
+                  {
+                      "path":  "frontend/src/components/PhotoPreview.test.tsx",
+                      "sha256":  "fd7115b215dfd6de097f8b1c6cfc25ffd891506a2fe32e9bf24ba7109749c4cf",
+                      "bytes":  1322,
+                      "copySha256":  "fd7115b215dfd6de097f8b1c6cfc25ffd891506a2fe32e9bf24ba7109749c4cf",
+                      "verifySha256":  "fd7115b215dfd6de097f8b1c6cfc25ffd891506a2fe32e9bf24ba7109749c4cf"
+                  },
+                  {
+                      "path":  "frontend/src/components/PhotoPreview.tsx",
+                      "sha256":  "0d4e49839050e570523bf9bfcce3d02da8371678f0aee666b93185889bfb406b",
+                      "bytes":  1126,
+                      "copySha256":  "0d4e49839050e570523bf9bfcce3d02da8371678f0aee666b93185889bfb406b",
+                      "verifySha256":  "0d4e49839050e570523bf9bfcce3d02da8371678f0aee666b93185889bfb406b"
+                  },
+                  {
+                      "path":  "frontend/src/components/StaffGestures.test.tsx",
+                      "sha256":  "fd449c335a8029fb737c23119081114b873eedfbd37cc23b46b62b7c7e220ef8",
+                      "bytes":  1956,
+                      "copySha256":  "fd449c335a8029fb737c23119081114b873eedfbd37cc23b46b62b7c7e220ef8",
+                      "verifySha256":  "fd449c335a8029fb737c23119081114b873eedfbd37cc23b46b62b7c7e220ef8"
+                  },
+                  {
+                      "path":  "frontend/src/components/StaffGestures.tsx",
+                      "sha256":  "a70ed779e0e5a3019e7e7fd98c1be953838b77a0b976831784bdd8a09c669262",
+                      "bytes":  1834,
+                      "copySha256":  "a70ed779e0e5a3019e7e7fd98c1be953838b77a0b976831784bdd8a09c669262",
+                      "verifySha256":  "a70ed779e0e5a3019e7e7fd98c1be953838b77a0b976831784bdd8a09c669262"
+                  },
+                  {
+                      "path":  "frontend/src/components/StudioUI.tsx",
+                      "sha256":  "e5d4324fb4cb8b57315d43006a45726ade4d3808fe9d4f4c06501539717f7533",
+                      "bytes":  2226,
+                      "copySha256":  "e5d4324fb4cb8b57315d43006a45726ade4d3808fe9d4f4c06501539717f7533",
+                      "verifySha256":  "e5d4324fb4cb8b57315d43006a45726ade4d3808fe9d4f4c06501539717f7533"
+                  },
+                  {
+                      "path":  "frontend/src/customer.css",
+                      "sha256":  "ef07b56ec8e44d69ab489dc85aee9f505c4a8f995c65282d202d91535b08d48e",
+                      "bytes":  5831,
+                      "copySha256":  "ef07b56ec8e44d69ab489dc85aee9f505c4a8f995c65282d202d91535b08d48e",
+                      "verifySha256":  "ef07b56ec8e44d69ab489dc85aee9f505c4a8f995c65282d202d91535b08d48e"
+                  },
+                  {
+                      "path":  "frontend/src/finishing.css",
+                      "sha256":  "c6f5df6e6e55aa865001eebfe250640f876da7d36873bd83c896c75c43de3bb3",
+                      "bytes":  4872,
+                      "copySha256":  "c6f5df6e6e55aa865001eebfe250640f876da7d36873bd83c896c75c43de3bb3",
+                      "verifySha256":  "c6f5df6e6e55aa865001eebfe250640f876da7d36873bd83c896c75c43de3bb3"
+                  },
+                  {
+                      "path":  "frontend/src/main.tsx",
+                      "sha256":  "81edb8f6a73e6ffc25cb4b34a1401192401f61058f9f4740ed1ab4d791a6d7df",
+                      "bytes":  325,
+                      "copySha256":  "81edb8f6a73e6ffc25cb4b34a1401192401f61058f9f4740ed1ab4d791a6d7df",
+                      "verifySha256":  "81edb8f6a73e6ffc25cb4b34a1401192401f61058f9f4740ed1ab4d791a6d7df"
+                  },
+                  {
+                      "path":  "frontend/src/Operator.test.tsx",
+                      "sha256":  "0d168f7cb218a43572d1fb3ded0c72b63a44a89538b9ced872fa9bfb1688d3a0",
+                      "bytes":  2467,
+                      "copySha256":  "0d168f7cb218a43572d1fb3ded0c72b63a44a89538b9ced872fa9bfb1688d3a0",
+                      "verifySha256":  "0d168f7cb218a43572d1fb3ded0c72b63a44a89538b9ced872fa9bfb1688d3a0"
+                  },
+                  {
+                      "path":  "frontend/src/Operator.tsx",
+                      "sha256":  "e1e779a1bc8515dc9c41a015553538a9c7a5ea6b5fac8faa46424e3757985f06",
+                      "bytes":  6250,
+                      "copySha256":  "e1e779a1bc8515dc9c41a015553538a9c7a5ea6b5fac8faa46424e3757985f06",
+                      "verifySha256":  "e1e779a1bc8515dc9c41a015553538a9c7a5ea6b5fac8faa46424e3757985f06"
+                  },
+                  {
+                      "path":  "frontend/src/preview.css",
+                      "sha256":  "7f6c8f58e6744ea748ac1d9b16665fc12efdf89233ee0fc501dd4d78289691db",
+                      "bytes":  2478,
+                      "copySha256":  "7f6c8f58e6744ea748ac1d9b16665fc12efdf89233ee0fc501dd4d78289691db",
+                      "verifySha256":  "7f6c8f58e6744ea748ac1d9b16665fc12efdf89233ee0fc501dd4d78289691db"
+                  },
+                  {
+                      "path":  "frontend/src/shared/connected-simulator.ts",
+                      "sha256":  "73441ef4d6cca1fb9e56e5b7db4c02f440ceb3c866ee590c7ee9ced26a577b60",
+                      "bytes":  793,
+                      "copySha256":  "73441ef4d6cca1fb9e56e5b7db4c02f440ceb3c866ee590c7ee9ced26a577b60",
+                      "verifySha256":  "73441ef4d6cca1fb9e56e5b7db4c02f440ceb3c866ee590c7ee9ced26a577b60"
+                  },
+                  {
+                      "path":  "frontend/src/shared/simulator-contract.ts",
+                      "sha256":  "e404dfd4d0a3133571f41eb32909ad45d251349270433d3179727eddaad4efd9",
+                      "bytes":  1506,
+                      "copySha256":  "e404dfd4d0a3133571f41eb32909ad45d251349270433d3179727eddaad4efd9",
+                      "verifySha256":  "e404dfd4d0a3133571f41eb32909ad45d251349270433d3179727eddaad4efd9"
+                  },
+                  {
+                      "path":  "frontend/src/Simulator.test.tsx",
+                      "sha256":  "306260f0be8386022794f9faa6af893a00bd83880f1a2bf87ff24ef2c155183c",
+                      "bytes":  2596,
+                      "copySha256":  "306260f0be8386022794f9faa6af893a00bd83880f1a2bf87ff24ef2c155183c",
+                      "verifySha256":  "306260f0be8386022794f9faa6af893a00bd83880f1a2bf87ff24ef2c155183c"
+                  },
+                  {
+                      "path":  "frontend/src/Simulator.tsx",
+                      "sha256":  "9e7110eb4e3a1b592de8d3c55ea71d2d05d5827210b34b74ceb67714e940cf64",
+                      "bytes":  18725,
+                      "copySha256":  "9e7110eb4e3a1b592de8d3c55ea71d2d05d5827210b34b74ceb67714e940cf64",
+                      "verifySha256":  "9e7110eb4e3a1b592de8d3c55ea71d2d05d5827210b34b74ceb67714e940cf64"
+                  },
+                  {
+                      "path":  "frontend/src/stages.css",
+                      "sha256":  "b7390f12b064f9fb5af9755f3dee729c92b0e7c5a90d36ab592ee36da9d660e9",
+                      "bytes":  6072,
+                      "copySha256":  "b7390f12b064f9fb5af9755f3dee729c92b0e7c5a90d36ab592ee36da9d660e9",
+                      "verifySha256":  "b7390f12b064f9fb5af9755f3dee729c92b0e7c5a90d36ab592ee36da9d660e9"
+                  },
+                  {
+                      "path":  "frontend/src/styles.css",
+                      "sha256":  "6e505805b1a83d9d5ca3bbd3756e297dafab0ea08edf33b1ab4fd05bb9dae6dc",
+                      "bytes":  5507,
+                      "copySha256":  "6e505805b1a83d9d5ca3bbd3756e297dafab0ea08edf33b1ab4fd05bb9dae6dc",
+                      "verifySha256":  "6e505805b1a83d9d5ca3bbd3756e297dafab0ea08edf33b1ab4fd05bb9dae6dc"
+                  },
+                  {
+                      "path":  "frontend/src/test-setup.ts",
+                      "sha256":  "91a3c8962a0edcb956206a501d943fe99e1c78c6d4d8b5c9a948a3362c75978c",
+                      "bytes":  43,
+                      "copySha256":  "91a3c8962a0edcb956206a501d943fe99e1c78c6d4d8b5c9a948a3362c75978c",
+                      "verifySha256":  "91a3c8962a0edcb956206a501d943fe99e1c78c6d4d8b5c9a948a3362c75978c"
+                  },
+                  {
+                      "path":  "frontend/src/v1-settings.css",
+                      "sha256":  "dcde4f0b58871a2695f87507b17050f6974fcf17c649e092af3a4982a392b105",
+                      "bytes":  6879,
+                      "copySha256":  "dcde4f0b58871a2695f87507b17050f6974fcf17c649e092af3a4982a392b105",
+                      "verifySha256":  "dcde4f0b58871a2695f87507b17050f6974fcf17c649e092af3a4982a392b105"
+                  },
+                  {
+                      "path":  "frontend/src/V1Settings.test.tsx",
+                      "sha256":  "0c9df2eedf459c5f32a0ede8232836de191fad3782968c6e91989d7d318fa48d",
+                      "bytes":  3300,
+                      "copySha256":  "0c9df2eedf459c5f32a0ede8232836de191fad3782968c6e91989d7d318fa48d",
+                      "verifySha256":  "0c9df2eedf459c5f32a0ede8232836de191fad3782968c6e91989d7d318fa48d"
+                  },
+                  {
+                      "path":  "frontend/src/V1Settings.tsx",
+                      "sha256":  "1e68a9813a7e8da7370b0df2d5d46d2d4756191cdb1aa4548523bdf7635aee51",
+                      "bytes":  7635,
+                      "copySha256":  "1e68a9813a7e8da7370b0df2d5d46d2d4756191cdb1aa4548523bdf7635aee51",
+                      "verifySha256":  "1e68a9813a7e8da7370b0df2d5d46d2d4756191cdb1aa4548523bdf7635aee51"
+                  },
+                  {
+                      "path":  "frontend/src/vite-env.d.ts",
+                      "sha256":  "65996936fbb042915f7b74a200fcdde7e410f32a669b1ab9597cfaa4b0faddb5",
+                      "bytes":  38,
+                      "copySha256":  "65996936fbb042915f7b74a200fcdde7e410f32a669b1ab9597cfaa4b0faddb5",
+                      "verifySha256":  "65996936fbb042915f7b74a200fcdde7e410f32a669b1ab9597cfaa4b0faddb5"
+                  },
+                  {
+                      "path":  "frontend/tsconfig.json",
+                      "sha256":  "a5ee77afff7b70afe6186a4cd139c57cf64820b6ffecccd69ab28fadf28e1747",
+                      "bytes":  260,
+                      "copySha256":  "a5ee77afff7b70afe6186a4cd139c57cf64820b6ffecccd69ab28fadf28e1747",
+                      "verifySha256":  "a5ee77afff7b70afe6186a4cd139c57cf64820b6ffecccd69ab28fadf28e1747"
+                  },
+                  {
+                      "path":  "frontend/vite.config.ts",
+                      "sha256":  "872a66d91a59fbcb6a86e38aca731faa78b9689adc4596326eb0c0c5d18b43ce",
+                      "bytes":  312,
+                      "copySha256":  "872a66d91a59fbcb6a86e38aca731faa78b9689adc4596326eb0c0c5d18b43ce",
+                      "verifySha256":  "872a66d91a59fbcb6a86e38aca731faa78b9689adc4596326eb0c0c5d18b43ce"
+                  },
+                  {
+                      "path":  "src-tauri/build.rs",
+                      "sha256":  "8af41c0062014fc594e4bb9899e60ee9930ab57d4cf0c73041ff557d6ec736e6",
+                      "bytes":  35,
+                      "copySha256":  "8af41c0062014fc594e4bb9899e60ee9930ab57d4cf0c73041ff557d6ec736e6",
+                      "verifySha256":  "8af41c0062014fc594e4bb9899e60ee9930ab57d4cf0c73041ff557d6ec736e6"
+                  },
+                  {
+                      "path":  "src-tauri/Cargo.lock",
+                      "sha256":  "7a25d0d7a84192f53f6df5e435fde8925e5a88de180fed3e9120ee3ec30c9b2a",
+                      "bytes":  104009,
+                      "copySha256":  "7a25d0d7a84192f53f6df5e435fde8925e5a88de180fed3e9120ee3ec30c9b2a",
+                      "verifySha256":  "7a25d0d7a84192f53f6df5e435fde8925e5a88de180fed3e9120ee3ec30c9b2a"
+                  },
+                  {
+                      "path":  "src-tauri/Cargo.toml",
+                      "sha256":  "7057a45621c01a98d5ef734ca423ba4689cbe89baf03d92aca6432a1d0b752b0",
+                      "bytes":  296,
+                      "copySha256":  "7057a45621c01a98d5ef734ca423ba4689cbe89baf03d92aca6432a1d0b752b0",
+                      "verifySha256":  "7057a45621c01a98d5ef734ca423ba4689cbe89baf03d92aca6432a1d0b752b0"
+                  },
+                  {
+                      "path":  "src-tauri/src/bridge.rs",
+                      "sha256":  "9d7b90d40a6cf252248ec9274563b5e57be7bb8c600446d325ed1ead4564305c",
+                      "bytes":  6314,
+                      "copySha256":  "9d7b90d40a6cf252248ec9274563b5e57be7bb8c600446d325ed1ead4564305c",
+                      "verifySha256":  "9d7b90d40a6cf252248ec9274563b5e57be7bb8c600446d325ed1ead4564305c"
+                  },
+                  {
+                      "path":  "src-tauri/src/main.rs",
+                      "sha256":  "1435626173d9a087bfcbcc5733528755e7ab8e2bccc89bb22c71db31a96d7457",
+                      "bytes":  2396,
+                      "copySha256":  "1435626173d9a087bfcbcc5733528755e7ab8e2bccc89bb22c71db31a96d7457",
+                      "verifySha256":  "1435626173d9a087bfcbcc5733528755e7ab8e2bccc89bb22c71db31a96d7457"
+                  },
+                  {
+                      "path":  "src-tauri/src/probe.rs",
+                      "sha256":  "60b91ba9f9dad84a6b6d8e1c82b2a82d3d84e2283d5fd01a83d8e1afe27df493",
+                      "bytes":  330,
+                      "copySha256":  "60b91ba9f9dad84a6b6d8e1c82b2a82d3d84e2283d5fd01a83d8e1afe27df493",
+                      "verifySha256":  "60b91ba9f9dad84a6b6d8e1c82b2a82d3d84e2283d5fd01a83d8e1afe27df493"
+                  },
+                  {
+                      "path":  "src-tauri/tauri.conf.json",
+                      "sha256":  "92ebee89da2beba2a448cc64fce312892498509e5f165975c75d92ffd95bc0e0",
+                      "bytes":  721,
+                      "copySha256":  "92ebee89da2beba2a448cc64fce312892498509e5f165975c75d92ffd95bc0e0",
+                      "verifySha256":  "92ebee89da2beba2a448cc64fce312892498509e5f165975c75d92ffd95bc0e0"
+                  },
+                  {
+                      "path":  "tests/desktop-bridge/webview-health-close.ps1",
+                      "sha256":  "cbccf3c50427552668c4abc160c4595d122c8c81258b1c8cb9adcb9c75b76953",
+                      "bytes":  4780,
+                      "copySha256":  "cbccf3c50427552668c4abc160c4595d122c8c81258b1c8cb9adcb9c75b76953",
+                      "verifySha256":  "cbccf3c50427552668c4abc160c4595d122c8c81258b1c8cb9adcb9c75b76953"
+                  },
+                  {
+                      "path":  "tests/parity-migration/README.md",
+                      "sha256":  "b0330f1e5098a38731b5d2b312ba7d5a12ee3cf171fbfe28fd8bbccbc0b3c496",
+                      "bytes":  1281,
+                      "copySha256":  "b0330f1e5098a38731b5d2b312ba7d5a12ee3cf171fbfe28fd8bbccbc0b3c496",
+                      "verifySha256":  "b0330f1e5098a38731b5d2b312ba7d5a12ee3cf171fbfe28fd8bbccbc0b3c496"
+                  },
+                  {
+                      "path":  "tests/ui-transformation/README.md",
+                      "sha256":  "a933b84bf51add88a5f01ab21f4b3e522a1da332f54b6cfa09bdfcb5dc4f2b75",
+                      "bytes":  5825,
+                      "copySha256":  "a933b84bf51add88a5f01ab21f4b3e522a1da332f54b6cfa09bdfcb5dc4f2b75",
+                      "verifySha256":  "a933b84bf51add88a5f01ab21f4b3e522a1da332f54b6cfa09bdfcb5dc4f2b75"
+                  },
+                  {
+                      "path":  "tests/v1-settings-parity/README.md",
+                      "sha256":  "d91e67c3453dcc4b714c47bc05245828ee8115a31c2e69e36c48d31028f2db01",
+                      "bytes":  1177,
+                      "copySha256":  "d91e67c3453dcc4b714c47bc05245828ee8115a31c2e69e36c48d31028f2db01",
+                      "verifySha256":  "d91e67c3453dcc4b714c47bc05245828ee8115a31c2e69e36c48d31028f2db01"
+                  }
+              ]
+}

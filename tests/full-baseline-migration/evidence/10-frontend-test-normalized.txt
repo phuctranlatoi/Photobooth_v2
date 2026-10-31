@@ -1,0 +1,41 @@
+﻿command=npm test -- --run
+cwd=E:\HK1_2026_2027\PhotoboothDesktop_v2\frontend
+startedUtc=2026-10-31T00:42:05.3968281Z
+
+> le-souvenir-v2-bridge@0.1.0 test
+> vitest run --run
+
+
+[1m[46m RUN [49m[22m [36mv4.0.9 [39m[90mE:/HK1_2026_2027/PhotoboothDesktop_v2/frontend[39m
+
+ [32m���[39m src/components/PhotoPreview.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[33m 438[2mms[22m[39m
+     [33m[2m���[22m[39m contains the original image without changing selection and closes once [33m 407[2mms[22m[39m
+ [32m���[39m src/components/StaffGestures.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[33m 453[2mms[22m[39m
+     [33m[2m���[22m[39m opens operator only on fifth welcome tap and resets on leaving welcome [33m 336[2mms[22m[39m
+ [32m���[39m src/V1Settings.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 668[2mms[22m[39m
+   [33m[2m���[22m[39m fails closed without invented defaults [33m 334[2mms[22m[39m
+ [32m���[39m src/Operator.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[33m 1173[2mms[22m[39m
+   [33m[2m���[22m[39m shows default-denied access and all six honest sections [33m 983[2mms[22m[39m
+ [32m���[39m src/Simulator.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[33m 514[2mms[22m[39m
+   [33m[2m���[22m[39m renders backend fixture catalog and latches rapid Start with bound generation [33m 414[2mms[22m[39m
+ [32m���[39m src/App.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[33m 752[2mms[22m[39m
+   [33m[2m���[22m[39m keeps health diagnostics separate from simulator entry [33m 404[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m6 passed[39m[22m[90m (6)[39m
+[2m      Tests [22m [1m[32m20 passed[39m[22m[90m (20)[39m
+[2m   Start at [22m 07:42:08
+[2m   Duration [22m 7.26s[2m (transform 1.55s, setup 3.02s, collect 6.26s, tests 4.00s, environment 21.05s, prepare 267ms)[22m
+
+node.exe : npm notice
+At line:1 char:1
++ & "C:\nvm4w\nodejs/node.exe" "C:\nvm4w\nodejs/node_modules/npm/bin/np ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (npm notice:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+npm notice New minor version of npm available! 11.6.1 -> 11.21.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.21.1
+npm notice To update run: npm install -g npm@11.21.1
+npm notice
+exitCode=0
+endedUtc=2026-10-31T00:42:15.9238159Z

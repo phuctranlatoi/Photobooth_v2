@@ -1,0 +1,2 @@
+import {Heading,type ScreenProps} from './KioskUI';
+export function PrepareScreen({layout}:ScreenProps){return <><Heading title="Chuẩn bị" subtitle="Sẵn sàng tạo dáng!"/><div className="v1-center v1-panel"><span className="v1-big-icon">✦</span><h2>Hãy nhìn vào ống kính</h2><p>Đứng gần nhau, tạo dáng thoải mái và mỉm cười nhé!</p><div className="v1-pills"><span>{layout?.title}</span><span>{layout?.shotCount} ảnh</span><span>Đếm ngược {layout?.countdownSeconds}s</span></div><p>Đang chuẩn bị máy ảnh mô phỏng…</p></div></>}

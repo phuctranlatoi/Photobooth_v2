@@ -1,0 +1,979 @@
+﻿{
+    "gitCommit":  "e3d25c7e89a7c8e85549787bd2134937cc8a0660",
+    "files":  [
+                  {
+                      "Path":  ".gitignore",
+                      "SHA256":  "91D30A897B3F2AB614FBFB5427FE2EDFF8AE430D952E2D344B5CE4E6D95C9F2F",
+                      "Size":  217
+                  },
+                  {
+                      "Path":  "AGENTS.md",
+                      "SHA256":  "5E8E68158BD1DDCE056B9C29E8B406235058DFCAFEE8E512DEE6E9D7CF4A7221",
+                      "Size":  3890
+                  },
+                  {
+                      "Path":  "backend\\build.gradle.kts",
+                      "SHA256":  "5D621BF41AE53A0AE3316E06D7A1B6AEA0664D60D580CFFAB59BE52CD0742DE7",
+                      "Size":  561
+                  },
+                  {
+                      "Path":  "backend\\gradle.properties",
+                      "SHA256":  "4EB8FD28348340CB28C09C33264D9C13A6E82377AD9476BF90A0ECC0E33D5847",
+                      "Size":  120
+                  },
+                  {
+                      "Path":  "backend\\settings.gradle.kts",
+                      "SHA256":  "065E27B63E0D77E5B05852F634CD3754246D7016C354779FB3436AA459C9D3BC",
+                      "Size":  54
+                  },
+                  {
+                      "Path":  "backend\\src\\main\\kotlin\\com\\lesouvenir\\v2\\camera\\legacy\\IsolatedHotFolder.kt",
+                      "SHA256":  "13B631F70FCD04400269E3CB293011033A5955FE639BD509AD1166C850A374B5",
+                      "Size":  6224
+                  },
+                  {
+                      "Path":  "backend\\src\\main\\kotlin\\com\\lesouvenir\\v2\\camera\\legacy\\LegacyCameraPort.kt",
+                      "SHA256":  "14C7F4315B7C04B5CC35602A79B4F5C674681F6A72C906A4277B0FCA11DC584D",
+                      "Size":  5688
+                  },
+                  {
+                      "Path":  "backend\\src\\main\\kotlin\\com\\lesouvenir\\v2\\camera\\legacy\\LegacyOriginalStore.kt",
+                      "SHA256":  "CCD220A82CB0B6977E148F48BD1E851902D369E2B3F17FE4C08D1F09101A3BAC",
+                      "Size":  1297
+                  },
+                  {
+                      "Path":  "backend\\src\\main\\kotlin\\com\\lesouvenir\\v2\\camera\\simulator\\SimulatorCamera.kt",
+                      "SHA256":  "572F8AFBD0AA52208B76B75BF12033F9CE5888F36D3E02B93098DE2D0C7DBA40",
+                      "Size":  5157
+                  },
+                  {
+                      "Path":  "backend\\src\\main\\kotlin\\com\\lesouvenir\\v2\\foundation\\LayoutMode.kt",
+                      "SHA256":  "D4213E5F1C5E1C211F9D65E5C90FFDAE4EA0D7DD4EEEA068352D189230921C12",
+                      "Size":  2272
+                  },
+                  {
+                      "Path":  "backend\\src\\main\\kotlin\\com\\lesouvenir\\v2\\foundation\\PricingCalculator.kt",
+                      "SHA256":  "04AF1C205299DC451CEF61B6B79DC1A5FD5894623FD9871D2888719BB83548E2",
+                      "Size":  1647
+                  },
+                  {
+                      "Path":  "backend\\src\\main\\kotlin\\com\\lesouvenir\\v2\\foundation\\SessionStateMachine.kt",
+                      "SHA256":  "330831F3D59E5FBE3F9C9FA2B896B58352AFA55AE7DCF8697A71CFC18C38B55A",
+                      "Size":  824
+                  },
+                  {
+                      "Path":  "backend\\src\\main\\kotlin\\com\\lesouvenir\\v2\\foundation\\SimulatorAuthorization.kt",
+                      "SHA256":  "1F56CFF64E55A0E11CC158856E40CE0A55851A05C4B8FDA467CD6BB76A760F0F",
+                      "Size":  431
+                  },
+                  {
+                      "Path":  "backend\\src\\main\\kotlin\\com\\lesouvenir\\v2\\integrations\\CloudinaryClient.kt",
+                      "SHA256":  "BF30112CA090D654BDD2752DEFCFD428ECD1E2A5413FAC5F434B928DB7146664",
+                      "Size":  3116
+                  },
+                  {
+                      "Path":  "backend\\src\\main\\kotlin\\com\\lesouvenir\\v2\\integrations\\PayOsClient.kt",
+                      "SHA256":  "9DF7A8D68277B6467E2EB883B8DAEC85D6E78645DD32D6D451CA16BB7E7F2D1C",
+                      "Size":  2561
+                  },
+                  {
+                      "Path":  "backend\\src\\main\\kotlin\\com\\lesouvenir\\v2\\integrations\\RevenueRecognition.kt",
+                      "SHA256":  "B595EB402340C397AF92A367995BD7C2CC546C7EF3E5C598ED283FCB8385479D",
+                      "Size":  2821
+                  },
+                  {
+                      "Path":  "backend\\src\\main\\kotlin\\com\\lesouvenir\\v2\\integrations\\SafeTransport.kt",
+                      "SHA256":  "8880A4858AD8236AA2C9F8EF850CC6DFAB4D9FFEAA05FA72B4C02702741D46CC",
+                      "Size":  5194
+                  },
+                  {
+                      "Path":  "backend\\src\\main\\kotlin\\com\\lesouvenir\\v2\\integrations\\SharedApiClients.kt",
+                      "SHA256":  "E8F62BB1DF4CB5B5E3018F4DD4E9F9E4066F491FD7C6B65E168EA6DF1A93DD27",
+                      "Size":  4165
+                  },
+                  {
+                      "Path":  "backend\\src\\main\\kotlin\\com\\lesouvenir\\v2\\ipc\\IpcMain.kt",
+                      "SHA256":  "13EA01E8735E5C1C02C454B4E2D2CBAC18D40379CDEDBBC2F70CDB05689D082A",
+                      "Size":  5366
+                  },
+                  {
+                      "Path":  "backend\\src\\main\\kotlin\\com\\lesouvenir\\v2\\ipc\\OperatorLayoutStore.kt",
+                      "SHA256":  "99CC39ECFFF136ABA7E890D9BB8251A3042A9F977B815212FAB9F6E92FAD6B24",
+                      "Size":  3446
+                  },
+                  {
+                      "Path":  "backend\\src\\main\\kotlin\\com\\lesouvenir\\v2\\ipc\\OperatorSettingsStore.kt",
+                      "SHA256":  "E77AC5BC7ED434E61746ECDA276B16E3CB943F10D61FA82590BA4ECEB2258458",
+                      "Size":  3697
+                  },
+                  {
+                      "Path":  "backend\\src\\main\\kotlin\\com\\lesouvenir\\v2\\ipc\\SimulatorSessionEngine.kt",
+                      "SHA256":  "5DEE101C5440BC949637FA0C7526D6712DB6CAB123AE2D1D85C8FFC4313565EC",
+                      "Size":  21988
+                  },
+                  {
+                      "Path":  "backend\\src\\main\\kotlin\\com\\lesouvenir\\v2\\printing\\SimulatorCompositor.kt",
+                      "SHA256":  "65C42AB33920EB7485B8E7CD9E5763673BE0F54C697E9A30D56F6C13BCD94552",
+                      "Size":  5406
+                  },
+                  {
+                      "Path":  "backend\\src\\main\\kotlin\\com\\lesouvenir\\v2\\printing\\legacy\\LegacyPrinter.kt",
+                      "SHA256":  "B2619D8ECA4BB06020970A09990B6985F0EEFAA45199E6649DF49267752FCAAA",
+                      "Size":  4450
+                  },
+                  {
+                      "Path":  "backend\\src\\test\\kotlin\\com\\lesouvenir\\v2\\camera\\legacy\\IsolatedHotFolderTest.kt",
+                      "SHA256":  "DF01300D70F5FCC26CE490D062D846AEB07B25307E589FC64207E5D1202F72F7",
+                      "Size":  3872
+                  },
+                  {
+                      "Path":  "backend\\src\\test\\kotlin\\com\\lesouvenir\\v2\\camera\\legacy\\LegacyCameraPortTest.kt",
+                      "SHA256":  "F5D99E2562B296CDB2DFCDE0A635682720963705DEE946365AEF7D7E4763F78C",
+                      "Size":  1896
+                  },
+                  {
+                      "Path":  "backend\\src\\test\\kotlin\\com\\lesouvenir\\v2\\camera\\simulator\\SimulatorCameraTest.kt",
+                      "SHA256":  "69A4F5DECFB6837BE6A90E98554D15F79AB2B704104777C72696F2B9FED8555D",
+                      "Size":  2928
+                  },
+                  {
+                      "Path":  "backend\\src\\test\\kotlin\\com\\lesouvenir\\v2\\foundation\\FoundationTest.kt",
+                      "SHA256":  "8AD452461DBE3A8805B1728B64AE733241FE6B4A002DC579BA41FFB9607A4C17",
+                      "Size":  2801
+                  },
+                  {
+                      "Path":  "backend\\src\\test\\kotlin\\com\\lesouvenir\\v2\\integrations\\IntegrationContractTest.kt",
+                      "SHA256":  "98245593FA8B99658DC9A7761E2E2125E2888B0F943090631E60474A72760CCA",
+                      "Size":  9195
+                  },
+                  {
+                      "Path":  "backend\\src\\test\\kotlin\\com\\lesouvenir\\v2\\integrations\\RevenueRecognitionTest.kt",
+                      "SHA256":  "59E68E8EE6AED759940B20ADAADFB332BD4B7D9B8BC6FCB9BFC1DE8AAAF0EC42",
+                      "Size":  3174
+                  },
+                  {
+                      "Path":  "backend\\src\\test\\kotlin\\com\\lesouvenir\\v2\\ipc\\BridgeTest.kt",
+                      "SHA256":  "9D9021EC8FF89B875055DC63A7A8BE86F9069EF76EFFFACBAE59534DA17FB0A9",
+                      "Size":  6669
+                  },
+                  {
+                      "Path":  "backend\\src\\test\\kotlin\\com\\lesouvenir\\v2\\ipc\\OperatorContractTest.kt",
+                      "SHA256":  "F5C53813B72318F490B25B2F08675467D005D26BEB7629067EFC3BE6DF6DA11E",
+                      "Size":  4981
+                  },
+                  {
+                      "Path":  "backend\\src\\test\\kotlin\\com\\lesouvenir\\v2\\ipc\\OperatorSettingsTest.kt",
+                      "SHA256":  "CAD7E0244A25DC213F8E960AFD82AE5CD04FA05110D47F0C4BDF28D106CC5E88",
+                      "Size":  4866
+                  },
+                  {
+                      "Path":  "backend\\src\\test\\kotlin\\com\\lesouvenir\\v2\\ipc\\SimulatorSessionTest.kt",
+                      "SHA256":  "9FD191FEFF3A1EEEF0F934623E4CF92CA82497D2EC91B24A9F2247BA9D2FC153",
+                      "Size":  8683
+                  },
+                  {
+                      "Path":  "backend\\src\\test\\kotlin\\com\\lesouvenir\\v2\\printing\\SimulatorCompositorTest.kt",
+                      "SHA256":  "F83B03DA9DD81BC1FB031776818302CAB8EB90D7496EE4F6583FC5BDEF04CF9E",
+                      "Size":  4213
+                  },
+                  {
+                      "Path":  "backend\\src\\test\\kotlin\\com\\lesouvenir\\v2\\printing\\legacy\\LegacyPrinterTest.kt",
+                      "SHA256":  "603EA56B407A9AE6E5B299E1586B19A249DC37C0D90902FEB65C3F6652DA8A40",
+                      "Size":  2884
+                  },
+                  {
+                      "Path":  "docs\\01_V1_ARCHITECTURE_AUDIT.md",
+                      "SHA256":  "FFE1FF4F4169890EF12386F1415589DB2C3352E5A7842AD63C8DC28CC3CEEBFE",
+                      "Size":  6652
+                  },
+                  {
+                      "Path":  "docs\\02_V1_FEATURE_AND_SCREEN_INVENTORY.md",
+                      "SHA256":  "226BFC5D5DE285A90D32BA0EA779D66BAB9AA55C2433CC38235F46A3CD71D8E9",
+                      "Size":  8427
+                  },
+                  {
+                      "Path":  "docs\\03_FEATURE_PARITY_MATRIX.md",
+                      "SHA256":  "CCEA512215A070A9C9119E8D45820E0CE659B4EC399C9216B52606CE7584A831",
+                      "Size":  16599
+                  },
+                  {
+                      "Path":  "docs\\04_SESSION_STATE_MACHINE.md",
+                      "SHA256":  "9410AF721B7673A2A12B4685675E694D3A999196AD72FF97891F068AF50E888C",
+                      "Size":  6464
+                  },
+                  {
+                      "Path":  "docs\\05_CAMERA_AND_NATIVE_SDK_AUDIT.md",
+                      "SHA256":  "533D9C4CC851AB5DCEC416E8393510C47C3D0BF8FAAFFAA662D68E116B158D6E",
+                      "Size":  12570
+                  },
+                  {
+                      "Path":  "docs\\06_PRINTER_DNP_RX1HS_AUDIT.md",
+                      "SHA256":  "20F6B64612D7243531F0AD0B21A803566077A2835D6EA8C13E4A4154709F4296",
+                      "Size":  7655
+                  },
+                  {
+                      "Path":  "docs\\07_IMAGE_LUT_BEAUTY_FRAME_AUDIT.md",
+                      "SHA256":  "B621252E98001AFD5248B70BCCCB428A167E02AD8545F2AE1B9B9F134A858D97",
+                      "Size":  6268
+                  },
+                  {
+                      "Path":  "docs\\08_PAYMENT_REVENUE_QR_CLOUD_AUDIT.md",
+                      "SHA256":  "55E7F36579AE4FA93D084B2B08D3E3EB12B9DD99924EB00499BE639FFCE2EC3E",
+                      "Size":  8583
+                  },
+                  {
+                      "Path":  "docs\\09_ADMIN_STUDIO_SETTINGS_AUDIT.md",
+                      "SHA256":  "5DCCEACDCB36C2EEF46B78D42D89823D7FE5B7E271203A8AA9FC2E4C6DE0BA29",
+                      "Size":  3861
+                  },
+                  {
+                      "Path":  "docs\\API_MIGRATION_ARCHITECTURE_REVIEW.md",
+                      "SHA256":  "39E346B8E35F9599C96A9CF443E930AA17679C1E861CFC36B499390205111BC3",
+                      "Size":  20399
+                  },
+                  {
+                      "Path":  "docs\\API_MIGRATION_TEST_RESULTS.md",
+                      "SHA256":  "F919035A93A73A364F8F5DD22B3367DF8EACF30566425568FA86EC996F9DEAE1",
+                      "Size":  4568
+                  },
+                  {
+                      "Path":  "docs\\API_PRINT_REVENUE_BOUNDARY.md",
+                      "SHA256":  "022164BE9C4F4DD5AEA861391194FF44CF29E41364E5733646312D5F237158CA",
+                      "Size":  4416
+                  },
+                  {
+                      "Path":  "docs\\ARCHITECTURE_BASELINE_MIGRATION.md",
+                      "SHA256":  "093EC18F121AD1FB4422572FF971247D15059884CA640C0BFA7BD24A89CC59F1",
+                      "Size":  29373
+                  },
+                  {
+                      "Path":  "docs\\AUDIT_CORRECTIONS.md",
+                      "SHA256":  "ACC103D75B8FB3DE6680881AB62F1754A99F2C889101D5B11339E7A46912FF07",
+                      "Size":  3409
+                  },
+                  {
+                      "Path":  "docs\\BACKEND_BASELINE_INVENTORY.md",
+                      "SHA256":  "480444020B30B6E5E76CCC32C05C57ADAC41DD6E2EF48724DD075FC85D49B460",
+                      "Size":  15781
+                  },
+                  {
+                      "Path":  "docs\\BACKEND_BRIDGE_RESULTS.md",
+                      "SHA256":  "B33EDE51539985DD434145DCE518C74AA4D40A98480C512592A84C2D95303AAC",
+                      "Size":  4657
+                  },
+                  {
+                      "Path":  "docs\\BACKEND_CONTINUATION_RESULTS.md",
+                      "SHA256":  "0C42590C04D5508088C4C038974E1B90CC29DB26DB74B1E36192ADD2B2CC4A86",
+                      "Size":  5566
+                  },
+                  {
+                      "Path":  "docs\\BACKEND_FOUNDATION_RESULTS.md",
+                      "SHA256":  "FDE8EC7EF34225C1EFBD87D7DDE9856E4F8B4FC65365605E14EF5D13F21E284C",
+                      "Size":  5379
+                  },
+                  {
+                      "Path":  "docs\\BASELINE_ASSET_MANIFEST.md",
+                      "SHA256":  "93459E4C9556A4BE6EFE599CEEE44FCBF40F701DD0219B7B1C83A3A9441FBCDD",
+                      "Size":  3377
+                  },
+                  {
+                      "Path":  "docs\\BLOCKERS.md",
+                      "SHA256":  "579329DBD8C6DB988A99622B80C9F2FB10B9325E8CD7A5AF82E40F0B423C8AE4",
+                      "Size":  9730
+                  },
+                  {
+                      "Path":  "docs\\BRIDGE_CONTINUATION_REVIEW.md",
+                      "SHA256":  "3D4BC5B50F3CBD5C06200C25D438B28CD3FEF26C7B94AF069BF53FA65CD27076",
+                      "Size":  15508
+                  },
+                  {
+                      "Path":  "docs\\BRIDGE_MILESTONE_REVIEW.md",
+                      "SHA256":  "521DBC00CABC09F1A336D0F05C993F2A81377407E4FB732F929B14C365A619F3",
+                      "Size":  7701
+                  },
+                  {
+                      "Path":  "docs\\BUSINESS_BASELINE_GATES.md",
+                      "SHA256":  "434BC5CBD2844A599E7E172E6BC0DFA44F254D10ADF2DD77E4F1091D475E21DE",
+                      "Size":  8895
+                  },
+                  {
+                      "Path":  "docs\\CAMERA_BASELINE_INVENTORY.md",
+                      "SHA256":  "67443F4D3E8C610EBC79F7BB7E30FE1BF8FB1F767D25972CBF755968EF454CE5",
+                      "Size":  10822
+                  },
+                  {
+                      "Path":  "docs\\CHECKPOINT.md",
+                      "SHA256":  "6C0D16186B40574C365877345B1D3AECDDF0EEE25DE648CC047AB885608DECDD",
+                      "Size":  14980
+                  },
+                  {
+                      "Path":  "docs\\DATA_FLOW.md",
+                      "SHA256":  "E2E1796632F15BBA5F212A1EA5413599CA53618E48567D3CA812B1AFEF855128",
+                      "Size":  13084
+                  },
+                  {
+                      "Path":  "docs\\DECISIONS.md",
+                      "SHA256":  "C21A3BEB09A6F28163ED1E842EE18F0AE95123BB4D217A2E78445263159F26F6",
+                      "Size":  16219
+                  },
+                  {
+                      "Path":  "docs\\DEPENDENCY_AND_LICENSE_AUDIT.md",
+                      "SHA256":  "6E048DDC513DE172F3D1130EFE07C61C5F1CE13FF16875E320C0768CCA60A903",
+                      "Size":  5736
+                  },
+                  {
+                      "Path":  "docs\\DESKTOP_BRIDGE_CONTINUATION_RESULTS.md",
+                      "SHA256":  "B977CEF455E6F2ADC92430E3173F6FD0867D105FD464932AFF7F386859F6F3AB",
+                      "Size":  3336
+                  },
+                  {
+                      "Path":  "docs\\DESKTOP_BRIDGE_INDEPENDENT_REVIEW.md",
+                      "SHA256":  "2F03AE6F8890923CBFA13E7D04E976BA19207206D5493BF4E6287C509402596B",
+                      "Size":  9010
+                  },
+                  {
+                      "Path":  "docs\\FEATURE_PARITY_MATRIX.md",
+                      "SHA256":  "4CE9BE85E0300A46D8E848C5422FCD882934819767D56F6CF14A8DC59DD318D5",
+                      "Size":  8855
+                  },
+                  {
+                      "Path":  "docs\\FRONTEND_BASELINE_IMPLEMENTATION.md",
+                      "SHA256":  "917FF5513564FFE27398D922DA919D82B3259C1F995C1E1FC3809BEB1CE21F6C",
+                      "Size":  7850
+                  },
+                  {
+                      "Path":  "docs\\FRONTEND_BRIDGE_RESULTS.md",
+                      "SHA256":  "6C39B8E90FBCC3FA86A38DA4E37D79A846E16806AF3DE88EECB0BD70A1543C10",
+                      "Size":  5991
+                  },
+                  {
+                      "Path":  "docs\\FRONTEND_SLICE_READINESS.md",
+                      "SHA256":  "0FC00DA43A3DA2A2564936FAF51AC6BFDC34A2B1FA62F2401F462D50740EE69B",
+                      "Size":  16172
+                  },
+                  {
+                      "Path":  "docs\\HARDWARE_POC_PLAN.md",
+                      "SHA256":  "64CB82E9B2CD187312D83E6CFBC7ED808518DA76A39A3678AFB6316980823394",
+                      "Size":  16570
+                  },
+                  {
+                      "Path":  "docs\\HARDWARE_PORT_BUILD_RESULTS.md",
+                      "SHA256":  "0FD094BDE8A79565271DBE7FA1DC498244253C11DE42D53C4036FE5956F81118",
+                      "Size":  5196
+                  },
+                  {
+                      "Path":  "docs\\HARDWARE_PORT_INDEPENDENT_REVIEW.md",
+                      "SHA256":  "A5099BC4B704666F53009E2B549F6BCD351656037D25E4D4E9111479959B01E8",
+                      "Size":  8084
+                  },
+                  {
+                      "Path":  "docs\\HARDWARE_VALIDATION.md",
+                      "SHA256":  "8F213E57EC1DDE36C9BBCCA6F34705415C6C0DEC672A2AF30767520BDC1F08FA",
+                      "Size":  5823
+                  },
+                  {
+                      "Path":  "docs\\IPC_CONTRACTS.md",
+                      "SHA256":  "B45DB9B6618F73A086859324FC9FA974E7D1C028EB44149647B2559B312564F0",
+                      "Size":  15078
+                  },
+                  {
+                      "Path":  "docs\\LEGACY_ARCHITECTURE.md",
+                      "SHA256":  "25446E8A1BDCDEC569808FB560A7E0DBB692EC7D439C420AE77C08ABD3C45144",
+                      "Size":  5428
+                  },
+                  {
+                      "Path":  "docs\\LEGACY_CAMERA_PORT_RESULTS.md",
+                      "SHA256":  "08F29EAE7E26D593259D8CCB9C638874DDAC1FB1176D3464D96E6B206C92DEE8",
+                      "Size":  6791
+                  },
+                  {
+                      "Path":  "docs\\LEGACY_PRINTER_PORT_RESULTS.md",
+                      "SHA256":  "3AA9108D1E746F9EB8E7239EA83DC94FB218EE423A9BAE10308899E1345EA1A8",
+                      "Size":  2039
+                  },
+                  {
+                      "Path":  "docs\\LE_SOUVENIR_V2_REBUILD_MASTER_PROMPT.md",
+                      "SHA256":  "8ABB31A10817D2E7E85279875BCBF767DAB864171608F8B60463EED1B04FC6BC",
+                      "Size":  33184
+                  },
+                  {
+                      "Path":  "docs\\MIGRATION_TEST_RESULTS.md",
+                      "SHA256":  "C796FBF7E786B8DCC3B7826F1673A6E249AFF6C0A7A40BE982116F97FBA13878",
+                      "Size":  32182
+                  },
+                  {
+                      "Path":  "docs\\PARITY_MIGRATION_REVIEW.md",
+                      "SHA256":  "D907DFE1504D466E01D6DC1A71233F7C22E200AC83F58B1AC986784D2F7F4B9D",
+                      "Size":  14552
+                  },
+                  {
+                      "Path":  "docs\\PRINTER_BASELINE_INVENTORY.md",
+                      "SHA256":  "DF250436FBBF7764C9797FA95091E11F068B3C36B3507A218D8F3966B51AFAD5",
+                      "Size":  7075
+                  },
+                  {
+                      "Path":  "docs\\PRINTER_PORT_BOUNDARY.md",
+                      "SHA256":  "870EB6500B5A031AAFBB67E2D4491F3F03088CF83F29C81B9877134059C44CD0",
+                      "Size":  4102
+                  },
+                  {
+                      "Path":  "docs\\PRINT_COMPOSITION_FIXTURE_PLAN.md",
+                      "SHA256":  "6BEB09BC2E382B33DC084F46E363E065EC6B52340595A9E0AF97191EF688A132",
+                      "Size":  7394
+                  },
+                  {
+                      "Path":  "docs\\PROGRESS.md",
+                      "SHA256":  "3835ACA66AFE8485A8171E23DE5B3BAD7754F8625A1716FDC23EAEBBD85FB734",
+                      "Size":  23815
+                  },
+                  {
+                      "Path":  "docs\\QA_REPORT.md",
+                      "SHA256":  "D7DF433C5179C32E4444E72D73E9AA46DD9F80BD488A0C8C2CDAB74F62EBC807",
+                      "Size":  3538
+                  },
+                  {
+                      "Path":  "docs\\REGRESSION_MATRIX.md",
+                      "SHA256":  "DEA7726B31F32537FA045479A18726DD50646DF1DB5DD2209AE9C01FF8FF4E8F",
+                      "Size":  4368
+                  },
+                  {
+                      "Path":  "docs\\RELEASE_ARCHITECTURE.md",
+                      "SHA256":  "DBBF3544B0065546521054BB5DB6DE02B3C0C7B0F5EE8E0834BD57CB0661DD85",
+                      "Size":  12110
+                  },
+                  {
+                      "Path":  "docs\\RELEASE_READINESS.md",
+                      "SHA256":  "51AF484489386690EB0F7A4A7FC65950ABF861E05B5279C869446FD70BB86503",
+                      "Size":  13900
+                  },
+                  {
+                      "Path":  "docs\\SECURITY_FINDINGS.md",
+                      "SHA256":  "D0820FDBB47C43CFA67E6CFACE725AE77D5ADC73E2F2EA69511D929A4B5F800A",
+                      "Size":  6435
+                  },
+                  {
+                      "Path":  "docs\\SETTINGS_MIGRATION_MATRIX.md",
+                      "SHA256":  "D4DE79E2F996C51549BE39B6A11EB988A85ACE60C456772A3B499014E4ACBB20",
+                      "Size":  22563
+                  },
+                  {
+                      "Path":  "docs\\SETTINGS_MIGRATION_MATRIX_CORRECTED.md",
+                      "SHA256":  "BBD8033133D8BB5E48DB201B1C6C606FDCE2758CA8618524C2B432478B8DDCC9",
+                      "Size":  11115
+                  },
+                  {
+                      "Path":  "docs\\SETTINGS_PARITY_IMPLEMENTATION.md",
+                      "SHA256":  "5B8464AECC6DACA8139E389B3B9F1B91E929B92C1386575FDADBDFF709A97BB7",
+                      "Size":  4394
+                  },
+                  {
+                      "Path":  "docs\\SHELL_FEASIBILITY.md",
+                      "SHA256":  "CB9D2418E0DD15E8F6E5C8867417A1DD1159DDCAF99F9293A9F7D8FD6D0C702C",
+                      "Size":  8475
+                  },
+                  {
+                      "Path":  "docs\\SIMULATOR_CAMERA_RESULTS.md",
+                      "SHA256":  "872A4FD4FC540DB78852703840E0D29BC4F4FF79A7E08B46BD602C67B4B8944F",
+                      "Size":  3750
+                  },
+                  {
+                      "Path":  "docs\\SIMULATOR_FRONTEND_RESULTS.md",
+                      "SHA256":  "CE12199275803B743C93590629CA5B3168366D068D6ED8353AF0FEF9D3D1271B",
+                      "Size":  8329
+                  },
+                  {
+                      "Path":  "docs\\SIMULATOR_INDEPENDENT_REVIEW.md",
+                      "SHA256":  "AFC1EB3B45B92370385D250342CEBA0E7A8E91C0567CA41AA68F950E8D5BD029",
+                      "Size":  14950
+                  },
+                  {
+                      "Path":  "docs\\SIMULATOR_IPC_CONTRACT.md",
+                      "SHA256":  "E60B7742AA5EF9A7F51FD4A557814F1D913B156A3E4957500ABB4F3FCF80552A",
+                      "Size":  24620
+                  },
+                  {
+                      "Path":  "docs\\SIMULATOR_PRINT_IMPLEMENTATION.md",
+                      "SHA256":  "BC30D38A5823ECC8D6287E8D12901C9169F4D648C74D39C636166F73EF17F00A",
+                      "Size":  2484
+                  },
+                  {
+                      "Path":  "docs\\SIMULATOR_SESSION_RESULTS.md",
+                      "SHA256":  "3BACB952E6612ABAF22F845B7C9D5E7FDB2266C8568BD028464C639DC026A4DA",
+                      "Size":  13144
+                  },
+                  {
+                      "Path":  "docs\\SIMULATOR_UI_HANDOFF.md",
+                      "SHA256":  "D1C8CB6559341D179FB53B16F7D994097C0205227A9414C4B8BA4AC0AF06492B",
+                      "Size":  16158
+                  },
+                  {
+                      "Path":  "docs\\SIMULATOR_UI_REVIEW.md",
+                      "SHA256":  "6A7ED43536CE89091A885B8DC77C1DE7A9D40492BA4E62AA770824E5F790F0AA",
+                      "Size":  18384
+                  },
+                  {
+                      "Path":  "docs\\SOURCE_CHECKPOINT_RECOVERY.md",
+                      "SHA256":  "55691FA7BE220169E8ED1C497049F91D2D38312C1A89F1387BB6199C2D535DD7",
+                      "Size":  3000
+                  },
+                  {
+                      "Path":  "docs\\TASK_BOARD.md",
+                      "SHA256":  "8D1DFAE74AC1C17A9418EBCBF8C4DFF31BE2CD380437882C8C937132FA720916",
+                      "Size":  6890
+                  },
+                  {
+                      "Path":  "docs\\TEST_RESULTS.md",
+                      "SHA256":  "50A4B8A3C473BF3FC816F6015B01CF95106D7ECB863607AEC74DE338835B97DC",
+                      "Size":  9412
+                  },
+                  {
+                      "Path":  "docs\\TIMEOUT_REGRESSION_DIAGNOSIS.md",
+                      "SHA256":  "5542BBEC3AE3BD34A38FEBEF0D7E385D3A1D847EF0F8B4500A45C562A59BDC4B",
+                      "Size":  7241
+                  },
+                  {
+                      "Path":  "docs\\TOOLS_MIGRATION_MATRIX.md",
+                      "SHA256":  "8E79EBC4872DAB1392A256F1CA011322EA4E68EA6A28FEC87E87A204BFA00D31",
+                      "Size":  27487
+                  },
+                  {
+                      "Path":  "docs\\TOOLS_MIGRATION_MATRIX_CORRECTED.md",
+                      "SHA256":  "DC8D5CFBB93DFDA314531D19CF960E2FA3F1D67611925330983361B9C7BFC3C4",
+                      "Size":  9636
+                  },
+                  {
+                      "Path":  "docs\\TOOLS_PROCESSING_CONTRACT.md",
+                      "SHA256":  "EB2BBFE4B20FF6A6AA8B8872E94EFEF436390EA0466FF51BD3B22FBEE68F6549",
+                      "Size":  14714
+                  },
+                  {
+                      "Path":  "docs\\TOOLS_UI_LOCAL_SLICE.md",
+                      "SHA256":  "8CF6397E90D349FAA8B4480D292C7CF51D0667F80D273D0060954DB9CCAA5605",
+                      "Size":  10361
+                  },
+                  {
+                      "Path":  "docs\\UI_BACKEND_RESULTS.md",
+                      "SHA256":  "CD5AFB51DC123F109424361C9C5DEE0E714B26C956AB5816B21634EE5F31372F",
+                      "Size":  4720
+                  },
+                  {
+                      "Path":  "docs\\UI_BASELINE_ACCEPTANCE.md",
+                      "SHA256":  "00B11CB06CB3C56B53A6791666137C51A0D401F695825119B2AF370C51B63497",
+                      "Size":  12817
+                  },
+                  {
+                      "Path":  "docs\\UI_BASELINE_COMPARISON.md",
+                      "SHA256":  "02B8E6AFF81CB6D8F276ED1892B62EA60A8689642D0A3EA2A9D5B27B147C59B5",
+                      "Size":  20152
+                  },
+                  {
+                      "Path":  "docs\\UI_CAMERA_CONSTRAINTS.md",
+                      "SHA256":  "A802E32C970D039AB8F09358ABA2C510B4C3912A97F40ADDE174768CA6886B3B",
+                      "Size":  3741
+                  },
+                  {
+                      "Path":  "docs\\UI_DESIGN_SYSTEM.md",
+                      "SHA256":  "3BC7DABCCE714C9372FB3CD96CEF07FD5765368B5701FB2601EB733C29495510",
+                      "Size":  10610
+                  },
+                  {
+                      "Path":  "docs\\UI_FRONTEND_RESULTS.md",
+                      "SHA256":  "7F2907DB0A0F5F24DE42F6116E9425C7350D8BEC906388624F3F89321E879FB9",
+                      "Size":  3929
+                  },
+                  {
+                      "Path":  "docs\\UI_IMPLEMENTATION_MATRIX.md",
+                      "SHA256":  "464981C395487E11A41EF08C49FCB74FB040A1100592E0386B75C92353BC1261",
+                      "Size":  19792
+                  },
+                  {
+                      "Path":  "docs\\UI_IMPLEMENTATION_STATUS.md",
+                      "SHA256":  "09C25D7BD197DA4E6A1A04B83F3AA77A81138B8488F8345A125260B1F337BB15",
+                      "Size":  4901
+                  },
+                  {
+                      "Path":  "docs\\UI_INTEGRATION_REVIEW.md",
+                      "SHA256":  "B3E68DA7E6EF29CB9CC3E930BC7A20D65B3C5DA949C03BA1276528648C287371",
+                      "Size":  24716
+                  },
+                  {
+                      "Path":  "docs\\UI_NESTED_CONTROL_EVIDENCE.md",
+                      "SHA256":  "81979DF74FF95D5278600A40B7AF6EA8E0FE680628DD12F781330E22AE5F6F48",
+                      "Size":  7858
+                  },
+                  {
+                      "Path":  "docs\\UI_OPERATOR_PARITY_DELTA.md",
+                      "SHA256":  "9907C4D8B4AC6D8C1FBBE595C8CB240DC82A5371FFE348955D7575DA19AF6F96",
+                      "Size":  11498
+                  },
+                  {
+                      "Path":  "docs\\UI_OPERATOR_REVIEW.md",
+                      "SHA256":  "FCE8AD236F1C97402C078C84AC6D688D42BF3D3B1C482EE3AC53A9AC8BC7725D",
+                      "Size":  8547
+                  },
+                  {
+                      "Path":  "docs\\UI_PARITY_INCREMENT_RESULTS.md",
+                      "SHA256":  "91CCE47FD433BF6EB1FBFD2BD070A714581AC4EBA7B28433354CD4DD7D981B17",
+                      "Size":  4646
+                  },
+                  {
+                      "Path":  "docs\\UI_PRINT_CONSTRAINTS.md",
+                      "SHA256":  "9B3129D8D8F71E4996CBD6592F0B9672AF07A20148C74B36BEA9A801ED75D469",
+                      "Size":  3350
+                  },
+                  {
+                      "Path":  "docs\\UI_SCREEN_CONTRACTS.md",
+                      "SHA256":  "58D7363409A764EC04847636364474EF475D47B2D30261B45DBEA9EC3E6B4E3B",
+                      "Size":  19390
+                  },
+                  {
+                      "Path":  "docs\\UI_SCREEN_INVENTORY.md",
+                      "SHA256":  "DC34FB0972C489B596DFFC946F952AD48DAC064053950484084E8A4D44C716B8",
+                      "Size":  11564
+                  },
+                  {
+                      "Path":  "docs\\UI_TEST_RESULTS.md",
+                      "SHA256":  "A7AE09FBE819D467B150682304003CDE6936D89F330F05132CBCFEDFC6F7FFA3",
+                      "Size":  25486
+                  },
+                  {
+                      "Path":  "docs\\UI_VISUAL_REVIEW.md",
+                      "SHA256":  "52CE0139F8C52A70D830AFE6A806CC24FE52F2889DC15EA83AEDDE6365C5ED6B",
+                      "Size":  23283
+                  },
+                  {
+                      "Path":  "docs\\V1_ACTION_BEHAVIOR_MATRIX.md",
+                      "SHA256":  "1884588A40D6B690306B726EF9B154F05F094556A737777361DC9E685BFD2C39",
+                      "Size":  4265
+                  },
+                  {
+                      "Path":  "docs\\V1_COMPLETE_FEATURE_INVENTORY.md",
+                      "SHA256":  "87DF5D2B71B482EF04CE86FA72DC1302DFAA14998A040440069EB9CC2EF6019D",
+                      "Size":  19790
+                  },
+                  {
+                      "Path":  "docs\\V1_COMPLETE_FEATURE_INVENTORY_CORRECTED.md",
+                      "SHA256":  "2467FA7A77350DA6E5F03699438C3465B7B3CEDF610000D8ECDB88D6D4857C06",
+                      "Size":  23754
+                  },
+                  {
+                      "Path":  "docs\\V1_COMPLETE_FEATURE_INVENTORY_FINAL.md",
+                      "SHA256":  "6F421313239282D722E9F6160725D9A2AE7F4EB5FAF8122A313EAAD3150F7460",
+                      "Size":  12128
+                  },
+                  {
+                      "Path":  "docs\\V1_EXACT_UI_FLOW_MAP.md",
+                      "SHA256":  "1D8349ABB4AB73F85C4F526778F8DF90A8A43D122C11106567EB005C99677108",
+                      "Size":  5035
+                  },
+                  {
+                      "Path":  "docs\\V1_EXTERNAL_INTEGRATIONS_MAP.md",
+                      "SHA256":  "AE7A354FA386EDFE04B62299DAEAA650D4F989518879FB10E818B785C058D818",
+                      "Size":  3264
+                  },
+                  {
+                      "Path":  "docs\\V1_FIDELITY_FRONTEND_RESULTS.md",
+                      "SHA256":  "4EDD92B94453459A74DDCBC3593CB7ECEF7BFF85DECC837050C6F352B5E459EC",
+                      "Size":  5455
+                  },
+                  {
+                      "Path":  "docs\\V1_PARITY_UI_API_MIGRATION.md",
+                      "SHA256":  "EA911D9E71C3DBA50CEDDBCB32520CF4823D07E3A6D87CF42807D838AA0286AB",
+                      "Size":  21900
+                  },
+                  {
+                      "Path":  "docs\\V1_PRINTER_SETTINGS_REFERENCE.md",
+                      "SHA256":  "C2E94D423BC18B3458DE1850D5683D0345ABD9E565E1B15EDA0DE50A37382517",
+                      "Size":  6489
+                  },
+                  {
+                      "Path":  "docs\\V1_SETTINGS_PARITY_MATRIX.md",
+                      "SHA256":  "00731E8694B34778741C172AEFFB50280C19D48D6F53FBF3D7FA30DDB199F941",
+                      "Size":  21469
+                  },
+                  {
+                      "Path":  "docs\\V1_SETTINGS_TEST_RESULTS.md",
+                      "SHA256":  "440C650147A554B02190AE3116430CBBF39DCA6C6BB7ACB8FB0642B91908D057",
+                      "Size":  10848
+                  },
+                  {
+                      "Path":  "docs\\V1_TO_V2_API_PARITY.md",
+                      "SHA256":  "E2220930C0857111932D7723ADA669C72A84361CE7B1045D5C34AA9B6FF64751",
+                      "Size":  2740
+                  },
+                  {
+                      "Path":  "docs\\V1_TO_V2_FULL_PARITY_MATRIX.md",
+                      "SHA256":  "C3D3083DBF5007869E4747D7288C94093A714B92F249B02CAEF5F0D4BC0BAD4E",
+                      "Size":  23186
+                  },
+                  {
+                      "Path":  "docs\\V1_TO_V2_FULL_PARITY_MATRIX_CORRECTED.md",
+                      "SHA256":  "34DECF47CC6176DB750DB76021391BD82FF501543EBA48FDB953A3CB2E5A865B",
+                      "Size":  16489
+                  },
+                  {
+                      "Path":  "docs\\V1_TO_V2_SCREEN_PARITY.md",
+                      "SHA256":  "500C5907F73AE263C72D70CD0873C2E5A5E322D2896D33FEDFFC9C086FBC4C9B",
+                      "Size":  9420
+                  },
+                  {
+                      "Path":  "docs\\V1_VISUAL_FIDELITY_REFERENCE.md",
+                      "SHA256":  "2EE1CBEB70A6863F4853CBCFE736CDA533BB169939DF39E50524715804360AE6",
+                      "Size":  21280
+                  },
+                  {
+                      "Path":  "docs\\V2_ARCHITECTURE.md",
+                      "SHA256":  "459701021010DA48B2AADB0C25E4B2E35E683555CA38DC0959BB780C4E44F9FC",
+                      "Size":  27354
+                  },
+                  {
+                      "Path":  "docs\\V2_CONFIGURATION_COMPLETION_CONTRACT.md",
+                      "SHA256":  "AACDF4E3BB4E7FD8309290D4F3E20AF46054E9C1DFF11C1CF3D72FE17B4090BC",
+                      "Size":  11762
+                  },
+                  {
+                      "Path":  "docs\\ADR\\001-frontend-stack.md",
+                      "SHA256":  "7A56C96116C38030B1BB14A24E46D0BD651E72579FA046FCF1536E01342C0223",
+                      "Size":  1174
+                  },
+                  {
+                      "Path":  "docs\\ADR\\002-desktop-shell.md",
+                      "SHA256":  "3396F872F197A6D7B56DECA643BA3FD19BA5562240F873DFCDE574E102121BE1",
+                      "Size":  1019
+                  },
+                  {
+                      "Path":  "docs\\ADR\\003-backend-kotlin.md",
+                      "SHA256":  "167E86171304CF824B1D418F018C0D13B5BCA83C676DA862A59453617D2EA70C",
+                      "Size":  1068
+                  },
+                  {
+                      "Path":  "docs\\ADR\\004-ipc-protocol.md",
+                      "SHA256":  "5B6278EA56B144F1372132CA203D8E110A3812F19E329450BCFCA4B03B554212",
+                      "Size":  1114
+                  },
+                  {
+                      "Path":  "docs\\ADR\\005-auth-hmac.md",
+                      "SHA256":  "62C09209B086346B94B6C5601F2D028E8506C1680126B6883DF72AB800E53BCD",
+                      "Size":  682
+                  },
+                  {
+                      "Path":  "docs\\ADR\\006-liveview-transport.md",
+                      "SHA256":  "16AD188E7C8896C4B37721CDD18A33C5183272908ACB4D50AFE2DC09BAA139DE",
+                      "Size":  784
+                  },
+                  {
+                      "Path":  "docs\\ADR\\007-state-machine-authority.md",
+                      "SHA256":  "7859F750B3A008114E2B288FB2306FADEA8A50CF97AB3705EC023DAABAA0BD45",
+                      "Size":  1026
+                  },
+                  {
+                      "Path":  "docs\\ADR\\008-idempotency-keys.md",
+                      "SHA256":  "D1AEEF75990A5403787F8CCBE363B23A98C1752F1F50A0722090CB637695F65F",
+                      "Size":  632
+                  },
+                  {
+                      "Path":  "docs\\ADR\\009-beauty-bounded.md",
+                      "SHA256":  "7A41BD2DD3BD07F32A582D237A7D2CBEF45E22A466D3BE0322BA88A28E1922F6",
+                      "Size":  788
+                  },
+                  {
+                      "Path":  "docs\\ADR\\010-canon-dll-resolution.md",
+                      "SHA256":  "7027CCD650B8E9585171F71A574636A193D8A8269D97A2225C00E32BDA35CC73",
+                      "Size":  578
+                  },
+                  {
+                      "Path":  "docs\\ADR\\011-path-isolation.md",
+                      "SHA256":  "EE76179AC1530726A245347AC6C08EA5E298B36619408A814CAAA30D3D15BDA8",
+                      "Size":  674
+                  },
+                  {
+                      "Path":  "docs\\ADR\\012-simulator-mode.md",
+                      "SHA256":  "4064C11CF2C247338AE78EB4393A44DE056A4344A2EF13D31C50732EA8354C5E",
+                      "Size":  670
+                  },
+                  {
+                      "Path":  "docs\\ADR\\013-tools-slice-priority.md",
+                      "SHA256":  "5275406EBEE6D10009E70ED783B0FE047614F642C67FC390DD2320D084BFD7D8",
+                      "Size":  20353
+                  },
+                  {
+                      "Path":  "frontend\\package-lock.json",
+                      "SHA256":  "BCACDFB4214345F2D1F7AC76B611CCF4447100E408B96C70D47EA85B13A3134F",
+                      "Size":  134039
+                  },
+                  {
+                      "Path":  "frontend\\package.json",
+                      "SHA256":  "7D02A842A8BE01FD642820308FE7F25EE5284538921184BD1989C1D2B472DC0C",
+                      "Size":  645
+                  },
+                  {
+                      "Path":  "frontend\\tsconfig.json",
+                      "SHA256":  "A5EE77AFFF7B70AFE6186A4CD139C57CF64820B6FFECCCD69AB28FADF28E1747",
+                      "Size":  260
+                  },
+                  {
+                      "Path":  "frontend\\vite.config.ts",
+                      "SHA256":  "872A66D91A59FBCB6A86E38ACA731FAA78B9689ADC4596326EB0C0C5D18B43CE",
+                      "Size":  312
+                  },
+                  {
+                      "Path":  "frontend\\src\\App.test.tsx",
+                      "SHA256":  "640EAA72FF4A137743CA4C666150F8902E9B2EB303DD03C34776DFA4F12DEE2A",
+                      "Size":  2231
+                  },
+                  {
+                      "Path":  "frontend\\src\\App.tsx",
+                      "SHA256":  "39EBF6C94C7213F38725C223B4182D200093411DE82A2779C0974FB4379B6F60",
+                      "Size":  4450
+                  },
+                  {
+                      "Path":  "frontend\\src\\bridge.ts",
+                      "SHA256":  "0227B8C1DCA4A0116E2A5D71D909323F237729D53F27EEDA4D08B1C10944D569",
+                      "Size":  521
+                  },
+                  {
+                      "Path":  "frontend\\src\\customer.css",
+                      "SHA256":  "EF07B56EC8E44D69AB489DC85AEE9F505C4A8F995C65282D202D91535B08D48E",
+                      "Size":  5831
+                  },
+                  {
+                      "Path":  "frontend\\src\\finishing.css",
+                      "SHA256":  "C6F5DF6E6E55AA865001EEBFE250640F876DA7D36873BD83C896C75C43DE3BB3",
+                      "Size":  4872
+                  },
+                  {
+                      "Path":  "frontend\\src\\main.tsx",
+                      "SHA256":  "81EDB8F6A73E6FFC25CB4B34A1401192401F61058F9F4740ED1AB4D791A6D7DF",
+                      "Size":  325
+                  },
+                  {
+                      "Path":  "frontend\\src\\Operator.test.tsx",
+                      "SHA256":  "0D168F7CB218A43572D1FB3DED0C72B63A44A89538B9CED872FA9BFB1688D3A0",
+                      "Size":  2467
+                  },
+                  {
+                      "Path":  "frontend\\src\\Operator.tsx",
+                      "SHA256":  "E1E779A1BC8515DC9C41A015553538A9C7A5EA6B5FAC8FAA46424E3757985F06",
+                      "Size":  6250
+                  },
+                  {
+                      "Path":  "frontend\\src\\preview.css",
+                      "SHA256":  "7F6C8F58E6744EA748AC1D9B16665FC12EFDF89233EE0FC501DD4D78289691DB",
+                      "Size":  2478
+                  },
+                  {
+                      "Path":  "frontend\\src\\Simulator.test.tsx",
+                      "SHA256":  "306260F0BE8386022794F9FAA6AF893A00BD83880F1A2BF87FF24EF2C155183C",
+                      "Size":  2596
+                  },
+                  {
+                      "Path":  "frontend\\src\\Simulator.tsx",
+                      "SHA256":  "9E7110EB4E3A1B592DE8D3C55EA71D2D05D5827210B34B74CEB67714E940CF64",
+                      "Size":  18725
+                  },
+                  {
+                      "Path":  "frontend\\src\\stages.css",
+                      "SHA256":  "B7390F12B064F9FB5AF9755F3DEE729C92B0E7C5A90D36AB592EE36DA9D660E9",
+                      "Size":  6072
+                  },
+                  {
+                      "Path":  "frontend\\src\\styles.css",
+                      "SHA256":  "6E505805B1A83D9D5CA3BBD3756E297DAFAB0EA08EDF33B1AB4FD05BB9DAE6DC",
+                      "Size":  5507
+                  },
+                  {
+                      "Path":  "frontend\\src\\test-setup.ts",
+                      "SHA256":  "91A3C8962A0EDCB956206A501D943FE99E1C78C6D4D8B5C9A948A3362C75978C",
+                      "Size":  43
+                  },
+                  {
+                      "Path":  "frontend\\src\\v1-settings.css",
+                      "SHA256":  "DCDE4F0B58871A2695F87507B17050F6974FCF17C649E092AF3A4982A392B105",
+                      "Size":  6879
+                  },
+                  {
+                      "Path":  "frontend\\src\\V1Settings.test.tsx",
+                      "SHA256":  "0C9DF2EEDF459C5F32A0EDE8232836DE191FAD3782968C6E91989D7D318FA48D",
+                      "Size":  3300
+                  },
+                  {
+                      "Path":  "frontend\\src\\V1Settings.tsx",
+                      "SHA256":  "1E68A9813A7E8DA7370B0DF2D5D46D2D4756191CDB1AA4548523BDF7635AEE51",
+                      "Size":  7635
+                  },
+                  {
+                      "Path":  "frontend\\src\\vite-env.d.ts",
+                      "SHA256":  "65996936FBB042915F7B74A200FCDDE7E410F32A669B1AB9597CFAA4B0FADDB5",
+                      "Size":  38
+                  },
+                  {
+                      "Path":  "frontend\\src\\components\\PhotoPreview.test.tsx",
+                      "SHA256":  "FD7115B215DFD6DE097F8B1C6CFC25FFD891506A2FE32E9BF24BA7109749C4CF",
+                      "Size":  1322
+                  },
+                  {
+                      "Path":  "frontend\\src\\components\\PhotoPreview.tsx",
+                      "SHA256":  "0D4E49839050E570523BF9BFCCE3D02DA8371678F0AEE666B93185889BFB406B",
+                      "Size":  1126
+                  },
+                  {
+                      "Path":  "frontend\\src\\components\\StaffGestures.test.tsx",
+                      "SHA256":  "FD449C335A8029FB737C23119081114B873EEDFBD37CC23B46B62B7C7E220EF8",
+                      "Size":  1956
+                  },
+                  {
+                      "Path":  "frontend\\src\\components\\StaffGestures.tsx",
+                      "SHA256":  "A70ED779E0E5A3019E7E7FD98C1BE953838B77A0B976831784BDD8A09C669262",
+                      "Size":  1834
+                  },
+                  {
+                      "Path":  "frontend\\src\\components\\StudioUI.tsx",
+                      "SHA256":  "E5D4324FB4CB8B57315D43006A45726ADE4D3808FE9D4F4C06501539717F7533",
+                      "Size":  2226
+                  },
+                  {
+                      "Path":  "frontend\\src\\shared\\connected-simulator.ts",
+                      "SHA256":  "73441EF4D6CCA1FB9E56E5B7DB4C02F440CEB3C866EE590C7EE9CED26A577B60",
+                      "Size":  793
+                  },
+                  {
+                      "Path":  "frontend\\src\\shared\\simulator-contract.ts",
+                      "SHA256":  "E404DFD4D0A3133571F41EB32909AD45D251349270433D3179727EDDAAD4EFD9",
+                      "Size":  1506
+                  },
+                  {
+                      "Path":  "src-tauri\\Cargo.lock",
+                      "SHA256":  "7A25D0D7A84192F53F6DF5E435FDE8925E5A88DE180FED3E9120EE3EC30C9B2A",
+                      "Size":  104009
+                  },
+                  {
+                      "Path":  "src-tauri\\Cargo.toml",
+                      "SHA256":  "7057A45621C01A98D5EF734CA423BA4689CBE89BAF03D92ACA6432A1D0B752B0",
+                      "Size":  296
+                  },
+                  {
+                      "Path":  "src-tauri\\tauri.conf.json",
+                      "SHA256":  "92EBEE89DA2BEBA2A448CC64FCE312892498509E5F165975C75D92FFD95BC0E0",
+                      "Size":  721
+                  },
+                  {
+                      "Path":  "src-tauri\\src\\bridge.rs",
+                      "SHA256":  "9D7B90D40A6CF252248EC9274563B5E57BE7BB8C600446D325ED1EAD4564305C",
+                      "Size":  6314
+                  },
+                  {
+                      "Path":  "src-tauri\\src\\main.rs",
+                      "SHA256":  "1435626173D9A087BFCBCC5733528755E7AB8E2BCCC89BB22C71DB31A96D7457",
+                      "Size":  2396
+                  },
+                  {
+                      "Path":  "src-tauri\\src\\probe.rs",
+                      "SHA256":  "60B91BA9F9DAD84A6B6D8E1C82B2A82D3D84E2283D5FD01A83D8E1AFE27DF493",
+                      "Size":  330
+                  }
+              ],
+    "timestamp":  "2026-10-31T15:19:25.000Z",
+    "checkpointId":  "checkpoint-2026-10-31-005303",
+    "totalFiles":  194,
+    "totalBytes":  1777913
+}

@@ -1,0 +1,19 @@
+.photo-preview-backdrop{position:fixed;inset:0;z-index:1000;background:rgba(16,16,16,.92);padding:0;display:grid;place-items:center;overflow:hidden}
+/* Override the legacy .simulator [role=dialog] fixed inset and light surface. */
+.simulator .photo-preview-dialog[role=dialog]{position:fixed;inset:24px;margin:auto;box-sizing:border-box;width:calc(100% - 48px);height:calc(100dvh - 48px);max-width:1600px;max-height:calc(100dvh - 48px);padding:20px;border:1px solid #706b65;background:#161616;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:16px;color:#fff;min-width:0;min-height:0;overflow:hidden;z-index:1001}
+.simulator .photo-preview-dialog header{display:flex;flex-wrap:nowrap;justify-content:space-between;align-items:center;gap:16px;min-width:0}
+.simulator .photo-preview-dialog h2{font-size:clamp(20px,2vw,32px);margin:0;color:#fff;min-width:0;overflow-wrap:anywhere}
+.photo-preview-media{min-width:0;min-height:0;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.simulator .photo-preview-dialog img{display:block;object-fit:contain;width:100%;height:100%;min-width:0;min-height:0;max-width:100%;max-height:100%;margin:0}
+.simulator .photo-preview-dialog button{flex-shrink:0;min-width:48px;min-height:48px;margin:0;background:#fffcf7;color:#191817}
+.simulator .photo-preview-dialog p{margin:0;font-size:16px;color:#fff}
+.simulator .photo-preview-dialog[role=dialog]{grid-template-rows:72px minmax(0,1fr) 48px}
+.simulator .photo-preview-dialog header{height:72px;min-height:0;max-height:72px;overflow:hidden}
+.simulator .photo-preview-dialog .photo-preview-media{position:relative;height:100%;min-height:0}
+.simulator .photo-preview-dialog .photo-preview-media img{position:absolute;inset:0}
+.simulator .photo-preview-dialog header h2{flex:1 1 0;font-size:24px;line-height:1.2}
+.simulator .photo-preview-dialog header button{width:auto;max-width:220px;flex:0 0 auto;height:56px;min-height:56px;padding:12px 24px}
+.original-preview-actions{display:flex;gap:12px;flex-wrap:wrap;padding-block:16px}
+.gesture-brand{background:transparent;color:inherit;border:0;text-align:left;min-height:48px;cursor:pointer;padding:0}
+.staff-payment-title{min-height:48px;padding:12px 20px;border:1px solid #715a36;background:#fffcf7;color:#191817;touch-action:pan-y}
+@media(max-height:640px){.simulator .photo-preview-dialog[role=dialog]{inset:12px;width:calc(100% - 24px);height:calc(100dvh - 24px);max-height:calc(100dvh - 24px);padding:12px;gap:8px}}

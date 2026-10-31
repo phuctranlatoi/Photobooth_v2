@@ -1,4 +1,22 @@
-# Test Results — Initial Audit Review
+# Test Results — Independent Consolidated Review
+
+**Latest review:** 2026-10-31  
+**Latest-review execution:** scoped V2-only offline baseline was authorized and run. Evidence is under `tests/full-baseline-migration/evidence/`. No hardware/provider/V1 operation occurred.
+
+## Current regression matrix
+
+| Case | Status | Exact evidence / limitation |
+|---|---|---|
+| Current backend suite | FAIL | Fresh offline rerun: 42 tests, 1 failure, exit 1. Timeout test remained `SELECTING_PHOTOS`, expected `DELIVERY`; see `22-backend-test-fresh-offline.log` and JUnit XML. The requested wrapper separately exited 1 due to Stop-policy handling of Gradle stderr. |
+| Current frontend suite | PASS-AUTOMATED | `npm test -- --run`, offline/cache/temp V2-only, exit 0. Normalized Vitest output reports 6/6 files and 20/20 tests passed, duration 7.26 s (`tests/full-baseline-migration/evidence/10-frontend-test-normalized.txt:24-27`). |
+| Current frontend build | PASS-AUTOMATED | `npm run build`, exit 0; 1,996 modules, built in 3.84 s. |
+| Installed JVM smoke | NOT-RUN | Proposed command (V2 `backend`): `& .\smoke-installed.ps1`, only after V2 `installDist`. Simulator enabled at script line 6; script makes framed stdio calls and no external HTTP call. |
+| Settings save/reload/validation | PASS-SIMULATED | Test source: `OperatorSettingsTest.kt:43-80`; frontend behavior: `V1Settings.test.tsx:10-14`. Historical aggregate result is recorded below; installed-user path remains untested. |
+| Navigation, cancellation, repeated taps | PASS-SIMULATED | `SimulatorSessionTest.kt:33-116`, `Simulator.test.tsx:9-24`, `Operator.test.tsx:5-7`. Synthetic engine/jsdom only. |
+| Revenue and integration fail-closed behavior | PASS-SIMULATED | `IntegrationContractTest.kt:10-123`, `RevenueRecognitionTest.kt:11-58`; local fixture server only, no live PayOS/Neon/Cloudinary. |
+| Canon/DNP/touchscreen/performance | BLOCKED | Requires separately authorized safe hardware setup. Unit/mock results cannot upgrade this status. |
+
+For test-by-test migration interpretation and next commands, see `docs/MIGRATION_TEST_RESULTS.md`.
 
 **Date:** 2026-10-30  
 **Test type:** Static source review only. No shell/build/run/network/hardware actions authorized or performed.

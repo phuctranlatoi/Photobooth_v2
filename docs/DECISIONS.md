@@ -1,5 +1,24 @@
 # Architecture Decision Records (ADR) — V2
 
+## Evidence boundary update (2026-10-31; no implementation approval)
+
+- Record frontend 20/6 tests and build as reported passing; backend 42 tests / 1 failure as reported. No rerun is claimed here.
+- Three implementation attempts are blocked pending an independently verified V2 checkpoint. Next evidence must be an actual source snapshot plus manifest/hash verification—not a speculative source-copy or HEAD-only assertion.
+- Master-audit 17-state enumeration correction and acceptance remain unresolved. The prior accepted-Beauty claim was rejected and is not an accepted baseline.
+- No independent forensic verification of V1 integrity/untouched status is claimed.
+
+## Coordination status record (2026-10-31; no checkpoint approval)
+
+- Reject the initial HEAD-only checkpoint claim and conditional archive containing stale tests. Architect correction remains in progress; backend conditional implementation is blocked until a verified backup manifest exists. No app edits before an independently verified checkpoint.
+- Preserve the 42-test backend suite's persisted/shared-settings integration intent while isolating the diagnosed six-engine test fixtures and offline harness. The approved remedy is test-only; do not remove integration checks merely to make tests independent.
+- Frontend/camera slices remain conditional on verified snapshot evidence. No migration/audit completion or V1 forensic integrity conclusion follows from current agent reports.
+
+## Coordination record (2026-10-31; not an architecture approval)
+
+- Scope authorized: V2-only shell checkpoint and offline tests/builds; temp/cache/output must remain within V2. This does not authorize V1 execution, production calls, hardware/device operations, or physical printing.
+- Preserve existing V2 source during baseline work; no redesign decision is made here. Architecture checkpoint owned by architect `ses_e709d20e1ffewRrzeoisMXvDQ9` remains pending.
+- Agent status reports and baseline documents are not proof of checkpoint completion, complete audits, hardware support, or parity. V1 untouched forensic verification is **NOT VERIFIED**; only agents' read-only operation reports are available.
+
 ## ADR Index
 
 | ADR | Title | Status | Date |

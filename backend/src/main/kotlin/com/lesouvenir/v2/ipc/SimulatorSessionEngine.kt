@@ -21,7 +21,7 @@ class SimulatorSessionEngine(
     private val enabled: Boolean,
     private val tickMillis: Long = 1000,
     private val prepareMillis: Long = 1600,
-    private val inactivityMillis: Long = config["inactivitySeconds"].asLong * 1000,
+    private val inactivityMillis: Long = 60000L,
     private val outputRoot: Path = workspace.resolve("backend/build/simulator-sessions"),
     private val localOperatorEnabled: Boolean = false
 ): AutoCloseable {
@@ -56,7 +56,7 @@ class SimulatorSessionEngine(
     private var pendingTimerMillis: Long? = null
     private val timerBudgets = mutableMapOf<String, Long>()
     private var timerState = ""
-    private fun configuredBudget(target: String): Long = if (!settingsStore.persisted) inactivityMillis else
+    private fun configuredBudget(target: String): Long = if (inactivityMillis != 60000L) inactivityMillis else if (!settingsStore.persisted) config["inactivitySeconds"].asLong * 1000 else
         settingsStore.settings[when(target) {
             "SELECTING_PHOTOS" -> "photoSelectionTimeoutSeconds"
             "EDITING" -> "frameSelectionTimeoutSeconds"
@@ -95,11 +95,7 @@ class SimulatorSessionEngine(
         layouts.forEach { require(it.shotCount in 1..12 && it.selectCount in 1..it.shotCount && it.countdownSeconds in 0..30) }
         require(outputRoot.toAbsolutePath().normalize().startsWith(workspace.toAbsolutePath().normalize()))
         executor.scheduleWithFixedDelay({ synchronized(this) {
-            val timeout = if (!settingsStore.persisted) inactivityMillis else settingsStore.settings[when(state) {
-                "SELECTING_PHOTOS" -> "photoSelectionTimeoutSeconds"
-                "EDITING" -> "frameSelectionTimeoutSeconds"
-                else -> "postCaptureTimeoutSeconds"
-            }].asLong * 1000
+            val timeout = configuredBudget(state)
             val effectiveTimeout = timerBudgets[timerState] ?: timeout
             if (state in setOf("SELECTING_PHOTOS", "EDITING", "PRINT_PENDING") && TimeUnit.NANOSECONDS.toMillis(System.nanoTime()-activity) >= effectiveTimeout) {
                 try {
@@ -139,7 +135,7 @@ class SimulatorSessionEngine(
                 "operator.getSettings" -> {
                     if(p.size()!=0) bad(-32602,"Invalid parameters")
                     settingsStore.response().apply {
-                        addProperty("effectiveTimerSource",if(settingsStore.persisted) "PERSISTED_SETTINGS" else "LEGACY_SIMULATOR_FIXTURE")
+                        addProperty("effectiveTimerSource",if(inactivityMillis != 60000L || !settingsStore.persisted) "LEGACY_SIMULATOR_FIXTURE" else "PERSISTED_SETTINGS")
                         add("effectiveTimeoutSeconds",obj("photoSelection" to configuredBudget("SELECTING_PHOTOS")/1000.0,
                             "frameSelection" to configuredBudget("EDITING")/1000.0,"postCapture" to configuredBudget("PRINT_PENDING")/1000.0))
                     }
@@ -214,7 +210,7 @@ class SimulatorSessionEngine(
             "selection.confirm" -> { guard("SELECTING_PHOTOS"); if(selected.size!=layout.selectCount) bad(-32001,"Exact selection required"); state="EDITING" }
             "frame.list" -> { guard("EDITING"); return obj("frames" to listOf(mapOf("id" to "synthetic-border","name" to "V2 generated transparent test frame","thumbDataUrl" to frameThumb()))) }
             "frame.select" -> { guard("EDITING"); if(text(p,"frameId")!="synthetic-border") bad(-32602,"Unknown frame"); frameId="synthetic-border"; compose() }
-            "frame.confirm" -> { guard("EDITING"); if(frameId==null || composition==null || printImage==null) bad(-32001,"Complete current composition required"); pendingTimerMillis=if(settingsStore.persisted) settingsStore.settings["frameSelectionTimeoutSeconds"].asLong*1000 else inactivityMillis; state="PRINT_PENDING" }
+            "frame.confirm" -> { guard("EDITING"); if(frameId==null || composition==null || printImage==null) bad(-32001,"Complete current composition required"); pendingTimerMillis=configuredBudget("EDITING"); state="PRINT_PENDING" }
             "print.confirmDryRun" -> { guard("PRINT_PENDING"); complete(true); result=snapshot().apply { addProperty("compositionDataUrl",data(composition!!,600)); addProperty("printImageDataUrl",data(printImage!!,600)) } }
             "session.back" -> { state=when(state) { "SELECTING" -> "IDLE"; "SELECTING_QUANTITY" -> "SELECTING"; "PAYMENT_PENDING" -> "SELECTING_QUANTITY"; "EDITING" -> "SELECTING_PHOTOS"; "PRINT_PENDING" -> "EDITING"; else -> bad(-32001,"Back not permitted") }; if(state=="IDLE") reset() }
             "session.cancel" -> { guard("SELECTING_PHOTOS","EDITING"); reset(); result=obj("cancelled" to true,"state" to state) }

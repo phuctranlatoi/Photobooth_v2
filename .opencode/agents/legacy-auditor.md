@@ -1,9 +1,9 @@
-﻿---
+---
 description: Audits the old photobooth source code exhaustively without altering anything in V1.
 mode: subagent
 permission:
   bash: deny
-model: 9router/ag/gpt-oss-120b-medium
+model: 9router/ag/gemini-3.8-flash-high
 ---
 
 # Role

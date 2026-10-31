@@ -1,0 +1,18 @@
+command=V2-only PowerShell SHA256/containment/reparse/coverage verification (no recovered code execution)
+timestampUtc=2026-10-31T15:19:29.0572398Z
+manifestSha256=2e940f04991b714efa36fcf602803096318ada985638ad313b910d51b7a20d99
+expectedManifestSha256=2e940f04991b714efa36fcf602803096318ada985638ad313b910d51b7a20d99
+declaredCount=206
+entryCount=206
+snapshotHashMatches=206
+verifyHashMatches=206
+liveHashMatches=206
+liveDriftCount=0
+appSourceDriftCount=0
+docsTestsDriftCount=0
+criticalCoverage=13/13
+errorCount=2
+--- LIVE DRIFT ---
+--- ERRORS ---
+missing critical: src-tauri/capabilities/default.json
+forbidden entry: frontend/src/customer.css

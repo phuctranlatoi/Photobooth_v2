@@ -1,0 +1,2 @@
+import {Heading} from './KioskUI';
+export function PrintingScreen(){return <><Heading title="In và tạo QR" subtitle="Vui lòng chờ trong giây lát"/><div className="v1-panel v1-center v1-pipeline">{['Ghép ảnh','In ảnh','Album & QR','Video'].map((label,i)=><div key={label}><span className={i===0?'active':''}>{i===0?'◌':i+1}</span><strong>{label}</strong></div>)}<p role="status">Đang chờ backend xử lý bản dryrun · Không in giấy thật</p></div></>}
