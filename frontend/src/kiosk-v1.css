@@ -106,3 +106,31 @@ body{margin:0}.v1-shell{position:relative;isolation:isolate;display:flex;flex-di
 .v1-frame-grid button strong{display:block;width:100%;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:clamp(12px,1.1vw,15px);padding:0 4px;box-sizing:border-box}
 .v1-carousel-arrow{min-width:56px;min-height:56px}
 .v1-photo-zoom{width:56px;height:56px;min-width:56px;min-height:56px;display:grid;place-items:center}
+
+/* Korean Photo Atelier: tactile navigation and editorial first impression. */
+.v1-back{width:52px;height:52px;min-width:52px;min-height:52px;flex:none;border:1px solid #E9DED7;border-radius:15px;background:#fff;box-shadow:0 2px 8px rgba(35,33,32,.06);color:#544E4B}
+.v1-back:hover:not(:disabled),.v1-back:focus-visible{color:#B8553A;border-color:#E07A5F}.v1-back:active:not(:disabled){transform:scale(.94)}
+.v1-heading{gap:16px;min-height:76px}.v1-heading h1{font-size:clamp(26px,2.4vw,36px);line-height:1.15}.v1-heading p{font-size:clamp(15px,1.2vw,16px);color:#756F6A;margin:4px 0 0}.v1-heading-eyebrow,.v1-payment-eyebrow{display:block;font-size:12px;font-weight:700;letter-spacing:.15em;color:#A94D37;margin-bottom:4px}
+.v1-carousel-arrow{width:56px;height:56px;min-width:56px;min-height:56px;display:grid;place-items:center;border-color:#E9DED7;background:rgba(255,252,247,.94);box-shadow:0 4px 16px rgba(35,33,32,.12)}.v1-carousel-prev{left:0}.v1-carousel-next{right:0}.v1-carousel-card.v1-layout-card{opacity:.45}.v1-carousel-card.v1-layout-card[aria-pressed=true]{border-color:#E07A5F;box-shadow:0 20px 50px rgba(224,122,95,.22)}
+.v1-start{align-items:center}.v1-start section{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;overflow:hidden}.v1-start h1{font-size:clamp(34px,3.9vw,52px);line-height:1.12;max-width:650px;margin:clamp(12px,2vh,22px) 0}.v1-start .v1-brand{letter-spacing:.18em}.v1-start .v1-primary{min-height:70px;min-width:min(320px,100%);margin-top:clamp(14px,2.2vh,26px)}.v1-start .v1-kicker{font-size:clamp(11px,1.1vw,14px);letter-spacing:.16em}.v1-start section>p:not(.v1-kicker){font-size:clamp(16px,1.4vw,19px);line-height:1.5;max-width:510px}.atelier-value-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.atelier-value-pills span{padding:9px 14px;border-radius:100px;border:1px solid #E9DED7;background:#fff;color:#544E4B;font-size:clamp(12px,1.05vw,15px);font-weight:600}.v1-start-card{height:min(72vh,600px);display:flex;align-items:center;justify-content:center;background:#F8F3EC}.v1-start-card>p:first-child{align-self:flex-start;letter-spacing:.16em;font-size:12px;font-weight:700}.atelier-art-caption{font-family:Georgia,serif;font-style:italic;font-size:clamp(15px,1.5vw,20px);margin:0}.v1-strip{box-shadow:0 14px 24px rgba(35,33,32,.18)}.atelier-event-showcase{display:flex;gap:12px;max-width:100%;overflow-x:auto;overscroll-behavior:contain;padding:8px 2px}.atelier-event-showcase button{display:flex;align-items:center;gap:10px;min-width:170px;min-height:60px;border:1px solid #E9DED7;border-radius:14px;background:white;padding:6px 12px;text-align:left;font-weight:700;color:#232120}.atelier-event-showcase img{width:46px;height:46px;border-radius:8px;object-fit:cover}
+.v1-primary{background:linear-gradient(120deg,#E07A5F,#D46A4E);color:#232120}.v1-primary:hover:not(:disabled){background:linear-gradient(120deg,#D46A4E,#B8553A);color:#fff}
+@media(max-width:1400px) and (max-height:850px){.v1-start h1{font-size:clamp(34px,3.9vw,52px)}.v1-start-card{height:min(69vh,520px)}.v1-start .v1-primary{min-height:68px}.v1-heading{min-height:70px}}
+@media(prefers-reduced-motion:reduce){.v1-carousel-arrow,.v1-back{transition:none}}
+
+/* Welcome and compact touch layout · decorative artwork is illustration, never a photo. */
+.v1-shell{background:var(--v-bg)}
+.v1-primary{background:var(--v-coral);color:var(--v-charcoal);box-shadow:0 6px 22px rgba(158,78,55,.18)}
+.v1-primary:hover:not(:disabled){background:#cf6c50;color:var(--v-charcoal)}
+.v1-back{border-radius:16px}
+.v1-heading-title{min-width:0}.v1-heading h1{font-size:clamp(26px,2.2vw,36px)}
+.v1-start{width:100%;flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(18px,4vw,72px);overflow:hidden}
+.v1-start section{min-width:0;min-height:0;overflow:auto;overscroll-behavior:contain;align-self:stretch}
+.v1-start .v1-brand{min-height:56px;border:0;background:transparent;color:var(--v-charcoal);font:700 clamp(18px,2vw,28px) Georgia,serif;padding:0;letter-spacing:.17em}
+.v1-start-desc{max-width:510px}.v1-value-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.v1-value-pills span{padding:9px 14px;border-radius:100px;border:1px solid var(--v-border);background:#fff;color:var(--v-secondary);font-size:clamp(12px,1.05vw,15px);font-weight:600}
+.v1-start-art{min-width:0;max-height:none;display:flex;flex-direction:column;justify-content:center;gap:8px}.v1-start-card{min-height:0;max-height:100%;height:min(72vh,640px)}
+.v1-strip-art{width:min(90%,420px);min-height:0}.v1-strip{width:33%;left:23%;top:7%;bottom:7%;padding:8px;transform:rotate(-5deg);border:1px solid var(--v-border);box-shadow:0 22px 38px rgba(57,42,33,.22)}.v1-strip-back{left:47%;transform:rotate(4deg)}.v1-strip .v1-layout-artwork{width:100%;height:100%;max-height:100%;filter:none}
+.v1-carousel-arrow{background:rgba(255,255,255,.96)}
+.v1-delivery{max-height:none;overflow:auto;scrollbar-width:thin}.v1-delivery-qr{width:min(32vh,300px);max-height:min(32vh,300px);padding:8px}.v1-delivery~.v1-actionbar{flex:none}
+@media(max-width:900px){.v1-start{gap:12px}.v1-start-card{height:min(65vh,480px)}.v1-start h1{font-size:clamp(32px,4vw,48px)}}
+@media(max-height:700px){.v1-shell{padding-block:12px;gap:8px}.v1-start-card{height:min(65vh,410px)}.v1-start h1{margin:6px 0}.v1-start .v1-primary{min-height:64px;margin-top:10px}.v1-delivery-qr{width:min(24vh,170px);max-height:24vh}.v1-delivery{gap:4px;padding:10px}.v1-delivery h2{margin:2px}.v1-delivery p{margin:2px}}
+@media(prefers-reduced-motion:reduce){.v1-strip,.v1-start-card{transition:none}}

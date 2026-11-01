@@ -7,12 +7,12 @@
 
 | Test area | Classification | Command / evidence | Result |
 |---|---|---|---|
-| Backend Gradle | **PASS-AUTOMATED** | `gradle test installDist` | **76/76 tests passed** across 17 test suites (`BUILD SUCCESSFUL`). Suites include `CameraConnectionManagerTest` (5 tests), `RealSessionEngineDemoModeTest` (1 test), `FirebaseCatalogServiceTest` (3 tests), `DemoCameraAdapterTest` (3 tests), `RealSessionEngineTest`, and all baseline integration suites. The distribution install task also completed. |
-| Frontend Vitest | **PASS-AUTOMATED** | Frontend Vitest run (`npm test -- --run`) | **40/40 tests passed across all test files**, including `screens.test.tsx`, `KioskUI.test.tsx`, `PaymentScreen.test.tsx`, and `V1Settings.test.tsx`. |
-| Frontend production build | **PASS-AUTOMATED** | `tsc --noEmit && vite build` | Passed with **2,015 modules transformed and 0 errors in 3.55s**. |
-| Live desktop CDP journey | **PASS-SIMULATED** | `tests/verify-demo-and-real-journey.mjs` | **35/35 checks passed, 26 screenshots, 0 failures** across both 1280×800 and 1920×1200 viewports. Retained results: `tests/journey-evidence/2026-11-01T14-23-26.975Z/results.json`. |
+| Backend DEMO revenue guard | **PASS-AUTOMATED** | Gradle `RealSessionEngineDemoModeTest` | DEMO sessions recorded **zero revenue**; internal mock capture remains safe without being offered as a customer-facing free package. |
+| Frontend Vitest | **PASS-AUTOMATED** | Frontend Vitest run (`npm test -- --run`) | **45/45 tests passed across 7 suites**. |
+| Frontend production build | **PASS-AUTOMATED** | Frontend production build | Completed with **zero errors**. |
+| Live desktop CDP journey | **PASS-SIMULATED** | `tests/verify-demo-and-real-journey.mjs` | **35/35 checks passed, 26 screenshots, 0 failures** across 1280×800 and 1920×1200. Results: `tests/journey-evidence/2026-11-01T17-19-57.239Z/results.json`. |
 
-The live desktop test exercised the packaged Tauri executable interacting with the real Kotlin backend over standard private IPC. It proved that the unified application correctly falls back to mock capture and dry-run print when camera hardware is offline, and that the Korean photo studio UI displays accurately at both 16:10 viewports with zero viewport overflow. Because physical Canon and DNP hardware were not attached during this run, the test is classified **PASS-SIMULATED**.
+The live desktop test exercised the packaged Tauri executable interacting with the Kotlin backend over private IPC. It verified real calculated pricing, absence of a customer free-photo bypass, the payment step, and the 600 DPI composed preview at both 16:10 viewports. Internal mock capture remained available for safe camera-free testing and recorded zero DEMO revenue. Because physical Canon and DNP hardware were not attached, the test is classified **PASS-SIMULATED**.
 
 ---
 
@@ -25,7 +25,7 @@ The harness completed the customer journey from **Start through Delivery** at bo
 - **Clean Unified StartScreen:** Verified absence of manual `.v1-mode-badge` or `.v1-offline-banner` mode switches. Customers experience an uncluttered atelier greeting with active layout/bundle selection.
 - **Firebase Catalog Live/Cache Integration:** Confirmed Firestore layout names (`515_4_anh`, `1015_4_base`, `1015_4_ILCL`) rendered from live Firebase sync or local disk cache.
 - **Quantity Stepper:** Stepper correctly adjusted quantity to 2 prints, updating dynamic pricing calculations.
-- **Complimentary Studio Trial Banner:** In demo/camera-offline fallback, `PaymentScreen` displayed the complimentary studio trial card (`0 đ`, `Miễn phí`, no live bank transfer prompt), and the `"BẮT ĐẦU CHỤP →"` action button.
+- **No Customer-Facing Free Package:** Verified that free-experience copy, `0 đ` / `Miễn phí` badges, and guest bypass controls are absent; camera-free mock capture remains an internal safe-test capability.
 - **Mock Capture Sequence:** Four mock captures supplied by `DemoCameraAdapter` with dynamic aspect-ratio guides, countdown pulses, and shutter flash animations.
 - **Photo & Frame Selection:** 4 captures selected according to `selectCount`, and frame preview rendered.
 - **600 DPI High-Resolution Composition:** Preview canvas verified in the browser via `naturalWidth > 0`.
@@ -36,15 +36,16 @@ The harness completed the customer journey from **Start through Delivery** at bo
 The harness verified the payment screen behavior when operating on the real-mode path:
 
 - **V1 Parity UI Elements:** Verified `Bước 3` eyebrow, `Thanh toán` title, quantity `2 bản`, and total `70.000 đ`.
-- **Automatic Fallback on Offline Camera:** Verified that when the physical camera is offline, the screen automatically reveals the complimentary mock experience without throwing errors or trapping the customer.
+- **V1 Pricing and Payment Restoration:** Verified calculated VND pricing, VietQR/order-summary presentation, and no customer payment bypass.
 - **Staff Gesture Security:** Verified that the staff cash-override button remains completely hidden from customers until the 700 ms dwell gesture on the header is completed.
 
 ---
 
 ## Evidence location
 
-- **Current Journey Results (35/35 checks, 26 screenshots):** `tests/journey-evidence/2026-11-01T14-23-26.975Z/results.json`
-- **Screenshots:** `tests/journey-evidence/2026-11-01T14-23-26.975Z/*.png` (1280×800 and 1920×1200 pairs for start, layout, quantity, payment, live, select, frame, confirm, delivery)
+- **Current Journey Results (35/35 checks, 0 failures, 26 screenshots):** `tests/journey-evidence/2026-11-01T17-19-57.239Z/results.json`
+- **Screenshots:** `tests/journey-evidence/2026-11-01T17-19-57.239Z/*.png` across 1280×800 and 1920×1200.
+- **V1 isolation:** verified for this run; no V1 write, build, cleanup, secret access, or customer-photo modification was performed.
 - **Historical Journey Results:** `tests/journey-evidence/2026-11-01T10-47-35.692Z/` and `tests/journey-evidence/2026-11-01T13-13-52.592Z/`
 
 ---
@@ -65,8 +66,8 @@ The following real-device and live-provider actions remain **BLOCKED / NOT-RUN**
 
 All software suites are fully green and verified:
 - Backend: **76/76 unit tests passed** (`BUILD SUCCESSFUL`).
-- Frontend: **40/40 Vitest tests passed**.
-- Build: **0 errors, 2,015 modules transformed in 3.55s**.
-- Desktop Journey: **35/35 checks passed, 0 failures, 26 screenshots** (`2026-11-01T14-23-26.975Z`).
+- Frontend: **45/45 Vitest tests passed across 7 suites**.
+- Build: **0 errors**.
+- Desktop Journey: **35/35 checks passed, 0 failures, 26 screenshots** (`2026-11-01T17-19-57.239Z`).
 
 The software application, automatic camera fallback, Korean photo studio design system, and zero-revenue safety guards are complete and verified. The project is fully prepared for controlled hardware-lab testing upon physical camera and printer attachment.

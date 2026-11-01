@@ -1,5 +1,30 @@
 # PROGRESS.md
 
+## Final Korean Photo Atelier UI/UX Overhaul & Exact V1 Payment Restoration (2026-11-01)
+
+**Status: COMPLETE — PASS-AUTOMATED + PASS-SIMULATED.**
+
+### Customer workflow and exact V1 payment restoration
+- Removed all customer-facing free-experience affordances: `TRẢI NGHIỆM CHỤP ẢNH MIỄN PHÍ`, `0 đ`, `Miễn phí` badges, and guest/customer bypass buttons are no longer presented as commercial choices.
+- Restored V1 price calculation in `RealSessionEngine.kt`: **70,000 VND** base for 5×15 strips and **90,000 VND** base for 10×15 postcards.
+- Restored the real payment journey in `PaymentScreen.tsx`, including the VietQR card, order summary, payment-state handling, and hidden staff cash confirmation. A header double-click or 700 ms hold invokes `payment.mockComplete` with `staffOverride: true` and payment method `TIEN_MAT`; this is not exposed as a customer bypass.
+- Retained safe internal mock capture for camera-free testing without creating or advertising a customer-facing free commercial package. `RealSessionEngineDemoModeTest` proves the DEMO revenue guard and zero revenue recording.
+
+### Korean Photo Atelier visual overhaul
+- Recomposed the Welcome hero into balanced editorial columns with refined typography, a letter-spaced brand wordmark, kicker, subtitle, value pills, primary CTA, and a layered photostrip composition using realistic shadows and subtle rotation.
+- Rebuilt compact Back controls with Lucide `ArrowLeft`; rebuilt carousel controls with Lucide `ChevronLeft` and `ChevronRight`.
+- Rebuilt Payment as a clean order-summary and VietQR presentation while preserving the concealed staff cash-confirmation gesture.
+- Verified the **600 DPI composed print preview** on the final confirmation screen.
+- Verified all screens at the **1280×800** and **1920×1200** 16:10 kiosk viewports.
+
+### Evidence
+- Live desktop acceptance: **PASS-SIMULATED — 35/35 checks passing, 0 failures, 26 screenshots**. Evidence: `tests/journey-evidence/2026-11-01T17-19-57.239Z/results.json`.
+- Frontend Vitest: **PASS-AUTOMATED — 45/45 passing across 7 suites**.
+- Frontend production build: **PASS-AUTOMATED — zero errors**.
+- Backend Gradle: **PASS-AUTOMATED** for the DEMO revenue guard in `RealSessionEngineDemoModeTest`.
+
+---
+
 ## Commercial-Grade UI/UX Rebuild & V1 Horizontal Snapping Carousel Parity (2026-11-01)
 
 **Status: COMPLETE — PASS-AUTOMATED + PASS-SIMULATED.**

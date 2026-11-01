@@ -1,5 +1,13 @@
 # V1 to V2 Full Parity Matrix
 
+> **Superseding customer-workflow verification — Final Korean Photo Atelier UI/UX & exact V1 payment restoration (2026-11-01):** **PASS-AUTOMATED + PASS-SIMULATED.** Live evidence is `tests/journey-evidence/2026-11-01T17-19-57.239Z/results.json` (**35/35 checks, 0 failures, 26 screenshots**) at 1280×800 and 1920×1200. Customer-facing free-experience copy, `0 đ` / `Miễn phí` badges, and guest bypasses have been removed. Safe mock capture remains internal for camera-free testing, with `RealSessionEngineDemoModeTest` proving zero DEMO revenue.
+>
+> | Customer workflow area | V2 parity status | Verified implementation |
+> |---|---|---|
+> | **Payment workflow** | **V1 PARITY RESTORED** | Real VND pricing (70,000 VND base for 5×15; 90,000 VND base for 10×15), VietQR generation, payment-status polling, and concealed staff cash confirmation. Header double-click or 700 ms hold invokes `payment.mockComplete` with `staffOverride: true` / `TIEN_MAT`; there is no customer free-payment bypass. |
+> | **Navigation** | **RESTORED / MODERNIZED** | Compact Back controls use Lucide `ArrowLeft`; carousel controls use Lucide `ChevronLeft` and `ChevronRight`, providing consistent vector icons suitable for kiosk touch navigation. |
+> | **Welcome & Catalog** | **VERIFIED** | Real Firebase layouts, Korean Photo Atelier editorial hero, layered photographic strip composition, and hidden admin gesture; no customer-facing DEMO/free commercial package. |
+
 > **Superseding verification — Unified Application, Automatic Camera Fallback & Full Regression (2026-11-01):** The unified photobooth application, background camera auto-fallback, Korean photo studio UI, and complete software regression are **VERIFIED and PASSING**:
 > - **Live Desktop Verification (`tests/verify-demo-and-real-journey.mjs`):** **PASS-SIMULATED — 35/35 checks passed, 26 screenshots, 0 failures** across both 1280×800 and 1920×1200 viewports (`tests/journey-evidence/2026-11-01T14-23-26.975Z/results.json`).
 > - **Unified Clean StartScreen:** Completely removed manual DEMO vs. REAL toggle badges and error alert banners; customers experience an uncluttered atelier greeting with live Firebase layout catalog (`515_4_anh`, `1015_4_base`, `1015_4_ILCL`).

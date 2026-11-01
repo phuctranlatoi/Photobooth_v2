@@ -1,11 +1,13 @@
 # UI Redesign Progress & Korean Photo Studio Design System
 
+> **LATEST STATUS (2026-11-01, 17:19:57 settled capture): UI Overhaul — COMPLETED for simulated desktop kiosk journey; V1 Payment Restoration — COMPLETED for customer-facing UI presentation, NOT certified live payment.** `tests/journey-evidence/2026-11-01T17-19-57.239Z/results.json` records **35/35 passing, 0 failures and 26 screenshots** at 1280×800 and 1920×1200. DEMO Start→Delivery and REAL-labelled Start→Payment are covered. Payment displays actual backend-calculated VND pricing instead of guest free claims or bypass; captured REAL Payment is **loading QR**, not a settled bank charge. Cash-error fallback and 700ms staff gesture are specified but not demonstrated by this capture; staff ACL and real settlement need authorized tests. Physical camera, DNP printer, 125/150% Windows scaling, touch geometry and countdown-distance readability remain open. `docs/UI_VISUAL_REVIEW.md` has the latest screen audit; older snapshots below are historical. V1 was not modified.
+
 **Document ID:** `docs/UI_REDESIGN_PROGRESS.md`  
-**Status:** desktop simulator visual gate complete; historical redesign notes below are not hardware certification  
+**Status:** UI Overhaul COMPLETED; V1 Payment Restoration COMPLETED (simulated desktop presentation only); historical redesign notes below are not hardware certification  
 **Target Environment:** 16:10 Touchscreen Displays (1920×1200 WUXGA & 1280×800 WXGA)  
 **Security Boundary:** Legacy V1 (`PhotoboothDesktop`) is strictly READ-ONLY. All UI implementations, styles, and assets belong exclusively to V2 (`PhotoboothDesktop_v2/frontend`).
 
-> **CURRENT DESKTOP ACCEPTANCE (2026-11-01, settled 15:38:06 run): PASS-SIMULATED / COMPLETE FOR DESKTOP SIMULATOR.** `tests/journey-evidence/2026-11-01T15-38-06.041Z/results.json` reports **35/35 passing checks, zero failures**, and **26 distinct screenshots** at 1280×800 and 1920×1200. The DEMO Start→Delivery journey and REAL-labelled Start→Payment fallback are covered; the latter does not demonstrate a paid transaction. The earlier 15:22:57 WITHHELD verdict and 15:09 review in `docs/UI_VISUAL_REVIEW.md` are retained as **historical before-fix findings**, not the current gate. No V1 files were changed by this documentation update.
+> **HISTORICAL DESKTOP ACCEPTANCE (2026-11-01, settled 15:38:06 run; superseded by 17:19:57): PASS-SIMULATED / COMPLETE FOR DESKTOP SIMULATOR.** `tests/journey-evidence/2026-11-01T15-38-06.041Z/results.json` reports **35/35 passing checks, zero failures**, and **26 distinct screenshots** at 1280×800 and 1920×1200. The DEMO Start→Delivery journey and REAL-labelled Start→Payment fallback are covered; the latter does not demonstrate a paid transaction. The earlier 15:22:57 WITHHELD verdict and 15:09 review in `docs/UI_VISUAL_REVIEW.md` are retained as **historical before-fix findings**, not the current gate. No V1 files were changed by this documentation update.
 
 | Settled visual gate (15:38:06) | Decision / evidence |
 |---|---|

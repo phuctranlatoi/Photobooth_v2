@@ -1,4 +1,5 @@
 import {useEffect,useLayoutEffect,useRef,useState} from 'react';
+import {ChevronLeft,ChevronRight} from 'lucide-react';
 import {ActionBar,Heading,KioskPrimaryButton,type ScreenProps} from './KioskUI';
 import {formatLayoutSubtitle,formatLayoutTitle,LayoutArtwork} from './LayoutArtwork';
 
@@ -46,10 +47,10 @@ export function StudioModeScreen({layout,layouts,busy,action}:ScreenProps){
     if(selected.current!==next.id){selected.current=next.id;action('session.setLayout',{layoutId:next.id})}
   },160);
  };
- return <><Heading title="Bố cục" subtitle="Chọn kiểu ảnh yêu thích" back={()=>action('session.back')}/>
+  return <><Heading title="Bố cục" eyebrow="LE SOUVENIR · BỐ CỤC" subtitle="Chọn kiểu ảnh yêu thích" back={()=>action('session.back')}/>
   <section className="v1-layout-stage" aria-label="Chọn bố cục ảnh">
    {layouts.length?<><div className="v1-carousel-wrap">
-    <button type="button" className="v1-carousel-arrow v1-carousel-prev" aria-label="Bố cục trước" disabled={busy||center===0} onClick={()=>move(center-1)}>←</button>
+      <button type="button" className="v1-carousel-arrow v1-carousel-prev" aria-label="Bố cục trước" disabled={busy||center===0} onClick={()=>move(center-1)}><ChevronLeft size={24} strokeWidth={2.4} aria-hidden="true"/></button>
      <div className="v1-layout-carousel" ref={track} onScroll={onScroll} onPointerDown={()=>{pending.current=null}}>
      {layouts.map((l,i)=><button type="button" key={l.id} className="v1-layout-card v1-carousel-card" aria-pressed={center===i} aria-label={`${formatLayoutTitle(l)} · ${l.id}`} disabled={busy} onClick={()=>move(i)}>
       <div className="v1-carousel-art"><LayoutArtwork layout={l}/></div>
@@ -57,7 +58,7 @@ export function StudioModeScreen({layout,layouts,busy,action}:ScreenProps){
       <span className="v1-layout-tag" style={{opacity:0.7,fontSize:'11px',letterSpacing:'0.05em'}}>{l.id}</span>
      </button>)}
     </div>
-    <button type="button" className="v1-carousel-arrow v1-carousel-next" aria-label="Bố cục tiếp theo" disabled={busy||center===layouts.length-1} onClick={()=>move(center+1)}>→</button>
+      <button type="button" className="v1-carousel-arrow v1-carousel-next" aria-label="Bố cục tiếp theo" disabled={busy||center===layouts.length-1} onClick={()=>move(center+1)}><ChevronRight size={24} strokeWidth={2.4} aria-hidden="true"/></button>
    </div><div className="v1-carousel-indicator" aria-live="polite"><span>{String(center+1).padStart(2,'0')} / {String(layouts.length).padStart(2,'0')}</span><strong>{active&&formatLayoutTitle(active)}</strong><p>{active&&formatLayoutSubtitle(active)} · {active?.shotCount} lượt chụp</p></div></>:<div className="v1-panel v1-center" role="status">Chưa có bố cục khả dụng. Vui lòng liên hệ nhân viên.</div>}
   </section><ActionBar><span>Chạm vào bố cục ở giữa hoặc bấm Tiếp tục để chọn</span><KioskPrimaryButton disabled={busy||!layout} onClick={()=>action('session.confirmSetup')}>Tiếp tục →</KioskPrimaryButton></ActionBar></>;
 }

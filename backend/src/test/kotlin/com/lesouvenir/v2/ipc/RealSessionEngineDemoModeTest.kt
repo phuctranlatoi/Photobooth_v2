@@ -4,6 +4,7 @@ import com.google.gson.JsonObject
 import com.lesouvenir.v2.camera.real.*
 import com.lesouvenir.v2.catalog.FirebaseCatalogService
 import com.lesouvenir.v2.data.SqliteSalesRepository
+import com.lesouvenir.v2.foundation.PricingCalculator
 import com.lesouvenir.v2.printing.legacy.PrinterManager
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
@@ -47,7 +48,15 @@ class RealSessionEngineDemoModeTest {
             assertEquals("DEMO", call("session.start") { addProperty("layoutId", layoutId); addProperty("captureMode", "DEMO") }["captureMode"].asString)
             call("session.confirmSetup")
             call("session.setQuantity") { addProperty("quantity", 2) }
-            assertEquals("LIVE_VIEW", call("payment.mockComplete") { addProperty("method", "DEMO") }["state"].asString)
+            val payment = call("payment.createLink")
+            assertEquals("CONFIG_MISSING", payment["status"].asString)
+            assertEquals(PricingCalculator.calculatePrice("5x15", 2).totalAmount, payment["amount"].asLong)
+            assertEquals("PAYMENT_PENDING", payment["state"].asString)
+            assertFalse(payment["paid"].asBoolean)
+            val confirmed = call("payment.mockComplete") { addProperty("method", "TIEN_MAT") }
+            assertEquals("LIVE_VIEW", confirmed["state"].asString)
+            assertTrue(confirmed["paid"].asBoolean)
+            assertEquals("TIEN_MAT", confirmed["paymentMethod"].asString)
             call("capture.startSequence")
             val deadline = System.currentTimeMillis() + 25000
             while (call("session.getState")["state"].asString != "SELECTING_PHOTOS" && System.currentTimeMillis() < deadline) Thread.sleep(100)

@@ -1,6 +1,26 @@
 # Live Tauri journey — visual review (2026-11-01)
 
-## Settled desktop acceptance — 15:38:06 capture (current verdict)
+## Settled Korean Photo Atelier review — 17:19:57 capture (latest verdict)
+
+**Overall Status: PASS-SIMULATED / COMPLETE FOR DESKTOP KIOSK JOURNEY.** `tests/journey-evidence/2026-11-01T17-19-57.239Z/results.json` reports **35/35 checks passing, 0 failures, 26 screenshots** at **1280×800 and 1920×1200**. Scope: simulated DEMO Start→Delivery plus REAL-labelled Start→Payment in the live Tauri executable; the REAL capture ends while payment QR is **loading**. This is desktop journey/visual acceptance, **not** proof of a paid QR, successful cash authorization, physical touch, camera or print. The 15:38 review and older verdicts below are historical.
+
+| Screen | Latest visual and interaction audit; evidence boundary |
+|---|---|
+| Welcome (`StartScreen`) | Korean Photo Atelier editorial hero: letter-spaced **LE SOUVENIR** wordmark, `PHOTO ATELIER · SEOUL × SAIGON` kicker, `Chụp ảnh lấy ngay / Yours forever.` headline, natural subtitle, value pills and prominent `CHẠM ĐỂ BẮT ĐẦU →` CTA. Right column uses layered illustrated photostrips, subtle **−5°/+4°** rotation and realistic paper shadows. Raw IDs and technical Firebase Live badge are removed from customer presentation; artwork is illustrative, not licensed customer photography. |
+| Layout (`StudioModeScreen`) | Horizontal snap-centered carousel with Lucide `ChevronLeft`/`ChevronRight` in **56px** floating circles; active card scale **1** with coral border/glow, adjacent peeks scale **.84**. Clean customer titles, centered card/caption/format aligned. Stills show settled states, not arbitrary drag dynamics. |
+| Quantity (`QuantityScreen`) | `Bước 2 · Chọn số lượng bản in` step header, compact back action with Lucide `ArrowLeft`, tactile **72px** steppers and live backend-priced VND amount (captured example **70.000 đ**). Disabled step limits must remain authoritative. |
+| Payment (`PaymentScreen`) | **V1 payment presentation restored:** no customer-facing `0 đ`, `Trải nghiệm chụp ảnh miễn phí`, `Miễn phí` badge or guest bypass. Left order card shows calculated **70.000 đ** (captured example, NOT a fixed price), **Dải 5×15 cm**, **2 bản in**, and **Chờ thanh toán QR**. Right card is designed for `Quét mã bằng ứng dụng ngân hàng`, real VietQR container and polling indicator; captured payment screenshot shows **`Đang tạo mã thanh toán...`**, not a rendered QR or paid state. When PayOS is unconfigured/errors, the specified fallback is `Thanh toán tiền mặt tại quầy / Vui lòng gửi tiền mặt cho nhân viên để kích hoạt phiên chụp` with `[ • Nhân viên xác nhận tiền mặt ]`; staff action is revealed by header double-click / **700ms** hold. These error, cash and live polling outcomes are **not validated by the captured screenshots**; gesture is not authentication and backend confirmation remains mandatory. |
+| Live View & Capture (`CaptureScreen`) | Immersive dark viewfinder, clean configured-count progress and shutter feedback in simulated capture. Real camera orientation, face-safe overlays and distance-readable countdown require studio verification; no configured timer value is inferred from stills. |
+| Photo Selection (`SelectPhotosScreen`) | Gallery of captured photo cards, selection-order badge and guarded continue/disabled state. Exact quota and expiry remain backend-controlled; exercise repeat taps and alternate counts separately. |
+| Frame Selection (`FrameScreen`) | Real frame-artwork thumbnails replace loading placeholders, with selected coral/glow border and contained preview. Failed decoding/retry still needs a dedicated test. |
+| Final Confirmation (`ConfirmScreen`) | Composed preview is loaded in the simulator (**`naturalWidth > 0`** in journey check); composition is described as 600 DPI by the journey, but image naturalWidth alone does **not** verify print DPI metadata. Clear order summary and real VND price (example **70.000 đ**); truthful mode-sensitive `Xác nhận bản mô phỏng →` / `Xác nhận & in →` copy must map to the actual mounted mode/action and preserve the existing confirmation gate. No real printer success is evidenced. |
+| Delivery (`DeliveryScreen`) | High-resolution QR delivery panel when an actual delivery URL exists; simulated/no-QR state must stay honest. Sticky `Hoàn thành · Về trang đầu` fits at **1280×800** and returns to Welcome. Live QR reachability is not certified. |
+
+**Hardware boundary:** Safe internal mock capture is retained for camera-free testing. Physical camera, real PayOS charges and physical DNP printer require **explicit studio authorization**. No payment-gate bypass, actual charge or physical print is claimed. Windows 125/150% scaling, real touch hitboxes/holds, long-language overflow, countdown at booth distance, PayOS failure/cash authorization and actual device recovery remain open. No V1 files were touched.
+
+---
+
+## Historical settled desktop acceptance — 15:38:06 capture (superseded by 17:19:57)
 
 **Status: PASS-SIMULATED / COMPLETE FOR DESKTOP SIMULATOR.** `tests/journey-evidence/2026-11-01T15-38-06.041Z/results.json` records **35/35 checks passing, zero failures**, with **26 distinct screenshots** across 1280×800 and 1920×1200. Coverage is the live Tauri executable's DEMO journey through Delivery and REAL-labelled journey through Payment; the latter automatically uses the complimentary offline-camera fallback, **not** a settled paid PayOS journey. The run verifies a desktop simulator, not a physical touch kiosk.
 

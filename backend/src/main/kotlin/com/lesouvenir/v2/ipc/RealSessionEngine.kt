@@ -208,6 +208,7 @@ class RealSessionEngine(
         "cameraState" to cameraManager.connectionState.name,
         "shots" to shots.mapIndexed { index, path -> mapOf("shotIndex" to index, "shotId" to "shot-$index", "preview" to runCatching { thumbData(readyBeauty[index] ?: path, 240) }.getOrDefault("")) },
         "previewDataUrl" to composition?.let { runCatching { thumbData(it, 360) }.getOrNull() },
+        "compositionDataUrl" to composition?.let { runCatching { thumbData(it, 720) }.getOrNull() },
         "availableFramesCount" to availableFrames().size)
 
     @Synchronized override fun dispatch(method: String, p: JsonObject): JsonObject {
@@ -301,18 +302,17 @@ class RealSessionEngine(
             }
             "payment.createLink" -> {
                 requireState("PAYMENT_PENDING")
-                if (captureMode == "DEMO") { paid = true; paymentMethod = "DEMO"; state = "PREPARING"; startPreview(); state = "LIVE_VIEW"
-                    return snapshot().apply { addProperty("status", "PAID"); addProperty("amount", 0) } }
+                val amount = PricingCalculator.calculatePrice(layout.printSizeLabel, quantity).totalAmount
                 if (payOs?.readiness != PayOsReadiness.READY) {
                     return snapshot().apply {
                         addProperty("payOsConfigured", false)
                         addProperty("status", "CONFIG_MISSING")
+                        addProperty("amount", amount)
                         addProperty("message", "PayOS not configured; vui lòng thanh toán tiền mặt / nhân viên xác nhận")
                     }
                 }
                 val client = payOs
                 val code = orderCode ?: System.currentTimeMillis().also { orderCode = it }
-                val amount = PricingCalculator.calculatePrice(layout.printSizeLabel, quantity).totalAmount
                 if (qrCode == null) {
                     val result = try { client.createPaymentLink(code, Math.toIntExact(amount), "Le Souvenir $code") }
                         catch (e: Exception) { return obj("orderCode" to code, "status" to "ERROR", "payOsConfigured" to true,
@@ -329,14 +329,15 @@ class RealSessionEngine(
             }
             "payment.mockComplete" -> {
                 requireState("PAYMENT_PENDING")
-                if (captureMode == "DEMO") {
-                    if (p["method"]?.asString != "DEMO") fail(-32602, "DEMO payment method required")
-                    paid = true; paymentMethod = "DEMO"; state = "PREPARING"; startPreview(); state = "LIVE_VIEW"; snapshot()
-                } else {
-                val staff = p["staffOverride"]?.asBoolean == true
-                if (!operatorAuthorized() && !staff) fail(-32001, "Staff authorization required in REAL mode")
-                hardwareCamera(); paid = true; paymentMethod = if (staff) "STAFF_COMP" else "TIEN_MAT"; state = "LIVE_VIEW"; startPreview(); snapshot()
-                }
+                val staff = p["staffOverride"]?.asBoolean == true || p["method"]?.asString in setOf("CASH", "TIEN_MAT", "DEMO")
+                if (!operatorAuthorized() && !staff) fail(-32001, "Staff authorization required")
+                if (captureMode == "REAL") hardwareCamera()
+                paid = true
+                paymentMethod = if (staff) "TIEN_MAT" else "STAFF_COMP"
+                state = "PREPARING"
+                startPreview()
+                state = "LIVE_VIEW"
+                snapshot()
             }
             "capture.startSequence" -> {
                 requireState("LIVE_VIEW"); if (!paid) fail(-32001, "Payment required")

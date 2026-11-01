@@ -1,5 +1,24 @@
 # TASK_BOARD.md
 
+## Final Korean Photo Atelier UI/UX & Exact V1 Payment Restoration — COMPLETED (2026-11-01)
+
+| Task | Status | Evidence |
+|---|---|---|
+| Remove customer-facing free photo experience | **COMPLETED — PASS-SIMULATED** | Removed `TRẢI NGHIỆM CHỤP ẢNH MIỄN PHÍ`, `0 đ`, `Miễn phí` badges, and guest/customer bypass controls. Internal camera-free mock capture remains test-only and does not define a free commercial package. |
+| Restore exact V1 payment flow and pricing | **COMPLETED — PASS-AUTOMATED + PASS-SIMULATED** | `RealSessionEngine.kt` restores 70,000 VND for 5×15 strips and 90,000 VND for 10×15 postcards; `PaymentScreen.tsx` restores VietQR, order summary, status flow, and no customer bypass. |
+| Redesign Back and carousel navigation | **COMPLETED — PASS-SIMULATED** | Compact Back buttons use Lucide `ArrowLeft`; carousel navigation uses Lucide `ChevronLeft` / `ChevronRight`. |
+| Recompose Welcome as Korean Photo Atelier hero | **COMPLETED — PASS-SIMULATED** | Balanced editorial columns, letter-spaced wordmark, kicker, subtitle, value pills, primary CTA, and layered rotated photostrips with realistic shadows. |
+| Rebuild Payment layout and staff cash confirmation | **COMPLETED — PASS-SIMULATED** | Clean summary/VietQR composition; hidden header double-click or 700 ms hold triggers `payment.mockComplete` with `staffOverride: true` / `TIEN_MAT`. |
+| Verify 600 DPI composed print preview | **COMPLETED — PASS-SIMULATED** | Final confirmation preview verified by the desktop journey at both target viewports. |
+| 16:10 kiosk zero-scroll fit | **COMPLETED — PASS-SIMULATED** | All customer screens checked at 1280×800 and 1920×1200. |
+| Live desktop acceptance | **COMPLETED — PASS-SIMULATED** | **35/35 checks, 0 failures, 26 screenshots**: `tests/journey-evidence/2026-11-01T17-19-57.239Z/results.json`. |
+| Frontend regression and build | **COMPLETED — PASS-AUTOMATED** | Vitest **45/45 across 7 suites**; production build completed with zero errors. |
+| DEMO revenue protection | **COMPLETED — PASS-AUTOMATED** | Backend Gradle `RealSessionEngineDemoModeTest` proves no DEMO-session revenue is recorded. |
+
+Physical Canon capture, DNP output, live payment settlement, and physical touchscreen validation remain separate gated tests; this simulated acceptance result does not claim real-hardware proof.
+
+---
+
 ## Deployment configuration readiness — 9/9 CONFIGURED (2026-11-01)
 
 | Readiness item | Status | Safe evidence / remaining gate |
