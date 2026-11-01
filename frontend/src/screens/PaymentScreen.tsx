@@ -3,7 +3,8 @@ import {formatLayoutTitle} from './LayoutArtwork';
 import {Heading,Vnd,type ScreenProps} from './KioskUI';
 import './payment.css';
 
-export function PaymentScreen({layout,pricing,busy,action,snapshot,simulator}:ScreenProps){
+export function PaymentScreen({layout,pricing,busy,action,snapshot}:ScreenProps){
+   const [linkState,setLinkState]=useState<'CREATING'|'AWAITING_PAYMENT'|'ERROR'|'UNCONFIGURED'|'PAID'>('CREATING');
   const [staffPanelVisible,setStaffPanelVisible]=useState(false);
   const hold=useRef<ReturnType<typeof setTimeout>|null>(null);
   const origin=useRef<{x:number;y:number}|null>(null);
@@ -13,7 +14,6 @@ export function PaymentScreen({layout,pricing,busy,action,snapshot,simulator}:Sc
   const busyRef=useRef(busy);
   currentAction.current=action;
   busyRef.current=busy;
-   const real=snapshot?.captureMode!=='DEMO'&&(snapshot?.captureMode==='REAL'||snapshot?.runtimeMode==='REAL'||simulator===false);
   const qr=snapshot?.paymentQr;
   const orderCode=snapshot?.orderCode;
   const unconfigured=snapshot?.payOsStatus==='CONFIG_MISSING'||snapshot?.payOsConfigured===false;
@@ -22,26 +22,38 @@ export function PaymentScreen({layout,pricing,busy,action,snapshot,simulator}:Sc
   const stopHold=()=>{if(hold.current!==null){clearTimeout(hold.current);hold.current=null}origin.current=null};
 
   useEffect(()=>()=>{if(hold.current!==null)clearTimeout(hold.current)},[]);
-  useEffect(()=>{
-    if(!real||!sessionId||unconfigured||configurationError||qr||orderCode!=null||requested.current===sessionId)return;
-    requested.current=sessionId;
-    currentAction.current('payment.createLink');
-  },[real,sessionId,unconfigured,configurationError,qr,orderCode]);
-  useEffect(()=>{
-    if(!real||!sessionId||unconfigured||configurationError||qr==='ERROR'||(orderCode==null&&!qr))return;
+   useEffect(()=>{
+     if(!sessionId||unconfigured||configurationError||qr||orderCode!=null||requested.current===sessionId)return;
+     requested.current=sessionId;
+     currentAction.current('payment.createLink');
+   },[sessionId,unconfigured,configurationError,qr,orderCode]);
+   useEffect(()=>{
+     if(unconfigured){setLinkState('UNCONFIGURED');return}
+     if(configurationError||qr==='ERROR'||snapshot?.lastPaymentError){setLinkState('ERROR');return}
+     if(qr&&qr!=='ERROR'){setLinkState('AWAITING_PAYMENT');return}
+     setLinkState('CREATING');
+   },[sessionId,unconfigured,configurationError,qr,snapshot?.lastPaymentError]);
+   useEffect(()=>{
+     if(linkState!=='CREATING'||!sessionId||unconfigured||configurationError||qr||orderCode!=null)return;
+     const timeout=setTimeout(()=>setLinkState('ERROR'),15000);
+     return()=>clearTimeout(timeout);
+   },[linkState,sessionId,unconfigured,configurationError,qr,orderCode]);
+   useEffect(()=>{
+     if(!sessionId||unconfigured||configurationError||qr==='ERROR'||(orderCode==null&&!qr)||linkState==='ERROR')return;
     const interval=setInterval(()=>{if(!busyRef.current)currentAction.current('payment.checkStatus',orderCode!=null?{orderCode}:{})},3000);
     return()=>clearInterval(interval);
-  },[real,sessionId,unconfigured,configurationError,qr,orderCode]);
+   },[sessionId,unconfigured,configurationError,qr,orderCode,linkState]);
 
-  const qrReady=!!qr&&qr!=='ERROR';
+   const qrReady=!!qr&&qr!=='ERROR';
   const qrSrc=qrReady?(qr.startsWith('data:image/')||qr.startsWith('https://')||qr.startsWith('http://')?qr:`data:image/png;base64,${qr}`):'';
-  const warning=unconfigured||configurationError||qr==='ERROR'||!!snapshot?.lastPaymentError;
-   const status=warning?'Cần nhân viên hỗ trợ':qrReady?'Đang chờ xác nhận':'Đang tạo mã';
+   const isError=linkState==='ERROR'||configurationError||qr==='ERROR'||!!snapshot?.lastPaymentError;
+   const warning=unconfigured||configurationError||qr==='ERROR'||!!snapshot?.lastPaymentError;
+    const status=warning||isError?'Cần nhân viên hỗ trợ':qrReady?'Đang chờ xác nhận':'Đang tạo mã';
   const size=layout?.printSizeLabel?.replace(/\s/g,'').match(/5[x×]15|10[x×]15/i)?.[0]?.replace(/[xX]/,'×');
-  const staffVisible=staffPanelVisible||warning;
+   const staffVisible=staffPanelVisible||warning||isError;
   return <div className="v1-payment-screen">
       <Heading step="Bước 3" title="Thanh toán" subtitle="Quét mã QR để tiếp tục phiên chụp." className="v1-payment-heading" back={()=>{if(!busy)action('session.back')}} onTitlePointerDown={event=>{if(event.pointerType==='mouse'&&event.button!==0)return;stopHold();origin.current={x:event.clientX,y:event.clientY};hold.current=setTimeout(()=>{setStaffPanelVisible(true);hold.current=null;origin.current=null},700)}} onTitlePointerMove={event=>{if(origin.current&&Math.hypot(event.clientX-origin.current.x,event.clientY-origin.current.y)>12)stopHold()}} onTitlePointerUp={stopHold} onTitlePointerCancel={stopHold} onTitlePointerLeave={stopHold} onTitleDoubleClick={()=>{stopHold();setStaffPanelVisible(true)}}/>
-    <div className="v1-payment-columns">
+     <div className="v1-payment-columns">
       <section className="v1-payment-summary v1-panel" aria-label="Chi tiết thanh toán">
          <p className="v1-payment-label">Số tiền thanh toán</p>
          <strong className="v1-payment-price">{pricing?.totalAmount!=null?<Vnd amount={pricing.totalAmount}/>: '—'}</strong>
@@ -55,7 +67,8 @@ export function PaymentScreen({layout,pricing,busy,action,snapshot,simulator}:Sc
          <div className="v1-payment-status"><span>Trạng thái</span><span className="v1-payment-chip v1-payment-chip-amber" role="status"><span aria-hidden="true" className="v1-payment-dot"/>{warning?'Cần nhân viên hỗ trợ':'Chờ thanh toán QR'}</span></div>
       </section>
       <section className="v1-payment-qr-panel v1-panel" aria-label="Mã thanh toán">
-         {warning?<><span className="v1-payment-warning" aria-hidden="true">!</span><h2>Thanh toán tiền mặt tại quầy</h2><p>Vui lòng gửi tiền mặt cho nhân viên để kích hoạt phiên chụp.</p></>
+           {unconfigured?<><span className="v1-payment-warning" aria-hidden="true">!</span><h2>Thanh toán tiền mặt tại quầy</h2><p>Vui lòng gửi tiền mặt cho nhân viên để kích hoạt phiên chụp.</p></>
+           :isError?<><span className="v1-payment-warning" aria-hidden="true">!</span><h2>Không tạo được mã QR</h2><p>Vui lòng thanh toán bằng tiền mặt hoặc thử lại.</p><button type="button" className="v1-secondary" onClick={()=>{requested.current=null;setLinkState('CREATING');action('payment.createLink');requested.current=sessionId??null}}>Thử lại tạo mã QR</button></>
           :!qrReady?<><span className="v1-payment-spinner" aria-hidden="true"/><p role="status">Đang tạo mã thanh toán...</p></>
            :<><div className="v1-payment-qr-card"><img src={qrSrc} alt="Mã VietQR"/></div><h2>Quét mã bằng ứng dụng ngân hàng</h2><p>Hệ thống sẽ tự động chuyển sang bước chụp ngay khi nhận được thanh toán.</p><span className="v1-payment-poll" role="status"><span className="v1-payment-dot" aria-hidden="true"/>{status}</span></>}
       </section>

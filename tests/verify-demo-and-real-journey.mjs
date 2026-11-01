@@ -16,7 +16,7 @@ async function click(re, selector = 'button') {
 async function shot(view,name){const p=await call('Page.captureScreenshot',{format:'png',captureBeyondViewport:false}),file=resolve(out,`${view}-${name}.png`);writeFileSync(file,Buffer.from(p.data,'base64'));result.screenshots.push(file)}async function start(mode){app=spawn(exe,[],{cwd:root,env:{...process.env,V2_RUNTIME_MODE:mode,V2_JAVA_HOME:process.env.V2_JAVA_HOME||'C:\\Program Files\\Eclipse Adoptium\\jdk-21.0.12.8-hotspot',WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS:'--remote-debugging-port=9223 --remote-debugging-address=127.0.0.1'},stdio:['ignore','pipe','pipe']});await connect()}async function reset(){try{ws?.close()}catch{}kill(app);app=undefined;await delay(1200)}
 async function setupToPayment(view,demo){await wait("document.body.innerText.includes('515_') || document.body.innerText.includes('1015_')",'Firebase catalog');const text=await js('document.body.innerText');check(text.includes('Firebase Live')||text.includes('Bộ nhớ tạm')||text.includes('bộ nhớ tạm'),`${view} Firebase catalog source`);check(['515_4_anh','1015_4_base','1015_4_ILCL'].some(name=>text.includes(name)),`${view} real Firestore layout names`);check(!await js("Boolean(document.querySelector('.v1-mode-badge') || document.querySelector('.v1-offline-banner'))"),`${view} clean unified start screen (no manual mode toggles)`);const modeTag = demo ? 'demo' : 'real';await shot(view, `${modeTag}-start`);await js("void (document.querySelector('.v1-start .v1-primary, button.v1-primary')?.click())");await delay(500);await wait("document.body.innerText.includes('515_4_anh') || Boolean(document.querySelector('.v1-layout-card'))",'real layout list');check((await js('document.body.innerText')).includes('515_4_anh'),`${view} 515_4_anh layout card`);await js("void (Array.from(document.querySelectorAll('.v1-layout-card')).find(b=>b.innerText.includes('515_4_anh'))?.click())");await delay(600); // Wait for carousel smooth-scroll animation to finish before snapping screenshot!
 await shot(view, `${modeTag}-layout`);await click(/Tiếp tục/i);await wait("Boolean(document.querySelector('.v1-stepper'))",'quantity screen');let q=await js("document.querySelector('.v1-stepper strong')?.textContent.trim()");for(let i=0;q!==undefined&&q!=='2'&&i<10;i++){await js("void (document.querySelector('.v1-stepper button:last-child')?.click())");await delay(200);q=await js("document.querySelector('.v1-stepper strong')?.textContent.trim()")}check(q==='2',`${view} quantity set to 2`);await shot(view, `${modeTag}-quantity-2`);await click(/Tiếp tục/i);await wait("Boolean(document.querySelector('.v1-payment-screen') || document.body.innerText.includes('Thanh toán'))",'payment screen')}
-async function demoJourney(view){await setupToPayment(view,true);const t=await js('document.body.innerText');check(/70\.000|90\.000|110\.000/.test(t),`${view} real calculated price displayed`);check(!t.includes('TRẢI NGHIỆM CHỤP ẢNH MIỄN PHÍ') && !t.includes('Không cần thanh toán'),`${view} no customer free photo bypass`);check(t.includes('Bước 3') && t.includes('Thanh toán'),`${view} payment step header`);await shot(view,'demo-payment');
+async function demoJourney(view){await setupToPayment(view,true);const t=await js('document.body.innerText');check(!/[⚡📱✨🎉🖨️]/.test(t), `${view} zero emoji in UI`);check(/70\.000|90\.000|110\.000/.test(t),`${view} real calculated price displayed`);check(!t.includes('TRẢI NGHIỆM CHỤP ẢNH MIỄN PHÍ') && !t.includes('Không cần thanh toán'),`${view} no customer free photo bypass`);check(t.includes('Bước 3') && t.includes('Thanh toán'),`${view} payment step header`);await shot(view,'demo-payment');
 // Reveal staff cash confirmation via double-click / 750ms hold or use if already visible:
 await js(`(() => {
   const el = document.querySelector('[data-staff-trigger="true"], .v1-heading-title, .v1-payment-heading h1');
@@ -35,11 +35,45 @@ await js(`(() => {
 await delay(300);
 await wait("Boolean(document.querySelector('.v1-staff-cash-btn, [data-testid=\"staff-cash-btn\"]') || Array.from(document.querySelectorAll('button')).some(b => b.textContent.includes('Nhân viên xác nhận')))", 'staff cash confirmation button', 10000);
 await click(/Nhân viên xác nhận tiền mặt/i);await wait("Boolean(document.querySelector('.v1-capture-screen') || document.body.innerText.includes('Bắt đầu chụp'))",'live demo');await shot(view,'demo-live');await click(/Bắt đầu chụp/);await wait("Boolean(document.querySelector('[aria-label=\"Chọn ảnh 1\"]:not(:disabled)'))",'mock captures',180000);await shot(view,'demo-select');const required = await js("Number((document.body.innerText.match(new RegExp('Đã chọn \\\\d+/(\\\\d+)'))||[])[1]) || 4");
+// Test press-and-hold zoom gesture on photo 1
+await js(`(() => {
+  const p1 = document.querySelector('[aria-label="Chọn ảnh 1"]');
+  if (p1) p1.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, clientX: 150, clientY: 150 }));
+})()`);
+await delay(600);
+const zoomOpen = await js("Boolean(document.querySelector('.v1-hold-lightbox, .v1-lightbox'))");
+check(zoomOpen, `${view} press-and-hold enlarges photo`);
+// Release finger
+await js(`(() => {
+  const p1 = document.querySelector('[aria-label="Chọn ảnh 1"]');
+  if (p1) p1.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, clientX: 150, clientY: 150 }));
+})()`);
+await delay(200);
+const zoomClosed = await js("!document.querySelector('.v1-hold-lightbox, .v1-lightbox')");
+check(zoomClosed, `${view} release finger dismisses enlarged photo`);
+const timerText1 = await js("document.querySelector('.v1-timer')?.textContent || ''");
+if (timerText1) {
+  check(timerText1.includes('Còn lại') && !timerText1.includes('00:00'), `${view} active selection timer (${timerText1})`);
+  await delay(2200);
+  const timerText2 = await js("document.querySelector('.v1-timer')?.textContent || ''");
+  const parseSeconds = (txt) => {
+    const m = txt.match(/(\d+):(\d+)/);
+    return m ? Number(m[1]) * 60 + Number(m[2]) : null;
+  };
+  const s1 = parseSeconds(timerText1), s2 = parseSeconds(timerText2);
+  if (s1 !== null && s2 !== null) {
+    check(s2 < s1, `${view} selection timer decrements over time (${timerText1} -> ${timerText2})`);
+  }
+}
 for (let i = 1; i <= required; i++) {
 const btnExp = `document.querySelector('[aria-label="Chọn ảnh ${i}"]')`;
 await wait(`${btnExp} && !${btnExp}.disabled`, `photo ${i} card`);
 await js(`void (${btnExp}.click())`);
 await wait(`Boolean(document.body.innerText.includes('Đã chọn ${i}/') || document.querySelector('[aria-label="Chọn ảnh ${i}"][aria-pressed="true"]'))`, `photo ${i} selected`, 15000);
+if (i === 1) {
+const hasPreviewImage = await js("Boolean(document.querySelector('.v1-preview svg image'))");
+check(hasPreviewImage, `${view} live frame preview renders chosen photos in real-time`);
+}
 await delay(300);
 }
 await click(/Tiếp tục/i);await wait("Boolean(document.querySelector('.v1-frame-grid button'))",'frame buttons loaded');await js("void (document.querySelector('.v1-frame-grid button')?.click())");await wait("Boolean(!document.querySelector('button[aria-label=\"Tiếp tục\"]')?.disabled || Array.from(document.querySelectorAll('button')).some(b => b.textContent?.trim().startsWith('Tiếp tục') && !b.disabled))",'frame preview ready',60000);await shot(view,'demo-frame');await click(/Tiếp tục/i);await wait("Boolean(document.querySelector('.v1-confirm-screen') || document.body.innerText.includes('Kiểm tra lần cuối'))",'confirm');await wait("Boolean(document.querySelector('img[aria-label*=\"600 DPI\"], img[alt*=\"600 DPI\"]')?.naturalWidth)",'600 DPI image loaded',35000);check(Boolean(await js("Boolean(document.querySelector('img[aria-label*=\"600 DPI\"], img[alt*=\"600 DPI\"]')?.naturalWidth)")),`${view} 600 DPI composed preview`);await shot(view,'demo-confirm');await click(/Xác nhận bản mô phỏng|Xác nhận & in|In và tạo QR|Hoàn thành trải nghiệm|Xác nhận/i);await wait("Boolean(document.querySelector('.v1-delivery-screen') || document.body.innerText.includes('Hoàn tất'))",'delivery',60000);await shot(view,'demo-delivery');await click(/Hoàn thành|Về trang đầu|Chụp lượt mới/i);await wait("document.body.innerText.includes('CHẠM ĐỂ BẮT ĐẦU') || document.body.innerText.includes('Chụp ảnh')",'start screen restored',15000)}

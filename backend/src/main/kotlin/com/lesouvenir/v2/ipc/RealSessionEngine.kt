@@ -2,6 +2,7 @@ package com.lesouvenir.v2.ipc
 
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import com.google.gson.JsonNull
 import com.lesouvenir.v2.config.DesktopBoothConfig
 import com.lesouvenir.v2.config.DesktopConfigLoader
 import com.lesouvenir.v2.camera.CameraConnectionManager
@@ -99,6 +100,7 @@ class RealSessionEngine(
         ThreadPoolExecutor.AbortPolicy())
     private var epoch = 0L
     private var job: ScheduledFuture<*>? = null
+    private var inactivityJob: ScheduledFuture<*>? = null
     private var remaining = 0
     private var activeSequence = false
     private var failure: String? = null
@@ -211,6 +213,37 @@ class RealSessionEngine(
         "compositionDataUrl" to composition?.let { runCatching { thumbData(it, 720) }.getOrNull() },
         "availableFramesCount" to availableFrames().size)
 
+    private fun stopInactivity() {
+        inactivityJob?.cancel(false)
+        inactivityJob = null
+        remaining = 0
+    }
+    private fun timeoutSeconds(setting: String): Int = runCatching { settingsStore.settings[setting].asInt }
+        .getOrDefault(if (setting == "frameSelectionTimeoutSeconds") 60 else 90)
+    private fun startInactivity(target: String) {
+        stopInactivity()
+        val setting = if (target == "SELECTING_PHOTOS") "photoSelectionTimeoutSeconds" else "frameSelectionTimeoutSeconds"
+        remaining = timeoutSeconds(setting)
+        val token = epoch
+        fun tick(delay: Long) {
+            inactivityJob = executor.schedule({ synchronized(this@RealSessionEngine) {
+                if (token != epoch || state != target) return@synchronized
+                remaining--
+                if (remaining <= 0) {
+                    stopInactivity()
+                    shots.indices.forEach { if (selected.size < layout.selectCount) selected.add(it) }
+                    if (frame == null) frame = availableFrames().firstOrNull()
+                    try { compose() } catch (_: Exception) { composition = null; printImage = null }
+                    // Timeout is a dry-run acceptance only: never submit hardware print or record revenue.
+                    printAccepted = true
+                    revenueRecorded = false
+                    state = "DELIVERY"
+                } else tick(1000)
+            } }, delay, TimeUnit.MILLISECONDS)
+        }
+        tick(if (remaining <= 0) 0 else 1000)
+    }
+
     @Synchronized override fun dispatch(method: String, p: JsonObject): JsonObject {
         if (method.startsWith("operator.")) return when (method) {
             "operator.getStatus" -> {
@@ -228,9 +261,10 @@ class RealSessionEngine(
             "operator.getSettings" -> {
                 if (p.size() != 0) fail(-32602, "Invalid params")
                 settingsStore.response().apply {
-                    addProperty("effectiveTimerSource", "REAL_SESSION_NO_AUTOMATIC_TIMEOUT")
-                    add("effectiveTimeoutSeconds", obj("photoSelection" to 0, "frameSelection" to 0,
-                        "postCapture" to 0))
+                    addProperty("effectiveTimerSource", "OPERATOR_SETTINGS")
+                    add("effectiveTimeoutSeconds", obj("photoSelection" to settingsStore.settings["photoSelectionTimeoutSeconds"].asInt,
+                        "frameSelection" to settingsStore.settings["frameSelectionTimeoutSeconds"].asInt,
+                        "postCapture" to settingsStore.settings["postCaptureTimeoutSeconds"].asInt))
                 }
             }
             "operator.updateSettings" -> {
@@ -269,14 +303,19 @@ class RealSessionEngine(
         if (method == "frame.list") { requireState("EDITING"); return obj("frames" to availableFrames().map(::frameDto), "bundles" to bundleDto()) }
         if (method == "payment.checkStatus") {
             requireState("PAYMENT_PENDING")
-            val code = orderCode ?: return obj("orderCode" to null, "status" to "PENDING", "paid" to false,
-                "amount" to PricingCalculator.calculatePrice(layout.printSizeLabel, quantity).totalAmount, "nextState" to state)
+            val code = orderCode
+            if (code == null) return snapshot().apply {
+                add("orderCode", JsonNull.INSTANCE); addProperty("status", "PENDING"); addProperty("paid", false)
+                addProperty("amount", PricingCalculator.calculatePrice(layout.printSizeLabel, quantity).totalAmount)
+            }
             if (p.has("orderCode") && runCatching { p["orderCode"].asLong }.getOrNull() != code) fail(-32602, "Order code mismatch")
             val status = if (payOs?.checkPaymentStatus(code) == true) "PAID" else "PENDING"
             if (status == "PAID") { paid = true; state = "PREPARING"; hardwareCamera(); startPreview(); state = "LIVE_VIEW" }
-            return obj("orderCode" to code, "status" to status, "paid" to paid,
-                "amount" to PricingCalculator.calculatePrice(layout.printSizeLabel, quantity).totalAmount,
-                "nextState" to state)
+            return snapshot().apply {
+                addProperty("orderCode", code); addProperty("status", status); addProperty("paid", paid)
+                addProperty("amount", PricingCalculator.calculatePrice(layout.printSizeLabel, quantity).totalAmount)
+                addProperty("nextState", state)
+            }
         }
         val cid = string(p, "commandId")
         if (runCatching { UUID.fromString(cid) }.getOrNull()?.version() != 4) fail(-32602, "UUID v4 commandId required")
@@ -304,28 +343,34 @@ class RealSessionEngine(
                 requireState("PAYMENT_PENDING")
                 val amount = PricingCalculator.calculatePrice(layout.printSizeLabel, quantity).totalAmount
                 if (payOs?.readiness != PayOsReadiness.READY) {
+                    qrCode = "ERROR"
                     return snapshot().apply {
                         addProperty("payOsConfigured", false)
                         addProperty("status", "CONFIG_MISSING")
                         addProperty("amount", amount)
+                        addProperty("paymentQr", "ERROR")
                         addProperty("message", "PayOS not configured; vui lòng thanh toán tiền mặt / nhân viên xác nhận")
                     }
                 }
                 val client = payOs
                 val code = orderCode ?: System.currentTimeMillis().also { orderCode = it }
-                if (qrCode == null) {
+                if (qrCode == null || qrCode == "ERROR") {
                     val result = try { client.createPaymentLink(code, Math.toIntExact(amount), "Le Souvenir $code") }
-                        catch (e: Exception) { return obj("orderCode" to code, "status" to "ERROR", "payOsConfigured" to true,
-                            "error" to (client.lastError ?: e.javaClass.simpleName)) }
-                    if (result.qrCode.isNullOrBlank()) return obj("orderCode" to code, "status" to "ERROR",
-                        "payOsConfigured" to true, "error" to (client.lastError ?: result.error ?: "Payment gateway unavailable"))
+                        catch (e: Exception) { qrCode = "ERROR"; return snapshot().apply {
+                            addProperty("orderCode", code); addProperty("status", "ERROR"); addProperty("paymentQr", "ERROR")
+                            addProperty("payOsConfigured", true); addProperty("error", client.lastError ?: e.javaClass.simpleName) } }
+                    if (result.qrCode.isNullOrBlank()) { qrCode = "ERROR"; return snapshot().apply {
+                        addProperty("orderCode", code); addProperty("status", "ERROR"); addProperty("paymentQr", "ERROR")
+                        addProperty("payOsConfigured", true); addProperty("error", client.lastError ?: result.error ?: "Payment gateway unavailable") } }
                     qrCode = try { qrPng(result.qrCode) } catch (_: Exception) {
-                        return obj("orderCode" to code, "status" to "ERROR", "payOsConfigured" to true,
-                            "error" to "Invalid payment QR")
+                        qrCode = "ERROR"; return snapshot().apply {
+                            addProperty("orderCode", code); addProperty("status", "ERROR"); addProperty("paymentQr", "ERROR")
+                            addProperty("payOsConfigured", true); addProperty("error", "Invalid payment QR") }
                     }
                 }
-                obj("orderCode" to code, "qrCode" to qrCode, "paymentQr" to qrCode, "amount" to amount,
-                    "status" to "READY", "payOsConfigured" to true)
+                snapshot().apply { addProperty("orderCode", code); addProperty("qrCode", qrCode)
+                    addProperty("paymentQr", qrCode); addProperty("amount", amount)
+                    addProperty("status", "READY"); addProperty("payOsConfigured", true) }
             }
             "payment.mockComplete" -> {
                 requireState("PAYMENT_PENDING")
@@ -360,7 +405,7 @@ class RealSessionEngine(
                 if (before != selected.toList()) { composition = null; printImage = null; frame = null }
                 snapshot()
             }
-            "selection.confirm" -> { requireState("SELECTING_PHOTOS"); if (selected.size != layout.selectCount) fail(-32001, "Exact selection required"); state = "EDITING"; snapshot() }
+            "selection.confirm" -> { requireState("SELECTING_PHOTOS"); if (selected.size != layout.selectCount) fail(-32001, "Exact selection required"); state = "EDITING"; startInactivity("EDITING"); snapshot() }
             "frame.select" -> {
                 requireState("EDITING")
                 frame = availableFrames().find { it.id == string(p, "frameId") }
@@ -368,7 +413,7 @@ class RealSessionEngine(
                 try { compose() } catch (_: Exception) { composition = null; printImage = null; fail(-32002, "Composition failed; check original images") }
                 snapshot()
             }
-            "frame.confirm" -> { requireState("EDITING"); if (printImage == null || composition == null) fail(-32001, "Complete composition required"); state = "PRINT_PENDING"; snapshot() }
+            "frame.confirm" -> { requireState("EDITING"); if (printImage == null || composition == null) fail(-32001, "Complete composition required"); stopInactivity(); state = "PRINT_PENDING"; snapshot() }
             "print.confirmDryRun" -> confirmPrint()
             "print.confirmReal" -> confirmPrint()
             "session.back" -> {
@@ -376,10 +421,11 @@ class RealSessionEngine(
                     "SELECTING" -> { reset(); "IDLE" }
                     "SELECTING_QUANTITY" -> "SELECTING"
                     "PAYMENT_PENDING" -> { orderCode = null; qrCode = null; "SELECTING_QUANTITY" }
-                    "EDITING" -> "SELECTING_PHOTOS"
+                    "EDITING" -> { stopInactivity(); "SELECTING_PHOTOS" }
                     "PRINT_PENDING" -> "EDITING"
                     else -> fail(-32001, "Back not permitted")
                 }
+                if (state == "SELECTING_PHOTOS" || state == "EDITING") startInactivity(state)
                 snapshot()
             }
             "session.cancel" -> { requireState("SELECTING_PHOTOS", "EDITING"); reset(); obj("cancelled" to true, "state" to state) }
@@ -416,7 +462,7 @@ class RealSessionEngine(
                 shots.add(original)
                 queueBeauty(index, original)
                 if (shots.size == layout.shotCount) {
-                    activeSequence = false; stopPreview(); state = "SELECTING_PHOTOS"
+                    activeSequence = false; stopPreview(); state = "SELECTING_PHOTOS"; startInactivity("SELECTING_PHOTOS")
                 } else { state = "LIVE_VIEW"; schedule(1) { countdown() } }
             }
         }
@@ -436,7 +482,7 @@ class RealSessionEngine(
         } catch (_: RejectedExecutionException) { /* Original is always retained. */ }
     }
     private fun recovery(error: Exception) {
-        epoch++; job?.cancel(false); activeSequence = false; remaining = 0
+        epoch++; job?.cancel(false); stopInactivity(); activeSequence = false; remaining = 0
         state = "RECOVERY"; failure = "Camera capture failed: ${error.javaClass.simpleName}"
         runCatching { stopPreview() }
     }
@@ -485,11 +531,11 @@ class RealSessionEngine(
         // Remote sync is deliberately deferred until explicit API credentials and reconciliation are configured.
         return snapshot().apply { addProperty("printerName", name) }
     }
-    private fun reset() { epoch++; job?.cancel(false); beautyJobs.forEach { it.cancel(true) }; beautyJobs.clear(); readyBeauty.clear()
+    private fun reset() { epoch++; job?.cancel(false); stopInactivity(); beautyJobs.forEach { it.cancel(true) }; beautyJobs.clear(); readyBeauty.clear()
         activeSequence = false; remaining = 0; failure = null; stopPreview(); state = "IDLE"; paid = false; orderCode = null; qrCode = null
         shots.clear(); selected.clear(); frame = null; printImage = null; composition = null; albumUrl = null
         printAccepted = false; revenueRecorded = false; paymentMethod = "PAYOS" }
-    @Synchronized override fun close() { epoch++; job?.cancel(true); beautyJobs.forEach { it.cancel(true) }
+    @Synchronized override fun close() { epoch++; job?.cancel(true); stopInactivity(); beautyJobs.forEach { it.cancel(true) }
         executor.shutdownNow(); beautyExecutor.shutdownNow(); cameraManager.close(); beauty.close() }
     private fun cloudStatus() = boothConfig.status() + mapOf("payOsConfigured" to (payOs?.isConfigured == true),
         "catalogSource" to firebaseCatalog.source.name,

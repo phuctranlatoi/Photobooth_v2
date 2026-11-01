@@ -1,5 +1,22 @@
 # Live Tauri journey — visual review (2026-11-01)
 
+## Critical UX parity audit — 18:16:51 capture (latest verdict)
+
+**Overall Status: PASS-SIMULATED for the exercised desktop interactions.** `tests/journey-evidence/2026-11-01T18-16-51.341Z/results.json` records **47/47 checks, 0 failures and 26 screenshots** across 1280×800 and 1920×1200.
+
+| Audit point | Latest evidence / boundary |
+|---|---|
+| Centered capture countdown | `.v1-countdown` is centered at 240sp; Live View is mirrored and DEMO captions are absent in the exercised presentation. Physical Canon orientation and booth-distance readability remain unverified. |
+| Active timer | The journey observes `Còn lại 02:19` → `Còn lại 02:18`, proving an active decrement rather than the prior frozen `00:00`; urgent ≤15s styling is implemented but still requires physical distance review. |
+| Real-time photo slots | Selected captures render into SVG `<image>` slots in the print/frame preview while selection changes. This is UI rendering proof, not physical print-output proof. |
+| Hold-to-zoom | A 500ms pointer hold opens the enlarged modal and release closes it; the 50ms reset preserves ordinary click-to-select in the automated interaction. Physical touch-driver behavior remains pending. |
+| Frame workspace | Redesigned two-column tactile frame gallery and large selected-photo/frame-overlay preview are present at both target viewports. |
+| Zero emoji | Automated assertion confirms decorative Unicode emoji are absent; Lucide SVG icons replace them across customer and operator surfaces. |
+
+**Unchanged release boundary:** no physical Canon DSLR capture, physical DNP print, or live PayOS banking settlement was performed. Those remain **BLOCKED / NOT-RUN** pending attached devices, authorization and supervised testing.
+
+---
+
 ## Settled Korean Photo Atelier review — 17:19:57 capture (latest verdict)
 
 **Overall Status: PASS-SIMULATED / COMPLETE FOR DESKTOP KIOSK JOURNEY.** `tests/journey-evidence/2026-11-01T17-19-57.239Z/results.json` reports **35/35 checks passing, 0 failures, 26 screenshots** at **1280×800 and 1920×1200**. Scope: simulated DEMO Start→Delivery plus REAL-labelled Start→Payment in the live Tauri executable; the REAL capture ends while payment QR is **loading**. This is desktop journey/visual acceptance, **not** proof of a paid QR, successful cash authorization, physical touch, camera or print. The 15:38 review and older verdicts below are historical.

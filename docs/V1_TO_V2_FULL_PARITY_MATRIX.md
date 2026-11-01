@@ -1,5 +1,16 @@
 # V1 to V2 Full Parity Matrix
 
+> **Superseding critical UX parity verification (2026-11-01):** `tests/journey-evidence/2026-11-01T18-16-51.341Z/results.json` records **47/47 checks, 0 failures, 26 screenshots** at 1280×800 and 1920×1200; frontend Vitest is **49/49**. These are automated/simulated results, not physical Canon, DNP, or live PayOS settlement evidence.
+>
+> | Critical workflow area | Current status | Verified implementation |
+> |---|---|---|
+> | PayOS creation/recovery | **V1 PARITY RESTORED & MODERNIZED** | 15s bounded creation; `CREATING`, `AWAITING_PAYMENT`, `ERROR`, `UNCONFIGURED`, `PAID`; retry action and visible staff cash fallback in error/unconfigured states. |
+> | Selection/edit timers | **V1 PARITY RESTORED & MODERNIZED** | Engine-authoritative 90s selection and 60s editing timers tick every 1000ms, auto-fill/advance safely, and render `Còn lại MM:SS` with ≤15s urgency. |
+> | Live frame preview | **V1 PARITY RESTORED & MODERNIZED** | `LayoutArtwork.tsx`/`PrintPreview` render chosen captures into SVG `<image>` slots as selection changes. |
+> | Hold-to-zoom | **V1 PARITY RESTORED & MODERNIZED** | 500ms hold opens the lightbox; release closes it; 50ms reset preserves normal selection taps. |
+> | Frame workspace | **V1 PARITY RESTORED & MODERNIZED** | Tactile two-column frame gallery with large selected-photo and overlay preview. |
+> | Capture/countdown alignment | **V1 PARITY RESTORED & MODERNIZED** | Centered 240sp countdown, mirrored Live View, and removal of DEMO captions. |
+
 > **Superseding customer-workflow verification — Final Korean Photo Atelier UI/UX & exact V1 payment restoration (2026-11-01):** **PASS-AUTOMATED + PASS-SIMULATED.** Live evidence is `tests/journey-evidence/2026-11-01T17-19-57.239Z/results.json` (**35/35 checks, 0 failures, 26 screenshots**) at 1280×800 and 1920×1200. Customer-facing free-experience copy, `0 đ` / `Miễn phí` badges, and guest bypasses have been removed. Safe mock capture remains internal for camera-free testing, with `RealSessionEngineDemoModeTest` proving zero DEMO revenue.
 >
 > | Customer workflow area | V2 parity status | Verified implementation |
@@ -236,12 +247,12 @@
 ### 5.1 Inactivity Timer (DesktopBoothController.kt L245-310)
 | Behavior | V1 Implementation | V2 Status |
 |----------|-------------------|-----------|
-| **Timer States** | `SELECTING_PHOTOS`, `EDITING`, `PRINT_PENDING` | **NOT STARTED** |
-| **Timeout Source** | `activeConfig.value.*timeoutSeconds` | **NOT STARTED** |
-| **Countdown Display** | Updates `_inactivityTimeLeft` each second | **NOT STARTED** |
+| **Timer States** | `SELECTING_PHOTOS`, `EDITING`, `PRINT_PENDING` | **V1 PARITY RESTORED & MODERNIZED** for `SELECTING_PHOTOS` and `EDITING`; no new claim is made here for `PRINT_PENDING`. |
+| **Timeout Source** | `activeConfig.value.*timeoutSeconds` | **V1 PARITY RESTORED & MODERNIZED** — authoritative engine defaults exercised at 90s/60s. |
+| **Countdown Display** | Updates `_inactivityTimeLeft` each second | **V1 PARITY RESTORED & MODERNIZED** — 1000ms updates and `Còn lại MM:SS`; journey observed 02:19 → 02:18. |
 | **Zero Timeout** | Immediate handler invocation | **UNVERIFIED** |
-| **Auto-print on Timeout** | `startPrinting(userConfirmed=false)` | **NOT STARTED** |
-| **Revenue Gate** | `userConfirmed && printJob.await()` | **NOT STARTED** |
+| **Expiry behavior** | Auto-complete current decision | **V1 PARITY RESTORED & MODERNIZED** — auto-fill and advance without duplicate revenue or print submission. |
+| **Revenue Gate** | `userConfirmed && printJob.await()` | **PRESERVED IN EXERCISED TIMER PATH**; physical printer behavior remains unverified. |
 
 ### 5.2 Save Feedback & UI Flow
 | Aspect | V1 (SettingsTabContent.kt) | V2 (V1Settings.tsx) |
@@ -271,7 +282,7 @@
 | **Hot Folder Path UI Missing** | Operator cannot configure path | Implement text field + file chooser |
 | **Canon EDSDK Controls Absent** | No camera parameter control | Defer to Camera Engineer IPC |
 | **Printer Info Display Missing** | Operator cannot see printer names | Implement config display chips |
-| **Session Timer Integration** | No timeout behavior | Implement timer with `activeConfig` pattern |
+| **Session Timer Integration** | Resolved for selection/editing | Maintain regression coverage for 90s/60s tick, expiry auto-fill, and no duplicate revenue/print; `PRINT_PENDING` remains separately scoped. |
 | **Save During Session Block** | V1 allows, V2 blocks | Document behavior change |
 
 ### 6.2 Important Gaps (Feature Completeness)

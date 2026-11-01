@@ -1,5 +1,18 @@
 # UI Redesign Progress & Korean Photo Studio Design System
 
+> **LATEST STATUS (2026-11-01, 18:16:51 capture): CRITICAL V1 UX PARITY OVERHAUL COMPLETED — PASS-AUTOMATED + PASS-SIMULATED.** `tests/journey-evidence/2026-11-01T18-16-51.341Z/results.json` records **47/47 checks, 0 failures and 26 screenshots** at 1280×800 and 1920×1200; frontend Vitest is **49/49**. The completed scope includes bounded PayOS creation/retry states, engine-authoritative 90s/60s selection/editing timers, active `MM:SS` decrement, live selected-photo SVG slots, 500ms hold-to-zoom/release-close, the two-column frame workspace, centered 240sp mirrored capture presentation, and replacement of decorative emoji with Lucide SVG icons.
+>
+> The current UI evidence specifically observes `Còn lại 02:19` → `Còn lại 02:18`, hold modal open/close, live frame-slot updates and the zero-emoji assertion. It does **not** certify physical touch behavior, a physical Canon DSLR, DNP paper output, or live PayOS banking settlement; those remain **BLOCKED / NOT-RUN** until attachment and explicit supervised authorization. The 17:19:57 and earlier entries below are historical snapshots.
+
+| Latest parity deliverable | Status / evidence |
+|---|---|
+| PayOS loading repair | **COMPLETE:** 15s bound; explicit `CREATING`, `AWAITING_PAYMENT`, `ERROR`, `UNCONFIGURED`, `PAID`; retry and staff fallback visibility. |
+| Selection/edit timers | **COMPLETE:** authoritative 1000ms ticks, 90s/60s defaults, safe expiry auto-fill/advance, no duplicate revenue/printing. |
+| Selection and frame interaction | **COMPLETE:** real-time SVG photo slots, 500ms hold zoom, release close, two-column frame gallery and large print preview. |
+| Capture polish | **COMPLETE:** centered 240sp countdown, mirrored Live View, no DEMO captions. |
+| Iconography | **COMPLETE:** decorative Unicode emoji replaced with Lucide SVG icons; automated zero-emoji assertion passes. |
+| Current acceptance | **PASS-SIMULATED 47/47; PASS-AUTOMATED 49/49 Vitest.** Physical hardware/provider gates remain open. |
+
 > **LATEST STATUS (2026-11-01, 17:19:57 settled capture): UI Overhaul — COMPLETED for simulated desktop kiosk journey; V1 Payment Restoration — COMPLETED for customer-facing UI presentation, NOT certified live payment.** `tests/journey-evidence/2026-11-01T17-19-57.239Z/results.json` records **35/35 passing, 0 failures and 26 screenshots** at 1280×800 and 1920×1200. DEMO Start→Delivery and REAL-labelled Start→Payment are covered. Payment displays actual backend-calculated VND pricing instead of guest free claims or bypass; captured REAL Payment is **loading QR**, not a settled bank charge. Cash-error fallback and 700ms staff gesture are specified but not demonstrated by this capture; staff ACL and real settlement need authorized tests. Physical camera, DNP printer, 125/150% Windows scaling, touch geometry and countdown-distance readability remain open. `docs/UI_VISUAL_REVIEW.md` has the latest screen audit; older snapshots below are historical. V1 was not modified.
 
 **Document ID:** `docs/UI_REDESIGN_PROGRESS.md`  

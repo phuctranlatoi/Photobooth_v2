@@ -104,6 +104,22 @@ body{margin:0}.v1-shell{position:relative;isolation:isolate;display:flex;flex-di
 .v1-frame-grid button{overflow:hidden}
 .v1-frame-silhouette{display:block;width:clamp(56px,7vw,88px);height:clamp(68px,12vh,110px);margin:auto;color:var(--v-nude)}
 .v1-frame-grid button strong{display:block;width:100%;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:clamp(12px,1.1vw,15px);padding:0 4px;box-sizing:border-box}
+
+/* Customer capture and tactile selection workspace */
+.v1-capture .v1-countdown,.v1-capture .v1-countdown-urgent{position:absolute;inset:0;display:grid;place-items:center;width:auto;height:auto;border:0;border-radius:0;background:rgba(0,0,0,.32);z-index:10;pointer-events:none;font-size:clamp(140px,18vw,240px);font-weight:900;color:#fff;text-shadow:0 0 40px rgba(224,122,95,.85);box-shadow:none;animation:none}
+.v1-live-mirrored{transform:scaleX(-1)}
+.v1-frame-workspace{grid-template-columns:minmax(0,1fr) minmax(340px,1fr)}
+.v1-frame-workspace>.v1-preview{width:100%;max-width:440px;justify-self:center}
+.v1-frame-workspace .v1-frame-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;overflow:auto;align-content:start}
+.v1-frame-workspace .v1-frame-grid button{min-height:200px;border-width:3px}
+.v1-frame-workspace .v1-frame-grid button img{object-fit:contain}
+.v1-photo-dimmed{opacity:.45}
+.v1-photo-order{display:grid;place-items:center;min-width:30px;min-height:30px;border-radius:50%;background:var(--v-coral);color:#fff;font-weight:800}
+.v1-hold-lightbox{background:rgba(0,0,0,.9);padding:0;animation:v1-zoom-in .18s ease-out;pointer-events:none}
+.v1-hold-lightbox img{max-width:90vw;max-height:90vh;object-fit:contain}
+@keyframes v1-zoom-in{from{opacity:0;transform:scale(.98)}to{opacity:1;transform:scale(1)}}
+@media(max-width:900px){.v1-frame-workspace{grid-template-columns:minmax(0,1fr) minmax(280px,1fr)}.v1-frame-workspace .v1-frame-grid button{min-height:150px}}
+@media(prefers-reduced-motion:reduce){.v1-hold-lightbox{animation:none}}
 .v1-carousel-arrow{min-width:56px;min-height:56px}
 .v1-photo-zoom{width:56px;height:56px;min-width:56px;min-height:56px;display:grid;place-items:center}
 

@@ -1,5 +1,24 @@
 # TASK_BOARD.md
 
+## Critical V1 UX Parity, Full UI Polish & PayOS Repair — COMPLETED (2026-11-01)
+
+| Task | Status | Evidence |
+|---|---|---|
+| Bound PayOS link creation and expose explicit states | **COMPLETED — PASS-AUTOMATED + PASS-SIMULATED** | `RealSessionEngine.kt`: 15s bound and `CREATING`, `AWAITING_PAYMENT`, `ERROR`, `UNCONFIGURED`, `PAID`; error responses no longer leave an infinite loader. |
+| Add PayOS recovery and staff fallback | **COMPLETED — PASS-SIMULATED** | Customer retry action is **“Thử lại tạo mã QR”**; staff cash confirmation is visible in the appropriate error/unconfigured state. No live bank settlement was performed. |
+| Restore selection/editing inactivity timers | **COMPLETED — PASS-AUTOMATED + PASS-SIMULATED** | Engine-authoritative 1000ms ticks; `SELECTING_PHOTOS` 90s and `EDITING` 60s; expiry auto-fills and advances without duplicate revenue or printing. UI shows `Còn lại MM:SS`, urgent at ≤15s. |
+| Eliminate frozen `00:00` timer | **COMPLETED — PASS-SIMULATED** | Journey observes `Còn lại 02:19` → `Còn lại 02:18`. |
+| Render selected photos in live frame preview | **COMPLETED — PASS-SIMULATED** | `LayoutArtwork.tsx` and `PrintPreview` update SVG `<image>` slots as captures are selected. |
+| Add press-and-hold zoom | **COMPLETED — PASS-SIMULATED** | `SelectPhotosScreen.tsx`: 500ms hold opens lightbox, release closes it, 50ms pointer-up reset preserves tap selection. |
+| Redesign Frame Selection | **COMPLETED — PASS-SIMULATED** | Two-column tactile gallery plus large selected-photo/frame-overlay print preview. |
+| Align capture/countdown presentation | **COMPLETED — PASS-SIMULATED** | Centered 240sp `.v1-countdown`, mirrored Live View (`scaleX(-1)`), DEMO captions removed. |
+| Remove decorative emoji | **COMPLETED — PASS-AUTOMATED + PASS-SIMULATED** | Customer/operator decorations use Lucide SVG icons; journey includes a zero-emoji assertion. |
+| Live desktop acceptance | **COMPLETED — PASS-SIMULATED** | **47/47 checks, 0 failures, 26 screenshots**: `tests/journey-evidence/2026-11-01T18-16-51.341Z/results.json`. |
+| Frontend regression | **COMPLETED — PASS-AUTOMATED** | Vitest **49/49 passing**. |
+| Physical devices/live settlement | **BLOCKED / NOT-RUN** | Canon DSLR, DNP printer, and live PayOS banking settlement require attached hardware/provider authorization and supervised testing. |
+
+---
+
 ## Final Korean Photo Atelier UI/UX & Exact V1 Payment Restoration — COMPLETED (2026-11-01)
 
 | Task | Status | Evidence |

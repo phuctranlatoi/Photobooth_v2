@@ -1,5 +1,34 @@
 # PROGRESS.md
 
+## Critical V1 UX Parity, Full UI Polish & PayOS Repair (2026-11-01)
+
+**Status: COMPLETE — PASS-AUTOMATED + PASS-SIMULATED.** This is software/UI evidence only, not physical-hardware or live-settlement certification.
+
+### PayOS loading and recovery repair
+- `RealSessionEngine.kt` now bounds payment-link creation to **15 seconds** and exposes explicit payment states: `CREATING | AWAITING_PAYMENT | ERROR | UNCONFIGURED | PAID`.
+- Error responses are handled as recoverable UI state rather than an infinite loading screen. The payment screen provides **“Thử lại tạo mã QR”**, while staff cash confirmation remains visible in the appropriate error/unconfigured path.
+
+### Authoritative session timers (V1 parity)
+- `RealSessionEngine.kt` restores inactivity countdown authority for `SELECTING_PHOTOS` (**90s**) and `EDITING` (**60s**), ticking every **1000ms**.
+- On expiry, the engine safely auto-fills the required choices and advances. The expiry path does **not** duplicate revenue recognition or submit duplicate prints.
+- `KioskUI.tsx` renders `Còn lại MM:SS`, with urgent styling at **15 seconds or less**. Active countdown values replace the former frozen `00:00` presentation.
+
+### Customer interaction and visual parity
+- `LayoutArtwork.tsx` and `PrintPreview` place selected photos into SVG `<image>` slots in real time while customers tap captured photos.
+- `SelectPhotosScreen.tsx` implements a **500ms pointer hold** to open an enlarged lightbox; release closes it immediately. A **50ms pointer-up reset** avoids suppressing normal click-to-select behavior.
+- Frame Selection is now a tactile **two-column frame gallery** beside a large print preview containing the selected photos and active frame overlay.
+- Capture presentation uses a centered **240sp** `.v1-countdown`, mirrors Live View with `transform: scaleX(-1)`, and removes DEMO captions.
+- Decorative Unicode emoji were removed from customer and operator screens and replaced with Lucide SVG icons, including `<Zap />`, `<QrCode />`, `<Check />`, and `<ArrowLeft />`.
+
+### Verification evidence
+- Live Tauri desktop journey (`tests/verify-demo-and-real-journey.mjs`): **PASS-SIMULATED — 47/47 checks, 0 failures, 26 screenshots** at 1280×800 and 1920×1200. Evidence: `tests/journey-evidence/2026-11-01T18-16-51.341Z/results.json`.
+- The journey verifies active decrement (`Còn lại 02:19` → `Còn lại 02:18`), hold-zoom open/release-close, live photo-slot rendering, and the zero-emoji assertion.
+- Frontend Vitest: **PASS-AUTOMATED — 49/49 tests passing**.
+
+**Hardware boundary:** physical Canon DSLR capture/Live View, physical DNP printer output, and live PayOS banking settlement remain **BLOCKED / NOT-RUN** until devices are attached and an operator authorizes a safe supervised test.
+
+---
+
 ## Final Korean Photo Atelier UI/UX Overhaul & Exact V1 Payment Restoration (2026-11-01)
 
 **Status: COMPLETE — PASS-AUTOMATED + PASS-SIMULATED.**

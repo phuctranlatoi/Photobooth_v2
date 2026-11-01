@@ -61,8 +61,11 @@ class RealSessionEngineDemoModeTest {
             val deadline = System.currentTimeMillis() + 25000
             while (call("session.getState")["state"].asString != "SELECTING_PHOTOS" && System.currentTimeMillis() < deadline) Thread.sleep(100)
             assertEquals("SELECTING_PHOTOS", call("session.getState")["state"].asString)
+            assertEquals(90, call("session.getState")["secondsRemaining"].asInt)
             call("selection.toggle") { addProperty("shotIndex", 0) }
-            call("selection.confirm")
+            assertEquals(60, call("selection.confirm")["secondsRemaining"].asInt)
+            assertEquals(90, call("session.back")["secondsRemaining"].asInt)
+            assertEquals(60, call("selection.confirm")["secondsRemaining"].asInt)
             val frameId = call("frame.list")["frames"].asJsonArray.first().asJsonObject["id"].asString
             call("frame.select") { addProperty("frameId", frameId) }
             call("frame.confirm")
