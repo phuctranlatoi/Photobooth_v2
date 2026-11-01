@@ -72,7 +72,7 @@ class BridgeTest {
                 assertTrue(child.waitFor(10, TimeUnit.SECONDS))
                 assertEquals(2, child.exitValue())
                 assertEquals(-1, child.inputStream.read())
-                assertTrue(child.errorStream.readAllBytes().toString(Charsets.UTF_8).contains("Bridge requires --simulator only"))
+                assertTrue(child.errorStream.readAllBytes().toString(Charsets.UTF_8).contains("Bridge requires --simulator or --real"))
             } finally { child.destroyForcibly() }
         }
     }

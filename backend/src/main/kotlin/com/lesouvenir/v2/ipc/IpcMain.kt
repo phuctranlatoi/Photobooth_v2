@@ -13,7 +13,7 @@ const val MAX_FRAME = 1_048_576
 /** Health-only bridge. Unrecoverable framing errors emit one error then close;
  * an oversize body is never allocated or mistaken for the next frame header.
  */
-class HealthBridge(private val sessions: SimulatorSessionEngine? = null) {
+class HealthBridge(private val sessions: SessionEngine? = null) {
     private fun error(id: String, code: Int, message: String) = envelope(id).apply {
         add("error", JsonObject().apply { addProperty("code", code); addProperty("message", message) })
     }
@@ -51,14 +51,14 @@ class HealthBridge(private val sessions: SimulatorSessionEngine? = null) {
             if (string("method") != "health.check") {
                 val engine = sessions ?: return error(id, -32601, "Method not found")
                 return try { envelope(id).apply { add("result", engine.dispatch(string("method")!!, req["params"].asJsonObject)) } }
-                catch (failure: SimulatorError) { error(id, failure.code, failure.message ?: "Simulator error") }
-                catch (_: Exception) { error(id, -32603, "Simulator operation failed") }
+                catch (failure: SimulatorError) { error(id, failure.code, failure.message ?: "Session error") }
+                catch (_: Exception) { error(id, -32603, "Session operation failed") }
             }
             if (req["params"].asJsonObject.size() != 0) return error(id, -32602, "Invalid params")
             return envelope(id).apply {
                 add("result", JsonObject().apply {
                     addProperty("status", "ok"); addProperty("protocolVersion", 1)
-                    addProperty("simulator", true); addProperty("backendPid", ProcessHandle.current().pid())
+                    addProperty("simulator", sessions?.mode != RuntimeMode.REAL); addProperty("backendPid", ProcessHandle.current().pid())
                     addProperty("uptimeMs", ManagementFactory.getRuntimeMXBean().uptime)
                     addProperty("jvmVersion", System.getProperty("java.version"))
                     add("availableMethods", JsonArray().apply { add("health.check") })
@@ -93,9 +93,10 @@ class HealthBridge(private val sessions: SimulatorSessionEngine? = null) {
 }
 
 fun main(args: Array<String>) {
-    if (args.toList() != listOf("--simulator")) {
-        System.err.println("Bridge requires --simulator only")
+    if (args.toList() !in listOf(listOf("--simulator"), listOf("--real"))) {
+        System.err.println("Bridge requires --simulator or --real")
         kotlin.system.exitProcess(2)
     }
-    SimulatorSessionEngine.production().use { HealthBridge(it).serve(System.`in`, System.out) }
+    val engine: SessionEngine = if (args.single() == "--real") RealSessionEngine.production() else SimulatorSessionEngine.production()
+    engine.use { HealthBridge(it).serve(System.`in`, System.out) }
 }

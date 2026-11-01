@@ -24,7 +24,8 @@ class SimulatorSessionEngine(
     private val inactivityMillis: Long = 60000L,
     private val outputRoot: Path = workspace.resolve("backend/build/simulator-sessions"),
     private val localOperatorEnabled: Boolean = false
-): AutoCloseable {
+): SessionEngine {
+    override val mode = RuntimeMode.SIMULATOR
     private val gson = GsonBuilder().serializeNulls().create()
     private fun readLayouts() = config["layouts"].asJsonArray.map { value ->
         val o = value.asJsonObject
@@ -128,7 +129,7 @@ class SimulatorSessionEngine(
         "printAccepted" to false,"revenueRecorded" to false,"simulator" to true,"failure" to failure,"livePreviewDataUrl" to live)
     }
 
-    @Synchronized fun dispatch(method: String, p: JsonObject): JsonObject {
+    @Synchronized override fun dispatch(method: String, p: JsonObject): JsonObject {
         if(method.startsWith("operator.")) {
             if(!localOperatorEnabled) bad(-32010,"Local development operator mode disabled; production ACL unavailable")
             return when(method) {
