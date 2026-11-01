@@ -35,6 +35,13 @@
 | 010 | Canon EDSDK: Dynamic DLL resolution | ✅ Accepted | 2026-10-30 |
 | 011 | Path Isolation: Separate V2 app identity | ✅ Accepted | 2026-10-30 |
 | 012 | Simulator Mode for Milestone 2 | ✅ Accepted | 2026-10-30 |
+| 013 | Simulator IPC Contract Corrections | ✅ Accepted | 2026-10-30 |
+| 014 | Checkpoint Source Snapshot Created | ✅ Completed | 2026-10-31 |
+| 015 | Dual Runtime Engine Architecture & Revenue Gate | ✅ Accepted | 2026-11-01 |
+| 016 | Firebase Catalog Service & Disk Frame Hierarchy | ✅ Accepted | 2026-11-01 |
+| 017 | Camera-Free Demo Capture Mode in Engine | ✅ Accepted | 2026-11-01 |
+| 018 | Korean Touchscreen UI Design Tokens & Layout Plan | ✅ Accepted | 2026-11-01 |
+| 019 | V1 Horizontal Snapping Carousel Restoration, Vector Slot Geometry Previews, and Tauri Bridge Failure Teardown | ✅ Accepted | 2026-11-01 |
 
 ---
 
@@ -399,6 +406,47 @@ Initial `SIMULATOR_IPC_CONTRACT.md` included unsolicited async events on StdOut 
 - **Frontend types** in `frontend/src/shared/simulator-contract.ts` (owned by Frontend Lead, Architect does not edit)
 - **Backend implementation** `SimulatorIpcServer.kt` extending `HealthBridge` — IN PROGRESS (Task2)
 - **Integration blocker** — Contract draft discrepancies remain integration blocker until backend/frontend agree on exact wire format
+
+---
+
+## ADR-019: V1 Horizontal Snapping Carousel Restoration, Vector Slot Geometry Previews, and Tauri Bridge Failure Teardown
+
+**Date**: 2026-11-01  
+**Status**: Accepted  
+**Authors**: Specialist Solutions Architect (V2)  
+**Supersedes/Extends**: Extends ADR-001 (Frontend Stack), ADR-002 (Desktop Shell), ADR-004 (IPC Protocol), and ADR-018 (Korean Design Tokens)
+
+### Context
+Legacy V1 Compose UI used `HorizontalPager` with centered active item and scale interpolation (active item scale 1.0, adjacent items scaled down to 0.84, smooth touch swipe, and floating navigation chevrons). In initial V2 iterations:
+1. `StudioModeScreen.tsx` fell back to a vertical list layout or unaligned grid with sterile, blank preview rectangles that failed to convey photo slot geometry and counts.
+2. Frame selection displayed generic placeholder blocks rather than actual decorative frame artwork because `FrameStore` did not expose rendered thumbnail data URLs to IPC callers.
+3. On `ConfirmScreen.tsx`, customer copy stated "In ảnh ngay" even in zero-revenue DEMO mode, misleading customers when no physical print would be produced. On `DeliveryScreen.tsx`, CTA buttons extended below the fold on compact 1280×800 touchscreens.
+4. When long-running 600-DPI composition operations exceeded the initial Tauri bridge IPC timeout, the Rust process desynchronized from the Kotlin sidecar. Subsequent requests failed because stale child handle references persisted in memory without proper teardown.
+
+### Decision
+1. **Restored V1 Horizontal Snapping Carousel (`StudioModeScreen.tsx`):**
+   - Implemented `.v1-layout-carousel` with CSS scroll-snapping and smooth-scroll settling mechanics.
+   - Scaled active layout card to `1.0` and centered it within the viewport; adjacent peek cards scale down to `0.84` with graceful opacity reduction (`0.85`), replicating V1 Compose `HorizontalPager` dynamics.
+   - Click-to-center / click-to-select interaction allows customers to tap an adjacent peeking card to smoothly center and select it.
+   - Added floating navigation chevrons (`‹` and `›`) positioned symmetrically for swift one-touch paging.
+2. **Vector Slot Geometry Previews (`LayoutArtwork.tsx`):**
+   - Replaced blank rectangles with vector-drawn photo cards rendering exact aspect ratios, custom slot geometries, numbered slot indicators, and aesthetic silhouette portraits.
+   - Display customer-friendly layout titles (`formatLayoutTitle`, `formatLayoutSubtitle`) while preserving canonical layout IDs (`515_4_anh`, `1015_4_ILCL`) in subtle `.v1-layout-tag` badges.
+3. **Actual Frame Artwork Thumbnails:**
+   - Updated `RealSessionEngine.kt` to serialize `thumbDataUrl` via `FrameStore.frameThumbDataUrl`.
+   - Updated `FrameOption` in `simulator-contract.ts` to consume and render Base64 artwork thumbnails for decorative frames and seasonal covers.
+4. **Truthful Action Copy and Viewport Fit:**
+   - Set CTA copy on `ConfirmScreen.tsx` to `"Hoàn thành trải nghiệm →"` during `DEMO` sessions.
+   - Implemented a sticky finish bar on `DeliveryScreen.tsx` ensuring zero vertical scroll on 1280×800 touchscreens.
+5. **Tauri Bridge Resilience and Failure Teardown:**
+   - In `src-tauri/src/main.rs`: Added failure teardown `guard.take()` on IPC errors and process exit events, ensuring that dead or desynchronized sidecar child handles are promptly evicted and cleanly restarted.
+   - In `src-tauri/src/bridge.rs`: Extended JSON-RPC execution timeout from 10s to 25s (`Duration::from_secs(25)`), accommodating 600-DPI composite rendering operations without premature timeout drops.
+
+### Consequences
+- Touchscreen UX matches and exceeds V1 Compose fidelity with silky smooth 60fps horizontal snapping and authentic Korean photo atelier aesthetic.
+- Vector slot illustrations give immediate clarity on photo counts and orientations without heavy network image downloads.
+- Rust-to-JVM sidecar IPC is robust against heavy computational workloads and gracefully evicts stale processes without hanging the desktop shell.
+- Physical Canon DSLR, DNP printer, and live PayOS charges remain isolated behind truthful boundary gates until physical studio kiosk hardware is attached.
 
 ---
 

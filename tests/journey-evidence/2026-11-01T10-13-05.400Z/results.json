@@ -1,0 +1,44 @@
+{
+  "status": "FAIL",
+  "scope": "Live Tauri executable; DEMO journey plus REAL-mode payment display only",
+  "evidence": "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-13-05.400Z",
+  "checks": [
+    {
+      "name": "1280x800 catalog titles",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 atelier identity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 demo banner",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 no live charge UI",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "runner aborted",
+      "ok": false,
+      "detail": "Error: {\"code\":-32000,\"message\":\"Object reference chain is too long\"}\n    at file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:17:185\n    at ws.onmessage (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:16:483)\n    at [nodejs.internal.kHybridDispatch] (node:internal/event_target:845:20)\n    at WebSocket.dispatchEvent (node:internal/event_target:778:26)\n    at fireEvent (node:internal/deps/undici/undici:12652:14)\n    at #onMessage (node:internal/deps/undici/undici:13883:9)\n    at Object.onMessage (node:internal/deps/undici/undici:13596:76)\n    at websocketMessageReceived (node:internal/deps/undici/undici:12656:15)\n    at node:internal/deps/undici/undici:13315:19\n    at node:internal/deps/undici/undici:13135:11"
+    }
+  ],
+  "failures": [
+    {
+      "name": "runner aborted",
+      "detail": "Error: {\"code\":-32000,\"message\":\"Object reference chain is too long\"}\n    at file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:17:185\n    at ws.onmessage (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:16:483)\n    at [nodejs.internal.kHybridDispatch] (node:internal/event_target:845:20)\n    at WebSocket.dispatchEvent (node:internal/event_target:778:26)\n    at fireEvent (node:internal/deps/undici/undici:12652:14)\n    at #onMessage (node:internal/deps/undici/undici:13883:9)\n    at Object.onMessage (node:internal/deps/undici/undici:13596:76)\n    at websocketMessageReceived (node:internal/deps/undici/undici:12656:15)\n    at node:internal/deps/undici/undici:13315:19\n    at node:internal/deps/undici/undici:13135:11"
+    }
+  ],
+  "screenshots": [
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-13-05.400Z\\1280x800-start.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-13-05.400Z\\1280x800-layout.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-13-05.400Z\\1280x800-quantity-2.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-13-05.400Z\\1280x800-demo-payment.png"
+  ]
+}

@@ -1,0 +1,7 @@
+# Photo Atelier frontend handoff
+
+Screens: Welcome, Studio layout carousel, Quantity, Payment, Prepare, Capture, Select photos, Frames, Confirm, Printing, Delivery, and existing operator workbench. The layout illustration is decorative SVG: **not** a captured photo or a print proof. Final composition and QR are shown only when provided by the backend. The carousel uses `LayoutMode` IDs, `printAspectRatio`, `selectCount`, `countdownSeconds`, and optional `absoluteSlots`/`gridColumns`; no frontend pricing or capture timer is calculated.
+
+Contracts: `src/shared/simulator-contract.ts` catalog/layout/session methods and `src/shared/connected-simulator.ts` snapshot, per `docs/UI_SCREEN_CONTRACTS.md` and `docs/SIMULATOR_IPC_CONTRACT.md`. Print action is latched once per mounted confirmation screen; backend must still enforce idempotency across recovery/reconnect. The step visualizer is indeterminate because no per-stage print event is contracted.
+
+Verification: `npm test` (42 passed), `npm run build` (TypeScript and Vite passed). CSS has 1280×800 compact rules and 1920×1200 landscape layout rules, but physical touch/display scaling and visual overflow checks remain to be conducted. Camera preview, real print queue, real QR/payment and Canon/DNP hardware have **not** been verified by these UI tests. Request UI Designer and Tester-Reviewer review at 1280×800 and 1920×1200 before closing the milestone. V1 was not modified.

@@ -1,0 +1,7 @@
+{
+  "defaultLayoutId": "strip-5x15",
+  "layouts": [
+    {"id":"strip-5x15","title":"Dải ảnh 5x15 cm","subtitle":"2 dải ảnh · 5×15 cm","description":"Bố cục dải ảnh dọc thanh lịch","family":"Column","shotCount":4,"selectCount":3,"countdownSeconds":5,"basePrice":70000,"mediaLabel":"Dải ảnh","accentColor":4289847295,"printSizeLabel":"5x15","printAspectRatio":0.33333334,"gridColumns":1},
+    {"id":"print-10x15","title":"Khung ảnh 10x15 cm","subtitle":"1 ảnh đầy đủ · 10×15 cm","description":"Bố cục khung ảnh ngang chuẩn postcard","family":"Grid","shotCount":6,"selectCount":4,"countdownSeconds":5,"basePrice":90000,"mediaLabel":"Khung ảnh","accentColor":4292335871,"printSizeLabel":"10x15","printAspectRatio":0.6666667,"gridColumns":2}
+  ]
+}

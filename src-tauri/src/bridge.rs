@@ -20,7 +20,9 @@ impl Bridge {
         if !std::path::Path::new(&java).join("bin/java.exe").is_file(){return Err("V2_JAVA_HOME has no bin/java.exe".into())}
         let temp=root.join("src-tauri/.tmp");std::fs::create_dir_all(&temp).map_err(|e|e.to_string())?;
         let mut command=Command::new("cmd.exe");
-        command.args(["/d","/c", "backend.bat", "--simulator"]);
+        let mode = std::env::var("V2_RUNTIME_MODE").unwrap_or_else(|_| "--simulator".to_string());
+        let mode_flag = if mode == "--real" || mode == "real" { "--real" } else { "--simulator" };
+        command.args(["/d", "/c", "backend.bat", mode_flag]);
         command.current_dir(launcher.parent().unwrap()).env("JAVA_HOME",java).env("SIMULATOR_CAPTURE_ENABLED","true").env("TEMP",&temp).env("TMP",&temp)
             .env("JAVA_TOOL_OPTIONS",format!("-Djava.io.tmpdir=\"{}\" -Duser.home=\"{}\"",temp.display(),temp.display()))
             .stdin(Stdio::piped()).stdout(Stdio::piped()).stderr(Stdio::piped());
@@ -35,7 +37,7 @@ impl Bridge {
     }
     pub fn check(&mut self)->Result<Value,String>{
         let result=self.request("health.check",json!({}))?;
-        if result["status"]!="ok" || result["protocolVersion"]!=1 || result["simulator"]!=true || !result["availableMethods"].as_array().is_some_and(|a|a.iter().any(|v|v=="health.check")) || result["backendPid"].as_u64().filter(|p|*p>0).is_none() || result["uptimeMs"].as_u64().is_none() || result["jvmVersion"].as_str().is_none(){return Err("Backend health response failed validation".into())}
+        if result["status"]!="ok" || result["protocolVersion"]!=1 || !result["simulator"].is_boolean() || !result["availableMethods"].as_array().is_some_and(|a|a.iter().any(|v|v=="health.check")) || result["backendPid"].as_u64().filter(|p|*p>0).is_none() || result["uptimeMs"].as_u64().is_none() || result["jvmVersion"].as_str().is_none(){return Err("Backend health response failed validation".into())}
         Ok(result)
     }
     pub fn request(&mut self,method:&str,params:Value)->Result<Value,String>{
@@ -46,7 +48,7 @@ impl Bridge {
         if request.len()>MAX{return Err("Request exceeds frame limit".into())}
         let input=self.input.as_mut().ok_or("Backend stdin closed")?;
         input.write_all(&(request.len() as u32).to_be_bytes()).and_then(|_|input.write_all(&request)).and_then(|_|input.flush()).map_err(|_|"Backend stdin write failed".to_string())?;
-        let reply=self.replies.recv_timeout(Duration::from_secs(10)).map_err(|_|"Backend timeout or reader disconnected".to_string())??;
+        let reply=self.replies.recv_timeout(Duration::from_secs(25)).map_err(|_|"Backend timeout or reader disconnected".to_string())??;
         if reply["id"]!=id || reply["jsonrpc"]!="2.0" || reply["protocolVersion"]!=1 {return Err("Backend response correlation/protocol mismatch".into())}
         let result=&reply["result"];
         if let Some(error)=reply.get("error"){return Err(format!("Backend rejected request: {}",error))}

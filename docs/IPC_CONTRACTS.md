@@ -1,104 +1,72 @@
-# IPC Contracts — V2 Shell Bridge Proof (Narrowed to health.check Only)
+# LE SOUVENIR Photobooth V2 — Complete Typed IPC Specification
 
-## Scope
-
-This document defines the **sole IPC contract** for the V2 shell bridge proof (Milestone 2). It covers only:
-
-- **Single method**: `health.check` — proves sidecar starts, communicates over stdio, reports simulator mode
-- **No session, capture, beauty, print, or payment methods** — deferred until hardware POC passes
-- **No events/notifications** — no async streaming in this phase
-
-Full production IPC is **deferred** until Gate 2 (Hardware POC) validates Canon SDK + DNP printer paths.
+**Document ID:** `IPC_CONTRACTS.md`  
+**Version:** 2.0.0 (Production & Simulator Specification)  
+**Status:** APPROVED ARCHITECTURAL SPECIFICATION  
+**Author:** Specialist Solutions Architect (V2)  
+**Scope:** Private framed stdio transport between Tauri desktop host and Kotlin/JVM backend sidecar. Covers all operational methods across Simulator, Real Hardware, and Camera-Free Demo modes.
 
 ---
 
-## 1. Transport (Private Inherited Stdio)
+## 1. Transport & Framing Specification
 
-| Property | Specification |
-|----------|---------------|
-| **Channel** | StdIn/StdOut pipes inherited from Tauri sidecar spawn (private, not network-exposed) |
-| **Framing** | Length-prefixed: 4-byte big-endian unsigned int (message byte length) followed by UTF-8 JSON |
-| **Max Frame** | 1 MiB (1,048,576 bytes) — oversize frames rejected with `-32600` |
-| **Direction** | StdIn: Requests (Shell → Backend); StdOut: Responses (Backend → Shell) |
-| **StdErr** | Diagnostics only (logging, stack traces) — **never** protocol messages |
-| **Encoding** | UTF-8 only; no BOM |
-| **Newlines** | Not used for framing; JSON may be minified |
+| Property | Value | Rationale |
+|---|---|---|
+| **Channel** | Private inherited `StdIn` / `StdOut` | Private to parent-child process tree; no open network ports or named pipe hijacking risk on Windows |
+| **Framing** | Length-prefixed: 4-byte big-endian unsigned integer (payload byte length) followed by UTF-8 JSON payload | Eliminates delimiter parsing bugs, JSON chunking fragmentation, or delimiter escaping issues |
+| **Maximum Frame Size** | 1,048,576 bytes (1 MiB) | Enforces memory bounding; oversize requests fail fast with `-32600` |
+| **Direction** | `StdIn`: Shell Requests → Backend<br>`StdOut`: Backend Responses → Shell | Clean bidirectional request-response semantics. Unsolicited streaming uses snapshot polling via `session.getState` |
+| **StdErr Channel** | Bounded diagnostics & stack traces only | Kept completely segregated; **never** emits protocol frames |
+| **Encoding** | UTF-8 strictly without BOM | Byte order marks rejected as malformed JSON |
+| **Protocol Version** | `protocolVersion: 1` (integer) | Present in every envelope for forward/backward compatibility checks |
 
-### 1.1 Frame Format
-
+### 1.1 Frame Binary Structure
 ```
-[4 bytes: length N (big-endian)][N bytes: UTF-8 JSON]
-```
-
-Example (hex for `{"jsonrpc":"2.0","id":"1","method":"health.check","params":{},"protocolVersion":1}`):
-```
-00 00 00 5A 7B 22 6A 73 6F 6E 72 70 63 22 3A 22 32 2E 30 22 2C 22 69 64 22 3A 22 31 22 2C 22 6D 65 74 68 6F 64 22 3A 22 68 65 61 6C 74 68 2E 63 68 65 63 6B 22 2C 22 70 61 72 61 6D 73 22 3A 7B 7D 2C 22 70 72 6F 74 6F 63 6F 6C 56 65 72 73 69 6F 6E 22 3A 31 7D
++---------------------------------------+---------------------------------------+
+| 4 Bytes: Payload Length N (Big-Endian)| N Bytes: UTF-8 Encoded JSON-RPC Text  |
++---------------------------------------+---------------------------------------+
 ```
 
 ---
 
-## 2. Authentication — None (Private Pipe Threat Model)
+## 2. Authentication & Security Model
 
-**No HMAC, no shared secret, no auth envelope fields.**
-
-### Rationale
-- StdIn/StdOut pipes are **private to the parent-child process relationship** (Tauri spawns sidecar)
-- No other process can inject into these pipes on Windows (inherited handles, no named pipe squatting)
-- Threat model: local user with debug access already controls the machine; IPC auth adds no security boundary
-- **Secret never enters frontend** — eliminates credential leakage risk
-
-### Future (Production)
-When production IPC adds named pipes / network exposure, HMAC-SHA256 with canonicalization will be specified in a separate ADR.
+- **Process Isolation:** The Kotlin backend is spawned directly by Tauri as a restricted child process. Standard input and output handles are strictly inherited.
+- **Threat Model:** Because stdio handles are kernel-isolated to the parent-child pair on Windows, IPC HMAC tokens add zero security boundary against a local attacker who already controls the OS session. The secret credentials (`.env`, `serviceAccountKey.json`, PayOS keys) remain securely isolated in backend memory and are **never transmitted to the frontend webview**.
+- **Idempotency Keys:** Every mutating command requires a UUID v4 `commandId` passed within `params`. The backend deduplicates calls per session; replaying an identical command with the same `commandId` returns the cached response without side effects.
 
 ---
 
-## 3. Protocol — JSON-RPC 2.0 (Subset)
+## 3. Protocol Envelopes & Error Codes
 
-### 3.1 Request (Shell → Backend)
-
+### 3.1 Request Envelope (Shell → Backend)
 ```typescript
-interface HealthCheckRequest {
+interface IpcRequest<T = Record<string, unknown>> {
   jsonrpc: "2.0";
-  id: string;                    // Any string (echoed back); UUID v4 recommended
-  method: "health.check";
-  params: {};                    // Empty object
-  protocolVersion: 1;            // Required
+  id: string;             // Echoed back in response; UUID v4 or sequential string
+  method: string;         // e.g., "catalog.get", "session.start"
+  params: T;              // Method parameters object
+  protocolVersion: 1;     // Must be integer 1
 }
 ```
 
-**Forbidden fields**: `auth`, `timestamp`, `nonce`, any other keys.
-
-### 3.2 Response (Backend → Shell)
-
+### 3.2 Success Response Envelope (Backend → Shell)
 ```typescript
-interface HealthCheckResponse {
+interface IpcSuccessResponse<T = Record<string, unknown>> {
   jsonrpc: "2.0";
-  id: string;                    // Echoed from request
-  result: HealthCheckResult;     // Present on success
-  error?: never;                 // Absent on success
+  id: string;             // Matches request id
+  result: T;              // Method payload
   protocolVersion: 1;
 }
-
-interface HealthCheckResult {
-  status: "ok";                  // Literal string
-  protocolVersion: 1;            // Echoed
-  simulator: true;               // Boolean; MUST be true for bridge proof
-  backendPid: number;            // OS process ID
-  uptimeMs: number;              // Milliseconds since JVM start
-  jvmVersion: string;            // e.g., "21.0.2"
-  availableMethods: ["health.check"]; // Array with exactly this one method
-}
 ```
 
-### 3.3 Error Response
-
+### 3.3 Error Response Envelope (Backend → Shell)
 ```typescript
-interface HealthCheckErrorResponse {
+interface IpcErrorResponse {
   jsonrpc: "2.0";
   id: string;
-  result?: never;
   error: {
-    code: -32600 | -32601 | -32602 | -32603;
+    code: number;
     message: string;
     data?: unknown;
   };
@@ -106,325 +74,419 @@ interface HealthCheckErrorResponse {
 }
 ```
 
-| Code | Condition |
-|------|-----------|
-| -32600 | Invalid JSON, missing required fields, frame > 1 MiB |
-| -32601 | `method` not `"health.check"` |
-| -32602 | `params` not empty object, `protocolVersion` not `1` |
-| -32603 | Internal error (JVM crash, OOM) |
+### 3.4 Standard Error Codes
+| Code | Standard Label | Condition |
+|---|---|---|
+| `-32600` | Invalid Request | Framing truncated, frame > 1 MiB, malformed JSON, or missing `protocolVersion` |
+| `-32601` | Method Not Found | Unrecognized RPC method |
+| `-32602` | Invalid Params | Missing required parameters, type mismatch, invalid UUID, or invalid range |
+| `-32603` | Internal Error | Unhandled backend exception, OOM, or storage failure |
+| `-32000` | Hardware Unavailable | Canon camera, webcam, or DNP printer disconnected in real hardware mode |
+| `-32001` | Command Not Allowed | Command received outside allowed state in the session state machine |
+| `-32002` | Operation Failed | Composition failed, print spooler submission rejected, or image read error |
+| `-32003` | Gateway Unavailable | PayOS payment gateway unreachable or timed out |
+| `-32004` | Session Conflict | Session already completed, active capture running, or stale session generation |
 
 ---
 
-## 4. Method: `health.check`
+## 4. Complete RPC Method Catalog
 
-### 4.1 Purpose
-Verify sidecar is alive, protocol version matches, simulator mode confirmed.
+### 4.1 System & Hardware Diagnostics
 
-### 4.2 Request
-```json
-{"jsonrpc":"2.0","id":"1","method":"health.check","params":{},"protocolVersion":1}
-```
+#### `health.check`
+- **Purpose:** Verifies that JVM sidecar is alive, confirms process PID, uptime, and runtime mode.
+- **Params:** `{}`
+- **Result:**
+  ```json
+  {
+    "status": "ok",
+    "protocolVersion": 1,
+    "simulator": false,
+    "backendPid": 14220,
+    "uptimeMs": 45120,
+    "jvmVersion": "21.0.2",
+    "availableMethods": ["health.check"]
+  }
+  ```
 
-### 4.3 Success Response
-```json
-{"jsonrpc":"2.0","id":"1","result":{"status":"ok","protocolVersion":1,"simulator":true,"backendPid":12345,"uptimeMs":1234,"jvmVersion":"21.0.2","availableMethods":["health.check"]},"protocolVersion":1}
-```
-
-### 4.4 Error Example
-```json
-{"jsonrpc":"2.0","id":"1","error":{"code":-32601,"message":"Method not found: session.create","data":null},"protocolVersion":1}
-```
-
----
-
-## 5. Backend Implementation Requirements (Minimal)
-
-### 5.1 Entry Point
-
-```kotlin
-// backend/src/main/kotlin/com/lesouvenir/photobooth/v2/ipc/IpcMain.kt
-package com.lesouvenir.photobooth.v2.ipc
-
-import com.google.gson.Gson
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
-import java.io.BufferedInputStream
-import java.io.BufferedOutputStream
-import java.io.DataInputStream
-import java.io.DataOutputStream
-import java.lang.management.ManagementFactory
-
-fun main(args: Array<String>) {
-    require(args.contains("--simulator")) { "Bridge proof requires --simulator flag" }
-    
-    val startTime = System.currentTimeMillis()
-    val pid = ManagementFactory.getRuntimeMXBean().name.split("@")[0].toIntOrNull() ?: -1
-    val jvmVersion = System.getProperty("java.version")
-    val gson = Gson()
-    
-    val stdin = DataInputStream(BufferedInputStream(System.`in`))
-    val stdout = DataOutputStream(BufferedOutputStream(System.out))
-    
-    while (true) {
-        // Read 4-byte length
-        val lenBytes = ByteArray(4)
-        val read = stdin.read(lenBytes)
-        if (read != 4) break // EOF
-        val length = ((lenBytes[0].toInt() and 0xFF) shl 24) or
-                     ((lenBytes[1].toInt() and 0xFF) shl 16) or
-                     ((lenBytes[2].toInt() and 0xFF) shl 8) or
-                     (lenBytes[3].toInt() and 0xFF)
-        
-        if (length > 1_048_576) {
-            sendError(stdout, gson, "1", -32600, "Frame exceeds 1 MiB")
-            continue
-        }
-        
-        val payload = ByteArray(length)
-        stdin.readFully(payload)
-        val requestJson = String(payload, "UTF-8")
-        
-        val responseJson = try {
-            val req = JsonParser.parseString(requestJson).asJsonObject
-            validateRequest(req)
-            buildHealthResponse(gson, req.get("id").asString, startTime, pid, jvmVersion)
-        } catch (e: Exception) {
-            buildErrorResponse(gson, extractId(requestJson), -32600, e.message ?: "Invalid request")
-        }
-        
-        sendResponse(stdout, responseJson)
-    }
-}
-
-private fun validateRequest(req: JsonObject) {
-    require(req.get("jsonrpc").asString == "2.0") { "jsonrpc must be 2.0" }
-    require(req.get("method").asString == "health.check") { "Only health.check supported" }
-    require(req.get("protocolVersion").asInt == 1) { "protocolVersion must be 1" }
-    require(req.get("params").asJsonObject.size == 0) { "params must be empty" }
-    // No auth field allowed
-    require(!req.has("auth")) { "auth field not supported in bridge proof" }
-}
-
-private fun buildHealthResponse(gson: Gson, id: String, startTime: Long, pid: Int, jvmVersion: String): String {
-    val result = JsonObject().apply {
-        addProperty("status", "ok")
-        addProperty("protocolVersion", 1)
-        addProperty("simulator", true)
-        addProperty("backendPid", pid)
-        addProperty("uptimeMs", System.currentTimeMillis() - startTime)
-        addProperty("jvmVersion", jvmVersion)
-        add("availableMethods", gson.toJsonTree(listOf("health.check")))
-    }
-    val resp = JsonObject().apply {
-        addProperty("jsonrpc", "2.0")
-        addProperty("id", id)
-        add("result", result)
-        addProperty("protocolVersion", 1)
-    }
-    return gson.toJson(resp)
-}
-
-private fun buildErrorResponse(gson: Gson, id: String, code: Int, msg: String): String {
-    val err = JsonObject().apply {
-        addProperty("code", code)
-        addProperty("message", msg)
-    }
-    val resp = JsonObject().apply {
-        addProperty("jsonrpc", "2.0")
-        addProperty("id", id)
-        add("error", err)
-        addProperty("protocolVersion", 1)
-    }
-    return gson.toJson(resp)
-}
-
-private fun extractId(json: String): String = try {
-    JsonParser.parseString(json).asJsonObject.get("id").asString
-} catch (e: Exception) { "1" }
-
-private fun sendResponse(stdout: DataOutputStream, json: String) {
-    val bytes = json.toByteArray(charset("UTF-8"))
-    stdout.writeInt(bytes.size)
-    stdout.write(bytes)
-    stdout.flush()
-}
-
-private fun sendError(stdout: DataOutputStream, gson: Gson, id: String, code: Int, msg: String) {
-    sendResponse(stdout, buildErrorResponse(gson, id, code, msg))
-}
-```
-
-### 5.2 Dependencies (Exact)
-
-```kotlin
-// backend/build.gradle.kts
-plugins {
-    kotlin("jvm") version "1.9.24"
-    application
-}
-
-group = "com.lesouvenir.photobooth.v2"
-version = "0.1.0-bridge-proof"
-
-repositories { mavenCentral() }
-
-dependencies {
-    implementation("com.google.code.gson:gson:2.10.1")
-    implementation("org.slf4j:slf4j-simple:2.0.12")
-    testImplementation(kotlin("test"))
-    testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
-}
-
-application {
-    mainClass.set("com.lesouvenir.photobooth.v2.ipc.IpcMainKt")
-}
-
-tasks.withType<Test> { useJUnitPlatform() }
-```
-
-### 5.3 Packaging
-
-```bash
-cd E:\HK1_2026_2027\PhotoboothDesktop_v2\backend
-./gradlew installDist
-# Output: build/install/backend/bin/backend.bat (Windows)
-```
-
----
-
-## 6. Tauri Sidecar Integration (Feasibility)
-
-### 6.1 `src-tauri/tauri.conf.json` (Excerpt)
-
-```json
-{
-  "bundle": {
-    "externalBin": ["../backend/build/install/backend/bin/backend"]
-  },
-  "plugins": {
-    "shell": {
-      "sidecar": true
+#### `device.getStatus`
+- **Purpose:** Comprehensive hardware and peripheral status check.
+- **Params:** `{}`
+- **Result:**
+  ```json
+  {
+    "runtimeMode": "REAL",
+    "captureMode": "REAL",
+    "demoModeAvailable": true,
+    "camera": {
+      "connected": true,
+      "adapter": "CANON_DSLR",
+      "model": "Canon EOS 1500D"
+    },
+    "printer": {
+      "name": "Dai Nippon Printing DS-RX1",
+      "detected": true,
+      "availablePrinters": ["Dai Nippon Printing DS-RX1", "Microsoft Print to PDF"]
+    },
+    "beauty": {
+      "enabled": true,
+      "modelsLoaded": true
+    },
+    "ledger": {
+      "salesDbConnected": true,
+      "pendingSyncCount": 0
+    },
+    "catalog": {
+      "source": "FIRESTORE",
+      "cached": true,
+      "layoutCount": 4,
+      "frameCount": 12
+    },
+    "cloud": {
+      "payOsConfigured": true,
+      "cloudinaryConfigured": true,
+      "webAlbumConfigured": true,
+      "revenueEndpointConfigured": true
     }
   }
-}
-```
-
-### 6.2 `src-tauri/src/main.rs` (Minimal Spawn)
-
-```rust
-use tauri::{Manager, Runtime};
-
-#[tauri::command]
-async fn health_check(app: tauri::AppHandle) -> Result<serde_json::Value, String> {
-    let sidecar = app.shell().sidecar("backend")
-        .map_err(|e| format!("Sidecar config error: {}", e))?;
-    
-    let (mut rx, _child) = sidecar.args(["--simulator"]).spawn()
-        .map_err(|e| format!("Spawn failed: {}", e))?;
-    
-    // Send health.check request (length-prefixed)
-    let request = r#"{"jsonrpc":"2.0","id":"1","method":"health.check","params":{},"protocolVersion":1}"#;
-    let len = (request.len() as u32).to_be_bytes();
-    use std::io::Write;
-    rx.stdin.write_all(&len).map_err(|e| format!("Write len failed: {}", e))?;
-    rx.stdin.write_all(request.as_bytes()).map_err(|e| format!("Write body failed: {}", e))?;
-    rx.stdin.flush().map_err(|e| format!("Flush failed: {}", e))?;
-    
-    // Read 4-byte length
-    let mut len_bytes = [0u8; 4];
-    rx.stdout.read_exact(&mut len_bytes).map_err(|e| format!("Read len failed: {}", e))?;
-    let length = u32::from_be_bytes(len_bytes) as usize;
-    
-    if length > 1_048_576 {
-        return Err("Response exceeds 1 MiB".into());
-    }
-    
-    let mut body = vec![0u8; length];
-    rx.stdout.read_exact(&mut body).map_err(|e| format!("Read body failed: {}", e))?;
-    let response = String::from_utf8(body).map_err(|e| format!("UTF-8 error: {}", e))?;
-    
-    serde_json::from_str(&response).map_err(|e| format!("JSON parse: {}", e))
-}
-
-fn main() {
-    tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![health_check])
-        .run(tauri::generate_context!())
-        .expect("error running tauri app");
-}
-```
-
-### 6.3 Feasibility Criteria (Must Pass Before Any Other Work)
-
-| Test | Command | Pass Condition |
-|------|---------|----------------|
-| Backend builds | `./gradlew installDist` | Exit 0, `backend.bat` exists |
-| Backend runs manually | `./build/install/backend/bin/backend.bat --simulator` | Blocks on stdio, no crash |
-| Manual health.check | Echo framed request to stdin | Valid framed response on stdout |
-| Tauri spawns sidecar | `cargo tauri dev` | Sidecar process appears in Task Manager |
-| Tauri ↔ sidecar stdio | Invoke `health_check` command | Returns `simulator: true`, `protocolVersion: 1` |
-| Clean shutdown | Close Tauri window | Sidecar process exits (no orphan) |
-| Stderr isolation | Check Tauri console | Only diagnostics on stderr, never JSON |
+  ```
 
 ---
 
-## 7. Explicit Non-Goals (This Contract)
+### 4.2 Catalog & Layout Service
 
-- ❌ No `session.*`, `capture.*`, `beauty.*`, `print.*`, `payment.*` methods
-- ❌ No events/notifications (no async JSON lines on stdout)
-- ❌ No HMAC/auth
-- ❌ No named pipes
-- ❌ No Live View streaming
-- ❌ No Canon EDSDK, ONNX, Print, Firebase, Neon, PayOS, ffmpeg
-- ❌ No Compose Desktop, no React frontend
+#### `catalog.get`
+- **Purpose:** Returns all loaded layouts, decorative frames, seasonal bundles, and pricing tiers.
+- **Params:** `{}`
+- **Result:**
+  ```json
+  {
+    "source": "FIRESTORE",
+    "syncedAt": 1730460000000,
+    "defaultLayoutId": "strip-5x15",
+    "layouts": [
+      {
+        "id": "strip-5x15",
+        "title": "Dải ảnh 5x15 cm",
+        "subtitle": "2 dải ảnh · 5×15 cm",
+        "description": "Bố cục dải ảnh dọc thanh lịch",
+        "family": "Column",
+        "shotCount": 4,
+        "selectCount": 3,
+        "countdownSeconds": 5,
+        "basePrice": 70000,
+        "mediaLabel": "Dải ảnh",
+        "accentColor": 4289847295,
+        "printSizeLabel": "5x15",
+        "printAspectRatio": 0.33333334,
+        "photoAspectRatio": 1.5,
+        "gridColumns": 1,
+        "absoluteSlots": []
+      }
+    ],
+    "frames": [
+      {
+        "id": "frame_classic_white",
+        "title": "Classic White",
+        "isCustom": true,
+        "isSpecial": false,
+        "targetLayoutId": "strip-5x15",
+        "targetPrintSize": "5x15",
+        "qrCodeX": 100,
+        "qrCodeY": 1500,
+        "qrCodeSize": 180
+      }
+    ],
+    "bundles": [
+      {
+        "name": "Valentine Sweet",
+        "coverDataUrl": "data:image/png;base64,...",
+        "targetLayoutId": "strip-5x15",
+        "frameIds": ["val_01", "val_02"]
+      }
+    ],
+    "pricing": {
+      "stripBasePrice": 70000,
+      "stripUnitPrice": 20000,
+      "printBasePrice": 90000,
+      "printUnitPrice": 30000,
+      "stripAllowedQuantities": [2, 4, 6, 8, 10],
+      "printAllowedQuantities": [2, 4, 6, 8, 10]
+    },
+    "simulator": false
+  }
+  ```
+
+#### `catalog.sync`
+- **Purpose:** Forces immediate re-sync with Firestore (if credentials exist), re-indexes `data/frames` and `data/covers`, updates local disk cache, and returns the refreshed catalog without restarting the kiosk.
+- **Params:** `{ "force": true }`
+- **Result:**
+  ```json
+  {
+    "synced": true,
+    "source": "FIRESTORE",
+    "layoutsUpdated": 4,
+    "framesLoaded": 12,
+    "bundlesLoaded": 2,
+    "cacheWritten": true
+  }
+  ```
 
 ---
 
-## 8. V1 Canon EOS Utility / CLI / HotFolder — UNVERIFIED
+### 4.3 Session Lifecycle & State Machine
 
-The following V1 camera adapters are **imported but not audited**; behavior and licensing are **UNVERIFIED**:
+#### `session.start`
+- **Allowed In:** `IDLE`
+- **Transition To:** `SELECTING`
+- **Params:**
+  ```json
+  {
+    "commandId": "550e8400-e29b-41d4-a716-446655440000",
+    "sessionId": "b6a8f8e1-512a-43d9-9529-50c6bf2e2601",
+    "generationId": "e3b0c442-98fc-1c14-9afb-4c7ec0522002",
+    "layoutId": "strip-5x15",
+    "captureMode": "REAL"
+  }
+  ```
+  *(Note: `captureMode` can be `"REAL"` or `"DEMO"`. Default is `"REAL"`).*
+- **Result:** Snapshot object with state `"SELECTING"`.
 
-| Adapter | V1 File | Status |
-|---------|---------|--------|
-| `CliCaptureService` | `CliCaptureService.kt` | UNVERIFIED — external binary contract unknown |
-| `EosUtilityCaptureService` | `EosUtilityCaptureService.kt` | UNVERIFIED — Canon EOS Utility license/redistribution unknown |
-| `HotFolderCaptureService` | `HotFolderCaptureService.kt` | Observed (code read) — 15s poll timeout, no software trigger |
+#### `session.setLayout`
+- **Allowed In:** `SELECTING`
+- **Params:**
+  ```json
+  {
+    "commandId": "...",
+    "sessionId": "...",
+    "generationId": "...",
+    "layoutId": "print-10x15"
+  }
+  ```
+- **Result:** Updated snapshot reflecting new layout, shot count, and pricing.
 
-**No claims** about CLI/Utility/HotFolder reliability or licensing until specialist audit completes.
+#### `session.confirmSetup`
+- **Allowed In:** `SELECTING`
+- **Transition To:** `SELECTING_QUANTITY`
+- **Params:** `{ "commandId": "...", "sessionId": "...", "generationId": "..." }`
+- **Result:** Snapshot with state `"SELECTING_QUANTITY"`.
+
+#### `session.setQuantity`
+- **Allowed In:** `SELECTING_QUANTITY`
+- **Transition To:** `PAYMENT_PENDING`
+- **Params:**
+  ```json
+  {
+    "commandId": "...",
+    "sessionId": "...",
+    "generationId": "...",
+    "quantity": 4
+  }
+  ```
+- **Result:** Snapshot with calculated total amount and state `"PAYMENT_PENDING"`.
+
+#### `session.getState`
+- **Allowed In:** Any state
+- **Params:** `{ "sessionId": "...", "generationId": "..." }`
+- **Result:** Full authoritative snapshot including countdown seconds, captured shots, active frame, and preview data URLs.
+
+#### `session.back`
+- **Allowed In:** `SELECTING`, `SELECTING_QUANTITY`, `PAYMENT_PENDING`, `EDITING`, `PRINT_PENDING`
+- **Transition:** Walks back to preceding logical state.
+- **Params:** `{ "commandId": "...", "sessionId": "...", "generationId": "..." }`
+- **Result:** Updated snapshot.
+
+#### `session.cancel`
+- **Allowed In:** `SELECTING_PHOTOS`, `EDITING`
+- **Transition To:** Resets session to `IDLE`, cleans temporary working directory.
+- **Params:** `{ "commandId": "...", "sessionId": "...", "generationId": "..." }`
+- **Result:** `{ "cancelled": true, "state": "IDLE" }`
+
+#### `session.finish`
+- **Allowed In:** `DELIVERY`
+- **Transition To:** `IDLE`
+- **Params:** `{ "commandId": "...", "sessionId": "...", "generationId": "..." }`
+- **Result:** Snapshot reset to `IDLE`.
 
 ---
 
-## 9. File Ownership (Bridge Proof Only)
+### 4.4 Payment Integration
 
-| File | Owner | Status |
-|------|-------|--------|
-| `backend/src/main/kotlin/.../ipc/IpcMain.kt` | Backend Engineer | **PLANNED** |
-| `backend/build.gradle.kts` | Backend Engineer | **PLANNED** |
-| `src-tauri/tauri.conf.json` | Frontend Lead | **PLANNED** |
-| `src-tauri/src/main.rs` | Frontend Lead | **PLANNED** |
-| `scripts/bridge-proof/test_health.ps1` | Architect | **PLANNED** |
+#### `payment.createLink`
+- **Allowed In:** `PAYMENT_PENDING`
+- **Params:**
+  ```json
+  {
+    "commandId": "...",
+    "sessionId": "...",
+    "generationId": "...",
+    "description": "Le Souvenir Strip 4"
+  }
+  ```
+- **Behavior:**
+  - In **REAL mode:** Calls PayOS API to generate order code and VietQR checkout link. Returns base64 QR image.
+  - In **DEMO mode:** Bypasses PayOS; returns simulated demonstration QR code with status immediately `"PAID"`.
+- **Result:**
+  ```json
+  {
+    "orderCode": 20261101001,
+    "qrCode": "data:image/png;base64,...",
+    "amount": 70000,
+    "status": "PENDING",
+    "payOsConfigured": true
+  }
+  ```
+
+#### `payment.checkStatus`
+- **Allowed In:** `PAYMENT_PENDING`
+- **Params:** `{ "sessionId": "...", "generationId": "...", "orderCode": 20261101001 }`
+- **Behavior:** Polls PayOS for payment success. When paid, transitions state to `PREPARING` -> `LIVE_VIEW`.
+- **Result:**
+  ```json
+  {
+    "orderCode": 20261101001,
+    "status": "PAID",
+    "paid": true,
+    "amount": 70000,
+    "nextState": "LIVE_VIEW"
+  }
+  ```
+
+#### `payment.mockComplete`
+- **Allowed In:** `PAYMENT_PENDING`
+- **Params:**
+  ```json
+  {
+    "commandId": "...",
+    "sessionId": "...",
+    "generationId": "...",
+    "staffOverride": true
+  }
+  ```
+- **Behavior:**
+  - In **REAL mode:** Requires `staffOverride: true` or active operator authorization. Records payment method as `STAFF_COMP` or `TIEN_MAT`.
+  - In **DEMO mode:** Immediately accepted with `paymentMethod: "DEMO"`.
+- **Result:** Snapshot with `paid: true`, state `"LIVE_VIEW"`.
 
 ---
 
-## 10. Acceptance Criteria (Bridge Proof Complete)
+### 4.5 Capture Pipeline
 
-| # | Criterion | Evidence |
-|---|-----------|----------|
-| 1 | Backend builds with `./gradlew installDist` | Build log, exit 0 |
-| 2 | Backend `--simulator` starts, blocks on stdio | Process stays alive, no stdout/stderr noise |
-| 3 | Framed `health.check` request → valid framed response | Hex dump of stdin/stdout exchange |
-| 4 | Tauri sidecar spawns backend | `cargo tauri dev` shows child process |
-| 5 | Tauri `health_check` command returns `simulator: true` | Console log of invoke result |
-| 6 | StdErr contains only diagnostics (no JSON) | Visual inspection of Tauri console |
-| 7 | Closing Tauri kills sidecar (no orphan) | Task Manager verification |
-| 8 | Frame > 1 MiB rejected with `-32600` | Test with oversized payload |
+#### `capture.startSequence`
+- **Allowed In:** `LIVE_VIEW` (requires `paid == true`)
+- **Transition To:** `COUNTDOWN` -> `CAPTURING` -> `LIVE_VIEW` / `SELECTING_PHOTOS`
+- **Params:** `{ "commandId": "...", "sessionId": "...", "generationId": "..." }`
+- **Behavior:**
+  - In **REAL mode:** Activates Canon DSLR shutter or webcam for `layout.shotCount` iterations. Each capture queues asynchronously for `DesktopBeautyService`.
+  - In **DEMO mode:** `DemoCameraAdapter` generates distinct realistic portrait images matching the layout aspect ratio with simulated shutter delay, feeding real beauty models and LUT processors.
+- **Result:**
+  ```json
+  {
+    "shotIndex": 1,
+    "totalShots": 4,
+    "countdownSeconds": 5
+  }
+  ```
 
 ---
 
-## 11. Status
+### 4.6 Photo Selection & Framing
 
-**REVIEWED CONTRACT** — Ready for implementation by Backend Engineer (backend) and Frontend Lead (Tauri sidecar).
+#### `selection.toggle`
+- **Allowed In:** `SELECTING_PHOTOS`
+- **Params:** `{ "commandId": "...", "sessionId": "...", "generationId": "...", "shotIndex": 1 }`
+- **Behavior:** Toggles selection of photo `shotIndex`. Enforces selection limit `layout.selectCount`. Invalidates existing cached compositions.
+- **Result:** Snapshot with updated `selectedIndices`.
 
-**No further approval needed** — User approved V2 builds. Proceed to implementation.
+#### `selection.confirm`
+- **Allowed In:** `SELECTING_PHOTOS`
+- **Transition To:** `EDITING`
+- **Requirement:** `selectedIndices.size == layout.selectCount`
+- **Params:** `{ "commandId": "...", "sessionId": "...", "generationId": "..." }`
+- **Result:** Snapshot with state `"EDITING"`.
 
-**Next deliverable**: Executable shell feasibility report (separate document) after criteria 1–8 pass.
+#### `frame.list`
+- **Allowed In:** `EDITING`
+- **Params:** `{ "sessionId": "...", "generationId": "..." }`
+- **Result:** Array of available `FrameOption`s matching current layout and print size.
+
+#### `frame.select`
+- **Allowed In:** `EDITING`
+- **Params:** `{ "commandId": "...", "sessionId": "...", "generationId": "...", "frameId": "frame_classic_white" }`
+- **Behavior:** Renders high-resolution composite via `DesktopCompositor` using beauty-enhanced photos, color LUTs, and transparent PNG frame.
+- **Result:** Snapshot with updated preview image data URL.
+
+#### `frame.confirm`
+- **Allowed In:** `EDITING`
+- **Transition To:** `PRINT_PENDING`
+- **Requirement:** Complete composite and print image must be successfully rendered on disk.
+- **Params:** `{ "commandId": "...", "sessionId": "...", "generationId": "..." }`
+- **Result:** Snapshot with state `"PRINT_PENDING"`.
+
+---
+
+### 4.7 Print Execution & Revenue Gate
+
+#### `print.confirmReal`
+- **Allowed In:** `PRINT_PENDING` (requires `paid == true`, valid composition)
+- **Transition To:** `DELIVERY` (on success) or `RECOVERY` (on hardware spooler failure)
+- **Params:** `{ "commandId": "...", "sessionId": "...", "generationId": "..." }`
+- **Behavior:**
+  - **In REAL mode:**
+    1. Checks physical DNP DS-RX1HS printer availability.
+    2. Sends print job (`CUT_5X15_2UP` or `PHOTO_10X15`) to Windows Print Spooler.
+    3. Confirms `PrintResult.Submitted`.
+    4. Synchronously records sale in SQLite `data/sales.db` with `sync_status = 'PENDING'`.
+    5. Dispatches background async cloud sync (Neon, Cloudinary, WebAlbum).
+    6. Sets `printAccepted = true, revenueRecorded = true, state = "DELIVERY"`.
+  - **In DEMO mode:**
+    1. Performs dry-run print validation (checks image dimensions and print canvas without sending bytes to physical spooler).
+    2. Skips insertion into `data/sales.db` (zero revenue recorded).
+    3. Skips remote cloud sync.
+    4. Sets `printAccepted = true, revenueRecorded = false, state = "DELIVERY"`.
+- **Result:**
+  ```json
+  {
+    "sessionId": "...",
+    "state": "DELIVERY",
+    "printAccepted": true,
+    "revenueRecorded": true,
+    "printerName": "Dai Nippon Printing DS-RX1",
+    "albumUrl": "https://lesouvenir.vn/album/..."
+  }
+  ```
+
+#### `print.confirmDryRun`
+- **Allowed In:** `PRINT_PENDING`
+- **Purpose:** Test/Simulator validation. Verifies canvas rendering without submitting print job or recording revenue.
+- **Params:** `{ "commandId": "...", "sessionId": "...", "generationId": "..." }`
+- **Result:** Snapshot with `dryRun: true`.
+
+---
+
+### 4.8 Operator & Atelier Administration
+
+#### `operator.getStatus`
+- **Allowed In:** Any state
+- **Params:** `{}`
+- **Result:** Operator capabilities, active capture mode, and administration permissions.
+
+#### `operator.setCaptureMode`
+- **Allowed In:** `IDLE`
+- **Params:** `{ "captureMode": "REAL" | "DEMO" }`
+- **Result:** `{ "saved": true, "captureMode": "DEMO" }`
+
+#### `operator.getSettings`
+- **Allowed In:** Any state
+- **Params:** `{}`
+- **Result:** Effective timeouts, printer configurations, and operational flags.
+
+#### `operator.updateSettings`
+- **Allowed In:** `IDLE`
+- **Params:** `{ "settings": { ... } }`
+- **Result:** `{ "saved": true }`
+
+#### `operator.updateLayout`
+- **Allowed In:** `IDLE`
+- **Params:** `{ "layoutId": "strip-5x15", "shotCount": 4, "selectCount": 3, "countdownSeconds": 5 }`
+- **Result:** `{ "saved": true, "appliesTo": "NEXT_SESSION" }`

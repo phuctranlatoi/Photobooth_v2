@@ -1,6 +1,14 @@
 # Authoritative consolidated feature parity matrix
 
-**Status date:** 2026-10-30. **Gate: FAIL / incomplete.** This replaces `03_FEATURE_PARITY_MATRIX.md` for planning. `SOURCE-VERIFIED` means cited code was read, not that runtime behavior passed. No hardware or production service is verified.
+**Status date:** 2026-11-01. **Gate: incomplete / release blocked.** This replaces `03_FEATURE_PARITY_MATRIX.md` for planning. `SOURCE-VERIFIED` means cited code was read, not that runtime behavior passed. The Firebase read and PayOS link/QR integration below are live-provider verified; no physical hardware, payment settlement, or production write is thereby certified.
+
+## Deployment integration readiness
+
+**9/9 configured.** PayOS (`payOsConfigured`), Neon PostgreSQL (`databaseConfigured`), Cloudinary (`cloudinaryConfigured`), web album (`webAlbumConfigured`), revenue endpoint (`revenueEndpointConfigured`), printer/system printing (`printerConfigured` and `systemPrintEnabled`), Beauty (`beautyEnabled`, preset `BRIGHT`), Hot Folder (`hotFolderConfigured`, enabled at `E:\Photobooth\HotFolder`), and credential containment are configured. Direct JDBC connectivity was verified using read-only `SELECT 1`, and live PayOS VietQR was verified. This is configuration/connectivity evidence only—not Neon write, Cloudinary upload, PayOS settlement, physical DNP output, Canon capture, or release approval.
+
+Cloudinary cloud name/upload preset/API credentials, web-album and revenue URLs/booth key, Neon URL, and all other secret values are strictly protected in `.env`. V2 `.gitignore` excludes `.env` and `.env.*` while allowing only the non-secret `.env.example`; no value is reproduced here.
+
+V1 isolation for this update: no V1 command or write was performed; changes are confined to these V2 docs. A global forensic “V1 unchanged” result is **BLOCKED** without a trusted before/after manifest, and denied external enumeration was not bypassed.
 
 | ID | Source-linked V1 behavior | V2 preservation and required test | Status / gap |
 |---|---|---|---|
@@ -10,7 +18,7 @@
 | S04 | Normal setup and pricing freeze (`Main:126-167`; controller `313-363`) | Preserve layout/effect/price; flow/back tests | Pricing FOUNDATION TESTED; flow not started |
 | S05 | Special frame jumps to quantity if target layout exists (`controller:323-335`) | Missing-target and filter tests | NOT STARTED |
 | S06 | Long pricing, strip even sanitation, no upper clamp (`PricingCalculator`) | COPY pure logic; boundaries/unsupported/product decision | PASS-AUTOMATED characterization only |
-| S07 | PayOS create/poll/PAID plus unguarded cash completion (`PaymentService`; controller `356-397`) | Mock-default wrapper; order/session/amount/deadline/replay guards | BLOCKED; no sandbox test; refund/webhook not found |
+| S07 | PayOS create/poll/PAID plus unguarded cash completion (`PaymentService`; controller `356-397`) | Mock-default wrapper; order/session/amount/deadline/replay guards | **VERIFIED — PayOS VietQR link creation + QR image render:** live integration reached `READY` at both desktop viewports. Settlement, webhook/refund, replay and revenue effects remain unverified. |
 | S08 | PREPARING 1600 ms then LIVE_VIEW (`controller:388-397`) | Preserve or approve change; slow-preview test | NOT STARTED |
 | S09 | Active capture guard and per-layout shot/countdown (`controller:436-594`) | Nondefault/zero/bounds/repeat/stale tests | Fields FOUNDATION TESTED; sequence not started |
 | S10 | Capture failure silently creates mock (`controller:507-533`) | Safety change: production error; explicit simulator only | Simulator gate PASS-AUTOMATED; capture absent |
@@ -49,11 +57,12 @@
 | U02 | Hidden Admin and readiness bypass (`Main:77-119`; UI contract) | Operator protection; bypass cannot imply hardware ready | NOT STARTED |
 | U03 | Admin Frames/Layouts/Settings/Tools/Colors/Revenue (`AdminScreen:123-242`) | Full protected workbench and persistence/error tests | PARTIAL; Tools/events incomplete |
 | U04 | Settings edit limited fields, `.env`, restart (`SettingsTabContent`; controller `999-1029`) | V2-only validated settings, secret separation, ACL/precedence tests | NOT STARTED |
-| U05 | Layout price/shot/countdown update via Firebase (`controller:1033-1052`) | Mock persistence/error/reload tests | NOT STARTED; durability unknown |
+| U05 | Layout price/shot/countdown update via Firebase (`controller:1033-1052`) | Mock persistence/error/reload tests | **VERIFIED — Firebase Layouts:** live Firestore `photop-bf902` sync (`FIREBASE_LIVE`) returned 10 named layouts and V2-local disk cache is present. Write/update durability remains outside this read-only acceptance run. |
 | U06 | LUT/effect and Canon parameter controls | Preserve source-supported controls only; error tests | PARTIAL SOURCE AUDIT |
 | K01 | Isolated foundation layout/pricing/legacy state/simulator | Characterization only | PASS-AUTOMATED: independent 5 tests, exit 0 |
 | K02 | Host↔Kotlin private inherited framed stdio simulator child | Framing/validation/timeout/cleanup plus live WebView invoke | PASS-AUTOMATED/PASS-SIMULATED normal WebView and two-layout simulator; abrupt/hung cleanup NOT RUN |
 | K03 | Installer/JRE/Canon DLL/ONNX/driver coexistence | Clean install/recovery/licenses | BLOCKED |
+| K04 | Camera-free DEMO capture journey | Preserve customer touch flow without charging or hardware; dry-run composition and revenue guard | **VERIFIED — Demo Capture:** two-viewport desktop journey reached delivery, produced dry-run 600-DPI composition, and kept revenue at zero. |
 
 ## Gate summary
 

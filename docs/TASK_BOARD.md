@@ -1,5 +1,156 @@
 # TASK_BOARD.md
 
+## Deployment configuration readiness — 9/9 CONFIGURED (2026-11-01)
+
+| Readiness item | Status | Safe evidence / remaining gate |
+|---|---|---|
+| PayOS | **CONFIGURED** — `payOsConfigured: true` | Live VietQR verified; settlement was not performed by this documentation task. |
+| Neon PostgreSQL | **CONFIGURED** — `databaseConfigured: true` | Ported `DATABASE_URL`; direct JDBC `SELECT 1` verified. No write/DDL claim. |
+| Cloudinary | **CONFIGURED** — `cloudinaryConfigured: true` | Cloud name, upload preset, API key, and API secret present; no upload claim. |
+| Web album | **CONFIGURED** — `webAlbumConfigured: true` | Web-album URL, booth API key, and album base URL present. |
+| Revenue endpoint | **CONFIGURED** — `revenueEndpointConfigured: true` | Web-album URL and booth API key present; Golden Revenue Rule still applies. |
+| Printer/system print | **CONFIGURED** — `printerConfigured: true`; `systemPrintEnabled: true` | Strip/full printer names present and system print enabled; physical DNP output remains NOT-RUN. |
+| Beauty | **CONFIGURED** — `beautyEnabled: true` | `BRIGHT` preset selected; licensing/lineage and physical performance gates remain open. |
+| Hot Folder | **CONFIGURED** — `hotFolderConfigured: true` | Enabled with deployment path `E:\Photobooth\HotFolder`; real producer/device behavior remains NOT-RUN. |
+| Credential containment | **CONFIGURED** | Values are strictly protected in `.env`; `.gitignore` excludes `.env` and `.env.*`. No secret values are documented. |
+
+**Readiness score: 9/9 configured.** Configuration readiness is not equivalent to production release approval or real-hardware proof.
+
+**V1 isolation:** only these V2 documentation files were edited. No V1 command or write was performed. Filesystem-wide forensic verification is **BLOCKED** without a trusted pre-task manifest (and external-directory enumeration was denied), so no unsupported global untouched claim is made.
+
+## Commercial-Grade UI/UX Rebuild & V1 Horizontal Snapping Carousel Parity — COMPLETED (2026-11-01)
+
+| Task | Status | Evidence |
+|---|---|---|
+| Rebuilt `StudioModeScreen.tsx` horizontal carousel | **COMPLETED — PASS-SIMULATED** | Centered horizontal snapping carousel (`.v1-layout-carousel`), replicating V1 `HorizontalPager` mechanics (scale 1.0 active, 0.84 adjacent peeking cards, click-to-center / click-to-select, floating navigation chevrons, smooth-scroll settling). |
+| Vector photo slot illustrations (`LayoutArtwork.tsx`) | **COMPLETED — PASS-SIMULATED** | Silhouette portraits and numbered photo slots, eliminating empty blank preview boxes. |
+| Customer-friendly titles & canonical ID tags | **COMPLETED — PASS-SIMULATED** | Polished titles (`formatLayoutTitle`, `formatLayoutSubtitle`) while preserving canonical IDs in subtle `.v1-layout-tag` elements. |
+| Korean Photo Atelier design token specification & styling | **COMPLETED — PASS-SIMULATED** | `docs/DESIGN_SYSTEM.md` token specification and full UI styling in `kiosk-v1.css` (`#FAF6F0`, `#FFFFFF`, `#E07A5F`, `#F4A261`). |
+| Frame thumbnails real artwork (`thumbDataUrl`) | **COMPLETED — PASS-AUTOMATED** | Added `thumbDataUrl` to `RealSessionEngine.kt` and updated `FrameOption` in `simulator-contract.ts` to display actual frame artwork. |
+| Truthful action copy & 1280×800 fit | **COMPLETED — PASS-SIMULATED** | `"Hoàn thành trải nghiệm →"` on `ConfirmScreen.tsx` in DEMO; sticky finish CTA on `DeliveryScreen.tsx` fitting 1280×800. |
+| Tauri bridge resilience & teardown guard | **COMPLETED — PASS-AUTOMATED** | Added failure teardown `guard.take()` in `src-tauri/src/main.rs`; increased timeout to 25s in `src-tauri/src/bridge.rs`. |
+| Live desktop acceptance journey | **COMPLETED — PASS-SIMULATED** | **35/35 checks passing, 0 failures, 26 distinct screenshots across 1280×800 and 1920×1200**. Evidence: `tests/journey-evidence/2026-11-01T15-38-06.041Z/results.json`. |
+| Frontend regression suite | **COMPLETED — PASS-AUTOMATED** | Vitest: **45/45 passed across 8 test suites** (`npm test -- --run`). |
+| Backend regression suite | **COMPLETED — PASS-AUTOMATED** | JUnit: **76/76 passed across 17 test suites** (`gradle test installDist`). |
+| Frontend production build | **COMPLETED — PASS-AUTOMATED** | `tsc --noEmit && vite build`: zero errors, 2,015 modules transformed. |
+| Hardware boundary | **BOUNDARY ACKNOWLEDGED** | Simulated CDP passing; physical Canon camera, DNP printer, and live PayOS bank charges remain unverified without physical studio kiosk attachment. |
+
+Evidence directory: `tests/journey-evidence/2026-11-01T15-38-06.041Z/` (results.json).
+
+---
+
+## Unified Photobooth Application & Automatic Camera Fallback — COMPLETED (2026-11-01)
+
+| Task | Status | Evidence |
+|---|---|---|
+| Unified single-application UX | **COMPLETED — PASS-SIMULATED** | Eliminated manual DEMO/REAL switches; clean StartScreen with dynamic background hardware evaluation. |
+| Background `CameraConnectionManager` | **COMPLETED — PASS-AUTOMATED** | 7-state FSM (`DISCONNECTED`, `DISCOVERING`, `CONNECTING`, `CONNECTED`, `LIVE_VIEW_READY`, `RECONNECTING`, `ERROR`) with 2,000 ms monitor loop (V1 parity). |
+| Dynamic promotion at `IDLE` state | **COMPLETED — PASS-AUTOMATED** | Promotes to `REAL` if camera detected; falls back to `DEMO` mock mode if offline. Session captureMode locked during session. |
+| Zero-revenue dry-run safety | **COMPLETED — PASS-AUTOMATED** | 0 đ, `Miễn phí`, no live bank transfer prompt, 600-DPI composition with `dryRun: true`, 0 sales DB writes, 0 Neon writes, 0 physical prints. Verified by `RealSessionEngineDemoModeTest`. |
+| Korean photo studio UI redesign | **COMPLETED — PASS-SIMULATED** | Atelier design tokens (`#FAF6F0`, `#FFFFFF`, `#E07A5F`, `#F4A261`), 16:10 zero-scroll touch ergonomics, tactile cards, 600-DPI preview. |
+| Backend regression | **COMPLETED — PASS-AUTOMATED** | JUnit: **76 passed, 0 failures/errors/skips** across 17 test suites (`gradle test installDist`, `BUILD SUCCESSFUL`). |
+| Frontend regression | **COMPLETED — PASS-AUTOMATED** | Vitest: **40 passed, 0 failures**; `tsc --noEmit && vite build` passed in 3.55s (2,015 modules). |
+| Live desktop acceptance | **COMPLETED — PASS-SIMULATED** | **35/35 checks passed, 26 screenshots, 0 failures** across 1280×800 and 1920×1200 viewports. |
+
+Evidence directory: `tests/journey-evidence/2026-11-01T14-23-26.975Z/` (results.json).
+
+Truthful hardware boundary: Mock fallback verified via live Tauri CDP. Physical Canon DSLR capture, DNP print spooler, and PayOS settlement remain offline in the dev kiosk pending physical device attachment in the hardware lab.
+
+---
+
+## Real Integrations Recovery — COMPLETED (2026-11-01)
+
+| Task | Status | Evidence |
+|---|---|---|
+| Live Firebase/Firestore layout recovery | **COMPLETED — VERIFIED** | `FIREBASE_LIVE`; 10 named production layouts synchronized, with V2-local disk cache. |
+| Live PayOS VietQR recovery | **COMPLETED — VERIFIED** | `READY`; real link creation and QR image render at both acceptance viewports. No settlement was performed. |
+| DEMO capture regression | **COMPLETED — PASS-SIMULATED** | Camera-free touch journey, zero-revenue guard, and dry-run 600-DPI composition preserved. |
+| Backend regression | **COMPLETED — PASS-AUTOMATED** | JUnit: **70 passed, 1 skipped**. |
+| Frontend regression | **COMPLETED — PASS-AUTOMATED** | Vitest: **40 passed**. |
+| Live desktop acceptance | **COMPLETED — PASS-SIMULATED** | **37/37 checks, 0 failures** at 1280×800 and 1920×1200. |
+
+Evidence directory: `tests/journey-evidence/2026-11-01T13-13-52.592Z/`.
+
+Physical Canon/DNP/touchscreen testing, PayOS settlement, Neon/Cloudinary production operations, packaging, recovery, and licensing remain separate release gates.
+
+## Current migration board (2026-11-01, superseding active status)
+
+| Milestone / deliverable | Status | Evidence / next gate |
+|---|---|---|
+| M0 — V2 isolation and planning | **DONE** | V2-only workspace and safety guardrails established; this task changed `docs/` only. |
+| M1 — Legacy audit/parity baseline | **DONE (baseline)** | Feature/state/config/UI/camera/printer/business inventories exist; physical parity is a separate gate. |
+| M2 — Desktop bridge and simulator | **DONE — PASS-SIMULATED** | React/Tauri/Kotlin runtime, shutdown path, dual mode, and `installDist` verified in software. |
+| M3 — Touch UI/Korean studio redesign & V1 carousel parity | **DONE — PASS-SIMULATED** | Korean photo studio aesthetic, V1 horizontal snapping carousel (`.v1-layout-carousel`), vector slot artwork (`LayoutArtwork.tsx`), truthful copy, and 1280×800 plus 1920×1200 desktop coverage complete; physical touch pending. |
+| M4 — Feature/backend integration | **DONE — PASS-AUTOMATED** | Session engine, catalogs, `CameraConnectionManager` (7 states, 2000ms loop, auto-fallback), composition, dry-run print, payment safety, QR, and revenue guards covered. |
+| M5 — DEMO end-to-end | **DONE — PASS-SIMULATED** | Start→Delivery with 4 mock captures, selection/frame, 600 DPI preview, dry-run print, delivery QR, and zero revenue. |
+| M6 — Regression and REAL payment UI | **DONE** | Backend **76/76**; frontend **45/45 across 8 suites**; build **2,015 modules/0 errors**; CDP journey **35/35 checks, 26 screenshots, 0 failures** at `tests/journey-evidence/2026-11-01T15-38-06.041Z/`. |
+| M7 — Canon/DNP/physical kiosk | **BLOCKED / NOT-RUN** | Requires explicit authorization and connected Canon DSLR, DNP RX1HS, physical 16:10 touchscreen, and Mini PC measurement. |
+| M8 — Packaging/production release | **BLOCKED / NOT-RUN** | Requires installer/clean-install/recovery testing, live PayOS/provider checks, V1 physical print comparison, and redistribution licenses remain open. |
+
+### Current test deliverables
+
+| Deliverable | Status | Exact result |
+|---|---|---|
+| Backend Gradle (`gradle test installDist`) | **DONE — PASS-AUTOMATED** | **76/76 passed**, including `CameraConnectionManagerTest` (5 tests), `RealSessionEngineDemoModeTest`, `FirebaseCatalogServiceTest`, `DemoCameraAdapterTest`, and `RealSessionEngineTest`. |
+| Frontend Vitest | **DONE — PASS-AUTOMATED** | **45/45 passed across all 8 test files**, including `screens.test.tsx`, `KioskUI.test.tsx`, `PaymentScreen.test.tsx`, and `LayoutArtwork.test.tsx`. |
+| Frontend build (`tsc --noEmit && vite build`) | **DONE — PASS-AUTOMATED** | **2,015 modules transformed, 0 errors in 3.55s**. |
+| Live desktop journey (`tests/verify-demo-and-real-journey.mjs`) | **DONE — PASS-SIMULATED** | **35/35 checks passed, 26 screenshots, 0 failures**; evidence at `tests/journey-evidence/2026-11-01T15-38-06.041Z/`. |
+| Physical Canon DSLR capture | **BLOCKED / NOT-RUN** | No physical capture; authorization and safe hardware setup required. |
+| Physical DNP RX1HS print | **BLOCKED / NOT-RUN** | No spool submission or paper output; authorization and supervised setup required. |
+| Live PayOS charge | **BLOCKED / NOT-RUN** | No payment charged; explicit production authorization required. |
+
+**Release decision: SOFTWARE MIGRATION TEST BASELINE PASSED / PHYSICAL HARDWARE AND PRODUCTION RELEASE GATES REMAIN BLOCKED.**
+
+The board below is retained as historical chronology; this section is the current active status.
+
+---
+
+## Latest reviewer board (2026-11-01, payment restoration update)
+
+| Task | Status | Evidence / next gate |
+|---|---|---|
+| Live Desktop Payment Verification (`verify-real-payment.mjs`) | **DONE — PASS-REAL-MODE-DESKTOP** | Tauri desktop runtime verified on 1280×800 and 1920×1200; screenshots & logs at `tests/real-payment-evidence/2026-11-01T08-40-13.800Z/`. Zero -32001 errors. |
+| Payment error -32001 root cause & fix | **DONE — PASS-AUTOMATED** | Backend returns `PENDING` when `orderCode` is null instead of throwing -32001; synchronized polling in frontend; `description` fallback. |
+| PayOS official SDK parity (`PayOsOfficialAdapter`) | **DONE — PASS-AUTOMATED** | Wraps official Java SDK client; fail-closed behavior verified when unconfigured; tests pass in `PayOsOfficialAdapterTest` & `RealSessionEngineTest`. |
+| Server-side ZXing QR code generation | **DONE — PASS-AUTOMATED** | High-res 1000×1000 base64 PNG generated directly in `RealSessionEngine.qrPng` from VietQR payment string. |
+| Production layouts activation | **DONE — PASS-AUTOMATED** | `config/production-layouts.json` (`strip-5x15` 4/3 shots/select, `print-10x15` 6/4 shots/select, 5s countdowns); zero synthetic fixtures in REAL mode. |
+| Hierarchical config loader (`DesktopBoothConfig`) | **DONE — PASS-AUTOMATED** | 3-tier loading: Workspace `.env` < LocalAppData `LeSouvenirDesktop/.env` < Environment variables; masked diagnostics verify presence without secret leaks. |
+| V1 Payment UI visual fidelity & interaction parity | **DONE — PASS-REAL-MODE-DESKTOP** | Exact two-column layout, "Bước 3", "Thanh toán", "70.000 đ", detail rows, status chip, customer bypass removed, staff override on >=700ms hold. |
+| Frontend 34-test regression & build | **DONE — PASS-AUTOMATED** | `npm test -- --run`: 34/34 across 7 files; `npm run build`: zero errors, 2,014 modules transformed. |
+| Backend 62-test regression suite | **DONE — PASS-AUTOMATED** | `gradle.bat --offline test --console=plain`: 62/62 across 17 suites (including config precedence and orderCode handling). |
+| Dual-mode runtime / fail-closed real mode | **DONE — PASS-AUTOMATED** | Explicit `--real` / `--simulator`; real mode returns `-32000` / `-32002` with no synthetic fallback. |
+| Revenue-after-submit SQLite gate | **DONE — PASS-AUTOMATED** | `data/sales.db` is written only for verified `PrintResult.Submitted`. |
+| Real album URL + decodable print QR | **DONE — PASS-AUTOMATED** | `RealSessionEngine.compose()` album wiring plus ZXing decode test on the composed 600-DPI output. |
+| Physical Canon DSLR | **GATED / BLOCKED ON OPERATOR AUTHORIZATION** | Requires safe connected-hardware shoot and Live View validation. Offline in dev kiosk. |
+| Physical DNP DS-RX1HS printer | **GATED / BLOCKED ON OPERATOR AUTHORIZATION** | Requires supervised spooler, borderless and 2-inch cut output validation. Offline in dev kiosk. |
+| Physical 16:10 touchscreen | **GATED / BLOCKED ON OPERATOR AUTHORIZATION** | Requires mounted kiosk touch/scaling validation on physical glass. |
+| Live production endpoints | **GATED / BLOCKED ON OPERATOR AUTHORIZATION** | Live PayOS settlement and live Neon/Cloudinary sync are not authorized. |
+| Commercial redistribution review | **BLOCKED — LEGAL SIGNOFF REQUIRED** | Canon native DLL and ONNX weight redistribution terms remain unresolved. |
+
+**Release decision: SOFTWARE CORE & REAL PAYMENT RESTORATION VERIFIED / HARDWARE LAB TESTING GATED.**
+
+This latest reviewer board supersedes older active-board snapshots below.
+
+## Historical reviewer board (2026-11-01, pre-payment update)
+
+| Task | Status | Evidence / next gate |
+|---|---|---|
+| Frontend 31-test regression & build | **DONE — PASS-AUTOMATED** | `npm test -- --run`: 31/31 across 7 files; `npm run build`: zero errors, 2,014 modules. |
+| Backend 60-test regression suite | **DONE — PASS-AUTOMATED** | `gradle.bat --offline test --console=plain`: 60/60 across 17 suites. |
+| Dual-mode runtime / fail-closed real mode | **DONE — PASS-AUTOMATED** | Explicit `--real` / `--simulator`; real mode returns `-32000` / `-32002` with no synthetic fallback. |
+| Revenue-after-submit SQLite gate | **DONE — PASS-AUTOMATED** | `data/sales.db` is written only for verified `PrintResult.Submitted`. |
+| Real album URL + decodable print QR | **DONE — PASS-AUTOMATED** | `RealSessionEngine.compose()` album wiring plus ZXing decode test on the composed 600-DPI output. |
+| PayOS official SDK parity | **DONE — PASS-SIMULATED** | `PayOsOfficialAdapter` wraps the official SDK path and fails closed when unconfigured; live merchant flow remains gated. |
+| Physical Canon DSLR | **GATED / BLOCKED ON OPERATOR AUTHORIZATION** | Requires safe connected-hardware shoot and Live View validation. |
+| Physical DNP DS-RX1HS printer | **GATED / BLOCKED ON OPERATOR AUTHORIZATION** | Requires supervised spooler, borderless and 2-inch cut output validation. |
+| Physical 16:10 touchscreen | **GATED / BLOCKED ON OPERATOR AUTHORIZATION** | Requires mounted kiosk touch/scaling validation. |
+| Live production endpoints | **GATED / BLOCKED ON OPERATOR AUTHORIZATION** | Live PayOS and Neon/Cloudinary operations are not authorized. |
+| Commercial redistribution review | **BLOCKED — LEGAL SIGNOFF REQUIRED** | Canon native DLL and ONNX weight redistribution terms remain unresolved. |
+
+**Release decision: READY FOR HARDWARE LAB TESTING / NOT YET PRODUCTION DEPLOYED.**
+
+This latest reviewer board supersedes older active-board snapshots below.
+
 ## Superseding active milestone board (2026-11-01)
 
 | Task | Status | Verification |

@@ -1,6 +1,16 @@
 # Tools Migration Matrix
 
-> **Superseding verified status — 2026-11-01:** The migrated Tools surface and its surrounding operator/customer contracts are **VERIFIED for the automated baseline**. Fresh frontend results are **29/29 tests across 7/7 files** with a successful production build; fresh backend results are **42/42 tests across 12/12 suites** with no failures/errors/skips. The baseline includes 11 customer screens, all 6 operator tabs, Tools and Settings. This verified label is bounded: Canon controls, DNP discovery/output, LUT/Beauty output comparison, production revenue/cloud operations, and physical touchscreen behavior still require their own authorized evidence.
+> **Superseding verification — Real Mode Payment Tools Restoration & Verification (2026-11-01):** Real-mode payment and diagnostic tools have been **RESTORED and VERIFIED in desktop runtime**:
+> - **Live Desktop Verification Harness (`tests/verify-real-payment.mjs`):** **PASS-REAL-MODE-DESKTOP** on 1280×800 and 1920×1200 viewports (`tests/real-payment-evidence/2026-11-01T08-40-13.800Z/`).
+> - **Payment Tools Integration:** `payment.createLink` and `payment.checkStatus` wired to official SDK client via `PayOsOfficialAdapter`.
+> - **Error -32001 Elimination:** Handled safely by returning `PENDING` instead of throwing -32001 when `orderCode` is null, synchronizing frontend polling, and defaulting `description`.
+> - **Server-Side QR Generator Tool:** ZXing `MultiFormatWriter` generates 1000×1000 base64 PNG data URLs in `RealSessionEngine.qrPng`.
+> - **Configuration Tools:** `DesktopBoothConfig` hierarchical loader (workspace `.env` < LocalAppData < process env) with masked diagnostics in `status()`.
+> - **Payment UI Parity:** Exact two-column layout, "Bước 3" eyebrow, "Thanh toán" title, "70.000 đ" formatted price, detail rows, QR status chip, customer bypass removal, and staff override via >=700ms header long-press.
+> - **Test Suite Evidence:** Frontend Vitest 34/34 passed (7 files); production build passed (2,014 modules); backend Gradle 62/62 passed (17 suites).
+> - **Hardware & Security Status:** Camera and printer remain offline in dev kiosk; physical payments/prints remain gated pending deployment approval; zero secrets logged or committed.
+
+> **Historical verified status — 2026-11-01 (superseded):** Baseline tools verified (29/29 frontend, 42/42 backend). Retained below for chronology.
 
 > **Parity status update — 2026-10-31 23:26:** The V2 Tools operator tab/surface is present as one of six operator tabs and bounded simulator/backend regression artifacts are available. Backend retained XML is green (**12 suites/42 tests**). This confirms only simulated/tool-contract coverage—not physical Canon controls, DNP discovery/output, LUT/Beauty output, production revenue/cloud actions, or complete V1 operator-tool parity. Fresh frontend regression is **27/28**, so Tools/subsystem presence must not be promoted to an unconditional release PASS.
 
@@ -156,9 +166,14 @@ In V1 context, "Tools" refers to:
 |---------------|-------------------|--------|-------|
 | **Settings Save** | `operator.updateSettings` IPC | **IMPLEMENTED** | 6 operator fields |
 | **Settings Load** | `operator.getSettings` IPC | **IMPLEMENTED** | Returns envelope |
-| **Session Start** | `session.start` IPC | **IMPLEMENTED** | Simulator flow |
-| **Payment Mock** | `payment.mockComplete` IPC | **IMPLEMENTED** | Simulator only |
-| **Layout Store** | `OperatorLayoutStore.kt` | **IMPLEMENTED** | JSON-based |
+| **Session Start** | `session.start` IPC | **IMPLEMENTED** | Simulator & Real mode flow |
+| **Payment Link Creation** | `payment.createLink` IPC | **IMPLEMENTED** | Real mode via `PayOsOfficialAdapter` with fallback description |
+| **Payment Status Polling** | `payment.checkStatus` IPC | **IMPLEMENTED** | Real mode via `PayOsOfficialAdapter`; safe `PENDING` return when orderCode is null |
+| **QR Code Generator** | `RealSessionEngine.qrPng` | **IMPLEMENTED** | Server-side ZXing QR code generator (1000×1000 base64 PNG) |
+| **Config Loader Tool** | `DesktopConfigLoader.load` | **IMPLEMENTED** | 3-tier hierarchical loader with masked diagnostics |
+| **Payment Mock** | `payment.mockComplete` IPC | **IMPLEMENTED** | Staff cash override in Real mode; synthetic approval in Simulator |
+| **Layout Store** | `OperatorLayoutStore.kt` & production-layouts | **IMPLEMENTED** | JSON-based production layouts (`strip-5x15`, `print-10x15`) |
+| **Desktop Test Tool** | `tests/verify-real-payment.mjs` | **IMPLEMENTED** | CDP-based mounted desktop runtime verification |
 
 ### 3.2 Partially Implemented
 

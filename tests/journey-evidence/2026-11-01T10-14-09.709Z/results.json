@@ -1,0 +1,46 @@
+{
+  "status": "FAIL",
+  "scope": "Live Tauri executable; DEMO journey plus REAL-mode payment display only",
+  "evidence": "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-14-09.709Z",
+  "checks": [
+    {
+      "name": "1280x800 catalog titles",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 atelier identity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 demo banner",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 no live charge UI",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "runner aborted",
+      "ok": false,
+      "detail": "Error: {\"exceptionId\":1,\"text\":\"Uncaught\",\"lineNumber\":0,\"columnNumber\":52,\"scriptId\":\"80\",\"exception\":{\"type\":\"object\",\"subtype\":\"error\",\"className\":\"SyntaxError\",\"description\":\"SyntaxError: Invalid or unexpected token\",\"objectId\":\"-1247265504160453056.2.2\"}}\n    at js (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:18:148)\n    at async demoJourney (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:25:651)\n    at async file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:30:168"
+    }
+  ],
+  "failures": [
+    {
+      "name": "runner aborted",
+      "detail": "Error: {\"exceptionId\":1,\"text\":\"Uncaught\",\"lineNumber\":0,\"columnNumber\":52,\"scriptId\":\"80\",\"exception\":{\"type\":\"object\",\"subtype\":\"error\",\"className\":\"SyntaxError\",\"description\":\"SyntaxError: Invalid or unexpected token\",\"objectId\":\"-1247265504160453056.2.2\"}}\n    at js (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:18:148)\n    at async demoJourney (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:25:651)\n    at async file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:30:168"
+    }
+  ],
+  "screenshots": [
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-14-09.709Z\\1280x800-start.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-14-09.709Z\\1280x800-layout.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-14-09.709Z\\1280x800-quantity-2.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-14-09.709Z\\1280x800-demo-payment.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-14-09.709Z\\1280x800-demo-live.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-14-09.709Z\\1280x800-demo-select.png"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "status": "FAIL",
+  "scope": "Live Tauri executable; DEMO journey plus REAL-mode payment display only",
+  "evidence": "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T14-06-35.966Z",
+  "checks": [
+    {
+      "name": "1280x800 Firebase catalog source",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 real Firestore layout names",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 clean unified start screen (no manual mode toggles)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "runner aborted",
+      "ok": false,
+      "detail": "Error: Timeout button /CH?M ?? B?T ??U/: LE SOUVENIR · Studio Kiosk\nLE SOUVENIR\n\nLE SOUVENIR · PHOTO ATELIER\n\n✓ Firebase Live (10 bố cục)\nChụp ảnh\nlấy ngay\nYours forever.\n\nGiữ lại những khoảnh khắc đẹp bên người thân và bạn bè.\n\nIG\n1 khung ảnh · Chạm để bắt đầu\n↗\nIG\n1 khung ảnh · Chạm để bắt đầu\n↗\nIG\n1 khung ảnh · Chạm để bắt đầu\n↗\nCHẠM ĐỂ BẮT ĐẦU →\n\nBỐ CỤC ẢNH\n\nLE SOUVENIR\nYours forever.\n10x15_4_anh_SPILCL\n1015_4_ILCL\n10x15_4_anh\n1015_4_base\n10x15_3_anh\n10x15_3_Sao\n5x15_2_anh\n515_2_base\n5x15_3_anh\n515_3_base\nLE SOUVENIR\n\nMỗi khoảnh khắc\nđều đáng nhớ.\n    at wait (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:19:163)\n    at async click (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:20:269)\n    at async setupToPayment (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:24:679)\n    at async demoJourney (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:25:34)\n    at async file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:30:168"
+    }
+  ],
+  "failures": [
+    {
+      "name": "runner aborted",
+      "detail": "Error: Timeout button /CH?M ?? B?T ??U/: LE SOUVENIR · Studio Kiosk\nLE SOUVENIR\n\nLE SOUVENIR · PHOTO ATELIER\n\n✓ Firebase Live (10 bố cục)\nChụp ảnh\nlấy ngay\nYours forever.\n\nGiữ lại những khoảnh khắc đẹp bên người thân và bạn bè.\n\nIG\n1 khung ảnh · Chạm để bắt đầu\n↗\nIG\n1 khung ảnh · Chạm để bắt đầu\n↗\nIG\n1 khung ảnh · Chạm để bắt đầu\n↗\nCHẠM ĐỂ BẮT ĐẦU →\n\nBỐ CỤC ẢNH\n\nLE SOUVENIR\nYours forever.\n10x15_4_anh_SPILCL\n1015_4_ILCL\n10x15_4_anh\n1015_4_base\n10x15_3_anh\n10x15_3_Sao\n5x15_2_anh\n515_2_base\n5x15_3_anh\n515_3_base\nLE SOUVENIR\n\nMỗi khoảnh khắc\nđều đáng nhớ.\n    at wait (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:19:163)\n    at async click (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:20:269)\n    at async setupToPayment (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:24:679)\n    at async demoJourney (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:25:34)\n    at async file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:30:168"
+    }
+  ],
+  "screenshots": [
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T14-06-35.966Z\\1280x800-start.png"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "status": "FAIL",
+  "scope": "Live Tauri executable; DEMO journey plus REAL-mode payment display only",
+  "evidence": "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T09-55-25.030Z",
+  "checks": [
+    {
+      "name": "runner aborted",
+      "ok": false,
+      "detail": "Error: No WebView CDP page\n    at connect (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:16:187)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async start (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:22:336)\n    at async file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:30:2"
+    }
+  ],
+  "failures": [
+    {
+      "name": "runner aborted",
+      "detail": "Error: No WebView CDP page\n    at connect (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:16:187)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async start (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:22:336)\n    at async file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:30:2"
+    }
+  ],
+  "screenshots": []
+}

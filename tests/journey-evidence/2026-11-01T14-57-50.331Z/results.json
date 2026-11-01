@@ -1,0 +1,19 @@
+{
+  "status": "FAIL",
+  "scope": "Live Tauri executable; DEMO journey plus REAL-mode payment display only",
+  "evidence": "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T14-57-50.331Z",
+  "checks": [
+    {
+      "name": "runner aborted",
+      "ok": false,
+      "detail": "Error: Timeout Firebase catalog: LE SOUVENIR · Studio Kiosk\n\nBackend response correlation/protocol mismatch\n\nKiểm tra lại trạng thái · Không gửi lại lệnh\nLE SOUVENIR\n\nLE SOUVENIR · PHOTO ATELIER\n\nChụp ảnh\nlấy ngay\nYours forever.\n\nGiữ lại những khoảnh khắc đẹp bên người thân và bạn bè.\n\nCHẠM ĐỂ BẮT ĐẦU →\n\nBỐ CỤC ẢNH\n\nLE SOUVENIR\nYours forever.\nLE SOUVENIR\n\nMỗi khoảnh khắc\nđều đáng nhớ.\n    at wait (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:8:651)\n    at async setupToPayment (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:17:42)\n    at async demoJourney (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:18:34)\n    at async file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:28:434"
+    }
+  ],
+  "failures": [
+    {
+      "name": "runner aborted",
+      "detail": "Error: Timeout Firebase catalog: LE SOUVENIR · Studio Kiosk\n\nBackend response correlation/protocol mismatch\n\nKiểm tra lại trạng thái · Không gửi lại lệnh\nLE SOUVENIR\n\nLE SOUVENIR · PHOTO ATELIER\n\nChụp ảnh\nlấy ngay\nYours forever.\n\nGiữ lại những khoảnh khắc đẹp bên người thân và bạn bè.\n\nCHẠM ĐỂ BẮT ĐẦU →\n\nBỐ CỤC ẢNH\n\nLE SOUVENIR\nYours forever.\nLE SOUVENIR\n\nMỗi khoảnh khắc\nđều đáng nhớ.\n    at wait (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:8:651)\n    at async setupToPayment (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:17:42)\n    at async demoJourney (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:18:34)\n    at async file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:28:434"
+    }
+  ],
+  "screenshots": []
+}

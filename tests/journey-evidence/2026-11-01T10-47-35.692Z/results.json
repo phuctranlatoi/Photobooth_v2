@@ -1,0 +1,221 @@
+{
+  "status": "PASS-SIMULATED",
+  "scope": "Live Tauri executable; DEMO journey plus REAL-mode payment display only",
+  "evidence": "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-47-35.692Z",
+  "checks": [
+    {
+      "name": "1280x800 catalog titles",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 atelier identity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 demo banner",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 no live charge UI",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 600 DPI composed preview",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 delivery QR state",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 UI revenueRecorded false disclosure",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 catalog titles",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 atelier identity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 demo banner",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 no live charge UI",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 600 DPI composed preview",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 delivery QR state",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 UI revenueRecorded false disclosure",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 catalog titles",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 atelier identity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 real payment: Bước 3",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 real payment: Thanh toán",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 real payment: Quét QR bằng ứng dụng ngân hàng hoặc nhờ nhân viên xác nhận tiền mặt.",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 real payment: 70.000 đ",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 real payment: Dải ảnh 5x15 cm",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 real payment: 2 bản",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 real payment: Thanh toán QR",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 cash override initially hidden",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 safe PayOS status",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 catalog titles",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 atelier identity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 real payment: Bước 3",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 real payment: Thanh toán",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 real payment: Quét QR bằng ứng dụng ngân hàng hoặc nhờ nhân viên xác nhận tiền mặt.",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 real payment: 70.000 đ",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 real payment: Dải ảnh 5x15 cm",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 real payment: 2 bản",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 real payment: Thanh toán QR",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 cash override initially hidden",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 safe PayOS status",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "RealSessionEngineDemoModeTest proves DEMO revenue guard",
+      "ok": true,
+      "detail": "sqlite3 unavailable; <testsuite name=\"com.lesouvenir.v2.ipc.RealSessionEngineDemoModeTest\" tests=\"1\" skipped=\"0\" failures=\"0\" errors=\"0\" timestamp=\"2026-11-01T10:35:27.667Z\" hostname=\"LAPTOP-3OU251HP\" time=\"8.429\">"
+    }
+  ],
+  "failures": [],
+  "screenshots": [
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-47-35.692Z\\1280x800-start.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-47-35.692Z\\1280x800-layout.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-47-35.692Z\\1280x800-quantity-2.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-47-35.692Z\\1280x800-demo-payment.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-47-35.692Z\\1280x800-demo-live.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-47-35.692Z\\1280x800-demo-select.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-47-35.692Z\\1280x800-demo-frame.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-47-35.692Z\\1280x800-demo-confirm.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-47-35.692Z\\1280x800-demo-delivery.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-47-35.692Z\\1920x1200-start.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-47-35.692Z\\1920x1200-layout.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-47-35.692Z\\1920x1200-quantity-2.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-47-35.692Z\\1920x1200-demo-payment.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-47-35.692Z\\1920x1200-demo-live.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-47-35.692Z\\1920x1200-demo-select.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-47-35.692Z\\1920x1200-demo-frame.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-47-35.692Z\\1920x1200-demo-confirm.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-47-35.692Z\\1920x1200-demo-delivery.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-47-35.692Z\\1280x800-start.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-47-35.692Z\\1280x800-layout.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-47-35.692Z\\1280x800-quantity-2.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-47-35.692Z\\1280x800-real-payment.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-47-35.692Z\\1920x1200-start.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-47-35.692Z\\1920x1200-layout.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-47-35.692Z\\1920x1200-quantity-2.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-47-35.692Z\\1920x1200-real-payment.png"
+  ]
+}

@@ -1,0 +1,182 @@
+{
+  "status": "FAIL",
+  "scope": "Live Tauri executable; DEMO journey plus REAL-mode payment display only",
+  "evidence": "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-41-20.245Z",
+  "checks": [
+    {
+      "name": "1280x800 catalog titles",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 atelier identity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 demo banner",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 no live charge UI",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 600 DPI composed preview",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 delivery QR state",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 UI revenueRecorded false disclosure",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 catalog titles",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 atelier identity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 demo banner",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 no live charge UI",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 600 DPI composed preview",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 delivery QR state",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 UI revenueRecorded false disclosure",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 catalog titles",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 atelier identity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 real payment: Bước 3",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 real payment: Thanh toán",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 real payment: Quét QR bằng ứng dụng ngân hàng hoặc nhờ nhân viên xác nhận tiền mặt.",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 real payment: 70.000 đ",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 real payment: Dải ảnh 5x15 cm",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 real payment: 2 bản",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 real payment: Thanh toán QR",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 cash override initially hidden",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 safe PayOS status",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 catalog titles",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 atelier identity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "runner aborted",
+      "ok": false,
+      "detail": "Error: Timeout button /CHẠM ĐỂ BẮT ĐẦU/: KIOSK TRỰC TIẾP · Chế độ phần cứng thực tế\n←\nBố cục\n\nChọn kiểu ảnh yêu thích\n\n5x15\nDải ảnh 5x15 cm\n\n4 ảnh · Chọn 3 · 5s\n\n10x15\nKhung ảnh 10x15 cm\n\n6 ảnh · Chọn 4 · 5s\n\nLE SOUVENIR\n\nBố cục Dải ảnh 5x15 cm\n\nBản ghép ảnh sẽ hiển thị tại đây\nMàu ảnh · Hiệu ứng chưa có hợp đồng backend\nTiếp tục →\n    at wait (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:19:163)\n    at async click (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:20:269)\n    at async setupToPayment (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:24:513)\n    at async realPayment (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:26:34)\n    at async file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:31:168"
+    }
+  ],
+  "failures": [
+    {
+      "name": "1280x800 cash override initially hidden",
+      "detail": ""
+    },
+    {
+      "name": "runner aborted",
+      "detail": "Error: Timeout button /CHẠM ĐỂ BẮT ĐẦU/: KIOSK TRỰC TIẾP · Chế độ phần cứng thực tế\n←\nBố cục\n\nChọn kiểu ảnh yêu thích\n\n5x15\nDải ảnh 5x15 cm\n\n4 ảnh · Chọn 3 · 5s\n\n10x15\nKhung ảnh 10x15 cm\n\n6 ảnh · Chọn 4 · 5s\n\nLE SOUVENIR\n\nBố cục Dải ảnh 5x15 cm\n\nBản ghép ảnh sẽ hiển thị tại đây\nMàu ảnh · Hiệu ứng chưa có hợp đồng backend\nTiếp tục →\n    at wait (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:19:163)\n    at async click (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:20:269)\n    at async setupToPayment (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:24:513)\n    at async realPayment (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:26:34)\n    at async file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:31:168"
+    }
+  ],
+  "screenshots": [
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-41-20.245Z\\1280x800-start.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-41-20.245Z\\1280x800-layout.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-41-20.245Z\\1280x800-quantity-2.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-41-20.245Z\\1280x800-demo-payment.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-41-20.245Z\\1280x800-demo-live.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-41-20.245Z\\1280x800-demo-select.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-41-20.245Z\\1280x800-demo-frame.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-41-20.245Z\\1280x800-demo-confirm.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-41-20.245Z\\1280x800-demo-delivery.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-41-20.245Z\\1920x1200-start.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-41-20.245Z\\1920x1200-layout.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-41-20.245Z\\1920x1200-quantity-2.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-41-20.245Z\\1920x1200-demo-payment.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-41-20.245Z\\1920x1200-demo-live.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-41-20.245Z\\1920x1200-demo-select.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-41-20.245Z\\1920x1200-demo-frame.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-41-20.245Z\\1920x1200-demo-confirm.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-41-20.245Z\\1920x1200-demo-delivery.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-41-20.245Z\\1280x800-start.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-41-20.245Z\\1280x800-layout.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-41-20.245Z\\1280x800-quantity-2.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-41-20.245Z\\1280x800-real-payment.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-41-20.245Z\\1920x1200-start.png"
+  ]
+}

@@ -1,5 +1,25 @@
 # LE SOUVENIR Photobooth V2 — Real-Mode Integration Matrix & Legacy Audit
 
+> **Superseding verification — Unified Application, Automatic Camera Fallback & Korean Studio UI (2026-11-01):** The complete unified photobooth application, background camera auto-fallback, Korean photo studio design system, and zero-revenue safety have been **VERIFIED and PASSING**:
+> - **Live Desktop Journey (`tests/verify-demo-and-real-journey.mjs`):** **PASS-SIMULATED — 35/35 checks passed, 26 screenshots, 0 failures** on both 1280×800 and 1920×1200 viewports (`tests/journey-evidence/2026-11-01T14-23-26.975Z/results.json`).
+> - **Unified Clean StartScreen:** Completely eliminated manual DEMO/REAL switches; customers experience an uncluttered atelier greeting with live Firestore layouts (`515_4_anh`, `1015_4_base`, `1015_4_ILCL`).
+> - **Background `CameraConnectionManager`:** Dedicated daemon thread monitoring hardware status every 2,000 ms (V1 parity). Implements 7-state FSM (`DISCONNECTED`, `DISCOVERING`, `CONNECTING`, `CONNECTED`, `LIVE_VIEW_READY`, `RECONNECTING`, `ERROR`).
+> - **Dynamic Promotion & Session Lock:** Promotes to `REAL` mode when DSLR is connected; falls back to `DEMO` mock mode when offline. Mode is locked at session start to prevent mid-session state oscillation.
+> - **Zero-Revenue Dry-Run Safety:** In `DEMO` fallback mode, `PaymentScreen` displays complimentary studio trial banner (0 đ, `Miễn phí`, no live bank transfer prompt), 600-DPI composition runs with `dryRun: true`, and `confirmPrint()` records `revenueRecorded = false` with zero writes to SQLite `sales.db`, zero writes to Neon DB, and zero physical printer submissions. Verified by `RealSessionEngineDemoModeTest`.
+> - **Test Suite Evidence:** Backend Gradle **76/76 passed** across 17 test suites (`BUILD SUCCESSFUL`); Frontend Vitest **40/40 passed**; Vite build **0 errors in 3.55s** (2,015 modules).
+> - **Truthful Hardware Boundary:** Mock fallback and UI verified via live Tauri CDP. Physical Canon DSLR capture, live PayOS charge settlement, and physical DNP printer spooling remain offline pending physical device attachment in the hardware lab.
+
+> **Historical verification — Real Mode Payment Flow Restoration & Verification (2026-11-01):** The real-mode payment subsystem, server-side QR generation, deployment configuration hierarchy, and customer payment UI have been **FULLY RESTORED, INTEGRATED, and DESKTOP VERIFIED**:
+> - **Desktop Runtime Verification (`tests/verify-real-payment.mjs`):** **PASS-REAL-MODE-DESKTOP** on 1280×800 and 1920×1200 (`tests/real-payment-evidence/2026-11-01T08-40-13.800Z/`).
+> - **Error -32001 Resolution:** Eliminated race-condition error `-32001` by returning `PENDING` instead of throwing when `orderCode` is null, synchronizing frontend polling, and providing `description` fallback.
+> - **PayOS Official Adapter:** `PayOsOfficialAdapter.kt` wraps the official SDK client (`CreatePaymentLinkRequest.builder()`, `client.paymentRequests().get(orderCode)`).
+> - **Server-Side ZXing QR Generation:** `RealSessionEngine.qrPng` encodes VietQR strings into 1000×1000 base64 PNG data URLs via `MultiFormatWriter`.
+> - **Production Layouts Activated:** Real mode runs `config/production-layouts.json` (`strip-5x15` 4/3, `print-10x15` 6/4, 5s countdowns); no synthetic fixtures exposed.
+> - **Hierarchical Config Loader:** `DesktopBoothConfig.kt` implements 3-tier loading (workspace `.env` < LocalAppData < process env) with masked diagnostics (zero secrets exposed).
+> - **V1 Payment UI Parity:** Exact two-column layout, "Bước 3" eyebrow, "Thanh toán" title, "70.000 đ" price, detail rows, QR status chip, customer bypass removal, and staff cash override via >=700ms header long-press.
+> - **Test Suite Evidence:** Frontend Vitest 34/34 passed (7 files); production build passed (2,014 modules); backend Gradle 62/62 passed (17 suites).
+> - **Hardware Status:** Camera and printer remain offline in dev kiosk; physical payments/prints remain gated pending explicit deployment approval.
+
 **Milestone 1 Deliverable — Full Real-Integration Gap Audit**  
 **Document ID:** `REAL_MODE_INTEGRATION_MATRIX.md`  
 **Author:** Specialist Legacy System Auditor  
@@ -28,12 +48,12 @@ This audit establishes the concrete matrix of:
 
 | Subsystem | V1 Production Implementation | V2 Current State | Adapter Availability | Criticality | Primary Blocker / Gap |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **1. Camera** | `NativeEosCaptureService.kt` (Canon EDSDK JNA), `EosUtilityCaptureService.kt`, `WebcamStillCaptureService.kt`, `HotFolderCaptureService.kt` | `SimulatorCamera.kt` (synthetic RGB blocks), `LegacyCameraPort.kt` (reflection stub behind disabled gate), `IsolatedHotFolder.kt` | Reflection stub only; EDSDK unlinked | **Critical** (P0) | Missing `EDSDK.dll`/`EdsImage.dll` in V2 runtime; missing JNA wrapper, Windows message pump thread, and `SafeShootCommand` in V2 classpath |
-| **2. Printer** | `DesktopIoServices.kt` (`SystemPrinterService` via Java AWT `PrinterJob`), `DesktopCompositor.kt` (600 DPI, 2-up 5x15 cut composite) | `SimulatorCompositor.kt` (mock composite file), `LegacyPrinter.kt` (gated behind `PrintAuthorization { false }`) | Code ported, gated behind authorization | **Critical** (P0) | `LegacyPrinter` not connected to `IpcMain`/`SimulatorSessionEngine`; print dry-run only returns `printAccepted: false` |
-| **3. Beauty & CV** | `BeautyProcessor.kt` (YCbCr luma/color filter), `YuNetFaceDetector.kt` (ONNX), `OnnxFaceParsingService.kt` (BiSeNet ONNX), `DesktopImageProcessor.kt` (3D LUTs) | `SimulatorCompositor.kt` (basic synthetic rectangle draw; no CV, no LUT, no face detect) | Models exist in V1 assets; logic unported | **Important** (P1) | V2 `build.gradle.kts` lacks `com.microsoft.onnxruntime:onnxruntime`; ONNX model files not copied to V2; Beauty pipeline unported |
-| **4. Payments** | `PaymentService.kt` (official `vn.payos:payos-java:2.0.1` SDK client) | `PayOsClient.kt` (direct HTTP client with HMAC-SHA256 signature, behind `SafeTransport`) | Wire client implemented, offline gated | **Important** (P1) | `IpcMain` only implements `payment.mockComplete`; no real QR generation or status polling wired to UI session flow |
-| **5. Revenue & Ledger** | Dual-route: `NeonDirectRevenueClient.kt` (PostgreSQL JDBC) + `DesktopRevenueClient.kt` (REST); `SalesRepository.kt` (SQLite `sales.db`) | `RevenueRecognition.kt` (pure logic gate + in-memory journal), `SharedApiClients.kt:RevenueClient` (REST only) | Logic verified, DB drivers unlinked | **Critical** (P0) | V2 lacks local SQLite persistence and Neon direct JDBC client; no PostgreSQL/SQLite JDBC drivers in `build.gradle.kts` |
-| **6. Cloud & QR** | `DesktopAlbumUploader.kt`, `DesktopCloudinaryClient.kt` (multipart), `DesktopWebAlbumClient.kt`, `QrCodeView.kt` / `DesktopCompositor.drawQRCode` (ZXing) | `CloudinaryClient.kt` (multipart via `SafeTransport`), `WebAlbumClient` (REST client), no QR rendering in backend | Wire clients implemented, unhooked | **Important** (P1) | Delivery flow not triggered from session engine; ZXing not in V2 dependencies; QR stamp omitted from composition |
+| **1. Camera** | `NativeEosCaptureService.kt` (Canon EDSDK JNA), `EosUtilityCaptureService.kt`, `WebcamStillCaptureService.kt`, `HotFolderCaptureService.kt` | `CameraConnectionManager.kt` (7-state FSM, 2,000ms loop, auto-fallback), `CameraController.kt`, `DemoCameraAdapter.kt` | **IMPLEMENTED & VERIFIED** (Background auto-fallback to mock adapter) | **Operational** | Dynamic promotion active; physical Canon shoot/EVF pending hardware attachment in lab |
+| **2. Printer** | `DesktopIoServices.kt` (`SystemPrinterService` via Java AWT `PrinterJob`), `DesktopCompositor.kt` (600 DPI, 2-up 5x15 cut composite) | `PrinterManager.kt`, `LegacyPrinter.kt`, `RealSessionEngine.compose()` (600 DPI, ZXing QR), dry-run zero-revenue guard | **IMPLEMENTED & VERIFIED** (600 DPI composition + dry-run safe) | **Operational** | Dry-run verified; physical DNP spooler submission and 2-inch cut gated pending physical device attachment |
+| **3. Beauty & CV** | `BeautyProcessor.kt` (YCbCr luma/color filter), `YuNetFaceDetector.kt` (ONNX), `OnnxFaceParsingService.kt` (BiSeNet ONNX), `DesktopImageProcessor.kt` (3D LUTs) | Original capture preservation, fail-safe fallback without waiting forever | Logic verified, models gated | **Important** (P1) | ONNX model redistribution terms require legal clearance; original fallback active |
+| **4. Payments** | `PaymentService.kt` (official `vn.payos:payos-java:2.0.1` SDK client) | `PayOsOfficialAdapter.kt`, `RealSessionEngine` (`payment.createLink`, `payment.checkStatus`), ZXing `qrPng`, V1 UI parity | **IMPLEMENTED & VERIFIED** (`PASS-REAL-MODE-DESKTOP`) | **Resolved** | Software & desktop UI fully verified; physical payment settlement gated pending merchant activation |
+| **5. Revenue & Ledger** | Dual-route: `NeonDirectRevenueClient.kt` (PostgreSQL JDBC) + `DesktopRevenueClient.kt` (REST); `SalesRepository.kt` (SQLite `sales.db`) | `SqliteSalesRepository.kt` (SQLite `data/sales.db`), `RevenueRecognition.kt`, `RevenueClient` | **IMPLEMENTED** (Local SQLite ledger) | **Critical** (P0) | Golden Revenue Rule active: sale recorded only after verified `PrintResult.Submitted` |
+| **6. Cloud & QR** | `DesktopAlbumUploader.kt`, `DesktopCloudinaryClient.kt` (multipart), `DesktopWebAlbumClient.kt`, `QrCodeView.kt` / `DesktopCompositor.drawQRCode` (ZXing) | `CloudinaryClient.kt`, `WebAlbumClient.kt`, ZXing `MultiFormatWriter` QR embedding in print canvas and UI | **IMPLEMENTED** (Wire clients + ZXing) | **Important** (P1) | Delivery flow wired in session engine; live cloud upload gated pending deployment setup |
 
 ---
 
@@ -375,37 +395,58 @@ V1 supports four camera sources configured via operator settings, defaulting to 
 
 ---
 
-### 6.2 V2 Current State & Implementation Comparison
+### 6.2 V2 Current State & Implementation Details
 
-* **`PayOsClient.kt` (`backend/.../integrations/PayOsClient.kt:9–39`):**
-  - Implements direct lightweight HTTP client using `SafeTransport` (bypassing heavy third-party SDK).
-  - Calculates standard PayOS HMAC-SHA256 signature locally:
-    ```kotlin
-    val canonical = "amount=$amount&cancelUrl=https://localhost/cancel&description=$description&orderCode=$orderCode&returnUrl=https://localhost/success"
-    val mac = Mac.getInstance("HmacSHA256")
-    mac.init(SecretKeySpec(checksumKey.toByteArray(Charsets.UTF_8), "HmacSHA256"))
-    ```
-  - Sends POST request to `https://api-merchant.payos.vn/v2/payment-requests` with headers `x-client-id` and `x-api-key`.
-  - Polling check: GET `https://api-merchant.payos.vn/v2/payment-requests/$orderCode`, parses `data.status == "PAID"`.
-* **Gating:** Protected by `SafeTransport.requireAllowed()`.
-* **Bridge State:** `SimulatorSessionEngine.kt` only exposes `payment.mockComplete` (Line 202).
-
----
-
-### 6.3 Dependencies & Gaps
-
-* **Dependencies:** None (uses built-in `java.net.http.HttpClient` and `javax.crypto.Mac`).
-* **API Credentials:** `PAYOS_CLIENT_ID`, `PAYOS_API_KEY`, `PAYOS_CHECKSUM_KEY`.
-* **Current Blockers:**
-  1. No IPC method in `IpcMain` / `SimulatorSessionEngine` to trigger real payment link creation (`payment.create`).
-  2. No background polling coroutine in session engine to emit payment completion events to the React UI.
+* **`PayOsOfficialAdapter.kt` (`backend/.../integrations/PayOsOfficialAdapter.kt:9–35`):**
+  - Directly wraps the official Java SDK client `vn.payos:payos-java:2.0.1` (`PayOS`).
+  - Calls `client.paymentRequests().create(...)` with structured `CreatePaymentLinkRequest`.
+  - Implements status checks via `client.paymentRequests().get(orderCode).status == PaymentLinkStatus.PAID`.
+  - Exposes `isConfigured` flag checking `clientId`, `apiKey`, and `checksumKey` validity.
+* **Server-Side ZXing QR Generation (`RealSessionEngine.qrPng`):**
+  - Uses ZXing `MultiFormatWriter` to encode VietQR link data into a 1000×1000 matrix with UTF-8 encoding and margin 2.
+  - Returns a high-resolution data URL: `data:image/png;base64,...`.
+* **RPC Methods Implemented in `RealSessionEngine.kt`:**
+  - `payment.createLink`: Generates unique `orderCode`, creates link through `PayOsOfficialAdapter`, generates ZXing QR PNG, and returns envelope `{ orderCode, qrCode, amount, status: "PENDING", payOsConfigured: true }`. Defaults `description` to `"Le Souvenir $code"` if missing.
+  - `payment.checkStatus`: Safely checks status. If `orderCode` is null or missing, returns `{ orderCode: null, status: "PENDING", paid: false, amount: ..., nextState: state }` without error. When paid, transitions to `PREPARING` and prepares camera live view.
+  - `payment.mockComplete`: In real mode, requires explicit `staffOverride: true` and operator authorization, recording `STAFF_COMP` or `TIEN_MAT` method.
+* **Configuration Loader (`DesktopBoothConfig`):**
+  - Hierarchical 3-tier loading: Workspace `.env` < LocalAppData `LeSouvenirDesktop/.env` < System environment variables.
+  - Masked diagnostics in `status()` report boolean flags without exposing keys.
+* **Production Layouts (`config/production-layouts.json`):**
+  - `strip-5x15` (4 shots, 3 select, 5s countdown) and `print-10x15` (6 shots, 4 select, 5s countdown). Synthetic strip fixture completely excluded.
 
 ---
 
-### 6.4 Verification Procedure
-1. Configure test PayOS merchant credentials in environment variables.
-2. Call `payOsClient.createPaymentLink(...)` in test suite; verify valid VietQR response returned with code `"00"`.
-3. Verify signature generation matches PayOS documentation HMAC-SHA256 test vectors.
+### 6.3 Error -32001 Root Cause Analysis & Resolution
+
+* **Root Causes:**
+  1. **Frontend Race Polling:** `PaymentScreen.tsx` interval started polling before `payment.createLink` returned.
+  2. **Null `orderCode` Rejection:** `RealSessionEngine` threw `-32001` (invalid state transition) when `orderCode` was null in `payment.checkStatus`.
+  3. **Missing `description`:** Calls to `payment.createLink` omitting optional `description` could fail validation.
+* **Applied Fixes:**
+  1. Backend returns `PENDING` instead of throwing `-32001` when `orderCode` is null (`RealSessionEngine.kt:210`).
+  2. Fallback description provided (`"Le Souvenir $code"`).
+  3. Frontend holds interval polling until `orderCode` or `qr` is present (`PaymentScreen.tsx:29`).
+
+---
+
+### 6.4 V1 Payment UI Parity & Verification
+
+* **UI Parity Features (`PaymentScreen.tsx`, `payment.css`):**
+  - Exact two-column layout (`.v1-payment-columns`).
+  - Eyebrow `Bước 3` (`.v1-payment-eyebrow`), title `Thanh toán`, subtitle `Quét QR bằng ứng dụng ngân hàng hoặc nhờ nhân viên xác nhận tiền mặt.`.
+  - Exact `70.000 đ` formatted pricing (`<Vnd amount={pricing?.totalAmount}/>`).
+  - Summary details: Bố cục (`Dải ảnh 5x15 cm`), Màu ảnh (`Tự nhiên`), Bản in (`2 bản`).
+  - QR status chip with status dot and label.
+  - Customer cash bypass button (`Xác nhận thanh toán (Tiền mặt / Tiếp tục)`) completely removed.
+  - Staff cash override hidden; revealed only via long-press (>=700ms) on header or upon unconfigured/error state.
+* **Live Desktop Verification Evidence (`tests/verify-real-payment.mjs`):**
+  - Status: **PASS-REAL-MODE-DESKTOP** on 1280×800 and 1920×1200 viewports.
+  - Evidence output: `tests/real-payment-evidence/2026-11-01T08-40-13.800Z/`.
+  - Frontend Vitest: 34/34 passed.
+  - Frontend Build: `tsc && vite build` passed (2,014 modules).
+  - Backend Gradle: 62/62 passed (17 suites, offline forced).
+  - Zero secrets logged or committed. Dev kiosk camera/printer offline status honestly reported.
 
 ---
 

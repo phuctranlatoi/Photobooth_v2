@@ -1,0 +1,19 @@
+{
+  "status": "FAIL",
+  "scope": "Live Tauri executable; DEMO journey plus REAL-mode payment display only",
+  "evidence": "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T09-55-35.086Z",
+  "checks": [
+    {
+      "name": "runner aborted",
+      "ok": false,
+      "detail": "Error: Timeout catalog: DEMO · Không có thanh toán hoặc in ảnh thật\nLE SOUVENIR\n\nLE SOUVENIR · Studio Chụp Ảnh Kỷ Niệm\n\nCHẾ ĐỘ THỬ NGHIỆM · Demo Studio (Không cần máy ảnh)\nChụp ảnh\nlấy ngay\n\nGiữ lại những khoảnh khắc đẹp bên người thân và bạn bè.\n\nCHẠM ĐỂ BẮT ĐẦU →\nDEMO · Không thu tiền, không in ảnh thật\n\nBỐ CỤC ẢNH\n\n5x15\nSynthetic strip fixture\n10x15\nSynthetic grid fixture\nLE SOUVENIR\n\nMỗi khoảnh khắc\nđều đáng nhớ.\n    at wait (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:19:149)\n    at async setupToPayment (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:24:42)\n    at async demoJourney (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:25:34)\n    at async file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:30:173"
+    }
+  ],
+  "failures": [
+    {
+      "name": "runner aborted",
+      "detail": "Error: Timeout catalog: DEMO · Không có thanh toán hoặc in ảnh thật\nLE SOUVENIR\n\nLE SOUVENIR · Studio Chụp Ảnh Kỷ Niệm\n\nCHẾ ĐỘ THỬ NGHIỆM · Demo Studio (Không cần máy ảnh)\nChụp ảnh\nlấy ngay\n\nGiữ lại những khoảnh khắc đẹp bên người thân và bạn bè.\n\nCHẠM ĐỂ BẮT ĐẦU →\nDEMO · Không thu tiền, không in ảnh thật\n\nBỐ CỤC ẢNH\n\n5x15\nSynthetic strip fixture\n10x15\nSynthetic grid fixture\nLE SOUVENIR\n\nMỗi khoảnh khắc\nđều đáng nhớ.\n    at wait (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:19:149)\n    at async setupToPayment (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:24:42)\n    at async demoJourney (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:25:34)\n    at async file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:30:173"
+    }
+  ],
+  "screenshots": []
+}

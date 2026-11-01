@@ -1,0 +1,31 @@
+{
+  "status": "FAIL",
+  "scope": "Live Tauri executable; DEMO journey plus REAL-mode payment display only",
+  "evidence": "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-38-33.831Z",
+  "checks": [
+    {
+      "name": "1280x800 catalog titles",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 atelier identity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "runner aborted",
+      "ok": false,
+      "detail": "Error: Timeout button /CHẾ ĐỘ CHỤP THỬ \\(DEMO\\)/: KIOSK TRỰC TIẾP · Chế độ phần cứng thực tế\nLE SOUVENIR\n\nLE SOUVENIR · Studio Chụp Ảnh Kỷ Niệm\n\nCHẾ ĐỘ THỬ NGHIỆM · Demo Studio (Không cần máy ảnh)\nChụp ảnh\nlấy ngay\n\nGiữ lại những khoảnh khắc đẹp bên người thân và bạn bè.\n\nMáy ảnh chưa kết nối\n\nVẫn có thể khám phá studio mà không cần máy ảnh, thanh toán hay máy in thật.\n\nCHẾ ĐỘ PHẦN CỨNG (REAL) →\nCHẠM ĐỂ BẮT ĐẦU →\nDEMO · Không thu tiền, không in ảnh thật\n\nBỐ CỤC ẢNH\n\n5x15\nDải ảnh 5x15 cm\n10x15\nKhung ảnh 10x15 cm\nLE SOUVENIR\n\nMỗi khoảnh khắc\nđều đáng nhớ.\n    at wait (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:19:163)\n    at async click (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:20:269)\n    at async setupToPayment (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:24:388)\n    at async demoJourney (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:25:34)\n    at async file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:30:168"
+    }
+  ],
+  "failures": [
+    {
+      "name": "runner aborted",
+      "detail": "Error: Timeout button /CHẾ ĐỘ CHỤP THỬ \\(DEMO\\)/: KIOSK TRỰC TIẾP · Chế độ phần cứng thực tế\nLE SOUVENIR\n\nLE SOUVENIR · Studio Chụp Ảnh Kỷ Niệm\n\nCHẾ ĐỘ THỬ NGHIỆM · Demo Studio (Không cần máy ảnh)\nChụp ảnh\nlấy ngay\n\nGiữ lại những khoảnh khắc đẹp bên người thân và bạn bè.\n\nMáy ảnh chưa kết nối\n\nVẫn có thể khám phá studio mà không cần máy ảnh, thanh toán hay máy in thật.\n\nCHẾ ĐỘ PHẦN CỨNG (REAL) →\nCHẠM ĐỂ BẮT ĐẦU →\nDEMO · Không thu tiền, không in ảnh thật\n\nBỐ CỤC ẢNH\n\n5x15\nDải ảnh 5x15 cm\n10x15\nKhung ảnh 10x15 cm\nLE SOUVENIR\n\nMỗi khoảnh khắc\nđều đáng nhớ.\n    at wait (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:19:163)\n    at async click (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:20:269)\n    at async setupToPayment (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:24:388)\n    at async demoJourney (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:25:34)\n    at async file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:30:168"
+    }
+  ],
+  "screenshots": [
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T10-38-33.831Z\\1280x800-start.png"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "status": "FAIL",
+  "scope": "REAL runtime desktop/WebView; no payment completion, hardware capture, print, upload, or staff override executed",
+  "evidence": "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\real-payment-evidence\\2026-11-01T08-38-00.480Z",
+  "views": [
+    {
+      "view": "1280x800",
+      "catalogScreenshot": "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\real-payment-evidence\\2026-11-01T08-38-00.480Z\\1280x800-catalog.png",
+      "paymentScreenshot": "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\real-payment-evidence\\2026-11-01T08-38-00.480Z\\1280x800-payment-staff-override-visible.png",
+      "qrState": {
+        "present": true,
+        "text": "!\nChưa bật thanh toán QR\n\nNhân viên có thể xác nhận tiền mặt để tiếp tục phiên chụp.",
+        "image": false
+      },
+      "staffOverrideVisible": true
+    }
+  ],
+  "failures": [
+    {
+      "view": "1280x800",
+      "message": "Missing real catalog title: Dải ảnh 5x15 cm",
+      "detail": "SIMULATOR · Không có thanh toán hoặc in ảnh thật\nLE SOUVENIR\n\nPHOTOBOOTH · KỶ NIỆM CỦA BẠN\n\nChụp ảnh\nlấy ngay\n\nGiữ lại những khoảnh khắc đẹp bên người thân và bạn bè.\n\nChọn bố cục\nChụp ảnh\nIn ảnh & QR\nCHẠM ĐỂ BẮT ĐẦU →\nSIMULATOR · Không thu tiền, không in ảnh thật\n\nBỐ CỤC ẢNH\n\nLE SOUVENIR\n\nMỗi khoảnh khắc\nđều đáng nhớ."
+    },
+    {
+      "view": "1280x800",
+      "message": "Missing real catalog title: Khung ảnh 10x15 cm",
+      "detail": "SIMULATOR · Không có thanh toán hoặc in ảnh thật\nLE SOUVENIR\n\nPHOTOBOOTH · KỶ NIỆM CỦA BẠN\n\nChụp ảnh\nlấy ngay\n\nGiữ lại những khoảnh khắc đẹp bên người thân và bạn bè.\n\nChọn bố cục\nChụp ảnh\nIn ảnh & QR\nCHẠM ĐỂ BẮT ĐẦU →\nSIMULATOR · Không thu tiền, không in ảnh thật\n\nBỐ CỤC ẢNH\n\nLE SOUVENIR\n\nMỗi khoảnh khắc\nđều đáng nhớ."
+    },
+    {
+      "view": "runner",
+      "message": "Runner aborted",
+      "detail": "Error: Timeout waiting for button /Quay lại/; body=KIOSK TRỰC TIẾP · Chế độ phần cứng thực tế\n←\nBước 3\nThanh toán\n\nQuét QR bằng ứng dụng ngân hàng hoặc nhờ nhân viên xác nhận tiền mặt.\n\nSố tiền cần thanh toán\n\n70.000 đ\nBố cục\nDải ảnh 5x15 cm\nMàu ảnh\nTự nhiên\nBản in\n2 bản\nThanh toán QR\nChưa sẵn sàng\n!\nChưa bật thanh toán QR\n\nNhân viên có thể xác nhận tiền mặt để tiếp tục phiên chụp.\n\nNhân viên xác nhận tiền mặt\n    at wait (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-real-payment.mjs:20:149)\n    at async clickText (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-real-payment.mjs:21:269)\n    at async file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-real-payment.mjs:63:92"
+    }
+  ],
+  "observations": [
+    {
+      "view": "all",
+      "message": "Used existing Vite server",
+      "detail": "http://127.0.0.1:1420"
+    },
+    {
+      "view": "1280x800",
+      "message": "QR panel state",
+      "detail": "{\"present\":true,\"text\":\"!\\nChưa bật thanh toán QR\\n\\nNhân viên có thể xác nhận tiền mặt để tiếp tục phiên chụp.\",\"image\":false}"
+    }
+  ]
+}

@@ -76,4 +76,27 @@ class ImagingParityTest {
             ImageIO.read(result.printImagePath.toFile()).let { assertEquals(3658, it.width); assertEquals(2452, it.height) }
         } finally { dir.toFile().deleteRecursively() }
     }
+
+    @Test fun zxingQrDecodeMatchesUrl() {
+        val dir = Files.createTempDirectory("imaging-qr-test")
+        try {
+            val photo = dir.resolve("photo.png")
+            ImageIO.write(BufferedImage(8, 8, BufferedImage.TYPE_INT_RGB).apply {
+                val graphics = createGraphics()
+                try { graphics.color = Color.WHITE; graphics.fillRect(0, 0, width, height) }
+                finally { graphics.dispose() }
+            }, "png", photo.toFile())
+            val url = "https://example.invalid/album-12345"
+            val result = DesktopCompositor().renderFinal(
+                layout("5x15"), FramePack("f", "F", "", 0, qrCodeSize = 220), listOf(photo), dir, qrCodeUrl = url)
+            // Accepted compositor saves finalImagePath before adding QR; only the print asset carries it.
+            val img = ImageIO.read(result.printImagePath.toFile()).getSubimage(28, 54, 1184, 3580)
+            val rgb = IntArray(img.width * img.height)
+            img.getRGB(0, 0, img.width, img.height, rgb, 0, img.width)
+            val source = com.google.zxing.RGBLuminanceSource(img.width, img.height, rgb)
+            val bitmap = com.google.zxing.BinaryBitmap(com.google.zxing.common.HybridBinarizer(source))
+            val decoded = com.google.zxing.qrcode.QRCodeReader().decode(bitmap)
+            assertEquals(url, decoded.text)
+        } finally { dir.toFile().deleteRecursively() }
+    }
 }

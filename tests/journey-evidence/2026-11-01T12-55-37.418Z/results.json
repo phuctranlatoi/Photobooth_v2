@@ -1,0 +1,161 @@
+{
+  "status": "FAIL",
+  "scope": "Live Tauri executable; DEMO journey plus REAL-mode payment display only",
+  "evidence": "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T12-55-37.418Z",
+  "checks": [
+    {
+      "name": "1280x800 Firebase catalog source",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 real Firestore layout names",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 515_4_anh layout card",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 quantity set to 2",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 demo banner",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 no live charge UI",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 600 DPI composed preview",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 delivery QR state",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 UI revenueRecorded false disclosure",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 Firebase catalog source",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 real Firestore layout names",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 515_4_anh layout card",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 quantity set to 2",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 demo banner",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 no live charge UI",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 600 DPI composed preview",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 delivery QR state",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 UI revenueRecorded false disclosure",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 Firebase catalog source",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 real Firestore layout names",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 515_4_anh layout card",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 quantity set to 2",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 real payment: Bước 3",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 real payment: Thanh toán",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "runner aborted",
+      "ok": false,
+      "detail": "Error: Timeout real VietQR ready: DEMO · Không có thanh toán hoặc in ảnh thật\n←\nBước 3\nThanh toán\n\nKhông cần thanh toán để thử quy trình chụp.\n\nSố tiền cần thanh toán\n\n70.000 đ\nBố cục\n515_4_anh\nMàu ảnh\nTự nhiên\nBản in\n2 bản\nPhiên thử nghiệm\nKhông thu tiền\n✦\nCHẾ ĐỘ CHỤP THỬ NGHIỆM\n\nPhiên chụp thử nghiệm không thu tiền và không in ảnh thật. Bạn có thể kiểm tra toàn bộ quy trình chụp và ghép khung.\n\nBẮT ĐẦU CHỤP THỬ NGHIỆM →\n    at wait (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:19:163)\n    at async realPayment (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:26:276)\n    at async file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:31:168"
+    }
+  ],
+  "failures": [
+    {
+      "name": "runner aborted",
+      "detail": "Error: Timeout real VietQR ready: DEMO · Không có thanh toán hoặc in ảnh thật\n←\nBước 3\nThanh toán\n\nKhông cần thanh toán để thử quy trình chụp.\n\nSố tiền cần thanh toán\n\n70.000 đ\nBố cục\n515_4_anh\nMàu ảnh\nTự nhiên\nBản in\n2 bản\nPhiên thử nghiệm\nKhông thu tiền\n✦\nCHẾ ĐỘ CHỤP THỬ NGHIỆM\n\nPhiên chụp thử nghiệm không thu tiền và không in ảnh thật. Bạn có thể kiểm tra toàn bộ quy trình chụp và ghép khung.\n\nBẮT ĐẦU CHỤP THỬ NGHIỆM →\n    at wait (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:19:163)\n    at async realPayment (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:26:276)\n    at async file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:31:168"
+    }
+  ],
+  "screenshots": [
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T12-55-37.418Z\\1280x800-start.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T12-55-37.418Z\\1280x800-layout.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T12-55-37.418Z\\1280x800-quantity-2.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T12-55-37.418Z\\1280x800-demo-payment.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T12-55-37.418Z\\1280x800-demo-live.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T12-55-37.418Z\\1280x800-demo-select.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T12-55-37.418Z\\1280x800-demo-frame.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T12-55-37.418Z\\1280x800-demo-confirm.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T12-55-37.418Z\\1280x800-demo-delivery.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T12-55-37.418Z\\1920x1200-start.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T12-55-37.418Z\\1920x1200-layout.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T12-55-37.418Z\\1920x1200-quantity-2.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T12-55-37.418Z\\1920x1200-demo-payment.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T12-55-37.418Z\\1920x1200-demo-live.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T12-55-37.418Z\\1920x1200-demo-select.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T12-55-37.418Z\\1920x1200-demo-frame.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T12-55-37.418Z\\1920x1200-demo-confirm.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T12-55-37.418Z\\1920x1200-demo-delivery.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T12-55-37.418Z\\1280x800-start.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T12-55-37.418Z\\1280x800-layout.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T12-55-37.418Z\\1280x800-quantity-2.png"
+  ]
+}

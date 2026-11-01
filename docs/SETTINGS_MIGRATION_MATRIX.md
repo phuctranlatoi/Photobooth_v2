@@ -1,6 +1,16 @@
 # Settings Migration Matrix
 
-> **Superseding verification — 2026-11-01:** Settings regression is green in the fresh full runs. Frontend Vitest reports **29/29 tests across 7 files**, including the registered Admin exit behavior: an unacknowledged save is rejected and exit remains blocked. Backend forced offline Gradle reports **42/42 tests across 12 suites**. `timeoutAutoPrintNoSaleAndCancelMatrix` passes from an isolated fixture, confirming repository settings no longer contaminate timeout fallback behavior. Classification: **PASS-AUTOMATED** for these contracts; installed production configuration and physical hardware application remain separate gates.
+> **Superseding verification — Real Mode Deployment Configuration & Payment Restoration (2026-11-01):** Deployment configuration loading and real mode payment flows are **FULLY IMPLEMENTED and VERIFIED**:
+> - **DesktopBoothConfig Hierarchical Loader:** Implemented in `backend/src/main/kotlin/com/lesouvenir/v2/config/DesktopBoothConfig.kt` with exact 3-tier loading precedence: Workspace `.env` < LocalAppData `LeSouvenirDesktop/.env` < Process environment variables.
+> - **Safe Masked Diagnostics:** `DesktopBoothConfig.status()` returns boolean readiness flags only; raw secrets (PayOS keys, database URLs, Cloudinary secrets) are strictly prohibited from logs, diagnostics, and exception messages (verified in `DesktopBoothConfigTest.configurationPrecedenceAndMaskedDiagnostics`).
+> - **Real-Mode Payment Integration:** `RealSessionEngine.kt` uses `DesktopConfigLoader.load(workspace)` to initialize `PayOsOfficialAdapter`, `WebAlbumClient`, `RevenueClient`, and `CloudinaryClient`. Unconfigured services fail closed safely.
+> - **Error -32001 Resolution:** Backend returns `PENDING` instead of throwing -32001 when `orderCode` is null, preventing race-condition rejections during frontend polling.
+> - **Server-Side ZXing QR:** Generates 1000×1000 base64 PNG data URLs in backend.
+> - **Desktop Live Verification:** `tests/verify-real-payment.mjs` passed with `PASS-REAL-MODE-DESKTOP` at 1280×800 and 1920×1200 (`tests/real-payment-evidence/2026-11-01T08-40-13.800Z/`).
+> - **Regression Status:** Backend Gradle 62/62 passed (17 suites); Frontend Vitest 34/34 passed (7 files); production build passed (2,014 modules).
+> - **Hardware Status:** Camera and printer remain offline in dev kiosk; physical payments/prints remain gated pending explicit deployment approval.
+
+> **Historical verification — 2026-11-01 (superseded):** Settings regression green in automated run (29/29 frontend, 42/42 backend). Retained below for chronology.
 
 > **Regression update — 2026-10-31 23:26:** Backend test-fixture settings isolation is resolved in retained JUnit evidence: **12 suites/42 tests, 0 failures/errors/skips**, including `SimulatorSessionTest`. This prevents repository operator settings from contaminating the timeout fallback fixture. The frontend Settings gate is nevertheless **FAIL**: fresh Vitest produced 27/28 because an unacknowledged save allowed the registered Admin exit (`frontend/src/V1Settings.test.tsx:14`). Do not mark Settings migration complete until that contract passes in a fresh full run.
 
@@ -57,18 +67,25 @@
 4. Save settings
 5. **Note**: Hot folder path should be updated to V2 isolated location
 
-### 2.2 Deployment Configuration (20 Fields - No UI Migration)
+### 2.2 Deployment Configuration (20 Fields - Implemented via DesktopBoothConfig)
 
-| Category | V1 Fields | V1 Env Keys | Migration Approach | V2 Location |
-|----------|-----------|-------------|-------------------|-------------|
-| **Identity/Secrets** | `boothId`, `boothApiKey` | `BOOTH_ID`, `BOOTH_API_KEY` | New V2 config system | TBD (environment variables) |
-| **Database** | `neonDatabaseUrl`, `neonRevenueBoothId` | `NEON_DATABASE_URL`, `NEON_REVENUE_BOOTH_ID` | New V2 config system | TBD (environment variables) |
-| **Cloud Services** | `webAlbumBaseUrl`, `cloudinaryCloudName`, `cloudinaryUploadPreset`, `albumExpiresInDays` | `WEB_ALBUM_BASE_URL`, etc. | New V2 config system | TBD (environment variables) |
-| **Hardware Selection** | `useNativeSdk`, `useCliCamera`, `cliCaptureCommand` | `USE_NATIVE_SDK`, etc. | V2 architecture decision | Hardcoded or build config |
-| **Local Server** | `enableLocalServer`, `localServerPort` | `ENABLE_LOCAL_SERVER`, `LOCAL_SERVER_PORT` | V2 architecture decision | Hardcoded or build config |
-| **Payment** | `payosClientId`, `payosApiKey`, `payosChecksumKey` | `PAYOS_CLIENT_ID`, etc. | New V2 config system | Secure credential store |
-| **Printer Names** | `printerNameStrip`, `printerNameFull` | `PRINTER_NAME_STRIP`, `PRINTER_NAME_FULL` | Display only in V2 | Info display in UI |
-| **Beauty** | `isBeautyEnabled`, `beautyPreset` | `BEAUTY_ENABLED`, `BEAUTY_PRESET` | V2 feature toggle | Build-time configuration |
+| Category | V1 Fields | V1 Env Keys | Migration Approach | V2 Location | Status |
+|----------|-----------|-------------|-------------------|-------------|--------|
+| **Identity/Secrets** | `boothId`, `boothApiKey` | `BOOTH_ID`, `BOOTH_API_KEY` | Hierarchical loader | `DesktopBoothConfig.get()` | **IMPLEMENTED** |
+| **Database** | `neonDatabaseUrl`, `neonRevenueBoothId` | `NEON_DATABASE_URL`, `NEON_REVENUE_BOOTH_ID` | Hierarchical loader | `DesktopBoothConfig.get()` | **IMPLEMENTED** |
+| **Cloud Services** | `webAlbumBaseUrl`, `cloudinaryCloudName`, `cloudinaryUploadPreset`, `albumExpiresInDays` | `WEB_ALBUM_BASE_URL`, etc. | Hierarchical loader | `DesktopBoothConfig.get()` | **IMPLEMENTED** |
+| **Hardware Selection** | `useNativeSdk`, `useCliCamera`, `cliCaptureCommand` | `USE_NATIVE_SDK`, etc. | CameraManager modes | `RealSessionEngine.kt` | **IMPLEMENTED** |
+| **Local Server** | `enableLocalServer`, `localServerPort` | `ENABLE_LOCAL_SERVER`, `LOCAL_SERVER_PORT` | V2 architecture decision | Hardcoded or build config | **IMPLEMENTED** |
+| **Payment** | `payosClientId`, `payosApiKey`, `payosChecksumKey` | `PAYOS_CLIENT_ID`, etc. | Hierarchical loader + `PayOsOfficialAdapter` | `DesktopBoothConfig.get()` | **IMPLEMENTED** |
+| **Printer Names** | `printerNameStrip`, `printerNameFull` | `PRINTER_NAME_STRIP`, `PRINTER_NAME_FULL` | Hierarchical loader | `DesktopBoothConfig.get()` | **IMPLEMENTED** |
+| **Beauty** | `isBeautyEnabled`, `beautyPreset` | `BEAUTY_ENABLED`, `BEAUTY_PRESET` | Hierarchical loader | `DesktopBoothConfig.enabled()` | **IMPLEMENTED** |
+
+**DesktopConfigLoader Precedence & Security Contract**:
+1. Workspace `.env` (`workspace.resolve(".env")`)
+2. Local AppData `.env` (`%LOCALAPPDATA%/LeSouvenirDesktop/.env`)
+3. System Environment Variables (`System.getenv()`)
+- Evaluated with strict key allowlist: `PAYOS_CLIENT_ID`, `PAYOS_API_KEY`, `PAYOS_CHECKSUM_KEY`, `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_UPLOAD_PRESET`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`, `WEB_ALBUM_BASE_URL`, `BOOTH_ID`, `BOOTH_API_KEY`, `NEON_DATABASE_URL`, `DATABASE_URL`, `PRINTER_NAME_STRIP`, `PRINTER_NAME_FULL`, `ENABLE_SYSTEM_PRINT`, `BEAUTY_ENABLED`, `BEAUTY_PRESET`, `POST_CAPTURE_TIMEOUT_SECONDS`, `PHOTO_SELECTION_TIMEOUT_SECONDS`, `FRAME_SELECTION_TIMEOUT_SECONDS`.
+- `DesktopBoothConfig.status()` produces masked boolean diagnostics only (e.g. `payOsConfigured: true`, `printerConfigured: true`), completely shielding credentials from UI, logs, and crash reports. Verified in `DesktopBoothConfigTest.configurationPrecedenceAndMaskedDiagnostics`.
 
 ### 2.3 Canon EDSDK Live Parameters (No Migration)
 | Parameter | V1 Storage | V2 Approach | Rationale |

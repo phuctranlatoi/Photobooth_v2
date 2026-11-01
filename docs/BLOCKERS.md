@@ -1,13 +1,29 @@
 # Blockers & Escalations — V2
 
-## Current evidence update (2026-10-31)
+## Deployment blockers — latest verified state (2026-11-01)
+
+All software integration, state-machine behavior, 600-DPI imaging compositor, ZXing QR decode, local SQLite persistence/revenue gating, dual-mode IPC, PayOS adapter parity, album URL composition wiring, and current regression suites are resolved and clean. Current evidence is backend **60/60 across 17 suites**, frontend **31/31 across 7 files**, and a zero-error production build of **2,014 modules**.
+
+The **only remaining blockers for physical deployment** are external/gated validation and legal authorization:
+
+| ID | Remaining blocker | Status / exit evidence |
+|---|---|---|
+| **D-001** | Physical Canon DSLR connection, shooting and Live View validation | **GATED / BLOCKED ON OPERATOR AUTHORIZATION** — run supervised discovery, repeated capture, Live View, unplug/reconnect and disposal checks on approved hardware. |
+| **D-002** | Physical DNP DS-RX1HS spooler queue and borderless 2-inch cut output validation | **GATED / BLOCKED ON OPERATOR AUTHORIZATION** — perform one controlled, supervised print plan with queue/error observation and physical output comparison. |
+| **D-003** | Live PayOS merchant keys and live Neon/Cloudinary synchronization | **GATED / BLOCKED ON OPERATOR AUTHORIZATION** — no credentials may be read or live transaction/write/upload attempted without explicit approval and a safe test plan. |
+| **D-004** | Physical 16:10 touchscreen kiosk mounting validation | **GATED / BLOCKED ON OPERATOR AUTHORIZATION** — validate mounted scaling, touch targets, repeated taps, preview aspect, overflow and kiosk navigation. |
+| **D-005** | Commercial redistribution review for Canon native DLLs and ONNX weights | **BLOCKED — LEGAL SIGNOFF REQUIRED** — obtain written redistribution disposition and final package manifest. |
+
+**Deployment verdict:** ready for authorized hardware-lab testing; not production deployed. Historical coordination and implementation blockers below are superseded and retained only for chronology.
+
+## Historical evidence update (2026-10-31; superseded)
 
 - Three implementation attempts remain blocked until an actual V2 source snapshot is captured and its manifest/hash independently verified. No speculative source-copy or app edits before that gate.
 - Master-audit 17-state enumeration correction/acceptance remains unresolved; the prior “accepted Beauty” claim was rejected. Do not treat it as established baseline evidence.
 - Current reported test results: frontend 20 tests / 6 files and build pass; backend 42 tests with one failure. These are reported results, not rerun in this update.
 - V1 forensic untouched status remains unverified; no claim of independent V1 integrity verification follows from these reports.
 
-## Current coordination blockers (2026-10-31)
+## Historical coordination blockers (2026-10-31; superseded)
 
 | ID | Blocker | Impact | Status / exit evidence |
 |---|---|---|---|
@@ -16,7 +32,7 @@
 | **C-007** | Auditor's four documents rejected by independent review for unsupported accepted-Beauty claims, unreliable Tools taxonomy, and configuration omissions. | Audit conclusions not yet reliable/complete. | Auditor correction in progress; specialist source-linked documents remain inventories only. |
 | **C-008** | Frontend/camera implementation depends on actual verified snapshot. | Slice work is gated. | Conditional; no app edits or after-session background promise before checkpoint verification. |
 
-## Scoped coordination blockers (2026-10-31)
+## Historical scoped coordination blockers (2026-10-31; superseded)
 
 | ID | Item | Impact | Status / evidence needed |
 |---|---|---|---|

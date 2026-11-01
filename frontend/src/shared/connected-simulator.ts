@@ -10,8 +10,27 @@ export interface Snapshot extends SessionGetStateResult {
   frameId: string | null;
   failure: string | null;
   userConfirmed: boolean;
-  revenueRecorded: false;
-  printAccepted: false;
+  revenueRecorded: boolean;
+  printAccepted: boolean;
+  qrCodeUrl?: string | null;
+  albumUrl?: string | null;
+  paymentUrl?: string | null;
+  paymentQr?: string | null;
+  orderCode?: number | null;
+  payOsConfigured?: boolean;
+  catalogSource?: 'FIREBASE_LIVE' | 'DISK_CACHE' | 'STATIC_FALLBACK' | 'MEMORY_FALLBACK' | 'UNAVAILABLE';
+  lastSyncError?: string | null;
+  payOsStatus?: 'CONFIG_MISSING' | 'CONFIG_INVALID' | 'SDK_INIT_FAILED' | 'READY';
+  lastPaymentError?: string | null;
+  paymentMethod?: string;
+  effectTitle?: string;
+  compositionDataUrl?: string | null;
+  printImageDataUrl?: string | null;
+  runtimeMode?: 'REAL' | 'SIMULATOR';
+  captureMode?: 'DEMO' | 'REAL';
+  bundles?: Array<{id:string;name:string;coverDataUrl?:string;layoutId:string;frameCount:number}>;
+  availableFramesCount?: number;
+  cameraConnected?: boolean;
 }
 export function safeImage(value:unknown):string {
   return typeof value==='string' && value.length<=1_000_000 && /^data:image\/(jpeg|png);base64,[A-Za-z0-9+/=]+$/.test(value) ? value : '';

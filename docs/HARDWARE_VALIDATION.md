@@ -1,5 +1,19 @@
 # Hardware Validation Plan and Current Evidence
 
+## 2026-11-01 mock-versus-physical status (latest)
+
+| Case | Status | Evidence |
+|---|---|---|
+| Real-mode missing camera/printer fail closed | PASS-SIMULATED | Fixture/source verification: unavailable hardware returns `-32000`; capture never creates a substitute image; render/spool rejection returns `-32002`. |
+| 5×15 2-up / 10×15 image geometry | PASS-SIMULATED | BufferedImage/ImageIO tests cover 2452×3658 and 3658×2452 output and strip placement. No driver scaling/cut/media proof. |
+| Canon DSLR discovery, Live View, capture, transfer, reconnect, unplug, disposal | BLOCKED | No authorized physical Canon run. |
+| DNP RX1HS discovery, queue status, 5×15 cut and 10×15 paper output | BLOCKED | No authorized discovery or print; no paper consumed. |
+| ZXing QR on physical/generated real sheet | FAIL | Renderer exists, but no decode assertion; reviewed real engine does not assign `albumUrl`, so embedded real-session album QR is not established. |
+| Mini-PC CPU/GPU/memory/countdown/Live View impact | NOT-RUN | No target Mini PC measurement. |
+| Physical 16:10 touch and output comparison to V1 | NOT-RUN | Requires operator-supervised hardware and approved non-customer fixtures. |
+
+Mock/fixture results must not be relabeled `PASS-REAL-HARDWARE`. Physical validation remains pending explicit operator authorization and safe setup.
+
 ## 2026-10-31 independent status
 
 | Case | Status | Evidence |

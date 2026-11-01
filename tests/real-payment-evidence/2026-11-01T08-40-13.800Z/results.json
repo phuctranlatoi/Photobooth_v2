@@ -1,0 +1,47 @@
+{
+  "status": "PASS-REAL-MODE-DESKTOP",
+  "scope": "REAL runtime desktop/WebView; no payment completion, hardware capture, print, upload, or staff override executed",
+  "evidence": "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\real-payment-evidence\\2026-11-01T08-40-13.800Z",
+  "views": [
+    {
+      "view": "1280x800",
+      "catalogScreenshot": "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\real-payment-evidence\\2026-11-01T08-40-13.800Z\\1280x800-catalog.png",
+      "paymentScreenshot": "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\real-payment-evidence\\2026-11-01T08-40-13.800Z\\1280x800-payment-staff-override-visible.png",
+      "qrState": {
+        "present": true,
+        "text": "!\nChưa bật thanh toán QR\n\nNhân viên có thể xác nhận tiền mặt để tiếp tục phiên chụp.",
+        "image": false
+      },
+      "staffOverrideVisible": true
+    },
+    {
+      "view": "1920x1200",
+      "catalogScreenshot": "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\real-payment-evidence\\2026-11-01T08-40-13.800Z\\1920x1200-catalog.png",
+      "paymentScreenshot": "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\real-payment-evidence\\2026-11-01T08-40-13.800Z\\1920x1200-payment-staff-override-visible.png",
+      "qrState": {
+        "present": true,
+        "text": "!\nChưa bật thanh toán QR\n\nNhân viên có thể xác nhận tiền mặt để tiếp tục phiên chụp.",
+        "image": false
+      },
+      "staffOverrideVisible": true
+    }
+  ],
+  "failures": [],
+  "observations": [
+    {
+      "view": "all",
+      "message": "Used existing Vite server",
+      "detail": "http://127.0.0.1:1420"
+    },
+    {
+      "view": "1280x800",
+      "message": "QR panel state",
+      "detail": "{\"present\":true,\"text\":\"!\\nChưa bật thanh toán QR\\n\\nNhân viên có thể xác nhận tiền mặt để tiếp tục phiên chụp.\",\"image\":false}"
+    },
+    {
+      "view": "1920x1200",
+      "message": "QR panel state",
+      "detail": "{\"present\":true,\"text\":\"!\\nChưa bật thanh toán QR\\n\\nNhân viên có thể xác nhận tiền mặt để tiếp tục phiên chụp.\",\"image\":false}"
+    }
+  ]
+}

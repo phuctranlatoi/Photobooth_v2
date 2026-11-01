@@ -1,6 +1,67 @@
 # Release Readiness Checklist — V2
 
-## Independent gate decision — 2026-10-31
+## Latest readiness matrix — Real External Integrations Recovery (2026-11-01)
+
+| Release area | Readiness | Evidence / boundary |
+|---|---|---|
+| Automated backend regression | **READY — PASS-AUTOMATED** | JUnit **70 passed, 1 skipped**. The skipped test remains explicitly non-passing. |
+| Automated frontend regression | **READY — PASS-AUTOMATED** | Vitest **40 passed**, with no reported failures. |
+| Firebase Layout Catalog | **READY — LIVE READ VERIFIED** | Firestore project `photop-bf902` reported `FIREBASE_LIVE`, synchronized 10 named layouts, and retained disk-cache support. No live write was performed. |
+| PayOS VietQR Integration | **READY — LINK/RENDER VERIFIED** | Live PayOS link creation reached `READY`; real VietQR image rendered at 1280×800 and 1920×1200. This does not certify settlement, webhook handling, refunds, or revenue. |
+| DEMO Capture Mode | **READY — PASS-SIMULATED** | Camera-free touch flow, zero-revenue behavior, and dry-run 600-DPI composition passed. |
+| Desktop Acceptance | **READY — PASS-SIMULATED** | Live Tauri executable: **37/37 checks, 0 failures**. Evidence: `tests/journey-evidence/2026-11-01T13-13-52.592Z/`; 20 screenshots cover both viewports. |
+| Canon DSLR | **BLOCKED / NOT-RUN** | No authorized physical capture, Live View, unplug/reconnect, repeated-capture, or disposal validation. |
+| DNP RX1HS | **BLOCKED / NOT-RUN** | No spool submission, cut/media validation, or physical output comparison to V1. |
+| Physical 16:10 touchscreen/Mini PC | **BLOCKED / NOT-RUN** | CDP viewport checks are not physical glass, DPI, touch, CPU/GPU, memory, or live-view-impact evidence. |
+| Neon/Cloudinary and PayOS settlement | **BLOCKED / NOT-RUN** | No production DB write, upload, charge settlement, or revenue operation is claimed. |
+| Installer/recovery/licensing | **BLOCKED** | Clean install, recovery, V1 coexistence, and Canon SDK/ONNX/JRE redistribution signoff remain unresolved. |
+| **Overall verdict** | **INTEGRATIONS RECOVERED; RELEASE BLOCKED** | Software and the bounded live-read/link integrations are ready for controlled hardware-lab testing. Production release still requires physical hardware, kiosk, packaging/recovery, provider-write/settlement, security, and legal evidence. |
+
+**Integration readiness score:** 3/3 scoped recovery targets verified (Firebase live read/cache, PayOS link/QR render, DEMO capture preservation). **Hardware readiness score:** 0/3 physical targets verified (Canon, DNP, mounted touchscreen/Mini PC). These scoped scores are not a production-readiness percentage.
+
+This section supersedes older readiness/test-count statements below while preserving their historical chronology.
+
+## Latest readiness matrix — Real Payment Restoration & Desktop Verification (2026-11-01)
+
+| Release area | Readiness | Evidence / boundary |
+|---|---|---|
+| Software Core & State Machine | **READY (AUTOMATED TESTED)** | Backend `gradle.bat --offline test --console=plain`: **62/62 tests across 17 suites** passed (includes `DesktopBoothConfigTest` 2 tests, `RealSessionEngineTest` orderCode handling). |
+| Real-Mode Desktop Payment Verification | **READY (DESKTOP VERIFIED)** | `tests/verify-real-payment.mjs` ran against Tauri debug runtime (`le-souvenir-v2.exe`) in real mode: **PASS-REAL-MODE-DESKTOP** on **1280×800** and **1920×1200** viewports. Evidence at `tests/real-payment-evidence/2026-11-01T08-40-13.800Z/`. |
+| Error -32001 Resolution | **READY (AUTOMATED TESTED)** | Root causes resolved: backend returns `PENDING` instead of throwing -32001 when `orderCode` is null; frontend polling synchronized; fallback description provided. |
+| PayOS Official SDK Parity | **READY (AUTOMATED TESTED)** | `PayOsOfficialAdapter` wraps official SDK client `vn.payos:payos-java:2.0.1`; fails closed safely when unconfigured. |
+| Server-Side ZXing QR Generation | **READY (AUTOMATED TESTED)** | Backend `RealSessionEngine.qrPng` encodes VietQR strings into high-resolution 1000×1000 PNG Base64 data URLs via `MultiFormatWriter`. |
+| Production Layouts Activation | **READY (AUTOMATED TESTED)** | `config/production-layouts.json` defines `strip-5x15` (4 shots / 3 select, 5s countdown) and `print-10x15` (6 shots / 4 select, 5s countdown). Zero synthetic fixtures in real mode. |
+| Hierarchical Configuration & Security | **READY (AUTOMATED TESTED)** | `DesktopBoothConfig` 3-tier loader (workspace `.env` < LocalAppData < process env) verified in `DesktopBoothConfigTest`. Safe masked diagnostics expose boolean flags only; zero secrets committed or logged. |
+| V1 Payment UI Parity | **READY (DESKTOP VERIFIED)** | Exact two-column layout (`.v1-payment-columns`), "Bước 3" eyebrow, "Thanh toán" title, "70.000 đ" formatted price, detail rows, QR status chip. Customer bypass button removed; staff cash override revealed via header long-press (>=700ms). |
+| Frontend Suite & Production Build | **READY (AUTOMATED TESTED)** | Frontend Vitest **34/34 tests across 7 files** passed; production build passed with zero errors and **2,014 modules** transformed. |
+| Dual-Mode Runtime & Fail-Closed IPC | **READY (AUTOMATED TESTED)** | Explicit `--real` / `--simulator` via `IpcMain.kt`, `bridge.rs`, `main.rs`, and `KioskSimulator.tsx`; real mode returns `-32000` / `-32002` with no synthetic fallback. |
+| Local SQLite Ledger & Revenue Gate | **READY (AUTOMATED TESTED)** | V2-local `data/sales.db`; sale recording occurs only after verified `PrintResult.Submitted`. |
+| 600 DPI Compositor & ZXing QR | **READY (AUTOMATED TESTED)** | 2452×3658 2-up cut and 3658×2452 10×15 output; embedded album QR passes ZXing decode test. |
+| Physical Hardware Validation | **BLOCKED (GATED)** | Canon DSLR, DNP DS-RX1HS and mounted physical 16:10 kiosk glass require explicit operator authorization and safe lab setup. Camera and printer are offline in dev kiosk. |
+| Production Cloud Services | **BLOCKED (GATED)** | Live PayOS settlement and live Neon/Cloudinary synchronization are not authorized; configured PayOS path fails closed. |
+| Commercial Redistribution Review | **BLOCKED (LEGAL SIGNOFF REQUIRED)** | Canon native DLL and ONNX weight redistribution terms remain unresolved. |
+| **Overall Verdict** | **READY FOR HARDWARE LAB TESTING / NOT YET PRODUCTION DEPLOYED** | Real-mode payment flow, desktop UI, configuration hierarchy, and software state machine are fully verified. Physical hardware and live merchant deployment remain gated. |
+
+This matrix supersedes older test-count and software-readiness statements below. Historical sections remain for audit chronology and must not override the latest verdict.
+
+## Historical readiness matrix — 2026-11-01 (superseded)
+
+| Release area | Readiness | Evidence / boundary |
+|---|---|---|
+| Software Core & State Machine | **READY (AUTOMATED TESTED)** | Backend `gradle.bat --offline test --console=plain`: 60/60 tests across 17 suites. |
+| Dual-Mode Runtime & IPC | **READY (AUTOMATED TESTED)** | Explicit `--real` / `--simulator` via `IpcMain.kt`, `bridge.rs`, `main.rs`, and `KioskSimulator.tsx`; real mode fails closed with `-32000` / `-32002` and no synthetic fallback. |
+| Local SQLite Ledger & Revenue Gate | **READY (AUTOMATED TESTED)** | V2-local `data/sales.db`; sale recording occurs only after verified `PrintResult.Submitted`. |
+| 600 DPI Compositor & ZXing QR | **READY (AUTOMATED TESTED)** | 2452×3658 2-up cut and 3658×2452 10×15 output; embedded album QR passes ZXing decode test. |
+| Touchscreen UI (11 screens, 6 operator tabs) | **READY (AUTOMATED TESTED)** | Frontend 31/31 across 7 files; production build passed with zero errors and 2,014 modules. Physical touch remains a separate gate. |
+| Physical Hardware Validation | **BLOCKED (GATED)** | Canon DSLR, DNP DS-RX1HS and mounted physical 16:10 kiosk require explicit operator authorization and safe lab setup. |
+| Production Cloud Services | **BLOCKED (GATED)** | Live PayOS payment and live Neon/Cloudinary synchronization are not authorized; configured PayOS path fails closed. |
+| **Overall Verdict** | **READY FOR HARDWARE LAB TESTING / NOT YET PRODUCTION DEPLOYED** | Automated software completion does not substitute for real hardware, live-provider, installer/recovery, or commercial redistribution evidence. |
+
+Additional completed software evidence: `RealSessionEngine.compose()` creates the web album before composition and embeds `albumUrl`; `PayOsOfficialAdapter` follows the official SDK path and is fail-closed when unconfigured. Canon native DLL and ONNX weight redistribution still require legal signoff.
+
+This matrix supersedes older test-count and software-readiness statements below. Historical sections remain for audit chronology and must not override the latest verdict.
+
+## Historical independent gate decision — 2026-10-31 (superseded)
 
 **VERDICT: BLOCK RELEASE.** A scoped offline pre-change baseline was run: frontend tests/build exited 0, but the fresh backend run executed 42 tests with 1 timeout failure. Synthetic evidence does not establish full baseline parity, real hardware, production integrations, installed persistence, kiosk touch usability, packaging, recovery, or legal redistribution.
 

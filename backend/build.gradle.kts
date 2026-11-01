@@ -5,8 +5,10 @@ plugins {
 repositories { mavenCentral() }
 dependencies {
     implementation("com.google.code.gson:gson:2.11.0")
+    implementation("com.google.firebase:firebase-admin:9.3.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
     implementation("com.google.zxing:core:3.5.3")
+    implementation("com.google.zxing:javase:3.5.3")
     implementation("com.microsoft.onnxruntime:onnxruntime:1.18.0")
     implementation("org.xerial:sqlite-jdbc:3.45.3.0")
     implementation("org.postgresql:postgresql:42.7.2")
@@ -27,3 +29,10 @@ application {
     applicationName = "backend"
 }
 tasks.test { dependsOn(tasks.installDist) }
+// Firebase Admin's transitive jars exceed cmd.exe's 8191-character line limit.
+tasks.startScripts {
+    doLast {
+        val bat = windowsScript
+        bat.writeText(bat.readText().replace(Regex("(?m)^set CLASSPATH=.*$")) { "set CLASSPATH=%APP_HOME%\\lib\\*" })
+    }
+}

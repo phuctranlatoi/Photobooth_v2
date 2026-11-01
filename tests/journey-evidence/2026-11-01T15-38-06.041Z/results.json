@@ -1,0 +1,211 @@
+{
+  "status": "PASS-SIMULATED",
+  "scope": "Live Tauri executable; DEMO journey plus REAL-mode payment display only",
+  "evidence": "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T15-38-06.041Z",
+  "checks": [
+    {
+      "name": "1280x800 Firebase catalog source",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 real Firestore layout names",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 clean unified start screen (no manual mode toggles)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 515_4_anh layout card",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 quantity set to 2",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 complimentary studio trial banner",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 no live charge UI in demo",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 600 DPI composed preview",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 Firebase catalog source",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 real Firestore layout names",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 clean unified start screen (no manual mode toggles)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 515_4_anh layout card",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 quantity set to 2",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 complimentary studio trial banner",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 no live charge UI in demo",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 600 DPI composed preview",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 Firebase catalog source",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 real Firestore layout names",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 clean unified start screen (no manual mode toggles)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 515_4_anh layout card",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 quantity set to 2",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 real payment: Bước 3",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 real payment: Thanh toán",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 automatic complimentary mock mode when camera offline",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 cash override initially hidden",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 Firebase catalog source",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 real Firestore layout names",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 clean unified start screen (no manual mode toggles)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 515_4_anh layout card",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 quantity set to 2",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 real payment: Bước 3",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 real payment: Thanh toán",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 automatic complimentary mock mode when camera offline",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 cash override initially hidden",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "RealSessionEngineDemoModeTest proves DEMO revenue guard",
+      "ok": true,
+      "detail": "<testsuite name=\"com.lesouvenir.v2.ipc.RealSessionEngineDemoModeTest\" tests=\"1\" skipped=\"0\" failures=\"0\" errors=\"0\" timestamp=\"2026-11-01T15:33:00.366Z\" hostname=\"LAPTOP-3OU251HP\" time=\"5.657\">"
+    }
+  ],
+  "failures": [],
+  "screenshots": [
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T15-38-06.041Z\\1280x800-demo-start.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T15-38-06.041Z\\1280x800-demo-layout.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T15-38-06.041Z\\1280x800-demo-quantity-2.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T15-38-06.041Z\\1280x800-demo-payment.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T15-38-06.041Z\\1280x800-demo-live.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T15-38-06.041Z\\1280x800-demo-select.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T15-38-06.041Z\\1280x800-demo-frame.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T15-38-06.041Z\\1280x800-demo-confirm.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T15-38-06.041Z\\1280x800-demo-delivery.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T15-38-06.041Z\\1920x1200-demo-start.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T15-38-06.041Z\\1920x1200-demo-layout.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T15-38-06.041Z\\1920x1200-demo-quantity-2.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T15-38-06.041Z\\1920x1200-demo-payment.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T15-38-06.041Z\\1920x1200-demo-live.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T15-38-06.041Z\\1920x1200-demo-select.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T15-38-06.041Z\\1920x1200-demo-frame.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T15-38-06.041Z\\1920x1200-demo-confirm.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T15-38-06.041Z\\1920x1200-demo-delivery.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T15-38-06.041Z\\1280x800-real-start.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T15-38-06.041Z\\1280x800-real-layout.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T15-38-06.041Z\\1280x800-real-quantity-2.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T15-38-06.041Z\\1280x800-real-payment.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T15-38-06.041Z\\1920x1200-real-start.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T15-38-06.041Z\\1920x1200-real-layout.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T15-38-06.041Z\\1920x1200-real-quantity-2.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T15-38-06.041Z\\1920x1200-real-payment.png"
+  ]
+}

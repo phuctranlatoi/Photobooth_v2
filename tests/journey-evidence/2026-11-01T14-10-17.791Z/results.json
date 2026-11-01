@@ -1,0 +1,42 @@
+{
+  "status": "FAIL",
+  "scope": "Live Tauri executable; DEMO journey plus REAL-mode payment display only",
+  "evidence": "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T14-10-17.791Z",
+  "checks": [
+    {
+      "name": "1280x800 Firebase catalog source",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 real Firestore layout names",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 clean unified start screen (no manual mode toggles)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 515_4_anh layout card",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "runner aborted",
+      "ok": false,
+      "detail": "Error: Timeout button matching /Tiếp tục/: LE SOUVENIR · Studio Kiosk\n←\nBố cục\n\nChọn kiểu ảnh yêu thích\n\n10x15_4_anh_SPILCL\n1015_4_ILCL\n\n8 ảnh · Chọn 4 · 5s\n\n10x15_4_anh\n1015_4_base\n\n8 ảnh · Chọn 4 · 5s\n\n10x15_3_anh\n10x15_3_Sao\n\n8 ảnh · Chọn 3 · 5s\n\n5x15_2_anh\n515_2_base\n\n2 ảnh · Chọn 2 · 5s\n\n5x15_3_anh\n515_3_base\n\n3 ảnh · Chọn 3 · 3s\n\n5x15_4_anh\n515_4_anh\n\n8 ảnh · Chọn 4 · 5s\n\n5x15_4_anh\n515_4_base\n\n4 ảnh · Chọn 4 · 3s\n\n10x15_4_anh\nSP_IG_1015_4\n\n8 ảnh · Chọn 4 · 5s\n\n5x15_2_anh_SP_IG\nSP_IG_515_2\n\n6 ảnh · Chọn 2 · 5s\n\n5x15_3_anh\nSP_IG_515_3\n\n6 ảnh · Chọn 3 · 5s\n\nLE SOUVENIR\n\nBố cục 515_4_anh\n\nBản ghép ảnh sẽ hiển thị tại đây\nMàu ảnh · Hiệu ứng chưa có hợp đồng backend\nTIẾP TỤC →\n    at wait (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:8:651)\n    at async click (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:9:289)\n    at async setupToPayment (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:10:1160)\n    at async demoJourney (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:11:34)\n    at async file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:13:434"
+    }
+  ],
+  "failures": [
+    {
+      "name": "runner aborted",
+      "detail": "Error: Timeout button matching /Tiếp tục/: LE SOUVENIR · Studio Kiosk\n←\nBố cục\n\nChọn kiểu ảnh yêu thích\n\n10x15_4_anh_SPILCL\n1015_4_ILCL\n\n8 ảnh · Chọn 4 · 5s\n\n10x15_4_anh\n1015_4_base\n\n8 ảnh · Chọn 4 · 5s\n\n10x15_3_anh\n10x15_3_Sao\n\n8 ảnh · Chọn 3 · 5s\n\n5x15_2_anh\n515_2_base\n\n2 ảnh · Chọn 2 · 5s\n\n5x15_3_anh\n515_3_base\n\n3 ảnh · Chọn 3 · 3s\n\n5x15_4_anh\n515_4_anh\n\n8 ảnh · Chọn 4 · 5s\n\n5x15_4_anh\n515_4_base\n\n4 ảnh · Chọn 4 · 3s\n\n10x15_4_anh\nSP_IG_1015_4\n\n8 ảnh · Chọn 4 · 5s\n\n5x15_2_anh_SP_IG\nSP_IG_515_2\n\n6 ảnh · Chọn 2 · 5s\n\n5x15_3_anh\nSP_IG_515_3\n\n6 ảnh · Chọn 3 · 5s\n\nLE SOUVENIR\n\nBố cục 515_4_anh\n\nBản ghép ảnh sẽ hiển thị tại đây\nMàu ảnh · Hiệu ứng chưa có hợp đồng backend\nTIẾP TỤC →\n    at wait (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:8:651)\n    at async click (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:9:289)\n    at async setupToPayment (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:10:1160)\n    at async demoJourney (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:11:34)\n    at async file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-demo-and-real-journey.mjs:13:434"
+    }
+  ],
+  "screenshots": [
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T14-10-17.791Z\\1280x800-start.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-01T14-10-17.791Z\\1280x800-layout.png"
+  ]
+}

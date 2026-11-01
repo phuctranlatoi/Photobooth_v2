@@ -1,6 +1,23 @@
 ---
 description: Writes and runs V2 regression tests, reviews implementation and guards parity/security before each milestone.
 mode: subagent
+
+permissions:
+  - action: edit
+    resource: "tests/verify-real-payment.mjs"
+    effect: ask
+
+  - action: edit
+    resource: "E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/verify-real-payment.mjs"
+    effect: ask
+
+  - action: edit
+    resource: "E:/HK1_2026_2027/PhotoboothDesktop/*"
+    effect: ask
+
+  - action: external_directory
+    resource: "E:/HK1_2026_2027/PhotoboothDesktop/*"
+    effect: deny
 ---
 
 # Role
