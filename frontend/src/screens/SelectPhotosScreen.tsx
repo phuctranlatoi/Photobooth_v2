@@ -4,7 +4,6 @@ import {ActionBar,Heading,KioskPrimaryButton,PrintPreview,type ScreenProps} from
 
 export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected=[]}:ScreenProps&{shots?:{shotId:string;preview:string}[];selected?:number[]}){
    const [lightbox,setLightbox]=useState<number|null>(null);
-   const [zoomPinned,setZoomPinned]=useState(false);
   const [localSelected,setLocalSelected]=useState<number[]>(selected);
   const pending=useRef<{index:number;result:number[]}[]>([]);
   const previousSelected=useRef(selected);
@@ -24,13 +23,13 @@ export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected
   };
 
   useEffect(()=>{
-     const release=()=>{clearHold();if(!zoomPinned)setLightbox(null)};
-     const escape=(event:KeyboardEvent)=>{if(event.key==='Escape'){setZoomPinned(false);setLightbox(null)}};
+      const release=()=>{clearHold();setLightbox(null)};
+      const escape=(event:KeyboardEvent)=>{if(event.key==='Escape')setLightbox(null)};
      window.addEventListener('pointerup',release);
      window.addEventListener('pointercancel',release);
      window.addEventListener('keydown',escape);
      return ()=>{clearHold();window.removeEventListener('pointerup',release);window.removeEventListener('pointercancel',release);window.removeEventListener('keydown',escape)};
-   },[zoomPinned]);
+    },[]);
 
   const selectedPhotos=localSelected.map(index=>shots[index]?.preview);
   const toggle=(index:number)=>{
@@ -62,8 +61,7 @@ export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected
                     wasHeld.current=false;
                      holdTimer.current=setTimeout(()=>{
                        wasHeld.current=true;
-                       setZoomPinned(false);
-                       setLightbox(i);
+                        setLightbox(i);
                     },500);
                   }}
                    onPointerUp={()=>{
@@ -95,7 +93,6 @@ export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected
                   {safeImage(shot.preview)&&<img src={safeImage(shot.preview)} alt={`Ảnh gốc hoàn chỉnh ${i+1}`} style={{aspectRatio:layout?.photoAspectRatio??1.5}}/>}
                   <span className={order>=0?'v1-photo-order':''} aria-hidden="true">{order>=0?order+1:i+1}</span>
                  </button>
-                 {safeImage(shot.preview)&&<button type="button" className="v1-photo-zoom" aria-label={`Xem lớn ảnh ${i+1}`} onClick={()=>{setZoomPinned(true);setLightbox(i)}}>＋</button>}
               </div>
             );
           })}
@@ -104,15 +101,14 @@ export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected
       </div>
       {lightbox!==null&&safeImage(shots[lightbox]?.preview)&&(
         <div
-           className={`v1-lightbox v1-hold-lightbox${zoomPinned?' v1-zoom-pinned':''}`}
+            className="v1-lightbox v1-hold-lightbox"
           role="dialog"
           aria-modal="true"
           aria-label={`Xem lớn ảnh ${lightbox+1}`}
-            onPointerUp={()=>{if(!zoomPinned){clearHold();setLightbox(null)}}}
-            onPointerCancel={()=>{if(!zoomPinned){clearHold();setLightbox(null)}}}
+             onPointerUp={()=>{clearHold();setLightbox(null)}}
+             onPointerCancel={()=>{clearHold();setLightbox(null)}}
          >
            <img src={safeImage(shots[lightbox].preview)} alt={`Ảnh ${lightbox+1}`}/>
-           {zoomPinned&&<button type="button" aria-label="Đóng ảnh phóng to" onClick={()=>{setZoomPinned(false);setLightbox(null)}}>×</button>}
         </div>
       )}
       <ActionBar>

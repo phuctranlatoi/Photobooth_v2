@@ -20,8 +20,8 @@ impl Bridge {
         if !std::path::Path::new(&java).join("bin/java.exe").is_file(){return Err("V2_JAVA_HOME has no bin/java.exe".into())}
         let temp=root.join("src-tauri/.tmp");std::fs::create_dir_all(&temp).map_err(|e|e.to_string())?;
         let mut command=Command::new("cmd.exe");
-        let mode = std::env::var("V2_RUNTIME_MODE").unwrap_or_else(|_| "--simulator".to_string());
-        let mode_flag = if mode == "--real" || mode == "real" { "--real" } else { "--simulator" };
+        let mode = std::env::var("V2_RUNTIME_MODE").unwrap_or_else(|_| "--real".to_string());
+        let mode_flag = if mode == "--simulator" || mode == "simulator" { "--simulator" } else { "--real" };
         command.args(["/d", "/c", "backend.bat", mode_flag]);
         command.current_dir(launcher.parent().unwrap()).env("JAVA_HOME",java).env("SIMULATOR_CAPTURE_ENABLED","true").env("TEMP",&temp).env("TMP",&temp)
             .env("JAVA_TOOL_OPTIONS",format!("-Djava.io.tmpdir=\"{}\" -Duser.home=\"{}\"",temp.display(),temp.display()))
@@ -43,7 +43,7 @@ impl Bridge {
     pub fn request(&mut self,method:&str,params:Value)->Result<Value,String>{
         if self.child.try_wait().map_err(|e|e.to_string())?.is_some(){return Err("Backend launcher exited".into())}
         self.sequence+=1;let id=format!("shell-{}",self.sequence);
-        let mut envelope=json!({"jsonrpc":"2.0","id":id,"method":method,"params":params,"protocolVersion":1});
+        let envelope=json!({"jsonrpc":"2.0","id":id,"method":method,"params":params,"protocolVersion":1});
         let request=serde_json::to_vec(&envelope).unwrap();
         if request.len()>MAX{return Err("Request exceeds frame limit".into())}
         let input=self.input.as_mut().ok_or("Backend stdin closed")?;

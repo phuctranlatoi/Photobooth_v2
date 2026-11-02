@@ -1,5 +1,11 @@
 # PROGRESS.md
 
+## Camera Studio UI / Real Frame Asset Verification (2026-11-02 22:22)
+
+**Status: COMPLETE for bounded automated software scope; production release BLOCKED.** Backend XML reports **80 passed, 2 skipped, 0 failed** of 82; frontend reports **55/55 passed across 8 files**; the TypeScript/Vite build passed with 2,017 modules. Rust compiled through the installed Cargo executable (no Rust test cases reported). Current command-queue recovery coverage passed. Physical Canon/DNP/touchscreen, Mini-PC performance, physical output comparison, installer/recovery, and Canon/ONNX redistribution licensing remain unverified. No V1 command/write/secret read occurred, but 100% global isolation cannot be proven without a trusted baseline manifest.
+
+---
+
 ## Independent User Feedback Parity Review (2026-11-02 21:36)
 
 **Status: NOT COMPLETE — HIGH queue recovery defect.** Backend is **78 passed / 0 failed / 2 skipped** (80 total, 28 suites); frontend is **53/53 passed**; production web build passed (2,016 modules). Photo Continue/order, 960 px quality, zoom, parameterized artwork and explicit frame confirmation have bounded evidence. However, `KioskSimulator.tsx:47` uses `previous?run():false`, so one false command causes all subsequent queued mutations to be silently skipped. Release remains blocked pending correction plus a regression test proving post-failure retry execution. V1 global untouched proof, hardware, physical touch/performance, installer and licenses remain blocked/not run.

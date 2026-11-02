@@ -1,5 +1,19 @@
 # TASK_BOARD.md
 
+## Camera Studio UI / Frame Assets Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-02 22:22)
+
+| Task | Status | Evidence / next gate |
+|---|---|---|
+| Backend regression | **COMPLETED — PASS-AUTOMATED** | 28 suites / 82 total: **80 passed, 0 failed/errors, 2 skipped**. |
+| Frontend regression | **COMPLETED — PASS-AUTOMATED** | **8/8 files, 55/55 tests**. |
+| Frontend production build | **COMPLETED — PASS-AUTOMATED** | TypeScript/Vite exit 0; 2,017 modules. |
+| Rust test command | **COMPLETED — PASS-AUTOMATED (compile only)** | Explicit installed Cargo exit 0; no Rust test cases reported. PATH invocation failure is environmental. |
+| Queue post-failure recovery | **COMPLETED — PASS-AUTOMATED** | `shared/command-queue.test.ts` passed; current simulator delegates sequencing to the helper. |
+| V1 100% untouched proof | **BLOCKED** | Reviewer made no V1 access/write; no trusted before/after manifest. |
+| Canon/DNP/touch/performance/installer/licenses | **BLOCKED / NOT-RUN** | Requires authorized lab, packaging and legal evidence. |
+
+---
+
 ## User Feedback Parity Independent Gate — BLOCKED (2026-11-02 21:36)
 
 | Task | Status | Evidence / required action |

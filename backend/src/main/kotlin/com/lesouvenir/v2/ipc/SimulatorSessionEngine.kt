@@ -4,7 +4,12 @@ import com.google.gson.*
 import com.lesouvenir.v2.foundation.*
 import com.lesouvenir.v2.camera.simulator.SimulatorCamera
 import com.lesouvenir.v2.printing.SimulatorCompositor
+import com.lesouvenir.v2.storage.FrameStore
+import com.lesouvenir.v2.imaging.FramePack
 import java.awt.Color
+import java.awt.BasicStroke
+import java.awt.Font
+import java.awt.RenderingHints
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
 import java.nio.file.*
@@ -44,6 +49,9 @@ class SimulatorSessionEngine(
     private var layouts = readLayouts()
     private val operatorStore = OperatorLayoutStore(workspace)
     private val settingsStore = OperatorSettingsStore(workspace)
+    private val frameStore = FrameStore(workspace, null)
+    private fun availableFrames(): List<FramePack> = frameStore.loadFrames(layout.id).filter { it.targetPrintSize == layout.printSizeLabel }
+    private fun defaultFrameId(): String = availableFrames().firstOrNull()?.id ?: "synthetic-border"
     private val executor = Executors.newSingleThreadScheduledExecutor { r -> Thread(r, "v2-simulator-session").apply { isDaemon=true } }
     private val camera by lazy { SimulatorCamera(SimulatorAuthorization(enabled), workspace, config["sourceCount"].asInt,
         config["captureWidth"].asInt, config["captureHeight"].asInt, config["previewWidth"].asInt, config["previewHeight"].asInt) }
@@ -105,7 +113,7 @@ class SimulatorSessionEngine(
             if (state in setOf("SELECTING_PHOTOS", "EDITING", "PRINT_PENDING") && TimeUnit.NANOSECONDS.toMillis(System.nanoTime()-activity) >= effectiveTimeout) {
                 try {
                     shots.indices.forEach { if(selected.size < layout.selectCount) selected.add(it) }
-                    frameId = frameId ?: "synthetic-border"
+                    frameId = frameId ?: defaultFrameId()
                     complete(false)
                 } catch (_: Exception) { failure="Composition failed"; state="RECOVERY" }
             }
@@ -224,7 +232,7 @@ class SimulatorSessionEngine(
                 shots.clear(); selected.clear(); activeSequence=true; countdown()
                 result=obj("shotIndex" to 1,"totalShots" to layout.shotCount,"countdownSeconds" to layout.countdownSeconds)
             }
-            "selection.toggle" -> { guard("SELECTING_PHOTOS"); val i=number(p,"shotIndex"); if(i !in shots.indices) bad(-32602,"Invalid shot index"); val before=selected.toList(); if(!selected.remove(i) && selected.size<layout.selectCount) selected.add(i); if(before!=selected.toList()) { composition=null; printImage=null; frameId="synthetic-border" } }
+            "selection.toggle" -> { guard("SELECTING_PHOTOS"); val i=number(p,"shotIndex"); if(i !in shots.indices) bad(-32602,"Invalid shot index"); val before=selected.toList(); if(!selected.remove(i) && selected.size<layout.selectCount) selected.add(i); if(before!=selected.toList()) { composition=null; printImage=null; frameId=defaultFrameId() } }
             "selection.confirm" -> {
                 guard("SELECTING_PHOTOS")
                 selectionIndices(p, shots.size)?.let { indices ->
@@ -232,20 +240,20 @@ class SimulatorSessionEngine(
                     selected.clear(); selected.addAll(indices)
                 }
                 if(selected.size!=layout.selectCount) bad(-32001,"Exact selection required")
-                if(frameId==null) frameId="synthetic-border"
+                if(frameId==null) frameId=defaultFrameId()
                 composeSafely(); state="EDITING"
             }
-            "frame.list" -> { guard("EDITING"); return obj("frames" to listOf(mapOf("id" to "synthetic-border","name" to "V2 generated transparent test frame","thumbDataUrl" to frameThumb()))) }
-            "frame.select" -> { guard("EDITING"); if(text(p,"frameId")!="synthetic-border") bad(-32602,"Unknown frame"); frameId="synthetic-border"; composeSafely() }
+            "frame.list" -> { guard("EDITING"); val frames=availableFrames(); return obj("frames" to if(frames.isEmpty()) listOf(mapOf("id" to "synthetic-border","name" to "LE SOUVENIR fallback frame","thumbDataUrl" to frameThumb())) else frames.mapNotNull { pack -> pack.customImagePath?.let { path -> frameStore.frameThumbDataUrl(path)?.let { mapOf("id" to pack.id,"name" to pack.title,"thumbDataUrl" to it) } } }) }
+            "frame.select" -> { guard("EDITING"); val id=text(p,"frameId"); if(id!=defaultFrameId() && availableFrames().none { it.id==id }) bad(-32602,"Unknown frame"); frameId=id; composeSafely() }
             "frame.confirm" -> {
                 guard("EDITING")
                 val previousFrameId=frameId
                 if(p.has("frameId")) {
                     val requestedFrame=text(p,"frameId")
-                    if(requestedFrame!="synthetic-border") bad(-32602,"Unknown frame")
+                    if(requestedFrame!=defaultFrameId() && availableFrames().none { it.id==requestedFrame }) bad(-32602,"Unknown frame")
                     frameId=requestedFrame
                 }
-                if(frameId==null) frameId="synthetic-border"
+                if(frameId==null) frameId=defaultFrameId()
                 if(previousFrameId!=frameId) { composition=null; printImage=null }
                 if(composition==null || printImage==null) composeSafely()
                 if(composition==null || printImage==null) bad(-32001,"Complete current composition required")
@@ -280,16 +288,27 @@ class SimulatorSessionEngine(
         }
     }
     private fun frame(): BufferedImage {
-        val image=BufferedImage(240,360,BufferedImage.TYPE_INT_ARGB)
+        val width=if(layout.printSizeLabel=="5x15") 600 else 1200
+        val image=BufferedImage(width,1800,BufferedImage.TYPE_INT_ARGB)
         val g=image.createGraphics()
-        try { g.color=Color(130,35,75,255); g.fillRect(0,0,240,5); g.fillRect(0,355,240,5); g.fillRect(0,0,5,360); g.fillRect(235,0,5,360) } finally { g.dispose() }
+        try {
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON)
+            g.color=Color(105,75,68,220); g.stroke=BasicStroke(8f); g.drawRect(12,12,width-25,1775)
+            g.color=Color(105,75,68,170); g.stroke=BasicStroke(2f); g.drawRect(26,26,width-53,1747)
+            g.font=Font("Serif",Font.PLAIN,if(width==600) 27 else 40)
+            val logo="LE SOUVENIR"; val metrics=g.fontMetrics
+            g.color=Color(255,255,255,245); g.fillRect((width-metrics.stringWidth(logo))/2-16,1730,metrics.stringWidth(logo)+32,52)
+            g.color=Color(80,55,51); g.drawString(logo,(width-metrics.stringWidth(logo))/2,1765)
+        } finally { g.dispose() }
         return image
     }
     private fun frameThumb(): String { val out=ByteArrayOutputStream(); ImageIO.write(frame(),"png",out); return "data:image/png;base64,"+Base64.getEncoder().encodeToString(out.toByteArray()) }
     private fun composeSafely() { try { compose() } catch (_: Exception) { composition=null; printImage=null } }
     private fun compose() {
         composition=null; printImage=null
-        val overlay=directory().resolve("synthetic-transparent-frame.png"); ImageIO.write(frame(),"png",overlay.toFile())
+        val stored = availableFrames().firstOrNull { it.id==frameId }?.customImagePath
+        if(stored==null && availableFrames().isNotEmpty()) error("Selected frame unavailable")
+        val overlay = stored ?: directory().resolve("synthetic-transparent-frame.png").also { ImageIO.write(frame(),"png",it.toFile()) }
         val token=UUID.randomUUID().toString()
         val c=directory().resolve("composition-$token.png"); val p=directory().resolve("print-image-$token.png")
         SimulatorCompositor.generate(layout,selected.map { ImageIO.read(shots[it].toFile()) ?: error("Corrupt original") },ImageIO.read(overlay.toFile()),c,p)

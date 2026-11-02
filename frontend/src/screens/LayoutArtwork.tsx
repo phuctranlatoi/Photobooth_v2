@@ -36,6 +36,6 @@ export function LayoutArtwork({layout,compact=false,selectedPhotos,frameOverlayU
     {!compact&&<g><rect x={x+3} y={y+3} width={Math.min(w-6,28)} height="12" rx="6" fill="#fff" opacity=".94"/><text x={x+7} y={y+11.5} fontSize="6" fontFamily="sans-serif" fill="#5A4B45">Ảnh {i+1}</text></g>}</>}
    </g>})}
    {selectedPhotos===undefined&&<text x={width/2} y={height-8} textAnchor="middle" fontFamily="Georgia,serif" fontSize={Math.min(9,width/10)} letterSpacing="1" fill="#9B6B5E">LE SOUVENIR</text>}
-   {selectedPhotos!==undefined&&frameOverlayUrl&&<image href={frameOverlayUrl} x={0} y={0} width={width} height={height} preserveAspectRatio="none" style={{pointerEvents:'none'}}/>}
+    {selectedPhotos!==undefined&&frameOverlayUrl&&<image href={frameOverlayUrl} x={0} y={0} width={width} height={height} preserveAspectRatio="xMidYMid meet" style={{pointerEvents:'none'}}/>}
  </svg>;
 }

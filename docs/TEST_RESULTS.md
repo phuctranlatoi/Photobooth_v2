@@ -1,5 +1,18 @@
 # Test Results — Independent Consolidated Review
 
+## 2026-11-02 22:22 camera-studio/frame-assets release rerun (latest)
+
+| Case | Status | Evidence |
+|---|---|---|
+| Backend offline Gradle | **PASS-AUTOMATED** | Requested command exit 0; `BUILD SUCCESSFUL in 1m 58s`. Fresh XML aggregate: **28 suites, 82 total, 80 passed, 0 failures/errors, 2 skipped**. |
+| Frontend Vitest | **PASS-AUTOMATED** | Requested command exit 0: **8/8 files, 55/55 tests**, 7.94s. |
+| Frontend production build | **PASS-AUTOMATED** | Exit 0; TypeScript/Vite passed, 2,017 modules; JS 391.34 kB, CSS 114.69 kB. Not an installer test. |
+| Rust | **PASS-AUTOMATED (compile only)** | Plain `cargo test` failed because Cargo was absent from `PATH`; `%USERPROFILE%\.cargo\bin\cargo.exe test` exit 0, compiled 1 package in 4.48s. No Rust test cases were reported. |
+| V1 isolation | **BLOCKED (global proof)** | No reviewer V1 command/write/secret read; no trusted before/after manifest exists, so “100% untouched” cannot be certified. |
+| Hardware/release | **BLOCKED / NOT-RUN** | Canon, DNP, mounted touch, Mini-PC metrics, physical V1 comparison, installer/recovery and redistribution licenses remain open. |
+
+**Release gate: BLOCK.** Automated software regression is green; required physical, packaging, licensing and forensic-isolation evidence is absent.
+
 ## 2026-11-02 21:36 user-feedback parity rerun (latest)
 
 | Case | Status | Evidence |

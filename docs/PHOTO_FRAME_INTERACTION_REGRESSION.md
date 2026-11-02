@@ -1,5 +1,13 @@
 # Touchscreen Interaction & Revenue-Gate Regression — 2026-11-02
 
+## Camera-studio/frame-assets release rerun — 2026-11-02 22:22
+
+**Gate: BLOCKED for release, software regression green.** Backend: **80 passed / 0 failed / 2 skipped** (82 total, 28 XML suites), frontend: **55/55 passed** across 8 files, production build passed, and Rust `cargo test` compiled successfully with no Rust tests reported. The run covers the new camera-studio UI and frame thumbnail contracts only in automation; no mounted touchscreen, Canon capture, DNP output, or V1 print comparison occurred. The earlier queue-poisoning finding is no longer evidenced by current source: command sequencing is delegated to `shared/command-queue.ts`, and its recovery test passed.
+
+Commands: backend `.\.toolchain\gradle-8.14.3\bin\gradle.bat --offline test --console=plain` (`BUILD SUCCESSFUL in 1m 58s`); frontend `npm test -- --run` (8 files, 55 tests, 7.94s) and `npm run build` (2,017 modules, JS 391.34 kB / 124.35 kB gzip, CSS 114.69 kB / 23.11 kB gzip); Rust `%USERPROFILE%\.cargo\bin\cargo.exe test` (exit 0, compiled 1 package, finished in 4.48s). Plain `cargo test` first failed because Cargo was not on `PATH`; the explicit installed executable succeeded.
+
+V1 isolation is **BLOCKED for a forensic 100% claim**: this reviewer ran no command in V1, wrote nothing there, and read no secret, but no trusted pre-run V1 manifest was supplied.
+
 ## Independent user-feedback parity rerun — 2026-11-02 21:36
 
 **Gate: FAIL (HIGH command-queue defect).** The suites and build are green, but source review disproves the blanket claim that queued commands are never dropped. In `frontend/src/KioskSimulator.tsx:47`, `queue.current.then(previous=>previous?run():false)` permanently poisons the queue after any command resolves `false`; all later commands resolve `false` without executing. Reproduction: make one queued RPC fail (or return through the `!alive/error` guard), then enqueue another mutation; the second never calls `rpc`. Add a KioskSimulator-level regression that rejects one mutation and proves a subsequent deliberate retry executes before marking this fixed.

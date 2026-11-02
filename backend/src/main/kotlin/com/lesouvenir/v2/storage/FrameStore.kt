@@ -26,17 +26,26 @@ class FrameStore(private val workspace: Path, localAppData: String? = System.get
 
     private fun frame(root: Path, path: Path): FramePack? = runCatching {
         val pieces = root.relativize(path).map { it.toString() }.toList()
-        if (pieces.size !in 4..5 || pieces[2] !in listOf("Standard", "Special")) return null
-        val special = pieces[2] == "Special"
-        if (special != (pieces.size == 5)) return null
+        val size = pieces.firstOrNull()?.lowercase()
+        val printSize = when (size) { "5x15", "10x15" -> size; else -> null }
+        val canonical = pieces.size in 4..5 && pieces[2] in listOf("Standard", "Special") &&
+            (pieces[2] == "Special") == (pieces.size == 5)
+        if (!canonical && (pieces.size != 2 || printSize == null) && pieces.size != 1) return null
+        val special = canonical && pieces[2] == "Special"
         if (imageSize(path) == null) return null
         val name = path.fileName.toString().removeSuffix(".png")
         val json = path.resolveSibling("$name.json")
         val coordinates = if (Files.isRegularFile(json)) runCatching { JsonParser.parseString(Files.readString(json)).asJsonObject }.getOrNull() else null
         val event = if (special) pieces[3] else null
+        val resolvedSize = if (canonical) pieces[0] else printSize ?: when {
+            name.startsWith("515", true) -> "5x15"
+            name.startsWith("1015", true) -> "10x15"
+            else -> return null
+        }
+        val resolvedLayout = if (canonical) pieces[1] else if (resolvedSize == "5x15") "strip-5x15" else "print-10x15"
         FramePack(id = pieces.joinToString("/").removeSuffix(".png"), title = name,
             description = "", accentColor = 0L, isCustom = true, isSpecial = special,
-            specialEventName = event, customImagePath = path, targetPrintSize = pieces[0], targetLayoutId = pieces[1],
+            specialEventName = event, customImagePath = path, targetPrintSize = resolvedSize, targetLayoutId = resolvedLayout,
             qrCodeX = coordinates?.get("qrCodeX")?.asInt, qrCodeY = coordinates?.get("qrCodeY")?.asInt,
             qrCodeSize = coordinates?.get("qrCodeSize")?.asInt)
     }.getOrNull()
@@ -65,30 +74,26 @@ class FrameStore(private val workspace: Path, localAppData: String? = System.get
 
     fun thumbDataUrl(path: Path): String? = runCatching {
         val image = ImageIO.read(path.toFile()) ?: return null
-        // 18 KB of PNG gives < 25 KB after Base64 and the data URL prefix.
-        var width = minOf(180, image.width, (180L * image.width / image.height).toInt().coerceAtLeast(1))
-        var height = (image.height.toLong() * width / image.width).toInt().coerceAtLeast(1)
-        if (height > 180) { width = (width.toLong() * 180 / height).toInt().coerceAtLeast(1); height = 180 }
-        while (true) {
-            val scaled = BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
-            val graphics = scaled.createGraphics()
-            try {
-                graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR)
-                graphics.drawImage(image, 0, 0, width, height, null)
-            } finally { graphics.dispose() }
-            val output = ByteArrayOutputStream()
-            check(ImageIO.write(scaled, "png", output))
-            if (output.size() <= 18_000) return@runCatching "data:image/png;base64," + Base64.getEncoder().encodeToString(output.toByteArray())
-            if (width == 1 && height == 1) return@runCatching null
-            width = maxOf(1, width * 3 / 4)
-            height = maxOf(1, height * 3 / 4)
-        }
-        @Suppress("UNREACHABLE_CODE") null
+        val scale = minOf(1.0, 960.0 / maxOf(image.width, image.height))
+        val width = (image.width * scale).toInt().coerceAtLeast(1)
+        val height = (image.height * scale).toInt().coerceAtLeast(1)
+        val scaled = BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
+        val graphics = scaled.createGraphics()
+        try {
+            graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC)
+            graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY)
+            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
+            graphics.drawImage(image, 0, 0, width, height, null)
+        } finally { graphics.dispose() }
+        val output = ByteArrayOutputStream()
+        check(ImageIO.write(scaled, "png", output))
+        "data:image/png;base64," + Base64.getEncoder().encodeToString(output.toByteArray())
     }.getOrNull()
 
     fun frameThumbDataUrl(path: Path): String? {
         val sibling = listOf("thumb_${path.fileName}", "thumb_ui_${path.fileName}")
             .map(path::resolveSibling).firstOrNull { Files.isRegularFile(it) && imageSize(it) != null }
-        return (sibling?.let(::thumbDataUrl) ?: thumbDataUrl(path))
+        return (sibling?.takeIf { size -> imageSize(size)?.let { maxOf(it.first, it.second) >= 960 } == true }
+            ?.let(::thumbDataUrl) ?: thumbDataUrl(path))
     }
 }

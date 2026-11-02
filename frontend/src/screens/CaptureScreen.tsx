@@ -1,3 +1,26 @@
+import {useState} from 'react';
 import {safeImage} from '../shared/connected-simulator';
 import {type ScreenProps} from './KioskUI';
-export function CaptureScreen({layout,busy,action,live='',snapshot,count=0,countdown,state}:ScreenProps&{live?:string;count?:number;countdown?:number;state:string}){const image=safeImage(snapshot?.livePreviewDataUrl??live);const demo=snapshot?.captureMode==='DEMO'||snapshot?.runtimeMode==='SIMULATOR';const ratio=layout?.photoAspectRatio??1.5;return <div className="v1-capture-screen v1-capture"><div className="v1-camera-viewport"><div className="v1-live">{image?<img className="v1-live-mirrored" src={image} alt={demo?'Live View thử nghiệm':'Live View máy ảnh'}/>:<p role="status">Đang chờ hình ảnh từ {demo?'studio thử nghiệm':'máy ảnh'}…</p>}<div className="v1-crop" style={{aspectRatio:ratio,'--crop-width':String(Math.min(1,ratio/1.5)),'--crop-height':String(Math.min(1,1.5/ratio))} as React.CSSProperties}/></div>{state==='COUNTDOWN'&&<strong className={`v1-countdown${countdown!==undefined&&countdown<=3?' v1-countdown-urgent':''}`} role="timer" aria-label={`Còn ${countdown??0} giây`}>{countdown??''}</strong>}</div><div className="v1-capture-top" aria-label={`Ảnh ${Math.min(count+1,layout?.shotCount??1)} trên ${layout?.shotCount??'chưa xác định'}`}>Ảnh {Math.min(count+1,layout?.shotCount??1)}/{layout?.shotCount??'—'}</div>{state==='LIVE_VIEW'&&count===0&&<button className="v1-shutter" aria-label="Bắt đầu chụp" disabled={busy} onClick={()=>action('capture.startSequence')}><span/></button>}{state==='CAPTURING'&&<div className="v1-flash v1-shutter-flash" aria-hidden="true"/>}</div>}
+
+export function CaptureScreen({layout,busy,action,live='',snapshot,count=0,countdown,state}:ScreenProps&{live?:string;count?:number;countdown?:number;state:string}){
+  const image=safeImage(snapshot?.livePreviewDataUrl??live);
+  const [imageRatio,setImageRatio]=useState(3/2);
+  const targetRatio=layout?.photoAspectRatio && layout.photoAspectRatio>0 ? layout.photoAspectRatio : 3/2;
+  const cropWidth=Math.min(1,targetRatio/imageRatio);
+  const cropHeight=Math.min(1,imageRatio/targetRatio);
+  return <div className="v1-capture-screen v1-capture">
+    <div className="v1-camera-viewport">
+      <div className="v1-live" style={{aspectRatio:imageRatio,'--image-ratio':String(imageRatio)} as React.CSSProperties}>
+        {image?<img className="v1-live-mirrored" src={image} alt="Live View máy ảnh" onLoad={event=>{
+          const {naturalWidth,naturalHeight}=event.currentTarget;
+          if(naturalWidth>0&&naturalHeight>0){const ratio=naturalWidth/naturalHeight;setImageRatio(current=>current===ratio?current:ratio)}
+        }}/>:<p role="status">Đang chờ hình ảnh từ máy ảnh…</p>}
+        {image&&<div className="v1-crop" style={{aspectRatio:targetRatio,'--crop-width':String(cropWidth),'--crop-height':String(cropHeight)} as React.CSSProperties}/>}
+      </div>
+    </div>
+    {state==='COUNTDOWN'&&<strong className="v1-countdown" role="timer" aria-label={`Còn ${countdown??0} giây`}>{countdown??''}</strong>}
+    <div className="v1-capture-top" aria-label={`Ảnh ${Math.min(count+1,layout?.shotCount??1)} trên ${layout?.shotCount??'chưa xác định'}`}>Ảnh {Math.min(count+1,layout?.shotCount??1)}/{layout?.shotCount??'—'}</div>
+    {state==='LIVE_VIEW'&&count===0&&<div className="v1-shutter-control"><button type="button" className="v1-shutter" aria-label="Bắt đầu chụp" disabled={busy} onClick={()=>action('capture.startSequence')}><span/></button><span>Chạm để chụp</span></div>}
+    {state==='CAPTURING'&&<div className="v1-flash v1-shutter-flash" aria-hidden="true"/>}
+  </div>;
+}

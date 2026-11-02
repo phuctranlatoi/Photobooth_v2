@@ -322,7 +322,7 @@ class RealSessionEngine(
             }
             if (p.has("orderCode") && runCatching { p["orderCode"].asLong }.getOrNull() != code) fail(-32602, "Order code mismatch")
             val status = if (payOs?.checkPaymentStatus(code) == true) "PAID" else "PENDING"
-            if (status == "PAID") { paid = true; state = "PREPARING"; hardwareCamera(); startPreview(); state = "LIVE_VIEW" }
+            if (status == "PAID") { paid = true; state = "PREPARING"; if (captureMode == "REAL") hardwareCamera(); startPreview(); state = "LIVE_VIEW" }
             return snapshot().apply {
                 addProperty("orderCode", code); addProperty("status", status); addProperty("paid", paid)
                 addProperty("amount", PricingCalculator.calculatePrice(layout.printSizeLabel, quantity).totalAmount)

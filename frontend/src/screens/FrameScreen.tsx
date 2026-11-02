@@ -49,22 +49,24 @@ export function FrameScreen({layout, busy, action, preview, snapshot, frames = [
     <Heading step="Bước 4 · Chọn khung trang trí" title="Chọn khung trang trí"
       subtitle="Chọn khung phù hợp với khoảnh khắc" back={() => action('session.back')}/>
     <div className="v1-split v1-frame-workspace">
-      <div className="v1-frame-preview-panel"><div className="v1-frame-preview-heading"><h2>Bản in xem trước</h2><p>{formatFrameName(selectedFrame?.name ?? 'Khung mặc định')} · {layout?.printSizeLabel ?? ''}</p></div><PrintPreview src={preview} ratio={layout?.printAspectRatio} layout={layout}
-        selectedPhotos={selectedPhotos}
-        frameOverlayUrl={safeImage(selectedFrame?.thumbDataUrl) || safeImage(selectedFrame?.thumbnailDataUrl) || safeImage(selectedFrame?.previewDataUrl)}
+      <div className="v1-frame-preview-panel"><div className="v1-frame-preview-heading"><h2>Bản in xem trước</h2><p>{formatFrameName(selectedFrame?.name ?? 'Khung mặc định')} · {layout?.printSizeLabel ?? ''}</p></div><PrintPreview src={snapshot?.frameId === effectiveFrameId ? preview : undefined} ratio={layout?.printAspectRatio} layout={layout}
+        selectedPhotos={safeImage(preview) && snapshot?.frameId === effectiveFrameId ? undefined : selectedPhotos}
+         frameOverlayUrl={safeImage(selectedFrame?.thumbDataUrl) || safeImage(selectedFrame?.thumbnailDataUrl) || safeImage(selectedFrame?.previewDataUrl)}
          label="Bản in xem trước"/></div>
       <div className="v1-frame-grid">
         {frames.length ? frames.map(frame => {
           const thumb = safeImage(frame.thumbDataUrl) || safeImage(frame.thumbnailDataUrl) || safeImage(frame.previewDataUrl);
           const selected = effectiveFrameId === frame.id;
            return <button type="button" key={frame.id} aria-pressed={selected} disabled={busy} onClick={() => handleUserFrameTap(frame.id)}>
-            {thumb ? <img src={thumb} alt={formatFrameName(frame.name)}/> :
+             <span className="v1-frame-art" style={{aspectRatio:layout?.printAspectRatio && layout.printAspectRatio>0 ? layout.printAspectRatio : 1/3}}>
+             {thumb ? <img src={thumb} alt={formatFrameName(frame.name)}/> :
               <svg className="v1-frame-silhouette" viewBox="0 0 96 112" fill="none" aria-hidden="true">
                 <rect x="12" y="8" width="72" height="96" rx="5" stroke="currentColor" strokeWidth="4"/>
                 <rect x="20" y="16" width="56" height="80" rx="2" stroke="currentColor" strokeWidth="2"/>
                 <circle cx="48" cy="45" r="10" stroke="currentColor" strokeWidth="2"/>
                 <path d="M28 82c2-15 10-23 20-23s18 8 20 23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-              </svg>}
+               </svg>}
+             </span>
             <strong>{formatFrameName(frame.name)}</strong>
             {selected && <span className="v1-frame-check" aria-hidden="true"><Check size={16} strokeWidth={3}/></span>}
           </button>;
