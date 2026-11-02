@@ -16,6 +16,7 @@ export function ConfirmScreen({layout,pricing,busy,action,preview,snapshot,simul
         <section className="v1-panel v1-summary">
           <h2>Đơn hàng của bạn</h2>
           <p>Bố cục <strong>{layout?formatLayoutTitle(layout):'Bố cục'}</strong></p>
+          <p>Khổ in <strong>{layout?.printSizeLabel??'—'}</strong></p>
           <p>Số lượng <strong>{pricing?.quantity??'—'}</strong></p>
           {pricing?.basePrice!=null&&<p>Giá gốc <Vnd amount={pricing.basePrice}/></p>}
           {!!pricing?.extraQuantity&&<p>In thêm <Vnd amount={pricing.extraAmount}/></p>}

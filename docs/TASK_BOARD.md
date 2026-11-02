@@ -1,5 +1,19 @@
 # TASK_BOARD.md
 
+## Luxury Atelier UI Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-02 23:05)
+
+| Task | Status | Evidence / next gate |
+|---|---|---|
+| Backend regression | **COMPLETED — PASS-AUTOMATED** | 28 suites / 82 total: **80 passed, 0 failed/errors, 2 skipped**. |
+| Frontend regression | **COMPLETED — PASS-AUTOMATED** | **8/8 files, 55/55 tests**. |
+| Frontend production build | **COMPLETED — PASS-AUTOMATED** | TypeScript/Vite exit 0; 2,017 modules. |
+| Rust command | **COMPLETED — PASS-AUTOMATED (compile only)** | Installed Cargo exit 0; one package compiled, no tests reported. |
+| Fresh rendered 16:10/scaling/touch review | **NOT-RUN** | Required at 100/125/150% scaling; unit/build success does not prove fit or touch usability. |
+| V1 global untouched proof | **BLOCKED** | Reviewer made no V1 access/write; no trusted before/after manifest exists. |
+| Hardware/production/package/licenses | **BLOCKED / NOT-RUN** | Canon, DNP, Mini-PC metrics, live providers, installer/recovery, print comparison, and redistribution rights remain open. |
+
+---
+
 ## V1 Geometry Alignment Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-02 22:48)
 
 | Task | Status | Evidence / next gate |

@@ -1,5 +1,11 @@
 # Touchscreen Interaction & Revenue-Gate Regression — 2026-11-02
 
+## Luxury-atelier UI rerun — 2026-11-02 23:05
+
+**PASS-AUTOMATED for bounded regressions; production BLOCKED.** Backend offline Gradle exited 0 (`BUILD SUCCESSFUL in 17s`), with **28 suites / 82 tests / 80 passed / 0 failed or errors / 2 skipped**. Frontend Vitest exited 0 with **8/8 files and 55/55 tests** in 7.39s. The TypeScript/Vite build exited 0 with **2,017 modules** (JS 392.17 kB; CSS 121.96 kB). Installed Cargo exited 0 and compiled one package; no Rust tests were reported.
+
+This establishes compilation and existing interaction contracts only. It does not establish final CSS geometry, face-safe countdown placement, QR scanability, physical touch behavior, Canon capture, DNP output, Mini-PC performance, or V1 print equivalence. No V1 command/write/secret read occurred; complete forensic untouched proof is blocked without a trusted baseline manifest.
+
 ## V1 geometry-alignment regression rerun — 2026-11-02 22:48
 
 **Gate: BLOCKED for production release; bounded software regression passed.** The exact requested backend command exited 0 (`BUILD SUCCESSFUL in 32s`); retained JUnit XML aggregates **28 suites / 82 tests / 80 passed / 0 failures / 0 errors / 2 skipped**. Frontend Vitest exited 0 with **8/8 files and 55/55 tests passed**. `npm run build` exited 0 after TypeScript checking and Vite transformed **2,017 modules** (JS 391.98 kB, CSS 113.70 kB). Cargo was absent from `PATH`, but `%USERPROFILE%\.cargo\bin\cargo.exe test` exited 0 and compiled one package; no Rust test cases were reported.

@@ -1,5 +1,11 @@
 # PROGRESS.md
 
+## Luxury Korean Atelier UI Regression (2026-11-02 23:05)
+
+**Status: bounded automated software checks PASS; production release BLOCKED.** Backend: **80 passed / 2 skipped / 0 failed** of 82 across 28 suites. Frontend: **55/55 passed across 8 files**. TypeScript/Vite production build passed with 2,017 modules. Cargo compiled the Rust package successfully; no Rust test cases were reported. The new CSS and Start/Prepare/Confirm/Printing changes are compile- and component-regression clean, but no fresh rendered viewport, physical touchscreen, camera, printer, Mini-PC, installer, provider, or licensing acceptance was performed. No V1 command/write/secret read occurred; global forensic isolation remains unprovable without a trusted baseline manifest.
+
+---
+
 ## V1 Capture / Selection / Frame Geometry Alignment (2026-11-02 22:48)
 
 **Status: COMPLETE for bounded automated regression; production release BLOCKED.** Current changes to capture presentation, photo-selection layout, and frame-preview geometry compile and retain the existing interaction suite: backend **80 passed / 2 skipped / 0 failed** of 82 across 28 suites; frontend **55/55 passed across 8 files**; TypeScript/Vite build passed with 2,017 modules. Explicit installed Cargo compiled the Rust package; no Rust tests exist. No fresh mounted 16:10 visual run or V1 golden/pixel comparison was performed, so visual parity remains simulated/source-based. Canon, DNP, Mini-PC performance, installer/recovery, and redistribution licensing remain blocked. No V1 command/write/secret read occurred; complete forensic isolation cannot be certified without a trusted baseline manifest.

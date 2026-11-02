@@ -1,5 +1,18 @@
 # Test Results — Independent Consolidated Review
 
+## 2026-11-02 23:05 luxury-atelier UI regression rerun (latest)
+
+| Case | Status | Evidence |
+|---|---|---|
+| Backend offline Gradle | **PASS-AUTOMATED** | Requested command exit 0; `BUILD SUCCESSFUL in 17s`. JUnit XML: **28 suites, 82 total, 80 passed, 0 failures/errors, 2 skipped**. |
+| Frontend Vitest | **PASS-AUTOMATED** | `npm test -- --run` exit 0: **8/8 files, 55/55 tests**, 7.39s. |
+| Frontend production build | **PASS-AUTOMATED** | `npm run build` exit 0; TypeScript/Vite passed, **2,017 modules**; JS 392.17 kB, CSS 121.96 kB. Not an installer test. |
+| Rust | **PASS-AUTOMATED (compile only)** | Explicit installed Cargo fallback exit 0; one package compiled in 8.56s. No Rust test cases were reported. |
+| V1 isolation | **BLOCKED (global proof)** | No command, write, build, or secret read was performed in V1. No trusted pre-task manifest exists, so filesystem-wide untouched status cannot be certified. |
+| Physical/release acceptance | **BLOCKED / NOT-RUN** | No fresh rendered 16:10 screenshots, mounted touch, Canon, DNP, Mini-PC metrics, installer/recovery, live provider operation, or license signoff. |
+
+**Release gate: BLOCK.** Automated software regression is green; visual, physical hardware, packaging, performance, provider, and redistribution gates remain open.
+
 ## 2026-11-02 22:48 V1 geometry-alignment rerun (latest)
 
 | Case | Status | Evidence |
