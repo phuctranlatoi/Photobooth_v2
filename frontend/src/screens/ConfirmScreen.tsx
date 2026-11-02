@@ -1,9 +1,11 @@
 import {safeImage} from '../shared/connected-simulator';
-import {useRef} from 'react';
+import {useEffect,useRef,useState} from 'react';
 import {ActionBar,Heading,KioskPrimaryButton,PrintPreview,Vnd,type ScreenProps} from './KioskUI';
 import {formatLayoutTitle} from './LayoutArtwork';
 export function ConfirmScreen({layout,pricing,busy,action,preview,snapshot,simulator}:ScreenProps){
   const sent=useRef(false);
+  const [isArmed,setIsArmed]=useState(false);
+  useEffect(()=>{const timer=setTimeout(()=>setIsArmed(true),500);return()=>clearTimeout(timer)},[]);
   const real=snapshot?.captureMode!=='DEMO'&&(snapshot?.captureMode==='REAL'||snapshot?.runtimeMode==='REAL'||simulator===false);
   const composed=safeImage(snapshot?.compositionDataUrl)||safeImage(snapshot?.printImageDataUrl)||safeImage(preview);
   return (
@@ -25,8 +27,8 @@ export function ConfirmScreen({layout,pricing,busy,action,preview,snapshot,simul
       <ActionBar>
         <span>Xác nhận một lần, không gửi lại nếu mạng gián đoạn</span>
         <KioskPrimaryButton
-          disabled={busy||!safeImage(composed)}
-          onClick={()=>{if(sent.current||busy||!safeImage(composed))return;sent.current=true;action(real?'print.confirmReal':'print.confirmDryRun')}}
+          disabled={!isArmed||busy||sent.current||!safeImage(composed)}
+          onClick={()=>{if(!isArmed||sent.current||busy||!safeImage(composed))return;sent.current=true;action(real?'print.confirmReal':'print.confirmDryRun')}}
         >
           {real ? 'Xác nhận & in →' : 'Xác nhận bản mô phỏng →'}
         </KioskPrimaryButton>

@@ -1,10 +1,10 @@
 # PROGRESS.md
 
-## Photo & Frame Selection V1 Parity Restoration (2026-11-02)
+## Touchscreen Interaction & Golden Revenue Gate Verification (2026-11-02)
 
-**Status: COMPLETE for bounded automated software scope.** FIFO selection order, quota enforcement, deselection re-indexing, 500ms hold-to-zoom at full quota, release-without-toggle, optimistic composition preview, default frame selection, latched Continue and `PRINT_PENDING` backend transition are verified in source/tests. Floating preview and liquid-glass cards are source/CSS verified only.
+**Status: COMPLETE for bounded automated software scope.** Frame Continue is removed; user frame taps visually settle for 300ms and advance once; defaults do not advance; layout center/confirm behavior, hidden staff PIN flow, and Confirm's 500ms arming window are tested. Composition is native 300 DPI. Revenue remains false for mock/frame/demo paths and is recorded only after successful real spooler submission. Visual shadow/16:10 claims remain simulated, not physical-touch evidence.
 
-- Backend offline command: **76 passed, 0 failed, 2 skipped** across 28 suites (78 total); build successful, test task UP-TO-DATE.
+- Backend offline command: **77 passed, 0 failed, 2 skipped** across 28 suites (79 total); build successful, test task UP-TO-DATE.
 - Frontend: **50/50 tests passed** across 7 files.
 - Production build: TypeScript/Vite passed; **2,016 modules transformed**.
 - Detailed matrix: `docs/PHOTO_FRAME_INTERACTION_REGRESSION.md`.

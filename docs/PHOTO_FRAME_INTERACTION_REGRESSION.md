@@ -1,13 +1,21 @@
-# Photo & Frame Interaction Regression — 2026-11-02
+# Touchscreen Interaction & Revenue-Gate Regression — 2026-11-02
 
 ## Verdict
 
-**PASS-AUTOMATED for the bounded component/backend contracts; physical touchscreen behavior is NOT-RUN.** This review does not certify Canon capture, DNP output, mounted-glass touch behavior, or production release.
+**PASS-AUTOMATED for the bounded component/backend contracts; PASS-SIMULATED for source/CSS-only visual claims; physical touchscreen behavior is NOT-RUN.** This review does not certify Canon capture, DNP output, mounted-glass touch behavior, or production release.
 
 | Case | Status | Evidence |
 |---|---|---|
-| Frame Continue enabled after selection/default selection | PASS-AUTOMATED | `frontend/src/screens/FrameScreen.tsx:27-47,85-89`; `frontend/src/screens/screens.test.tsx:36` verifies first-frame preselection, enabled Continue, and one `frame.confirm` despite two taps. |
-| Continue reaches `PRINT_PENDING` | PASS-AUTOMATED | Backend dispatch `backend/src/main/kotlin/com/lesouvenir/v2/ipc/RealSessionEngine.kt:416` requires `EDITING`, ensures composition exists, then sets `PRINT_PENDING`. Full backend suite passed. No mounted journey was rerun in this review. |
+| Frame Continue removed | PASS-AUTOMATED | `FrameScreen.tsx:55-82` contains only heading, preview, frame buttons and hint; `screens.test.tsx:36` asserts no Continue button. |
+| One-tap frame selection advances after 300ms | PASS-AUTOMATED | `FrameScreen.tsx:32-49` selects, waits 300ms, then confirms only after accepted selection; `screens.test.tsx:36` advances fake time exactly 300ms and observes one confirm. |
+| Programmatic default does not auto-advance | PASS-AUTOMATED | Default is derived at `FrameScreen.tsx:26-27` without invoking the tap handler; explicit test at `screens.test.tsx:36`. |
+| Rapid-tap lockout | PASS-AUTOMATED | `isTransitioning` latch and disabled non-selected cards at `FrameScreen.tsx:23,33-35,67`; test verifies one confirm. |
+| Centered layout tap advances; off-center tap centers | PASS-AUTOMATED | `StudioModeScreen.tsx:22-28`; test at `screens.test.tsx:32` verifies first tap selects/centers and a centered tap confirms once despite repetition. |
+| Public cash confirmation removed | PASS-AUTOMATED | `PaymentScreen.tsx:64-83` exposes cash only after staff authorization; tests at `screens.test.tsx:29,44` assert no guest cash/payment bypass. |
+| 1000ms title long-press opens staff PIN | PASS-AUTOMATED | `PaymentScreen.tsx:64`; `screens.test.tsx:47` verifies 999ms rejection, movement cancellation, 1000ms modal, bad PIN rejection and one latched cash action. |
+| Confirm ghost-click safety | PASS-AUTOMATED | `ConfirmScreen.tsx:7-8,30-31` blocks confirmation for 500ms; frame test verifies the newly mounted button is disabled. |
+| Native 300 DPI composition | PASS-AUTOMATED | `DesktopCompositor.kt:48-58` uses scale 1 and 300-DPI dimensions; `PrintImageWriterTest.kt:10-32` checks encoded X/Y density 300. This supersedes prior 600-DPI wording. |
+| Golden Revenue Gate | PASS-AUTOMATED | `RealSessionEngine.kt:531-555` marks print accepted only for submitted spooler result and records the sale afterward; simulator and demo tests keep revenue false. `SimulatorSessionTest.staffCashAndAtomicFrameConfirmDoNotRecordRevenue` covers mock payment/frame selection. No live DB write or paper output was attempted. |
 | FIFO tap ordering and quota cap | PASS-AUTOMATED | `SelectPhotosScreen.tsx:27-34` appends selected indices and rejects new selections at quota; test at `screens.test.tsx:24` verifies ordered slots. |
 | Automatic re-index on deselection | PASS-AUTOMATED | Order is derived with `localSelected.indexOf(i)` at `SelectPhotosScreen.tsx:42,87`; test at `screens.test.tsx:24` verifies immediate re-index. |
 | 500 ms hold-to-zoom, including unselected item at full quota | PASS-AUTOMATED | Timer at `SelectPhotosScreen.tsx:51-59`; quota-full cards are dimmed but not disabled (`:47-50`); test at `screens.test.tsx:23` holds unselected photo 3 at full quota. |
@@ -15,15 +23,15 @@
 | Live photo composition preview | PASS-AUTOMATED | `selectedPhotos` follows optimistic local FIFO state (`SelectPhotosScreen.tsx:27,93`); test at `screens.test.tsx:24` verifies preview order updates immediately. |
 | Live frame composition preview | PASS-AUTOMATED | Effective frame and overlay are derived immediately at `FrameScreen.tsx:28,49,56-59,64-69`; frontend suite passed. A dedicated assertion for switching between two frame overlays is still desirable. |
 | Default frame preselected on entering editing | PASS-AUTOMATED | `FrameScreen.tsx:40-47`; explicit assertion at `screens.test.tsx:36`. |
-| 600-DPI composition decoupled from frame-card click | PASS-SIMULATED | Frame click only sets optimistic ID and dispatches `frame.select` (`FrameScreen.tsx:64-69`). Backend composes through its command path; confirm ensures composition before transition (`RealSessionEngine.kt:416`). This is source/component evidence, not Mini-PC latency measurement. |
+| Native composition decoupled from frame-card click | PASS-SIMULATED | Frame click dispatches `frame.select`; backend composition remains behind its command path. This is source/component evidence, not Mini-PC latency measurement. |
 | Floating preview / no oversized white wrapper | PASS-SIMULATED | CSS `frontend/src/kiosk-v1.css:215-217` removes preview background, border, radius and shadow and uses a drop shadow. No fresh screenshot run was performed. |
 | Liquid-glass frame cards | PASS-SIMULATED | CSS `frontend/src/kiosk-v1.css:218-225` uses translucent cards, blur, selected/pressed feedback and bounded grid rows. Physical touch/readability is NOT-RUN. |
 
 ## Commands and exact results
 
-- Backend, from `backend`: `.\.toolchain\gradle-8.14.3\bin\gradle.bat --offline test --console=plain` — exit 0, `BUILD SUCCESSFUL in 21s`; task was `UP-TO-DATE`. Aggregated JUnit XML: **28 suites, 78 tests, 0 failures, 0 errors, 2 skipped = 76 passed**.
-- Frontend, from `frontend`: `npm test -- --run` — exit 0; **7/7 files, 50/50 tests passed**, 0 failed/skipped, duration 8.46s.
-- Frontend build: `npm run build` — exit 0; TypeScript check and Vite production build passed, **2,016 modules transformed**, output JS 388.49 kB (123.51 kB gzip), CSS 95.03 kB (19.85 kB gzip).
+- Backend, from `backend`: `.\.toolchain\gradle-8.14.3\bin\gradle.bat --offline test --console=plain` — exit 0, `BUILD SUCCESSFUL in 21s`; task was `UP-TO-DATE`. Fresh JUnit XML aggregate: **28 suites, 79 tests, 0 failures, 0 errors, 2 skipped = 77 passed**.
+- Frontend, from `frontend`: `npm test -- --run` — exit 0; **7/7 files, 50/50 tests passed**, 0 failed/skipped, duration 8.82s.
+- Frontend build: `npm run build` — exit 0; TypeScript check and Vite production build passed, **2,016 modules transformed**, output JS 389.94 kB (124.01 kB gzip), CSS 103.90 kB (21.39 kB gzip), built in 5.60s.
 
 ## Isolation and remaining gates
 

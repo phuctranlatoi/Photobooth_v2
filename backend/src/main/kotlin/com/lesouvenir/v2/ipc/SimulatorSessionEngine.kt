@@ -51,6 +51,7 @@ class SimulatorSessionEngine(
     private var layout = layouts.first()
     private var quantity = 2
     private var paid = false
+    private var paymentMethod = "DEMO"
     private var remaining = 0
     private var activeSequence = false
     private var activity = System.nanoTime()
@@ -126,7 +127,8 @@ class SimulatorSessionEngine(
         "shots" to shots.mapIndexed { index,path -> mapOf("shotIndex" to index,"shotId" to "shot-$index","preview" to data(path,240)) },
         "previewDataUrl" to printImage?.let { data(it,600) }, "compositionDataUrl" to composition?.let { data(it,600) },
         "printImageDataUrl" to printImage?.let { data(it,600) }, "frameId" to frameId,"userConfirmed" to userConfirmed,
-        "printAccepted" to false,"revenueRecorded" to false,"simulator" to true,"failure" to failure,"livePreviewDataUrl" to live)
+        "printAccepted" to false,"revenueRecorded" to false,"paymentMethod" to paymentMethod,
+        "simulator" to true,"failure" to failure,"livePreviewDataUrl" to live)
     }
 
     @Synchronized override fun dispatch(method: String, p: JsonObject): JsonObject {
@@ -165,7 +167,12 @@ class SimulatorSessionEngine(
             }
         }
         val fields = schemas[method] ?: bad(-32601,"Method not found")
-        val extra = p.keySet() - fields - setOf("generationId")
+        val optional = when(method) {
+            "frame.confirm" -> setOf("frameId")
+            "payment.mockComplete" -> setOf("staffOverride", "method")
+            else -> emptySet()
+        }
+        val extra = p.keySet() - fields - optional - setOf("generationId")
         if(extra.isNotEmpty() || !p.keySet().containsAll(fields)) bad(-32602,"Invalid parameters")
         if(method=="catalog.get") return obj("layouts" to layouts,"defaultLayoutId" to config["defaultLayoutId"].asString,
             "sourceCount" to config["sourceCount"].asInt,"previewWidth" to config["previewWidth"].asInt,"previewHeight" to config["previewHeight"].asInt,
@@ -200,7 +207,13 @@ class SimulatorSessionEngine(
             "session.setLayout" -> { guard("SELECTING"); layout=layouts.find { it.id==text(p,"layoutId") } ?: bad(-32602,"Unknown layout"); quantity=2 }
             "session.setQuantity" -> { guard("SELECTING_QUANTITY"); val n=number(p,"quantity"); if(n !in 2..50) bad(-32602,"Quantity out of range"); quantity=PricingCalculator.sanitizeQuantity(layout.printSizeLabel,n); state="PAYMENT_PENDING" }
             "session.confirmSetup" -> { guard("SELECTING"); state="SELECTING_QUANTITY" }
-            "payment.mockComplete" -> { guard("PAYMENT_PENDING"); paid=true; state="PREPARING"; schedule(prepareMillis) { state="LIVE_VIEW" }; result=obj("paid" to true) }
+            "payment.mockComplete" -> {
+                guard("PAYMENT_PENDING")
+                if(p["staffOverride"]?.asBoolean == true) paymentMethod = p["method"]?.takeIf {
+                    it.isJsonPrimitive && it.asJsonPrimitive.isString
+                }?.asString ?: "Tiền mặt"
+                paid=true; state="PREPARING"; schedule(prepareMillis) { state="LIVE_VIEW" }; result=obj("paid" to true)
+            }
             "capture.startSequence" -> {
                 guard("LIVE_VIEW"); if(!paid) bad(-32002,"Mock payment required"); if(!enabled) bad(-32000,"Simulator capture disabled")
                 if(activeSequence) bad(-32004,"Capture active")
@@ -211,7 +224,20 @@ class SimulatorSessionEngine(
             "selection.confirm" -> { guard("SELECTING_PHOTOS"); if(selected.size!=layout.selectCount) bad(-32001,"Exact selection required"); if(frameId==null) frameId="synthetic-border"; composeSafely(); state="EDITING" }
             "frame.list" -> { guard("EDITING"); return obj("frames" to listOf(mapOf("id" to "synthetic-border","name" to "V2 generated transparent test frame","thumbDataUrl" to frameThumb()))) }
             "frame.select" -> { guard("EDITING"); if(text(p,"frameId")!="synthetic-border") bad(-32602,"Unknown frame"); frameId="synthetic-border"; composeSafely() }
-            "frame.confirm" -> { guard("EDITING"); if(frameId==null) frameId="synthetic-border"; if(composition==null || printImage==null) composeSafely(); if(composition==null || printImage==null) bad(-32001,"Complete current composition required"); pendingTimerMillis=configuredBudget("EDITING"); state="PRINT_PENDING" }
+            "frame.confirm" -> {
+                guard("EDITING")
+                val previousFrameId=frameId
+                if(p.has("frameId")) {
+                    val requestedFrame=text(p,"frameId")
+                    if(requestedFrame!="synthetic-border") bad(-32602,"Unknown frame")
+                    frameId=requestedFrame
+                }
+                if(frameId==null) frameId="synthetic-border"
+                if(previousFrameId!=frameId) { composition=null; printImage=null }
+                if(composition==null || printImage==null) composeSafely()
+                if(composition==null || printImage==null) bad(-32001,"Complete current composition required")
+                pendingTimerMillis=configuredBudget("EDITING"); state="PRINT_PENDING"
+            }
             "print.confirmDryRun" -> { guard("PRINT_PENDING"); complete(true); result=snapshot().apply { addProperty("compositionDataUrl",data(composition!!,600)); addProperty("printImageDataUrl",data(printImage!!,600)) } }
             "session.back" -> { state=when(state) { "SELECTING" -> "IDLE"; "SELECTING_QUANTITY" -> "SELECTING"; "PAYMENT_PENDING" -> "SELECTING_QUANTITY"; "EDITING" -> "SELECTING_PHOTOS"; "PRINT_PENDING" -> "EDITING"; else -> bad(-32001,"Back not permitted") }; if(state=="IDLE") reset() }
             "session.cancel" -> { guard("SELECTING_PHOTOS","EDITING"); reset(); result=obj("cancelled" to true,"state" to state) }
@@ -222,7 +248,7 @@ class SimulatorSessionEngine(
         if(mutation) dedup[key]=signature to answer.deepCopy()
         return answer
     }
-    private fun reset() { epoch++; job?.cancel(false); activeSequence=false; state="IDLE"; shots.clear(); selected.clear(); paid=false; quantity=2; frameId=null; composition=null; printImage=null; failure=null; remaining=0; userConfirmed=false }
+    private fun reset() { epoch++; job?.cancel(false); activeSequence=false; state="IDLE"; shots.clear(); selected.clear(); paid=false; paymentMethod="DEMO"; quantity=2; frameId=null; composition=null; printImage=null; failure=null; remaining=0; userConfirmed=false }
     private fun schedule(delay: Long, action: () -> Unit) {
         val token=epoch; val id=sid
         job=executor.schedule({ synchronized(this) { if(token==epoch && id==sid) try { action() } catch (_: Exception) { failure="Synthetic processing failed"; activeSequence=false; state="RECOVERY" } } },delay,TimeUnit.MILLISECONDS)

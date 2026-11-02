@@ -1,6 +1,6 @@
 import {useEffect,useLayoutEffect,useRef,useState} from 'react';
 import {ChevronLeft,ChevronRight} from 'lucide-react';
-import {ActionBar,Heading,KioskPrimaryButton,type ScreenProps} from './KioskUI';
+import {Heading,type ScreenProps} from './KioskUI';
 import {formatLayoutSubtitle,formatLayoutTitle,LayoutArtwork} from './LayoutArtwork';
 
 export function StudioModeScreen({layout,layouts,busy,action}:ScreenProps){
@@ -8,16 +8,24 @@ export function StudioModeScreen({layout,layouts,busy,action}:ScreenProps){
  const [center,setCenter]=useState(initial);
  const track=useRef<HTMLDivElement>(null);
  const settle=useRef<ReturnType<typeof setTimeout>|null>(null);
- const pending=useRef<string|null>(null);
+  const pending=useRef<string|null>(null);
+  const transitioning=useRef(false);
  const selected=useRef(layout?.id);
  selected.current=layout?.id;
  const active=layouts[center]??layout;
- const move=(index:number)=>{
-  const next=layouts[index];if(!next||busy)return;
+  const move=(index:number)=>{
+   const next=layouts[index];if(!next||busy||transitioning.current)return;
    pending.current=next.id;
    setCenter(index);if(selected.current!==next.id){selected.current=next.id;action('session.setLayout',{layoutId:next.id})}
   track.current?.querySelectorAll<HTMLElement>('.v1-carousel-card')[index]?.scrollIntoView?.({behavior:'smooth',block:'nearest',inline:'center'});
- };
+  };
+  const handleCardClick=(index:number)=>{
+   if(busy||transitioning.current)return;
+   if(center!==index){move(index);return}
+   if(!active)return;
+   transitioning.current=true;
+   try{void Promise.resolve(action('session.confirmSetup')).then(result=>{if(result===false)transitioning.current=false}).catch(()=>{transitioning.current=false})}catch{transitioning.current=false}
+  };
  useLayoutEffect(()=>{
   const index=Math.max(0,layouts.findIndex(l=>l.id===layout?.id));
   setCenter(index);
@@ -51,12 +59,12 @@ export function StudioModeScreen({layout,layouts,busy,action}:ScreenProps){
    {layouts.length?<><div className="v1-carousel-wrap">
       <button type="button" className="v1-carousel-arrow v1-carousel-prev" aria-label="Bố cục trước" disabled={busy||center===0} onClick={()=>move(center-1)}><ChevronLeft size={24} strokeWidth={2.4} aria-hidden="true"/></button>
      <div className="v1-layout-carousel" ref={track} onScroll={onScroll} onPointerDown={()=>{pending.current=null}}>
-      {layouts.map((l,i)=><button type="button" key={l.id} className="v1-layout-card v1-carousel-card" data-layout-id={l.id} aria-pressed={center===i} aria-label={`${formatLayoutTitle(l)} · ${formatLayoutSubtitle(l)}`} disabled={busy} onClick={()=>move(i)}>
+       {layouts.map((l,i)=><button type="button" key={l.id} className="v1-layout-card v1-carousel-card" data-layout-id={l.id} aria-pressed={center===i} aria-label={`${formatLayoutTitle(l)} · ${formatLayoutSubtitle(l)}`} disabled={busy} onClick={()=>handleCardClick(i)}>
       <div className="v1-carousel-art"><LayoutArtwork layout={l}/></div>
-      <strong>{formatLayoutTitle(l)}</strong><span className="v1-carousel-subtitle">{formatLayoutSubtitle(l)}</span>
+       <strong>{formatLayoutTitle(l)}</strong><span className="v1-carousel-subtitle">{formatLayoutSubtitle(l)}</span>{center===i&&<span className="v1-carousel-tap-hint">Chạm lần nữa để chọn dải ảnh này →</span>}
      </button>)}
     </div>
       <button type="button" className="v1-carousel-arrow v1-carousel-next" aria-label="Bố cục tiếp theo" disabled={busy||center===layouts.length-1} onClick={()=>move(center+1)}><ChevronRight size={24} strokeWidth={2.4} aria-hidden="true"/></button>
    </div><div className="v1-carousel-indicator" aria-live="polite"><span>{String(center+1).padStart(2,'0')} / {String(layouts.length).padStart(2,'0')}</span><strong>{active&&formatLayoutTitle(active)}</strong><p>{active&&formatLayoutSubtitle(active)} · {active?.shotCount} lượt chụp</p></div></>:<div className="v1-panel v1-center" role="status">Chưa có bố cục khả dụng. Vui lòng liên hệ nhân viên.</div>}
-   </section><ActionBar><span>Chạm vào bố cục để chọn, sau đó bấm Tiếp tục</span><KioskPrimaryButton disabled={busy||!layout} onClick={()=>action('session.confirmSetup')}>Tiếp tục →</KioskPrimaryButton></ActionBar></>;
+    </section></>;
 }

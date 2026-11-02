@@ -378,7 +378,9 @@ class RealSessionEngine(
                 if (!operatorAuthorized() && !staff) fail(-32001, "Staff authorization required")
                 if (captureMode == "REAL") hardwareCamera()
                 paid = true
-                paymentMethod = if (staff) "TIEN_MAT" else "STAFF_COMP"
+                paymentMethod = if (p["staffOverride"]?.asBoolean == true) {
+                    p["method"]?.takeIf { it.isJsonPrimitive && it.asJsonPrimitive.isString }?.asString ?: "Tiền mặt"
+                } else if (staff) "TIEN_MAT" else "STAFF_COMP"
                 state = "PREPARING"
                 startPreview()
                 state = "LIVE_VIEW"
@@ -413,7 +415,17 @@ class RealSessionEngine(
                 composeSafely()
                 snapshot()
             }
-            "frame.confirm" -> { requireState("EDITING"); if (frame == null) frame = availableFrames().firstOrNull(); if (printImage == null || composition == null) composeSafely(); if (printImage == null || composition == null) fail(-32001, "Complete composition required"); stopInactivity(); state = "PRINT_PENDING"; startInactivity("PRINT_PENDING"); snapshot() }
+            "frame.confirm" -> {
+                requireState("EDITING")
+                val previousFrameId = frame?.id
+                if (p.has("frameId")) frame = availableFrames().find { it.id == string(p, "frameId") }
+                    ?: fail(-32602, "Unknown frame")
+                if (frame == null) frame = availableFrames().firstOrNull()
+                if (previousFrameId != frame?.id) { composition = null; printImage = null }
+                if (printImage == null || composition == null) composeSafely()
+                if (printImage == null || composition == null) fail(-32001, "Complete composition required")
+                stopInactivity(); state = "PRINT_PENDING"; startInactivity("PRINT_PENDING"); snapshot()
+            }
             "print.confirmDryRun" -> confirmPrint()
             "print.confirmReal" -> confirmPrint()
             "session.back" -> {

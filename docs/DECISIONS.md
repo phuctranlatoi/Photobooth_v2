@@ -42,6 +42,7 @@
 | 017 | Camera-Free Demo Capture Mode in Engine | ✅ Accepted | 2026-11-01 |
 | 018 | Korean Touchscreen UI Design Tokens & Layout Plan | ✅ Accepted | 2026-11-01 |
 | 019 | V1 Horizontal Snapping Carousel Restoration, Vector Slot Geometry Previews, and Tauri Bridge Failure Teardown | ✅ Accepted | 2026-11-01 |
+| 020 | Direct Manipulation Touchscreen Architecture, One-Tap Selection Flows, Staff Payment Authorization, and Liquid Glass 16:10 Geometry | ✅ Accepted | 2026-11-02 |
 
 ---
 
@@ -447,6 +448,53 @@ Legacy V1 Compose UI used `HorizontalPager` with centered active item and scale 
 - Vector slot illustrations give immediate clarity on photo counts and orientations without heavy network image downloads.
 - Rust-to-JVM sidecar IPC is robust against heavy computational workloads and gracefully evicts stale processes without hanging the desktop shell.
 - Physical Canon DSLR, DNP printer, and live PayOS charges remain isolated behind truthful boundary gates until physical studio kiosk hardware is attached.
+
+---
+
+## ADR-020: Direct Manipulation Touchscreen Architecture, One-Tap Selection Flows, Staff Payment Authorization, and Liquid Glass 16:10 Geometry
+
+**Date**: 2026-11-02  
+**Status**: Accepted  
+**Authors**: Specialist Solutions Architect (V2)  
+**Supersedes/Extends**: Extends ADR-001, ADR-007, ADR-018, ADR-019
+
+### Context
+Following the comprehensive Touchscreen Interaction Audit (`docs/TOUCHSCREEN_INTERACTION_AUDIT.md`), four critical architectural refinements were mandated:
+1. **Redundant Continue Buttons:** Frame selection (`FrameScreen.tsx`) and Studio layout selection (`StudioModeScreen.tsx`) retained redundant bottom "Tiếp tục →" buttons from web-form paradigms, creating double-action fatigue and kiosk hesitation.
+2. **Programmatic Default Auto-Advance Hazard:** Programmatic default frame selection on mount must never inadvertently trigger auto-advance. Only an explicit customer pointer gesture may advance. Rapid taps also posed ghost-click hazards on incoming primary buttons.
+3. **Payment Security Leak:** When PayOS failed or timed out after 15 seconds, V2 exposed a public "Nhân viên xác nhận tiền mặt" button that allowed customers to self-authorize payment.
+4. **Nested Box Wrappers & Clutter:** Previews in `PrintPreview`, `FrameScreen`, and `SelectPhotosScreen` had redundant nested white borders and cards instead of floating photostrips with realistic drop shadows tailored for 16:10 kiosk screens (1280×800 and 1920×1200).
+
+### Decision
+1. **One-Tap Frame Selection with Auto-Advance & Transition Lockout:**
+   - Remove the `ActionBar` and `Tiếp tục →` button from `FrameScreen.tsx`.
+   - Customer pointer tap on a frame card immediately sets local optimistic selection, renders preview overlay, locks transitions (`isTransitioning.current = true`), dispatches `frame.select`, waits a 320ms visual confirmation delay, and dispatches `frame.confirm` to advance to `PRINT_PENDING`.
+   - Programmatic default frame selection on mount is strictly isolated and NEVER triggers auto-advance.
+   - Ghost-click armor: `ConfirmScreen.tsx` enforces a 500ms Input Arming Delay (`isArmed`) on the primary "Confirm & Print" button.
+   - Inactivity timeout: Backend watchdog timer in `EDITING` automatically selects default frame and advances upon timeout.
+2. **One-Tap Layout Selection (Centered Card Direct Advance):**
+   - Remove the bottom `ActionBar` from `StudioModeScreen.tsx`.
+   - Tapping an off-center card smoothly centers it and calls `session.setLayout`. Tapping the active centered card directly commits and dispatches `session.confirmSetup` to advance to `SELECTING_QUANTITY`.
+3. **Ironclad Payment Security & Hidden Staff Authorization:**
+   - Completely remove customer-facing cash buttons; `staffVisible` strictly equals `staffPanelVisible`.
+   - PayOS failures display customer guidance and a retry QR button only.
+   - Restore V1's hidden 1000ms title hold gesture with <12px movement cancellation threshold.
+   - Require 4-digit Staff PIN modal verification before unlocking cash authorization.
+   - Strictly gate transactional revenue recording on verified user-confirmed print spooling (`userConfirmed && printJob.await()`).
+4. **Liquid Glass Design System & 16:10 Kiosk Geometry:**
+   - Remove outer white backgrounds, borders, and shadows from `.v1-preview` and `.v1-preview-empty`.
+   - Apply realistic multi-layered drop shadows (`filter: drop-shadow(...)`) to floating photostrip canvases.
+   - Enforce strict viewport height budgeting ensuring zero vertical page scroll across 1280×800 and 1920×1200 screens.
+   - Modernize operator tabs with a dark graphite Studio Workspace theme.
+5. **Reaffirm 300 DPI Native Compositing Parity:**
+   - Confirm DNP DS-RX1HS native 300 DPI dot grid (1226×1829 px paper; 592×1790 px strip).
+   - Document that V1's `renderScale = 2` was an illusion that consumed 4× RAM without printer resolution benefit.
+
+### Consequences
+- Eliminates 10–25 seconds of kiosk hesitation per session, boosting retail throughput.
+- Eliminates customer payment bypass vulnerabilities and ghost-click misprints.
+- Establishes a floating, premium Korean atelier aesthetic with zero page scrolling.
+- See `docs/TOUCHSCREEN_ARCHITECTURE_SPEC.md` for complete engineering specifications and IPC schemas.
 
 ---
 

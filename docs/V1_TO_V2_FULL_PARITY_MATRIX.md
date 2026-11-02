@@ -1,10 +1,15 @@
 # V1 to V2 Full Parity Matrix
 
-> **Photo/frame interaction restoration review (2026-11-02):** bounded software regression is green: backend **76 passed, 0 failed, 2 skipped** (78 total, 28 suites; Gradle task UP-TO-DATE), frontend **50/50 passed**, and production build passed with **2,016 modules**. Exact evidence is in `docs/PHOTO_FRAME_INTERACTION_REGRESSION.md`.
+> **Touchscreen/revenue-gate review (2026-11-02):** bounded software regression is green: backend **77 passed, 0 failed, 2 skipped** (79 total, 28 suites; Gradle task UP-TO-DATE), frontend **50/50 passed**, and production build passed with **2,016 modules**. Exact evidence is in `docs/PHOTO_FRAME_INTERACTION_REGRESSION.md`.
 >
 > | Interaction | Status | Evidence boundary |
 > |---|---|---|
-> | Frame Continue and `PRINT_PENDING` | **PASS-AUTOMATED** | Default frame, enabled/latched confirm component test; backend `frame.confirm` composes if needed and transitions to `PRINT_PENDING`. |
+> | Frame interaction | **PASS-AUTOMATED** | Continue removed; user tap selects then confirms after 300ms; default does not advance; rapid taps latch. |
+> | Layout card interaction | **PASS-AUTOMATED** | Off-center tap centers/selects; centered tap confirms once. |
+> | Payment staff access | **PASS-AUTOMATED** | No public cash action; stationary 1000ms header hold opens PIN modal; cash action is latched after authorization. |
+> | Confirm ghost-click guard | **PASS-AUTOMATED** | Confirm is disarmed for 500ms after mount. |
+> | Print density | **PASS-AUTOMATED** | Scale-1 300-DPI composition and encoded 300-DPI metadata; old 600-DPI wording is superseded. |
+> | Golden Revenue Gate | **PASS-AUTOMATED** | Mock payment/frame/demo paths do not record revenue; real path records only after spooler returns Submitted. No physical print/live DB write was run. |
 > | FIFO, quota, deselection re-index | **PASS-AUTOMATED** | Optimistic ordered indices and component assertion. |
 > | 500ms hold on any valid photo at full quota | **PASS-AUTOMATED** | Full-quota unselected photo remains enabled; test verifies zoom and release without selection toggle. |
 > | Immediate photo/frame preview | **PASS-AUTOMATED (bounded)** | Optimistic state feeds preview; no physical mounted-touch run in this review. |

@@ -1,13 +1,14 @@
 # Test Results — Independent Consolidated Review
 
-## 2026-11-02 photo/frame parity regression rerun (latest)
+## 2026-11-02 touchscreen/revenue regression rerun (latest)
 
 | Case | Status | Exact result / boundary |
 |---|---|---|
-| Backend offline Gradle | **PASS-AUTOMATED** | `.\.toolchain\gradle-8.14.3\bin\gradle.bat --offline test --console=plain`: exit 0, `BUILD SUCCESSFUL in 21s`, test task UP-TO-DATE. XML aggregate: **28 suites / 78 tests / 76 passed / 0 failed / 2 skipped**. |
-| Frontend Vitest | **PASS-AUTOMATED** | `npm test -- --run`: exit 0, **7/7 files and 50/50 tests passed**, 0 failed/skipped, 8.46s. |
-| Frontend production build | **PASS-AUTOMATED** | `npm run build`: exit 0; `tsc --noEmit && vite build`, **2,016 modules**, built in 5.76s. |
-| Photo/frame interactions | **PASS-AUTOMATED / PASS-SIMULATED** | FIFO/quota/reindex, full-quota 500ms hold, release suppression, default frame and single confirm are component-tested. Preview/card visual claims are source/CSS simulated. See `PHOTO_FRAME_INTERACTION_REGRESSION.md`. |
+| Backend offline Gradle | **PASS-AUTOMATED** | `.\.toolchain\gradle-8.14.3\bin\gradle.bat --offline test --console=plain`: exit 0, `BUILD SUCCESSFUL in 21s`, test task UP-TO-DATE. XML aggregate: **28 suites / 79 tests / 77 passed / 0 failed / 2 skipped**. |
+| Frontend Vitest | **PASS-AUTOMATED** | `npm test -- --run`: exit 0, **7/7 files and 50/50 tests passed**, 0 failed/skipped, 8.82s. |
+| Frontend production build | **PASS-AUTOMATED** | `npm run build`: exit 0; `tsc --noEmit && vite build`, **2,016 modules**, built in 5.60s. |
+| Touch interactions | **PASS-AUTOMATED** | Frame no-Continue/300ms/default/lockout, layout center-then-confirm, hidden cash plus 1000ms PIN hold, and 500ms Confirm arming are component-tested. |
+| 300 DPI and revenue gate | **PASS-AUTOMATED** | Native scale-1 compositor plus encoded 300-DPI metadata tests; revenue is written only after spooler submission, while mock/frame/demo paths remain false. No real print/DB write. |
 | V1 strict isolation | **BLOCKED (global proof)** | Reviewer ran no V1 command, made no V1 write and read no secret. “Completely untouched” cannot be forensically established without a trusted pre-task manifest. |
 | Hardware/performance | **BLOCKED / NOT-RUN** | No Canon, DNP, physical touchscreen, Mini-PC metrics, physical V1 print comparison, payment, upload or DB write. |
 

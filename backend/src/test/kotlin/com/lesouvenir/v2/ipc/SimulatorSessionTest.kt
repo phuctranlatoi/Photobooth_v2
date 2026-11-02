@@ -132,4 +132,28 @@ class SimulatorSessionTest {
             assertEquals("PRINT_PENDING",c.call("frame.confirm")["state"].asString)
         }
     }
+    @Test fun staffCashAndAtomicFrameConfirmDoNotRecordRevenue() {
+        val out=root.resolve("backend/build/atomic-frame-${id()}")
+        SimulatorSessionEngine(root,config(),true,1,1,60000,out).use { e ->
+            val c=Client(e)
+            c.call("session.start","layoutId" to "strip-2")
+            c.call("session.confirmSetup")
+            c.call("session.setQuantity","quantity" to 2)
+            c.call("payment.mockComplete","staffOverride" to true)
+            assertEquals("Tiền mặt",c.call("session.getState")["paymentMethod"].asString)
+            assertFalse(c.call("session.getState")["revenueRecorded"].asBoolean)
+            c.waitFor("LIVE_VIEW")
+            c.call("capture.startSequence"); c.waitFor("SELECTING_PHOTOS")
+            c.call("selection.toggle","shotIndex" to 0)
+            c.call("selection.toggle","shotIndex" to 1)
+            c.call("selection.confirm")
+            assertEquals(-32602,assertFailsWith<SimulatorError> {
+                c.call("frame.confirm","frameId" to "missing-frame")
+            }.code)
+            assertEquals("EDITING",c.state())
+            val result=c.call("frame.confirm","frameId" to "synthetic-border")
+            assertEquals("PRINT_PENDING",result["state"].asString)
+            assertFalse(result["revenueRecorded"].asBoolean)
+        }
+    }
 }

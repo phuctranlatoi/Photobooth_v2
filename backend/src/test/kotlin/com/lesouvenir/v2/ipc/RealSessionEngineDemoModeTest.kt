@@ -53,10 +53,12 @@ class RealSessionEngineDemoModeTest {
             assertEquals(PricingCalculator.calculatePrice("5x15", 2).totalAmount, payment["amount"].asLong)
             assertEquals("PAYMENT_PENDING", payment["state"].asString)
             assertFalse(payment["paid"].asBoolean)
-            val confirmed = call("payment.mockComplete") { addProperty("method", "TIEN_MAT") }
+            val confirmed = call("payment.mockComplete") { addProperty("staffOverride", true); addProperty("method", "Tiền mặt") }
             assertEquals("LIVE_VIEW", confirmed["state"].asString)
             assertTrue(confirmed["paid"].asBoolean)
-            assertEquals("TIEN_MAT", confirmed["paymentMethod"].asString)
+            assertEquals("Tiền mặt", confirmed["paymentMethod"].asString)
+            assertFalse(confirmed["revenueRecorded"].asBoolean)
+            assertNull(ledger.getSale(sid))
             call("capture.startSequence")
             val deadline = System.currentTimeMillis() + 25000
             while (call("session.getState")["state"].asString != "SELECTING_PHOTOS" && System.currentTimeMillis() < deadline) Thread.sleep(100)
@@ -71,7 +73,7 @@ class RealSessionEngineDemoModeTest {
             assertEquals(60, call("selection.confirm")["secondsRemaining"].asInt)
             val frameId = call("frame.list")["frames"].asJsonArray.first().asJsonObject["id"].asString
             assertEquals(frameId, editing["frameId"].asString)
-            assertEquals("PRINT_PENDING", call("frame.confirm")["state"].asString)
+            assertEquals("PRINT_PENDING", call("frame.confirm") { addProperty("frameId", frameId) }["state"].asString)
             val result = call("print.confirmReal")
             assertTrue(result["printAccepted"].asBoolean)
             assertFalse(result["revenueRecorded"].asBoolean)

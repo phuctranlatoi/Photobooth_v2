@@ -2,7 +2,7 @@ import {useEffect, useRef, useState} from 'react';
 import {Check} from 'lucide-react';
 import {safeImage} from '../shared/connected-simulator';
 import type {FrameOption} from '../shared/simulator-contract';
-import {ActionBar, Heading, KioskPrimaryButton, PrintPreview, type ScreenProps} from './KioskUI';
+import {Heading, PrintPreview, type ScreenProps} from './KioskUI';
 
 export function formatFrameName(name: string) {
   const title = name.trim();
@@ -20,31 +20,34 @@ type FrameProps = ScreenProps & {frames?: FrameOption[]; frameId?: string | null
 
 export function FrameScreen({layout, busy, action, preview, snapshot, frames = [], frameId}: FrameProps) {
   const [localFrameId, setLocalFrameId] = useState<string | null>(frameId ?? null);
-  const pending = useRef<string[]>([]);
-  const previousFrameId = useRef(frameId);
-  const autoSelected = useRef<string | null>(null);
-  const confirming = useRef(false);
+  const isTransitioning = useRef(false);
+  const mounted = useRef(true);
+  const advanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const firstFrameId = frames[0]?.id;
   const effectiveFrameId = localFrameId || frameId || firstFrameId;
 
-  // Keep optimistic taps visible until the backend acknowledges them, including rapid taps.
-  useEffect(() => {
-    if (previousFrameId.current === frameId) return;
-    previousFrameId.current = frameId;
-    const acknowledged = pending.current.indexOf(frameId ?? '');
-    if (acknowledged >= 0) pending.current.splice(0, acknowledged + 1);
-    else pending.current = [];
-    setLocalFrameId(pending.current.at(-1) ?? frameId ?? null);
-  }, [frameId]);
+  useEffect(() => { if (!isTransitioning.current) setLocalFrameId(frameId ?? null); }, [frameId]);
+  useEffect(() => { mounted.current = true; return () => { mounted.current = false; if (advanceTimer.current) clearTimeout(advanceTimer.current); }; }, []);
 
-  // V1 starts with the first frame selected. Persist that choice to the backend too.
-  useEffect(() => {
-    if (frameId || localFrameId || !firstFrameId || autoSelected.current === firstFrameId) return;
-    autoSelected.current = firstFrameId;
-    setLocalFrameId(firstFrameId);
-    pending.current.push(firstFrameId);
-    action('frame.select', {frameId: firstFrameId});
-  }, [action, firstFrameId, frameId, localFrameId]);
+  const handleUserFrameTap = (chosenId: string) => {
+    if (isTransitioning.current || busy) return;
+    isTransitioning.current = true;
+    setLocalFrameId(chosenId);
+    const fail = () => { if (mounted.current) { isTransitioning.current = false; setLocalFrameId(frameId ?? null); } };
+    try {
+      // Wait for backend acknowledgement: the IPC client serializes mutations.
+      const selection = action('frame.select', {frameId: chosenId});
+      advanceTimer.current = setTimeout(() => {
+        void Promise.resolve(selection).then(accepted => {
+          if (!mounted.current || accepted === false) { fail(); return; }
+          return Promise.resolve(action('frame.confirm', {frameId: chosenId})).then(confirmed => {
+            if (confirmed === false) fail();
+            else if (mounted.current) isTransitioning.current = false;
+          });
+        }).catch(fail);
+      }, 300);
+    } catch { fail(); }
+  };
 
   const selectedFrame = frames.find(frame => frame.id === effectiveFrameId);
   const selectedPhotos = (snapshot?.selectedIndices ?? []).map(index => snapshot?.shots?.[index]?.preview);
@@ -61,12 +64,7 @@ export function FrameScreen({layout, busy, action, preview, snapshot, frames = [
         {frames.length ? frames.map(frame => {
           const thumb = safeImage(frame.thumbDataUrl) || safeImage(frame.thumbnailDataUrl) || safeImage(frame.previewDataUrl);
           const selected = effectiveFrameId === frame.id;
-          return <button type="button" key={frame.id} aria-pressed={selected} onClick={() => {
-            if (selected || busy) return;
-            setLocalFrameId(frame.id);
-            pending.current.push(frame.id);
-            action('frame.select', {frameId: frame.id});
-          }}>
+          return <button type="button" key={frame.id} aria-pressed={selected} disabled={busy || (isTransitioning.current && !selected)} onClick={() => handleUserFrameTap(frame.id)}>
             {thumb ? <img src={thumb} alt={formatFrameName(frame.name)}/> :
               <svg className="v1-frame-silhouette" viewBox="0 0 96 112" fill="none" aria-hidden="true">
                 <rect x="12" y="8" width="72" height="96" rx="5" stroke="currentColor" strokeWidth="4"/>
@@ -80,13 +78,6 @@ export function FrameScreen({layout, busy, action, preview, snapshot, frames = [
         }) : <p>Đang tải khung…</p>}
       </div>
     </div>
-    <ActionBar>
-      <span>Chọn khung ảnh bạn yêu thích</span>
-      <KioskPrimaryButton disabled={busy || !effectiveFrameId || confirming.current} onClick={() => {
-        if (confirming.current || busy || !effectiveFrameId) return;
-        confirming.current = true;
-        action('frame.confirm');
-      }}>Tiếp tục →</KioskPrimaryButton>
-    </ActionBar>
+    <p className="v1-frame-tip">Chạm vào khung ảnh bạn thích để tiếp tục</p>
   </>;
 }
