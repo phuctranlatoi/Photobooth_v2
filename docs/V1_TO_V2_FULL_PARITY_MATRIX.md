@@ -1,5 +1,19 @@
 # V1 to V2 Full Parity Matrix
 
+> **Photo/frame interaction restoration review (2026-11-02):** bounded software regression is green: backend **76 passed, 0 failed, 2 skipped** (78 total, 28 suites; Gradle task UP-TO-DATE), frontend **50/50 passed**, and production build passed with **2,016 modules**. Exact evidence is in `docs/PHOTO_FRAME_INTERACTION_REGRESSION.md`.
+>
+> | Interaction | Status | Evidence boundary |
+> |---|---|---|
+> | Frame Continue and `PRINT_PENDING` | **PASS-AUTOMATED** | Default frame, enabled/latched confirm component test; backend `frame.confirm` composes if needed and transitions to `PRINT_PENDING`. |
+> | FIFO, quota, deselection re-index | **PASS-AUTOMATED** | Optimistic ordered indices and component assertion. |
+> | 500ms hold on any valid photo at full quota | **PASS-AUTOMATED** | Full-quota unselected photo remains enabled; test verifies zoom and release without selection toggle. |
+> | Immediate photo/frame preview | **PASS-AUTOMATED (bounded)** | Optimistic state feeds preview; no physical mounted-touch run in this review. |
+> | Default frame | **PASS-AUTOMATED** | First backend frame is selected and persisted on entry when none exists. |
+> | Composition click decoupling | **PASS-SIMULATED** | Frontend click dispatch is immediate; no Mini-PC 600-DPI latency/performance measurement. |
+> | Floating preview / liquid-glass cards | **PASS-SIMULATED** | CSS/source verified; fresh visual/physical-touch acceptance not run. |
+>
+> Physical Canon/DNP/touchscreen, performance, print comparison, packaging and licensing are not established by this result. V1 global untouched proof remains blocked without a trusted before/after manifest; this reviewer issued no V1 command or write.
+
 > **Superseding critical UX parity verification (2026-11-01):** `tests/journey-evidence/2026-11-01T18-16-51.341Z/results.json` records **47/47 checks, 0 failures, 26 screenshots** at 1280×800 and 1920×1200; frontend Vitest is **49/49**. These are automated/simulated results, not physical Canon, DNP, or live PayOS settlement evidence.
 >
 > | Critical workflow area | Current status | Verified implementation |

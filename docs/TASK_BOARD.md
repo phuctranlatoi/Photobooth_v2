@@ -1,5 +1,22 @@
 # TASK_BOARD.md
 
+## Photo & Frame Selection Parity — COMPLETED (bounded software scope, 2026-11-02)
+
+| Task | Status | Evidence |
+|---|---|---|
+| Frame default selection, enabled/latched Continue, backend `PRINT_PENDING` transition | **COMPLETED — PASS-AUTOMATED** | `FrameScreen.tsx:27-47,85-89`; `screens.test.tsx:36`; `RealSessionEngine.kt:416`. |
+| FIFO selection, quota and re-index | **COMPLETED — PASS-AUTOMATED** | `SelectPhotosScreen.tsx:27-34,42,87`; `screens.test.tsx:24`. |
+| 500ms full-quota hold zoom and safe release | **COMPLETED — PASS-AUTOMATED** | `SelectPhotosScreen.tsx:47-84`; `screens.test.tsx:23`. |
+| Immediate photo/frame preview | **COMPLETED — PASS-AUTOMATED (bounded)** | Optimistic local photo/frame state feeds `PrintPreview`; component suite green. Add a dedicated two-frame overlay-switch assertion as hardening. |
+| Decouple composition from frame-card interaction | **COMPLETED — PASS-SIMULATED** | Click dispatch path is non-blocking in frontend source; no Mini-PC latency measurement. |
+| Floating preview and liquid-glass cards | **COMPLETED — PASS-SIMULATED** | `kiosk-v1.css:215-225`; no fresh mounted screenshot/physical touch run. |
+| Backend regression | **COMPLETED — PASS-AUTOMATED** | 28 suites, 78 total: **76 passed / 0 failed / 2 skipped**; Gradle test UP-TO-DATE. |
+| Frontend regression/build | **COMPLETED — PASS-AUTOMATED** | **50/50** tests; build passed with **2,016 modules**. |
+| V1 global untouched proof | **BLOCKED** | Reviewer performed no V1 command/write, but no trusted pre-task manifest exists. |
+| Physical hardware/touch/performance/release | **BLOCKED / NOT-RUN** | Canon, DNP, mounted touch, Mini-PC metrics, print comparison, installer/recovery and licensing remain open. |
+
+---
+
 ## Korean Photo Atelier UI Navigation, Header Geometry & Visual Polish Overhaul — COMPLETED (2026-11-02)
 
 | Task | Status | Evidence |

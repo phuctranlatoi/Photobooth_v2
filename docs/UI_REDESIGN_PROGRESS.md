@@ -1,5 +1,7 @@
 # UI Redesign Progress & Korean Photo Studio Design System
 
+> **Styling increment (2026-11-02; awaiting new visual captures):** Polished `frontend/src/kiosk-v1.css` only. Frame/Select print artwork now floats without nested opaque preview padding, with ambient drop shadows and larger frame composition allocation. Frame gallery uses proportional two-column translucent cards, champagne-selected edge, high-contrast check pill, text truncation and touch press feedback. ActionBar now has a clean frosted floating-rail treatment and crisp warm-brown enabled CTA with separate disabled styling. Background receives restrained ivory ambient light. CSS breakpoints target 1280×800 and 1920×1200; no screenshot or physical scaling proof is claimed. **Verification:** `npm test -- --run` **50/50**, `npm run build` **passed**. `FrameScreen.tsx` and `SelectPhotosScreen.tsx` were inspected but not modified: their existing selection/confirm gates remain intact. No V1 files touched. See `docs/UI_VISUAL_REVIEW.md` for limitations and follow-up measurements.
+
 > **LATEST STATUS (2026-11-02, 07:41:35 capture): NAVIGATION GEOMETRY, APPHEADER UNIFICATION & TECHNICAL CLUTTER PURGE COMPLETED — PASS-AUTOMATED + PASS-SIMULATED.** `tests/journey-evidence/2026-11-02T07-41-35.569Z/results.json` records **63/63 checks, 0 failures and 26 screenshots** across 1280×800 and 1920×1200 viewports; frontend Vitest is **49/49** with **0 build errors**.
 >
 > The verified milestone achieves:

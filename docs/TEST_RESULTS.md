@@ -1,5 +1,18 @@
 # Test Results — Independent Consolidated Review
 
+## 2026-11-02 photo/frame parity regression rerun (latest)
+
+| Case | Status | Exact result / boundary |
+|---|---|---|
+| Backend offline Gradle | **PASS-AUTOMATED** | `.\.toolchain\gradle-8.14.3\bin\gradle.bat --offline test --console=plain`: exit 0, `BUILD SUCCESSFUL in 21s`, test task UP-TO-DATE. XML aggregate: **28 suites / 78 tests / 76 passed / 0 failed / 2 skipped**. |
+| Frontend Vitest | **PASS-AUTOMATED** | `npm test -- --run`: exit 0, **7/7 files and 50/50 tests passed**, 0 failed/skipped, 8.46s. |
+| Frontend production build | **PASS-AUTOMATED** | `npm run build`: exit 0; `tsc --noEmit && vite build`, **2,016 modules**, built in 5.76s. |
+| Photo/frame interactions | **PASS-AUTOMATED / PASS-SIMULATED** | FIFO/quota/reindex, full-quota 500ms hold, release suppression, default frame and single confirm are component-tested. Preview/card visual claims are source/CSS simulated. See `PHOTO_FRAME_INTERACTION_REGRESSION.md`. |
+| V1 strict isolation | **BLOCKED (global proof)** | Reviewer ran no V1 command, made no V1 write and read no secret. “Completely untouched” cannot be forensically established without a trusted pre-task manifest. |
+| Hardware/performance | **BLOCKED / NOT-RUN** | No Canon, DNP, physical touchscreen, Mini-PC metrics, physical V1 print comparison, payment, upload or DB write. |
+
+**Gate:** bounded software regression is green; production release remains blocked by hardware, physical touch/performance, packaging/recovery and license gates.
+
 ## 2026-11-02 live desktop acceptance & navigation geometry verification (latest)
 
 | Case | Status | Exact result / boundary |

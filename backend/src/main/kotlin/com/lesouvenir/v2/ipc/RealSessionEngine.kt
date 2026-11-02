@@ -402,18 +402,18 @@ class RealSessionEngine(
                 if (i !in shots.indices) fail(-32602, "Invalid shot index")
                 val before = selected.toList()
                 if (!selected.remove(i) && selected.size < layout.selectCount) selected.add(i)
-                if (before != selected.toList()) { composition = null; printImage = null; frame = null }
+                if (before != selected.toList()) { composition = null; printImage = null; frame = availableFrames().firstOrNull() }
                 snapshot()
             }
-            "selection.confirm" -> { requireState("SELECTING_PHOTOS"); if (selected.size != layout.selectCount) fail(-32001, "Exact selection required"); state = "EDITING"; startInactivity("EDITING"); snapshot() }
+            "selection.confirm" -> { requireState("SELECTING_PHOTOS"); if (selected.size != layout.selectCount) fail(-32001, "Exact selection required"); if (frame == null) frame = availableFrames().firstOrNull(); if (frame != null) composeSafely(); state = "EDITING"; startInactivity("EDITING"); snapshot() }
             "frame.select" -> {
                 requireState("EDITING")
                 frame = availableFrames().find { it.id == string(p, "frameId") }
                     ?: fail(-32602, "Unknown frame")
-                try { compose() } catch (_: Exception) { composition = null; printImage = null; fail(-32002, "Composition failed; check original images") }
+                composeSafely()
                 snapshot()
             }
-            "frame.confirm" -> { requireState("EDITING"); if (printImage == null || composition == null) fail(-32001, "Complete composition required"); stopInactivity(); state = "PRINT_PENDING"; snapshot() }
+            "frame.confirm" -> { requireState("EDITING"); if (frame == null) frame = availableFrames().firstOrNull(); if (printImage == null || composition == null) composeSafely(); if (printImage == null || composition == null) fail(-32001, "Complete composition required"); stopInactivity(); state = "PRINT_PENDING"; startInactivity("PRINT_PENDING"); snapshot() }
             "print.confirmDryRun" -> confirmPrint()
             "print.confirmReal" -> confirmPrint()
             "session.back" -> {
@@ -486,10 +486,15 @@ class RealSessionEngine(
         state = "RECOVERY"; failure = "Camera capture failed: ${error.javaClass.simpleName}"
         runCatching { stopPreview() }
     }
+    private fun composeSafely() {
+        try { compose() } catch (_: Exception) { composition = null; printImage = null }
+    }
     private fun compose() {
         composition = null; printImage = null
         val chosen = frame ?: fail(-32001, "Frame required")
-        val paths = selected.map { index -> readyBeauty[index] ?: shots[index] }
+        val paths = selected.map { index -> readyBeauty[index]?.takeIf {
+            runCatching { Files.isRegularFile(it) && ImageIO.read(it.toFile()) != null }.getOrDefault(false)
+        } ?: shots[index] }
         check(paths.size == layout.selectCount && paths.all { Files.isRegularFile(it) && ImageIO.read(it.toFile()) != null })
         val albumClient = album
         if (captureMode == "REAL" && albumUrl == null && albumClient != null) {
@@ -498,7 +503,15 @@ class RealSessionEngine(
             }.getOrNull()
             if (preAlbum != null) albumUrl = preAlbum.albumUrl
         }
-        val result = compositor.renderFinal(layout, chosen, paths, directory(), qrCodeUrl = albumUrl)
+        // Keep the selected frame identity, but render the default layout border if its graphic is unavailable.
+        val renderFrame = if (chosen.isCustom && chosen.customImagePath?.let {
+            runCatching { Files.isRegularFile(it) && ImageIO.read(it.toFile()) != null }.getOrDefault(false)
+        } != true) chosen.copy(isCustom = false, customImagePath = null) else chosen
+        val result = try { compositor.renderFinal(layout, renderFrame, paths, directory(), qrCodeUrl = albumUrl) }
+            catch (e: Exception) {
+                if (!chosen.isCustom || renderFrame !== chosen) throw e
+                compositor.renderFinal(layout, chosen.copy(isCustom = false, customImagePath = null), paths, directory(), qrCodeUrl = albumUrl)
+            }
         check(Files.isRegularFile(result.finalImagePath) && Files.isRegularFile(result.printImagePath) &&
             ImageIO.read(result.finalImagePath.toFile()) != null && ImageIO.read(result.printImagePath.toFile()) != null)
         composition = result.finalImagePath; printImage = result.printImagePath

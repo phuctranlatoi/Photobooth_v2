@@ -63,12 +63,15 @@ class RealSessionEngineDemoModeTest {
             assertEquals("SELECTING_PHOTOS", call("session.getState")["state"].asString)
             assertEquals(90, call("session.getState")["secondsRemaining"].asInt)
             call("selection.toggle") { addProperty("shotIndex", 0) }
-            assertEquals(60, call("selection.confirm")["secondsRemaining"].asInt)
+            val editing = call("selection.confirm")
+            assertEquals(60, editing["secondsRemaining"].asInt)
+            assertEquals("EDITING", editing["state"].asString)
+            assertFalse(editing["compositionDataUrl"].isJsonNull)
             assertEquals(90, call("session.back")["secondsRemaining"].asInt)
             assertEquals(60, call("selection.confirm")["secondsRemaining"].asInt)
             val frameId = call("frame.list")["frames"].asJsonArray.first().asJsonObject["id"].asString
-            call("frame.select") { addProperty("frameId", frameId) }
-            call("frame.confirm")
+            assertEquals(frameId, editing["frameId"].asString)
+            assertEquals("PRINT_PENDING", call("frame.confirm")["state"].asString)
             val result = call("print.confirmReal")
             assertTrue(result["printAccepted"].asBoolean)
             assertFalse(result["revenueRecorded"].asBoolean)

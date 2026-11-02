@@ -1,5 +1,13 @@
 # Live Tauri journey — visual review (2026-11-02)
 
+## Frame & selection Liquid Glass styling review — 2026-11-02 (new CSS; visual sign-off pending)
+
+Inspected `frontend/src/screens/FrameScreen.tsx`, `SelectPhotosScreen.tsx`, shared `PrintPreview`/`ActionBar` and their existing CSS. The previously transparent print-preview wrapper is preserved, but its padding is removed and a restrained studio shadow is applied to the **actual image/artwork**, not a large white box. The frame workspace now allocates slightly more width to the composition (1.12fr / .88fr), with a two-column gallery of 160–210px-tall cards at compact 1280×800 and up to 278px at 1920×1200. Artwork remains `object-fit:contain`; no frame or selected photo is cropped. Cards use 75% white / 20px-blur glass, subtle 1–2px edges, a champagne `rgba(197,140,106,.95)` selected stroke, a dark-contrast check pill and ellipsized customer-facing names. Hover lift is gated on actual hover capability; pressed state works on touch. The bottom ActionBar uses the same glass treatment, with an explicitly enabled dark warm-brown 56–60px CTA and distinct opaque disabled treatment. Background remains low-contrast warm ivory without dashboard-style saturated gradients.
+
+**Verification:** `frontend/npm test -- --run`: **50/50 tests passed** (7 files); `frontend/npm run build`: **passed** (`tsc --noEmit` and Vite). No React flow, confirmation, payment, configured counts or V1 files changed. These checks establish code/test/build validity **only**: this iteration did **not** produce new screenshots or measure DOM geometry at 1280×800, 1920×1200, or Windows 125/150% scaling. Physical touch, long-language overflow and frame-artwork decode failure still require a witnessed visual/device review. Prior captured screenshot verdicts below predate these CSS changes and must not be presented as evidence of their appearance.
+
+---
+
 ## Navigation Geometry, Header Unification & Visual Polish Audit — 07:41:35 capture (latest verdict)
 
 **Overall Status: PASS-SIMULATED for the exercised desktop interactions.** `tests/journey-evidence/2026-11-02T07-41-35.569Z/results.json` records **63/63 checks, 0 failures and 26 screenshots** across 1280×800 and 1920×1200.

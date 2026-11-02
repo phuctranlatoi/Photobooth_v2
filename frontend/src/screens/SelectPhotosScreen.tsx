@@ -44,7 +44,7 @@ export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected
               <div className="v1-photo-tile" key={shot.shotId}>
                 <button
                   type="button"
-                   disabled={!safeImage(shot.preview)||(order<0&&localSelected.length>=(layout?.selectCount??Infinity))}
+                   disabled={!safeImage(shot.preview)}
                   aria-label={`Chọn ảnh ${i+1}`}
                   aria-pressed={order>=0}
                    className={order<0&&localSelected.length>=(layout?.selectCount??Infinity)?'v1-photo-dimmed':''}
@@ -57,27 +57,24 @@ export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected
                       setLightbox(i);
                     },500);
                   }}
-                  onPointerUp={()=>{
-                    clearHold();
-                    if(wasHeld.current){
-                      setLightbox(null);
-                      setTimeout(()=>{wasHeld.current=false;},50);
-                    }
-                  }}
+                   onPointerUp={()=>{
+                     clearHold();
+                     if(wasHeld.current){
+                       setLightbox(null);
+                     }
+                   }}
                   onPointerCancel={()=>{
                     clearHold();
                     if(wasHeld.current){
                       setLightbox(null);
                     }
-                    wasHeld.current=false;
-                  }}
+                   }}
                   onPointerLeave={()=>{
                     clearHold();
                     if(wasHeld.current){
                       setLightbox(null);
                     }
-                    wasHeld.current=false;
-                  }}
+                   }}
                   onClick={()=>{
                     if(wasHeld.current){
                       wasHeld.current=false;
@@ -101,8 +98,8 @@ export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected
           role="dialog"
           aria-modal="true"
           aria-label={`Xem lớn ảnh ${lightbox+1}`}
-          onPointerUp={()=>{clearHold();setLightbox(null);wasHeld.current=false;}}
-          onPointerCancel={()=>{clearHold();setLightbox(null);wasHeld.current=false;}}
+           onPointerUp={()=>{clearHold();setLightbox(null);}}
+           onPointerCancel={()=>{clearHold();setLightbox(null);}}
         >
           <img src={safeImage(shots[lightbox].preview)} alt={`Ảnh ${lightbox+1}`}/>
         </div>

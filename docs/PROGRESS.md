@@ -1,5 +1,18 @@
 # PROGRESS.md
 
+## Photo & Frame Selection V1 Parity Restoration (2026-11-02)
+
+**Status: COMPLETE for bounded automated software scope.** FIFO selection order, quota enforcement, deselection re-indexing, 500ms hold-to-zoom at full quota, release-without-toggle, optimistic composition preview, default frame selection, latched Continue and `PRINT_PENDING` backend transition are verified in source/tests. Floating preview and liquid-glass cards are source/CSS verified only.
+
+- Backend offline command: **76 passed, 0 failed, 2 skipped** across 28 suites (78 total); build successful, test task UP-TO-DATE.
+- Frontend: **50/50 tests passed** across 7 files.
+- Production build: TypeScript/Vite passed; **2,016 modules transformed**.
+- Detailed matrix: `docs/PHOTO_FRAME_INTERACTION_REGRESSION.md`.
+- V1: no reviewer command/write/secret read; global untouched proof remains **BLOCKED** without a trusted before/after manifest.
+- Physical touchscreen, Canon, DNP, Mini-PC performance, print comparison, installer and licensing remain **BLOCKED / NOT-RUN**.
+
+---
+
 ## Korean Photo Atelier UI Navigation, Header Geometry & Visual Polish Overhaul (2026-11-02)
 
 **Status: COMPLETE — PASS-AUTOMATED + PASS-SIMULATED.** Verified on live Windows desktop via Tauri CDP. Physical hardware/provider gates remain BLOCKED pending physical studio kiosk attachment.

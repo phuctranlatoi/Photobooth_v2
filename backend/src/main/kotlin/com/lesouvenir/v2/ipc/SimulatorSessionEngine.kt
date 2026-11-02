@@ -207,11 +207,11 @@ class SimulatorSessionEngine(
                 shots.clear(); selected.clear(); activeSequence=true; countdown()
                 result=obj("shotIndex" to 1,"totalShots" to layout.shotCount,"countdownSeconds" to layout.countdownSeconds)
             }
-            "selection.toggle" -> { guard("SELECTING_PHOTOS"); val i=number(p,"shotIndex"); if(i !in shots.indices) bad(-32602,"Invalid shot index"); val before=selected.toList(); if(!selected.remove(i) && selected.size<layout.selectCount) selected.add(i); if(before!=selected.toList()) { composition=null; printImage=null; frameId=null } }
-            "selection.confirm" -> { guard("SELECTING_PHOTOS"); if(selected.size!=layout.selectCount) bad(-32001,"Exact selection required"); state="EDITING" }
+            "selection.toggle" -> { guard("SELECTING_PHOTOS"); val i=number(p,"shotIndex"); if(i !in shots.indices) bad(-32602,"Invalid shot index"); val before=selected.toList(); if(!selected.remove(i) && selected.size<layout.selectCount) selected.add(i); if(before!=selected.toList()) { composition=null; printImage=null; frameId="synthetic-border" } }
+            "selection.confirm" -> { guard("SELECTING_PHOTOS"); if(selected.size!=layout.selectCount) bad(-32001,"Exact selection required"); if(frameId==null) frameId="synthetic-border"; composeSafely(); state="EDITING" }
             "frame.list" -> { guard("EDITING"); return obj("frames" to listOf(mapOf("id" to "synthetic-border","name" to "V2 generated transparent test frame","thumbDataUrl" to frameThumb()))) }
-            "frame.select" -> { guard("EDITING"); if(text(p,"frameId")!="synthetic-border") bad(-32602,"Unknown frame"); frameId="synthetic-border"; compose() }
-            "frame.confirm" -> { guard("EDITING"); if(frameId==null || composition==null || printImage==null) bad(-32001,"Complete current composition required"); pendingTimerMillis=configuredBudget("EDITING"); state="PRINT_PENDING" }
+            "frame.select" -> { guard("EDITING"); if(text(p,"frameId")!="synthetic-border") bad(-32602,"Unknown frame"); frameId="synthetic-border"; composeSafely() }
+            "frame.confirm" -> { guard("EDITING"); if(frameId==null) frameId="synthetic-border"; if(composition==null || printImage==null) composeSafely(); if(composition==null || printImage==null) bad(-32001,"Complete current composition required"); pendingTimerMillis=configuredBudget("EDITING"); state="PRINT_PENDING" }
             "print.confirmDryRun" -> { guard("PRINT_PENDING"); complete(true); result=snapshot().apply { addProperty("compositionDataUrl",data(composition!!,600)); addProperty("printImageDataUrl",data(printImage!!,600)) } }
             "session.back" -> { state=when(state) { "SELECTING" -> "IDLE"; "SELECTING_QUANTITY" -> "SELECTING"; "PAYMENT_PENDING" -> "SELECTING_QUANTITY"; "EDITING" -> "SELECTING_PHOTOS"; "PRINT_PENDING" -> "EDITING"; else -> bad(-32001,"Back not permitted") }; if(state=="IDLE") reset() }
             "session.cancel" -> { guard("SELECTING_PHOTOS","EDITING"); reset(); result=obj("cancelled" to true,"state" to state) }
@@ -247,6 +247,7 @@ class SimulatorSessionEngine(
         return image
     }
     private fun frameThumb(): String { val out=ByteArrayOutputStream(); ImageIO.write(frame(),"png",out); return "data:image/png;base64,"+Base64.getEncoder().encodeToString(out.toByteArray()) }
+    private fun composeSafely() { try { compose() } catch (_: Exception) { composition=null; printImage=null } }
     private fun compose() {
         composition=null; printImage=null
         val overlay=directory().resolve("synthetic-transparent-frame.png"); ImageIO.write(frame(),"png",overlay.toFile())
