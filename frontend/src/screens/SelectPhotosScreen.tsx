@@ -3,7 +3,8 @@ import {safeImage} from '../shared/connected-simulator';
 import {ActionBar,Heading,KioskPrimaryButton,PrintPreview,type ScreenProps} from './KioskUI';
 
 export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected=[]}:ScreenProps&{shots?:{shotId:string;preview:string}[];selected?:number[]}){
-  const [lightbox,setLightbox]=useState<number|null>(null);
+   const [lightbox,setLightbox]=useState<number|null>(null);
+   const [zoomPinned,setZoomPinned]=useState(false);
   const [localSelected,setLocalSelected]=useState<number[]>(selected);
   const pending=useRef<{index:number;result:number[]}[]>([]);
   const previousSelected=useRef(selected);
@@ -22,7 +23,14 @@ export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected
     if(holdTimer.current!==null){clearTimeout(holdTimer.current);holdTimer.current=null;}
   };
 
-  useEffect(()=>()=>{clearHold();},[]);
+  useEffect(()=>{
+     const release=()=>{clearHold();if(!zoomPinned)setLightbox(null)};
+     const escape=(event:KeyboardEvent)=>{if(event.key==='Escape'){setZoomPinned(false);setLightbox(null)}};
+     window.addEventListener('pointerup',release);
+     window.addEventListener('pointercancel',release);
+     window.addEventListener('keydown',escape);
+     return ()=>{clearHold();window.removeEventListener('pointerup',release);window.removeEventListener('pointercancel',release);window.removeEventListener('keydown',escape)};
+   },[zoomPinned]);
 
   const selectedPhotos=localSelected.map(index=>shots[index]?.preview);
   const toggle=(index:number)=>{
@@ -35,7 +43,7 @@ export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected
 
   return (
     <>
-       <Heading title="Chọn ảnh" subtitle={`Đã chọn ${localSelected.length}/${layout?.selectCount??0} ảnh`}/>
+       <Heading step="Bước 3" title="Chọn ảnh để in" subtitle={`Đã chọn ${localSelected.length}/${layout?.selectCount??0} ảnh · Chạm để chọn, giữ để xem lớn`} back={()=>action('session.back')}/>
       <div className="v1-selection">
         <div className="v1-photo-grid">
           {shots.map((shot,i)=>{
@@ -52,9 +60,10 @@ export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected
                     if(event.pointerType==='mouse'&&event.button!==0)return;
                     clearHold();
                     wasHeld.current=false;
-                    holdTimer.current=setTimeout(()=>{
-                      wasHeld.current=true;
-                      setLightbox(i);
+                     holdTimer.current=setTimeout(()=>{
+                       wasHeld.current=true;
+                       setZoomPinned(false);
+                       setLightbox(i);
                     },500);
                   }}
                    onPointerUp={()=>{
@@ -85,7 +94,8 @@ export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected
                 >
                   {safeImage(shot.preview)&&<img src={safeImage(shot.preview)} alt={`Ảnh gốc hoàn chỉnh ${i+1}`} style={{aspectRatio:layout?.photoAspectRatio??1.5}}/>}
                   <span className={order>=0?'v1-photo-order':''} aria-hidden="true">{order>=0?order+1:i+1}</span>
-                </button>
+                 </button>
+                 {safeImage(shot.preview)&&<button type="button" className="v1-photo-zoom" aria-label={`Xem lớn ảnh ${i+1}`} onClick={()=>{setZoomPinned(true);setLightbox(i)}}>＋</button>}
               </div>
             );
           })}
@@ -94,19 +104,20 @@ export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected
       </div>
       {lightbox!==null&&safeImage(shots[lightbox]?.preview)&&(
         <div
-          className="v1-lightbox v1-hold-lightbox"
+           className={`v1-lightbox v1-hold-lightbox${zoomPinned?' v1-zoom-pinned':''}`}
           role="dialog"
           aria-modal="true"
           aria-label={`Xem lớn ảnh ${lightbox+1}`}
-           onPointerUp={()=>{clearHold();setLightbox(null);}}
-           onPointerCancel={()=>{clearHold();setLightbox(null);}}
-        >
-          <img src={safeImage(shots[lightbox].preview)} alt={`Ảnh ${lightbox+1}`}/>
+            onPointerUp={()=>{if(!zoomPinned){clearHold();setLightbox(null)}}}
+            onPointerCancel={()=>{if(!zoomPinned){clearHold();setLightbox(null)}}}
+         >
+           <img src={safeImage(shots[lightbox].preview)} alt={`Ảnh ${lightbox+1}`}/>
+           {zoomPinned&&<button type="button" aria-label="Đóng ảnh phóng to" onClick={()=>{setZoomPinned(false);setLightbox(null)}}>×</button>}
         </div>
       )}
       <ActionBar>
         <span>Chạm vào ảnh theo thứ tự muốn in · Giữ để xem lớn</span>
-         <KioskPrimaryButton disabled={busy||pending.current.length>0||localSelected.length!==layout?.selectCount} onClick={()=>action('selection.confirm')}>
+          <KioskPrimaryButton disabled={busy||localSelected.length!==(layout?.selectCount??0)} onClick={()=>action('selection.confirm',{selectedIndices:localSelected})}>
           Tiếp tục →
         </KioskPrimaryButton>
       </ActionBar>

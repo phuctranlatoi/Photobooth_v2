@@ -16,12 +16,16 @@ export function LayoutArtwork({layout,compact=false,selectedPhotos,frameOverlayU
  const ratio=layout?.printAspectRatio&&layout.printAspectRatio>0?layout.printAspectRatio:1/3;
  const columns=Math.max(1,Math.min(layout?.gridColumns??(ratio<.5?1:2),count));
  const rows=Math.ceil(count/columns);
- const slots=layout?.absoluteSlots?.length?layout.absoluteSlots.slice(0,count):Array.from({length:count},(_,index)=>({index,x:.06+(index%columns)*(.88/columns),y:.055+Math.floor(index/columns)*(.84/rows),width:.88/columns-.02,height:.84/rows-.015}));
- const width=300*ratio,height=300;
+  const width=300*ratio,height=300;
+  const left=(layout?.paddingLeftRatio??.04)*width,right=(layout?.paddingRightRatio??.04)*width;
+  const top=(layout?.paddingTopRatio??.04)*height,gapX=(layout?.gapHorizontalRatio??.04)*width,gapY=(layout?.gapVerticalRatio??.04)*height;
+  const slotWidth=(width-left-right-gapX*(columns-1))/columns;
+  const slotHeight=slotWidth/(layout?.photoAspectRatio&&layout.photoAspectRatio>0?layout.photoAspectRatio:1.5);
+  const slots=layout?.absoluteSlots?.length?layout.absoluteSlots.slice(0,count).map(slot=>({...slot,x:slot.x*width,y:slot.y*height,width:slot.width*width,height:slot.height*height})):Array.from({length:count},(_,index)=>({index,x:left+(slotWidth+gapX)*(index%columns),y:top+(slotHeight+gapY)*Math.floor(index/columns),width:slotWidth,height:slotHeight}));
  return <svg className="v1-layout-artwork" role="img" aria-label={`Minh họa ${layout?formatLayoutTitle(layout):'bố cục ảnh'}`} viewBox={`0 0 ${width} ${height}`} style={{aspectRatio:ratio}}>
   <rect width={width} height={height} rx="7" fill="#fff"/>
-   {slots.map((slot,i)=>{const x=Math.max(0,slot.x)*width,y=Math.max(0,slot.y)*height,w=Math.min(slot.width,1-slot.x)*width,h=Math.min(slot.height,1-slot.y)*height;return <g key={`${slot.index}-${i}`}>
-    {selectedPhotos!==undefined?(selectedPhotos[i]?<image href={selectedPhotos[i]!} x={x} y={y} width={w} height={h} preserveAspectRatio="xMidYMid slice"/>:<><rect x={x} y={y} width={w} height={h} fill="#FDFBF7" stroke="#E5DCD5" strokeDasharray="3 3"/><text x={x+w/2} y={y+h/2} textAnchor="middle" dominantBaseline="middle" fontSize={Math.min(10,w/4)} fill="#9B8A80">Ảnh {i+1}</text></>):<>
+    {slots.map((slot,i)=>{const x=slot.x,y=slot.y,w=slot.width,h=slot.height;return <g key={`${slot.index}-${i}`}>
+     {selectedPhotos!==undefined?(selectedPhotos[i]?<image href={selectedPhotos[i]!} x={x} y={y} width={w} height={h} preserveAspectRatio="xMidYMid slice"/>:<><rect x={x} y={y} width={w} height={h} fill="#F7F5F0" stroke="#E5DCD5" strokeDasharray="3 3"/><text x={x+w/2} y={y+h/2} textAnchor="middle" dominantBaseline="middle" fontSize={Math.min(10,w/4)} fill="#9B8A80">Ảnh {i+1}</text></>):<>
     <svg x={x} y={y} width={w} height={h} viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" overflow="hidden">
     <rect width="100" height="100" fill={i%2?'#EDE1D9':'#F4EFEA'}/><circle cx="74" cy="23" r="19" fill="#fff7ef" opacity=".65"/>
     <path d="M-5 103 Q15 65 42 78 Q74 54 105 94 V105Z" fill={i%2?'#B8C9B8':'#DFC9B8'}/>

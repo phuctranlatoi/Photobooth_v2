@@ -1,5 +1,21 @@
 # TASK_BOARD.md
 
+## User Feedback Parity Independent Gate — BLOCKED (2026-11-02 21:36)
+
+| Task | Status | Evidence / required action |
+|---|---|---|
+| Selection Continue/order | **COMPLETED — PASS-AUTOMATED** | Exact local order is sent while acknowledgements are pending (`screens.test.tsx:38`). |
+| Mutation queue FIFO and recovery | **FAILED — HIGH** | `KioskSimulator.tsx:47` drops all later commands after a false result. Remove queue poisoning only with owner approval and add a failed-command-then-retry regression. |
+| 960 px JPEG preview | **COMPLETED — PASS-AUTOMATED** | Backend dimension tests and 0.88 encoder settings pass. |
+| Hold/pinned zoom | **COMPLETED — PASS-AUTOMATED (bounded)** | Window release/cancel and close paths source/test verified; physical touch not run. |
+| Layout parameter rendering | **COMPLETED — PASS-SIMULATED** | Ratios and `xMidYMid slice` are wired; no V1 golden visual comparison. |
+| Frame comparison and explicit advance | **COMPLETED — PASS-AUTOMATED** | Left preview/right frame grid/“Xem bản in →” present. |
+| Regression suites/build | **COMPLETED — PASS-AUTOMATED** | Backend 78 pass, 2 skip; frontend 53/53; Vite build passed. |
+| V1 untouched forensic proof | **BLOCKED** | No trusted before/after manifest. Reviewer made no V1 write or shell invocation. |
+| Release | **BLOCKED** | Queue defect plus hardware, touch/performance, packaging and licensing gates. |
+
+---
+
 ## Touchscreen Interaction & Revenue Gate — COMPLETED (bounded software scope, 2026-11-02)
 
 | Task | Status | Evidence |

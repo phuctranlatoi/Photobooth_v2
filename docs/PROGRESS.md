@@ -1,5 +1,13 @@
 # PROGRESS.md
 
+## Independent User Feedback Parity Review (2026-11-02 21:36)
+
+**Status: NOT COMPLETE — HIGH queue recovery defect.** Backend is **78 passed / 0 failed / 2 skipped** (80 total, 28 suites); frontend is **53/53 passed**; production web build passed (2,016 modules). Photo Continue/order, 960 px quality, zoom, parameterized artwork and explicit frame confirmation have bounded evidence. However, `KioskSimulator.tsx:47` uses `previous?run():false`, so one false command causes all subsequent queued mutations to be silently skipped. Release remains blocked pending correction plus a regression test proving post-failure retry execution. V1 global untouched proof, hardware, physical touch/performance, installer and licenses remain blocked/not run.
+
+See `docs/PHOTO_FRAME_INTERACTION_REGRESSION.md` for the case matrix and exact commands.
+
+---
+
 ## Touchscreen Interaction & Golden Revenue Gate Verification (2026-11-02)
 
 **Status: COMPLETE for bounded automated software scope.** Frame Continue is removed; user frame taps visually settle for 300ms and advance once; defaults do not advance; layout center/confirm behavior, hidden staff PIN flow, and Confirm's 500ms arming window are tested. Composition is native 300 DPI. Revenue remains false for mock/frame/demo paths and is recorded only after successful real spooler submission. Visual shadow/16:10 claims remain simulated, not physical-touch evidence.

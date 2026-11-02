@@ -1,5 +1,21 @@
 # Touchscreen Interaction & Revenue-Gate Regression — 2026-11-02
 
+## Independent user-feedback parity rerun — 2026-11-02 21:36
+
+**Gate: FAIL (HIGH command-queue defect).** The suites and build are green, but source review disproves the blanket claim that queued commands are never dropped. In `frontend/src/KioskSimulator.tsx:47`, `queue.current.then(previous=>previous?run():false)` permanently poisons the queue after any command resolves `false`; all later commands resolve `false` without executing. Reproduction: make one queued RPC fail (or return through the `!alive/error` guard), then enqueue another mutation; the second never calls `rpc`. Add a KioskSimulator-level regression that rejects one mutation and proves a subsequent deliberate retry executes before marking this fixed.
+
+| User-feedback case | Status | Exact evidence / limitation |
+|---|---|---|
+| Continue at quota sends ordered indices | **PASS-AUTOMATED** | `SelectPhotosScreen.tsx:120` enables at exact quota and sends `selection.confirm` with `selectedIndices:localSelected`; `screens.test.tsx:38` verifies pending acknowledgements do not block `[2,0]`. |
+| Sequential queue, no dropped commands | **FAIL** | FIFO promise chaining exists at `KioskSimulator.tsx:47-49`, but `previous ? run() : false` drops every command after the first `false`. No direct queue recovery test exists. |
+| 960 px / JPEG 88% preview | **PASS-AUTOMATED** | Real engine `RealSessionEngine.kt:156,223-225`; simulator `SimulatorSessionEngine.kt:130-131,313`; dimension assertions in `RealSessionEngineDemoModeTest.kt:70,77` and `SimulatorSessionTest.kt:142-152`. This establishes encoding dimensions/settings, not subjective physical-display sharpness. |
+| Hold zoom and pinned View Large close | **PASS-AUTOMATED** | `SelectPhotosScreen.tsx:26-33,59-115` installs window pointer release/cancel listeners and explicit pinned close; screen tests cover hold/release. No mounted touchscreen run. |
+| Parameterized layout artwork and crop | **PASS-SIMULATED** | `LayoutArtwork.tsx:19-28` uses top/left/right padding, horizontal/vertical gaps, columns and photo aspect; SVG images use `xMidYMid slice`. No golden pixel comparison against V1 or asymmetric-layout visual fixture was run. |
+| Frame compare + explicit “Xem bản in →” | **PASS-AUTOMATED** | `FrameScreen.tsx:45-74` keeps selected preview left, comparison grid right, and explicit confirm button. This supersedes the older “Continue removed / 300 ms auto-advance” claims below, which describe an earlier implementation. |
+| Typography, spacing, 16:10 zero page scroll | **PASS-SIMULATED** | CSS source includes 16 px frame-grid gap (`kiosk-v1.css:129`), responsive gaps and shell `overflow:hidden` (`:8,218,246`). Existing desktop screenshots are historical; this rerun did not perform a fresh visual journey or physical touch test. |
+
+Commands: backend `gradle.bat --offline test --console=plain` exit 0 in 17s, XML **28 suites / 80 total / 78 passed / 0 failed / 0 errors / 2 skipped**; frontend `npm test -- --run` exit 0, **7/7 files / 53/53 tests** in 6.06s; `npm run build` exit 0, 2,016 modules, JS 391.35 kB (124.41 kB gzip), CSS 110.07 kB (22.42 kB gzip), 3.32s.
+
 ## Verdict
 
 **PASS-AUTOMATED for the bounded component/backend contracts; PASS-SIMULATED for source/CSS-only visual claims; physical touchscreen behavior is NOT-RUN.** This review does not certify Canon capture, DNP output, mounted-glass touch behavior, or production release.

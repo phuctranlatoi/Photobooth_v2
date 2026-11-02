@@ -1,5 +1,9 @@
 # V1 to V2 Full Parity Matrix
 
+> **Independent user-feedback parity gate (2026-11-02 21:36): BLOCK.** Fresh results: backend **78 passed, 0 failed, 2 skipped** (80 total/28 suites), frontend **53/53**, web production build passed (2,016 modules). Selection Continue/order, 960 px previews, zoom, layout ratios and explicit frame advance have bounded evidence. **HIGH regression:** `frontend/src/KioskSimulator.tsx:47` chains with `previous?run():false`; after any command resolves false, all subsequent queued mutations are skipped. Therefore “commands are queued instead of dropped” is not parity-complete. Physical Canon/DNP/touch, Mini-PC performance, print comparison, installer and redistribution licenses remain BLOCKED/NOT-RUN. V1 complete untouched proof is also BLOCKED without a trusted pre-task manifest.
+>
+> The current frame behavior is explicit **“Xem bản in →”** confirmation (`FrameScreen.tsx:74`); older statements below about removing Continue and automatic 300 ms advancement are historical and no longer describe current source.
+
 > **Touchscreen/revenue-gate review (2026-11-02):** bounded software regression is green: backend **77 passed, 0 failed, 2 skipped** (79 total, 28 suites; Gradle task UP-TO-DATE), frontend **50/50 passed**, and production build passed with **2,016 modules**. Exact evidence is in `docs/PHOTO_FRAME_INTERACTION_REGRESSION.md`.
 >
 > | Interaction | Status | Evidence boundary |

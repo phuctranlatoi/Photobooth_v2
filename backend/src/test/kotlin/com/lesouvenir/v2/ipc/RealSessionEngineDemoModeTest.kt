@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.UUID
+import java.util.Base64
 import javax.imageio.ImageIO
 import kotlin.test.*
 
@@ -64,11 +65,16 @@ class RealSessionEngineDemoModeTest {
             while (call("session.getState")["state"].asString != "SELECTING_PHOTOS" && System.currentTimeMillis() < deadline) Thread.sleep(100)
             assertEquals("SELECTING_PHOTOS", call("session.getState")["state"].asString)
             assertEquals(90, call("session.getState")["secondsRemaining"].asInt)
-            call("selection.toggle") { addProperty("shotIndex", 0) }
-            val editing = call("selection.confirm")
+            val shotData = call("session.getState")["shots"].asJsonArray.first().asJsonObject["preview"].asString
+            val shotPreview = ImageIO.read(Base64.getDecoder().decode(shotData.substringAfter(',')).inputStream())
+            assertEquals(960, maxOf(shotPreview.width, shotPreview.height))
+            val editing = call("selection.confirm") { add("selectedIndices", com.google.gson.JsonParser.parseString("[0]")) }
             assertEquals(60, editing["secondsRemaining"].asInt)
             assertEquals("EDITING", editing["state"].asString)
             assertFalse(editing["compositionDataUrl"].isJsonNull)
+            val compositionData = editing["previewDataUrl"].asString
+            val preview = ImageIO.read(Base64.getDecoder().decode(compositionData.substringAfter(',')).inputStream())
+            assertEquals(960, maxOf(preview.width, preview.height))
             assertEquals(90, call("session.back")["secondsRemaining"].asInt)
             assertEquals(60, call("selection.confirm")["secondsRemaining"].asInt)
             val frameId = call("frame.list")["frames"].asJsonArray.first().asJsonObject["id"].asString

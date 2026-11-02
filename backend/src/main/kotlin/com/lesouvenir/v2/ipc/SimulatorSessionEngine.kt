@@ -11,6 +11,9 @@ import java.nio.file.*
 import java.util.*
 import java.util.concurrent.*
 import javax.imageio.ImageIO
+import javax.imageio.IIOImage
+import javax.imageio.ImageWriteParam
+import javax.imageio.stream.MemoryCacheImageOutputStream
 
 class SimulatorError(val code: Int, message: String): RuntimeException(message)
 
@@ -124,8 +127,8 @@ class SimulatorSessionEngine(
         "pricing" to PricingCalculator.calculatePrice(layout.printSizeLabel,quantity),"quantity" to quantity,"paid" to paid,
         "capturedCount" to shots.size,"selectedCount" to selected.size,"selectedIndices" to selected.toList(),
         "shotIndex" to (shots.size+1).coerceAtMost(layout.shotCount),"secondsRemaining" to remaining,"totalShots" to layout.shotCount,
-        "shots" to shots.mapIndexed { index,path -> mapOf("shotIndex" to index,"shotId" to "shot-$index","preview" to data(path,240)) },
-        "previewDataUrl" to printImage?.let { data(it,600) }, "compositionDataUrl" to composition?.let { data(it,600) },
+        "shots" to shots.mapIndexed { index,path -> mapOf("shotIndex" to index,"shotId" to "shot-$index","preview" to data(path,960)) },
+        "previewDataUrl" to printImage?.let { data(it,960) }, "compositionDataUrl" to composition?.let { data(it,960) },
         "printImageDataUrl" to printImage?.let { data(it,600) }, "frameId" to frameId,"userConfirmed" to userConfirmed,
         "printAccepted" to false,"revenueRecorded" to false,"paymentMethod" to paymentMethod,
         "simulator" to true,"failure" to failure,"livePreviewDataUrl" to live)
@@ -169,6 +172,7 @@ class SimulatorSessionEngine(
         val fields = schemas[method] ?: bad(-32601,"Method not found")
         val optional = when(method) {
             "frame.confirm" -> setOf("frameId")
+            "selection.confirm" -> setOf("selectedIndices")
             "payment.mockComplete" -> setOf("staffOverride", "method")
             else -> emptySet()
         }
@@ -221,7 +225,16 @@ class SimulatorSessionEngine(
                 result=obj("shotIndex" to 1,"totalShots" to layout.shotCount,"countdownSeconds" to layout.countdownSeconds)
             }
             "selection.toggle" -> { guard("SELECTING_PHOTOS"); val i=number(p,"shotIndex"); if(i !in shots.indices) bad(-32602,"Invalid shot index"); val before=selected.toList(); if(!selected.remove(i) && selected.size<layout.selectCount) selected.add(i); if(before!=selected.toList()) { composition=null; printImage=null; frameId="synthetic-border" } }
-            "selection.confirm" -> { guard("SELECTING_PHOTOS"); if(selected.size!=layout.selectCount) bad(-32001,"Exact selection required"); if(frameId==null) frameId="synthetic-border"; composeSafely(); state="EDITING" }
+            "selection.confirm" -> {
+                guard("SELECTING_PHOTOS")
+                selectionIndices(p, shots.size)?.let { indices ->
+                    if (indices.size != layout.selectCount) bad(-32001, "Exact selection required")
+                    selected.clear(); selected.addAll(indices)
+                }
+                if(selected.size!=layout.selectCount) bad(-32001,"Exact selection required")
+                if(frameId==null) frameId="synthetic-border"
+                composeSafely(); state="EDITING"
+            }
             "frame.list" -> { guard("EDITING"); return obj("frames" to listOf(mapOf("id" to "synthetic-border","name" to "V2 generated transparent test frame","thumbDataUrl" to frameThumb()))) }
             "frame.select" -> { guard("EDITING"); if(text(p,"frameId")!="synthetic-border") bad(-32602,"Unknown frame"); frameId="synthetic-border"; composeSafely() }
             "frame.confirm" -> {
@@ -290,7 +303,18 @@ class SimulatorSessionEngine(
         val scale=minOf(1.0,max.toDouble()/maxOf(image.width,image.height))
         val thumb=BufferedImage(maxOf(1,(image.width*scale).toInt()),maxOf(1,(image.height*scale).toInt()),BufferedImage.TYPE_INT_RGB)
         val g=thumb.createGraphics(); try { g.color=Color.WHITE; g.fillRect(0,0,thumb.width,thumb.height); g.drawImage(image,0,0,thumb.width,thumb.height,null) } finally { g.dispose() }
-        val out=ByteArrayOutputStream(); check(ImageIO.write(thumb,"jpeg",out)); return "data:image/jpeg;base64,"+Base64.getEncoder().encodeToString(out.toByteArray())
+        val out=ByteArrayOutputStream()
+        val writer=ImageIO.getImageWritersByFormatName("jpeg").next()
+        try {
+            MemoryCacheImageOutputStream(out).use { stream ->
+                writer.output=stream
+                writer.write(null,IIOImage(thumb,null,null),writer.defaultWriteParam.apply {
+                    compressionMode=ImageWriteParam.MODE_EXPLICIT
+                    compressionQuality=0.88f
+                })
+            }
+        } finally { writer.dispose() }
+        return "data:image/jpeg;base64,"+Base64.getEncoder().encodeToString(out.toByteArray())
     }
     @Synchronized override fun close() { epoch++; job?.cancel(true); executor.shutdownNow() }
     companion object {

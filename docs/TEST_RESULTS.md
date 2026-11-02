@@ -1,5 +1,18 @@
 # Test Results — Independent Consolidated Review
 
+## 2026-11-02 21:36 user-feedback parity rerun (latest)
+
+| Case | Status | Evidence |
+|---|---|---|
+| Backend offline Gradle | **PASS-AUTOMATED** | Exact requested command exited 0, `BUILD SUCCESSFUL in 17s`, test UP-TO-DATE. JUnit XML: **28 suites, 80 total, 78 passed, 0 failed/errors, 2 skipped**. |
+| Frontend Vitest | **PASS-AUTOMATED** | Exact requested command exited 0: **7/7 files, 53/53 tests**, 6.06s. |
+| Frontend production build | **PASS-AUTOMATED** | `tsc --noEmit && vite build` exited 0; 2,016 modules; JS 391.35 kB, CSS 110.07 kB. This is a web asset build, not a Windows installer/package test. |
+| Feedback parity audit | **FAIL** | HIGH: `KioskSimulator.tsx:47` suppresses every later queued command after one command resolves false. Other requested photo/frame/preview/layout items have bounded automated or source-simulated evidence in `PHOTO_FRAME_INTERACTION_REGRESSION.md`. |
+| V1 isolation | **BLOCKED (global proof)** | No command used V1 as working directory; no V1 write or secret read was performed. Complete untouched status cannot be proven without a trusted pre-task V1 manifest. |
+| Hardware/release | **BLOCKED / NOT-RUN** | No Canon, DNP, live PayOS/Neon/Cloudinary, physical touchscreen, Mini-PC metrics, V1 print comparison, installer or license verification. |
+
+**Release gate: BLOCK.** Green suites do not cover the queue-poisoning failure.
+
 ## 2026-11-02 touchscreen/revenue regression rerun (latest)
 
 | Case | Status | Exact result / boundary |

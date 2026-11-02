@@ -29,6 +29,9 @@ import java.nio.file.Path
 import java.util.UUID
 import java.util.concurrent.*
 import javax.imageio.ImageIO
+import javax.imageio.IIOImage
+import javax.imageio.ImageWriteParam
+import javax.imageio.stream.MemoryCacheImageOutputStream
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.MultiFormatWriter
@@ -144,7 +147,16 @@ class RealSessionEngine(
             g.drawImage(image, 0, 0, thumb.width, thumb.height, null)
         } finally { g.dispose() }
         val out = ByteArrayOutputStream()
-        check(ImageIO.write(thumb, "jpeg", out))
+        val writer = ImageIO.getImageWritersByFormatName("jpeg").next()
+        try {
+            MemoryCacheImageOutputStream(out).use { stream ->
+                writer.output = stream
+                writer.write(null, IIOImage(thumb, null, null), writer.defaultWriteParam.apply {
+                    compressionMode = ImageWriteParam.MODE_EXPLICIT
+                    compressionQuality = 0.88f
+                })
+            }
+        } finally { writer.dispose() }
         return "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(out.toByteArray())
     }
     private fun frameDto(f: FramePack) = mapOf("id" to f.id, "name" to f.title, "title" to f.title,
@@ -208,9 +220,9 @@ class RealSessionEngine(
         "livePreviewDataUrl" to liveFrameDataUrl,
         "cameraConnected" to cameraManager.isHardwareConnected(),
         "cameraState" to cameraManager.connectionState.name,
-        "shots" to shots.mapIndexed { index, path -> mapOf("shotIndex" to index, "shotId" to "shot-$index", "preview" to runCatching { thumbData(readyBeauty[index] ?: path, 240) }.getOrDefault("")) },
-        "previewDataUrl" to composition?.let { runCatching { thumbData(it, 360) }.getOrNull() },
-        "compositionDataUrl" to composition?.let { runCatching { thumbData(it, 720) }.getOrNull() },
+        "shots" to shots.mapIndexed { index, path -> mapOf("shotIndex" to index, "shotId" to "shot-$index", "preview" to runCatching { thumbData(readyBeauty[index] ?: path, 960) }.getOrDefault("")) },
+        "previewDataUrl" to composition?.let { runCatching { thumbData(it, 960) }.getOrNull() },
+        "compositionDataUrl" to composition?.let { runCatching { thumbData(it, 960) }.getOrNull() },
         "availableFramesCount" to availableFrames().size)
 
     private fun stopInactivity() {
@@ -407,7 +419,17 @@ class RealSessionEngine(
                 if (before != selected.toList()) { composition = null; printImage = null; frame = availableFrames().firstOrNull() }
                 snapshot()
             }
-            "selection.confirm" -> { requireState("SELECTING_PHOTOS"); if (selected.size != layout.selectCount) fail(-32001, "Exact selection required"); if (frame == null) frame = availableFrames().firstOrNull(); if (frame != null) composeSafely(); state = "EDITING"; startInactivity("EDITING"); snapshot() }
+            "selection.confirm" -> {
+                requireState("SELECTING_PHOTOS")
+                selectionIndices(p, shots.size)?.let { indices ->
+                    if (indices.size != layout.selectCount) fail(-32001, "Exact selection required")
+                    selected.clear(); selected.addAll(indices)
+                }
+                if (selected.size != layout.selectCount) fail(-32001, "Exact selection required")
+                if (frame == null) frame = availableFrames().firstOrNull()
+                composeSafely()
+                state = "EDITING"; startInactivity("EDITING"); snapshot()
+            }
             "frame.select" -> {
                 requireState("EDITING")
                 frame = availableFrames().find { it.id == string(p, "frameId") }

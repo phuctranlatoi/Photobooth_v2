@@ -4,6 +4,7 @@ import com.google.gson.*
 import java.nio.file.*
 import java.security.MessageDigest
 import java.util.UUID
+import java.util.Base64
 import javax.imageio.ImageIO
 import kotlin.test.*
 
@@ -11,6 +12,7 @@ class SimulatorSessionTest {
     private val root=Path.of("..").toRealPath()
     private fun config()=JsonParser.parseString(Files.readString(Path.of("config/simulator-layouts.json"))).asJsonObject
     private fun id()=UUID.randomUUID().toString()
+    private fun image(dataUrl: String)=ImageIO.read(Base64.getDecoder().decode(dataUrl.substringAfter(',' )).inputStream())!!
     private class Client(val engine: SimulatorSessionEngine) {
         val sid=UUID.randomUUID().toString(); val gen=UUID.randomUUID().toString()
         fun params(vararg pairs: Pair<String,Any>)=Gson().toJsonTree(mapOf("sessionId" to sid,"generationId" to gen,"commandId" to UUID.randomUUID().toString())+mapOf(*pairs)).asJsonObject
@@ -129,6 +131,25 @@ class SimulatorSessionTest {
             assertEquals("EDITING",editing["state"].asString)
             assertEquals("synthetic-border",editing["frameId"].asString)
             assertFalse(editing["compositionDataUrl"].isJsonNull)
+            assertEquals("PRINT_PENDING",c.call("frame.confirm")["state"].asString)
+        }
+    }
+    @Test fun atomicSelectionAndHighResolutionPreviews() {
+        val out=root.resolve("backend/build/atomic-selection-${id()}")
+        SimulatorSessionEngine(root,config(),true,1,1,60000,out).use { e ->
+            val c=Client(e); c.capture("strip-2")
+            val shots=c.call("session.getState")["shots"].asJsonArray
+            // The synthetic capture exceeds 960px; the transfer preview is capped at 960px.
+            val first=image(shots[0].asJsonObject["preview"].asString)
+            assertEquals(960,maxOf(first.width,first.height))
+            assertEquals(-32602,assertFailsWith<SimulatorError> { c.call("selection.confirm","selectedIndices" to listOf(0,0)) }.code)
+            assertEquals(-32001,assertFailsWith<SimulatorError> { c.call("selection.confirm","selectedIndices" to listOf(0)) }.code)
+            assertEquals("SELECTING_PHOTOS",c.state())
+            val editing=c.call("selection.confirm","selectedIndices" to listOf(2,0))
+            assertEquals("EDITING",editing["state"].asString)
+            assertEquals(listOf(2,0),editing["selectedIndices"].asJsonArray.map { it.asInt })
+            assertEquals("synthetic-border",editing["frameId"].asString)
+            assertEquals(960,maxOf(image(editing["previewDataUrl"].asString).width,image(editing["previewDataUrl"].asString).height))
             assertEquals("PRINT_PENDING",c.call("frame.confirm")["state"].asString)
         }
     }
