@@ -8,6 +8,8 @@ node_modules/
 dist/
 build/
 .gradle/
+.gradle*/
+**/.gradle*/
 out/
 *.log
 *.tmp
@@ -17,3 +19,5 @@ customer-photos/
 customer-archive/
 captures/
 sessions/
+**/simulator-label-*/
+

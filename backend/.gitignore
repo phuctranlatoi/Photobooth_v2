@@ -1,7 +1,9 @@
 .toolchain/
 .toolchain-home/
+.gradle*/
 .gradle-user-home/
 .gradle-project/
+.gradle-qa/
 .tmp/
 .kotlin/
 build/
