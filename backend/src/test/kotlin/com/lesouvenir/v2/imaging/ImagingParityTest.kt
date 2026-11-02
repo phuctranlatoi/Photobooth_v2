@@ -55,13 +55,13 @@ class ImagingParityTest {
             }, "png", photo.toFile())
             val frame = FramePack("frame", "Frame", "", 0L, isCustom = true, customImagePath = photo)
             val result = DesktopCompositor().renderFinal(layout("5x15"), frame, listOf(photo), dir, "https://example.invalid/album")
-            ImageIO.read(result.finalImagePath.toFile()).let { assertEquals(1184, it.width); assertEquals(3580, it.height) }
+            ImageIO.read(result.finalImagePath.toFile()).let { assertEquals(592, it.width); assertEquals(1790, it.height) }
             ImageIO.read(result.printImagePath.toFile()).let { print ->
-                assertEquals(2452, print.width)
-                assertEquals(3658, print.height)
+                assertEquals(1226, print.width)
+                assertEquals(1829, print.height)
                 assertEquals(Color.WHITE.rgb, print.getRGB(0, 0))
-                assertEquals(Color.RED.rgb, print.getRGB(28 + 100, 54 + 100))
-                assertEquals(Color.RED.rgb, print.getRGB(28 + 1184 + 4 + 100, 54 + 100))
+                assertEquals(Color.RED.rgb, print.getRGB(14 + 100, 27 + 100))
+                assertEquals(Color.RED.rgb, print.getRGB(14 + 592 + 2 + 100, 27 + 100))
             }
         } finally { dir.toFile().deleteRecursively() }
     }
@@ -72,8 +72,8 @@ class ImagingParityTest {
             val photo = dir.resolve("photo.png")
             ImageIO.write(BufferedImage(8, 8, BufferedImage.TYPE_INT_RGB), "png", photo.toFile())
             val result = DesktopCompositor().renderFinal(layout("15x10"), FramePack("f", "F", "", 0), listOf(photo), dir)
-            ImageIO.read(result.finalImagePath.toFile()).let { assertEquals(3580, it.width); assertEquals(2368, it.height) }
-            ImageIO.read(result.printImagePath.toFile()).let { assertEquals(3658, it.width); assertEquals(2452, it.height) }
+            ImageIO.read(result.finalImagePath.toFile()).let { assertEquals(1790, it.width); assertEquals(1184, it.height) }
+            ImageIO.read(result.printImagePath.toFile()).let { assertEquals(1829, it.width); assertEquals(1226, it.height) }
         } finally { dir.toFile().deleteRecursively() }
     }
 
@@ -90,7 +90,7 @@ class ImagingParityTest {
             val result = DesktopCompositor().renderFinal(
                 layout("5x15"), FramePack("f", "F", "", 0, qrCodeSize = 220), listOf(photo), dir, qrCodeUrl = url)
             // Accepted compositor saves finalImagePath before adding QR; only the print asset carries it.
-            val img = ImageIO.read(result.printImagePath.toFile()).getSubimage(28, 54, 1184, 3580)
+            val img = ImageIO.read(result.printImagePath.toFile()).getSubimage(14, 27, 592, 1790)
             val rgb = IntArray(img.width * img.height)
             img.getRGB(0, 0, img.width, img.height, rgb, 0, img.width)
             val source = com.google.zxing.RGBLuminanceSource(img.width, img.height, rgb)

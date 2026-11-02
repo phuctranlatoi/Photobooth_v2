@@ -14,7 +14,7 @@ class PrinterManagerTest {
     @Test fun discoveryAndUnavailableFailClosed() {
         val manager = PrinterManager(discovery = PrinterDiscovery { listOf("DNP DS-RX1HS") })
         assertEquals("DNP DS-RX1HS", manager.detectDnpRx1hs())
-        val file = fixture(2452, 3658)
+        val file = fixture(1226, 1829)
         try {
             val unavailable = PrinterManager(discovery = PrinterDiscovery { emptyList() }, dryRun = false)
             val outcome = unavailable.print(ManagedPrintRequest("s1", file, 1, "missing", PrintLayout.CUT_5X15_2UP))
@@ -24,7 +24,7 @@ class PrinterManagerTest {
     }
 
     @Test fun validatesSupportedDimensionsAndDuplicateKey() {
-        val portrait = fixture(2452, 3658); val landscape = fixture(3658, 2452); val wrong = fixture(100, 100)
+        val portrait = fixture(1226, 1829); val landscape = fixture(1829, 1226); val wrong = fixture(100, 100)
         try {
             val manager = PrinterManager(dryRun = true)
             assertIs<PrintResult.Rejected>(manager.print(ManagedPrintRequest("a", wrong, 1, "x", PrintLayout.CUT_5X15_2UP)).result)

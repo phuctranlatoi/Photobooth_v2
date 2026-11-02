@@ -25,3 +25,12 @@
 .v1-payment-qr-card{width:min(280px,34vh);max-height:34vh;flex:none}.v1-payment-qr-panel{gap:clamp(6px,1.3vh,14px)}
 @media(max-height:850px){.v1-payment-screen{gap:8px}.v1-payment-columns>.v1-panel{padding:clamp(12px,2vh,24px)}.v1-payment-details{margin:8px 0 0}.v1-payment-details div,.v1-payment-status{padding:clamp(5px,1vh,10px) 0;font-size:clamp(14px,1.5vw,18px)}.v1-payment-qr-panel h2{font-size:clamp(19px,2vw,26px)}.v1-payment-qr-panel p{font-size:clamp(14px,1.35vw,17px)}.v1-payment-qr-card{width:min(260px,30vh);max-height:30vh}}
 @media(max-height:600px){.v1-payment-qr-card{width:min(180px,24vh);max-height:24vh}.v1-payment-price{font-size:clamp(30px,3vw,45px)}.v1-payment-details div{padding:4px 0}}
+
+/* Reserve identical QR and copy geometry through loading, ready and failure. */
+.v1-payment-columns{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:stretch}
+.v1-payment-qr-panel{justify-content:center;gap:12px}
+.v1-payment-qr-slot{width:280px;height:280px;min-width:280px;min-height:280px;max-width:280px;max-height:280px;aspect-ratio:1;margin:0 auto;display:flex;align-items:center;justify-content:center;flex:none;border-radius:18px;background:#fff;box-shadow:0 8px 32px rgba(60,45,35,.08)}
+.v1-payment-qr-slot img{max-width:260px;max-height:260px;width:calc(100% - 20px);height:calc(100% - 20px);object-fit:contain;border-radius:12px}
+.v1-payment-instructions{width:100%;min-height:156px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:8px}
+.v1-payment-instructions h2{margin:0}.v1-payment-instructions p{margin:0}.v1-payment-instructions .v1-secondary{min-height:48px}
+@media(max-width:760px){.v1-payment-columns{grid-template-columns:1fr}}

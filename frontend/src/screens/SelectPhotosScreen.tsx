@@ -4,6 +4,17 @@ import {ActionBar,Heading,KioskPrimaryButton,PrintPreview,type ScreenProps} from
 
 export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected=[]}:ScreenProps&{shots?:{shotId:string;preview:string}[];selected?:number[]}){
   const [lightbox,setLightbox]=useState<number|null>(null);
+  const [localSelected,setLocalSelected]=useState<number[]>(selected);
+  const pending=useRef<{index:number;result:number[]}[]>([]);
+  const previousSelected=useRef(selected);
+  useEffect(()=>{
+    if(selected.join(',')===previousSelected.current.join(','))return;
+    previousSelected.current=selected;
+    const acknowledged=pending.current.findIndex(entry=>entry.result.join(',')===selected.join(','));
+    if(acknowledged>=0)pending.current.splice(0,acknowledged+1);
+    else pending.current=[];
+    setLocalSelected(pending.current.reduce<number[]>((current,{index})=>current.includes(index)?current.filter(i=>i!==index):[...current,index],selected));
+  },[selected]);
   const holdTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
   const wasHeld=useRef(false);
 
@@ -13,23 +24,30 @@ export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected
 
   useEffect(()=>()=>{clearHold();},[]);
 
-  const selectedPhotos=selected.map(index=>shots[index]?.preview);
+  const selectedPhotos=localSelected.map(index=>shots[index]?.preview);
+  const toggle=(index:number)=>{
+    if(!localSelected.includes(index)&&localSelected.length>=(layout?.selectCount??Infinity))return;
+    const next=localSelected.includes(index)?localSelected.filter(i=>i!==index):[...localSelected,index];
+    pending.current.push({index,result:next});
+    setLocalSelected(next);
+    action('selection.toggle',{shotIndex:index});
+  };
 
   return (
     <>
-      <Heading title="Chọn ảnh" subtitle={`Đã chọn ${selected.length}/${layout?.selectCount??0} ảnh`}/>
+       <Heading title="Chọn ảnh" subtitle={`Đã chọn ${localSelected.length}/${layout?.selectCount??0} ảnh`}/>
       <div className="v1-selection">
         <div className="v1-photo-grid">
           {shots.map((shot,i)=>{
-            const order=selected.indexOf(i);
+             const order=localSelected.indexOf(i);
             return (
               <div className="v1-photo-tile" key={shot.shotId}>
                 <button
                   type="button"
-                  disabled={busy||!safeImage(shot.preview)}
+                   disabled={!safeImage(shot.preview)||(order<0&&localSelected.length>=(layout?.selectCount??Infinity))}
                   aria-label={`Chọn ảnh ${i+1}`}
                   aria-pressed={order>=0}
-                  className={order<0&&selected.length>=(layout?.selectCount??Infinity)?'v1-photo-dimmed':''}
+                   className={order<0&&localSelected.length>=(layout?.selectCount??Infinity)?'v1-photo-dimmed':''}
                   onPointerDown={event=>{
                     if(event.pointerType==='mouse'&&event.button!==0)return;
                     clearHold();
@@ -65,7 +83,7 @@ export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected
                       wasHeld.current=false;
                       return;
                     }
-                    if(!busy)action('selection.toggle',{shotIndex:i});
+                     toggle(i);
                   }}
                 >
                   {safeImage(shot.preview)&&<img src={safeImage(shot.preview)} alt={`Ảnh gốc hoàn chỉnh ${i+1}`} style={{aspectRatio:layout?.photoAspectRatio??1.5}}/>}
@@ -91,7 +109,7 @@ export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected
       )}
       <ActionBar>
         <span>Chạm vào ảnh theo thứ tự muốn in · Giữ để xem lớn</span>
-        <KioskPrimaryButton disabled={busy||selected.length!==layout?.selectCount} onClick={()=>action('selection.confirm')}>
+         <KioskPrimaryButton disabled={busy||pending.current.length>0||localSelected.length!==layout?.selectCount} onClick={()=>action('selection.confirm')}>
           Tiếp tục →
         </KioskPrimaryButton>
       </ActionBar>

@@ -45,7 +45,7 @@ class DesktopCompositor(
                 layout.printSizeLabel.contains("15 x 10", ignoreCase = true)
             )
 
-        val renderScale = 2 // Render ở 600 DPI thay vì 300 DPI để ảnh cực nét
+        val renderScale = 1 // Native 300 DPI output.
         val width = when {
             isStrip -> 592 * renderScale
             is15x10 -> 1790 * renderScale
@@ -100,7 +100,7 @@ class DesktopCompositor(
         val finalPath = outputDir.resolve(fileName)
         
         // 1. Lưu ảnh nguyên bản (dùng cho web/Cloudinary) bằng định dạng PNG trước khi có QR
-        ImageIO.write(canvas, "png", finalPath.toFile())
+        PrintImageWriter.write(canvas, finalPath)
         
         // 2. Vẽ mã QR lên canvas (chỉ ảnh hưởng đến bản in từ đây trở đi)
         if (qrCodeUrl != null) {
@@ -134,7 +134,7 @@ class DesktopCompositor(
             
             val printFileName = "print_$fileName"
             val pPath = outputDir.resolve(printFileName)
-            ImageIO.write(compositeCanvas, "png", pPath.toFile())
+            PrintImageWriter.write(compositeCanvas, pPath)
             pPath
         } else if (is15x10) {
             val printFileName = "print_$fileName"
@@ -158,7 +158,7 @@ class DesktopCompositor(
             g2.drawImage(canvas, paddingLeft, paddingTop, scaledWidth, scaledHeight, null)
             g2.dispose()
 
-            ImageIO.write(compositeCanvas, "png", pPath.toFile())
+            PrintImageWriter.write(compositeCanvas, pPath)
             pPath
         } else {
             val printFileName = "print_$fileName"
@@ -182,7 +182,7 @@ class DesktopCompositor(
             g2.drawImage(canvas, paddingLeft, paddingTop, scaledWidth, scaledHeight, null)
             g2.dispose()
             
-            ImageIO.write(compositeCanvas, "png", pPath.toFile())
+            PrintImageWriter.write(compositeCanvas, pPath)
             pPath
         }
 

@@ -54,8 +54,8 @@ class SimulatorSessionTest {
                 assertEquals(-32001,assertFailsWith<SimulatorError> { c.call("print.confirmDryRun") }.code)
                 assertEquals(before,hashes())
                 fun output(prefix:String)=Files.list(dir).use { it.filter { p->p.fileName.toString().startsWith(prefix) }.findFirst().orElseThrow() }
-                val comp=ImageIO.read(output("composition-").toFile()); assertEquals(if(n==2)1184 else 2368,comp.width); assertEquals(3580,comp.height)
-                val paper=ImageIO.read(output("print-image-").toFile()); assertEquals(2452,paper.width); assertEquals(3658,paper.height)
+                val comp=ImageIO.read(output("composition-").toFile()); assertEquals(if(n==2)592 else 1184,comp.width); assertEquals(1790,comp.height)
+                val paper=ImageIO.read(output("print-image-").toFile()); assertEquals(1226,paper.width); assertEquals(1829,paper.height)
                 assertTrue(ImageIO.read(dir.resolve("synthetic-transparent-frame.png").toFile()).colorModel.hasAlpha())
                 assertTrue(first.toString().toByteArray().size<MAX_FRAME)
                 c.call("session.finish"); assertEquals("IDLE",c.state())

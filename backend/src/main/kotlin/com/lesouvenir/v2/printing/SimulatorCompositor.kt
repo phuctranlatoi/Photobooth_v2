@@ -1,6 +1,7 @@
 package com.lesouvenir.v2.printing
 
 import com.lesouvenir.v2.foundation.LayoutMode
+import com.lesouvenir.v2.imaging.PrintImageWriter
 import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.Rectangle
@@ -21,8 +22,8 @@ object SimulatorCompositor {
         require(composition.toAbsolutePath().normalize() != printImage.toAbsolutePath().normalize())
         val strip = layout.printSizeLabel.contains("5x15", true) || layout.printSizeLabel.contains("5 x 15", true)
         val landscape = !strip && (layout.printSizeLabel.contains("15x10", true) || layout.printSizeLabel.contains("15 x 10", true))
-        val width = (if (strip) 592 else if (landscape) 1790 else 1184) * 2
-        val height = (if (landscape) 1184 else 1790) * 2
+        val width = if (strip) 592 else if (landscape) 1790 else 1184
+        val height = if (landscape) 1184 else 1790
         val canvas = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
         val g = canvas.createGraphics()
         try {
@@ -30,18 +31,18 @@ object SimulatorCompositor {
             g.color = Color.WHITE; g.fillRect(0, 0, width, height)
             slots(layout, width, height).zip(photos.take(layout.selectCount)).forEach { (slot, photo) ->
                 g.color = Color(244, 244, 242); g.fill(slot)
-                g.centerCrop(photo, Rectangle(slot.x - 2, slot.y - 2, slot.width + 4, slot.height + 4))
+                g.centerCrop(photo, Rectangle(slot.x - 1, slot.y - 1, slot.width + 2, slot.height + 2))
             }
             g.drawImage(frame, 0, 0, width, height, null)
         } finally { g.dispose() }
-        val paper = BufferedImage((if (landscape) 1829 else 1226) * 2, (if (landscape) 1226 else 1829) * 2, BufferedImage.TYPE_INT_RGB)
+        val paper = BufferedImage(if (landscape) 1829 else 1226, if (landscape) 1226 else 1829, BufferedImage.TYPE_INT_RGB)
         val pg = paper.createGraphics()
         try {
             pg.configure(); pg.color = Color.WHITE; pg.fillRect(0, 0, paper.width, paper.height)
-            val x = (if (landscape) 27 else 14) * 2
-            val y = (if (landscape) 14 else 27) * 2
+            val x = if (landscape) 27 else 14
+            val y = if (landscape) 14 else 27
             pg.drawImage(canvas, x, y, width, height, null)
-            if (strip) pg.drawImage(canvas, x + width + 4, y, width, height, null)
+            if (strip) pg.drawImage(canvas, x + width + 2, y, width, height, null)
         } finally { pg.dispose() }
         write(canvas, composition); write(paper, printImage)
         return Output(composition, printImage)
@@ -51,7 +52,7 @@ object SimulatorCompositor {
         val extension = path.fileName.toString().substringAfterLast('.', "").lowercase()
         require(extension in setOf("png", "jpg", "jpeg")) { "Expected PNG or JPEG output" }
         path.toAbsolutePath().parent?.let { Files.createDirectories(it) }
-        check(ImageIO.write(image, if (extension == "png") "png" else "jpeg", path.toFile()))
+        PrintImageWriter.write(image, path)
     }
 
     // V1 DesktopCompositor.computeSlots: absolute indices are intentionally not used.

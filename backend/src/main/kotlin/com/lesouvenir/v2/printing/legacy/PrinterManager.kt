@@ -6,8 +6,8 @@ import javax.imageio.ImageIO
 import java.awt.print.PrinterJob
 
 enum class PrintLayout(val width: Int, val height: Int) {
-    CUT_5X15_2UP(2452, 3658),
-    PHOTO_10X15(3658, 2452)
+    CUT_5X15_2UP(1226, 1829),
+    PHOTO_10X15(1829, 1226)
 }
 
 data class ManagedPrintRequest(

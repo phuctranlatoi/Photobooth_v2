@@ -108,6 +108,22 @@ body{margin:0}.v1-shell{position:relative;isolation:isolate;display:flex;flex-di
 /* Customer capture and tactile selection workspace */
 .v1-capture .v1-countdown,.v1-capture .v1-countdown-urgent{position:absolute;inset:0;display:grid;place-items:center;width:auto;height:auto;border:0;border-radius:0;background:rgba(0,0,0,.32);z-index:10;pointer-events:none;font-size:clamp(140px,18vw,240px);font-weight:900;color:#fff;text-shadow:0 0 40px rgba(224,122,95,.85);box-shadow:none;animation:none}
 .v1-live-mirrored{transform:scaleX(-1)}
+/* The 3:2 image, its crop guide and countdown share one coordinate system. */
+:root{--v-bg:#FAF7F2;--v-panel:rgba(255,255,255,.88);--v-border:#E5DCD5;--v-shadow:0 8px 32px rgba(60,45,35,.08)}
+.v1-capture-screen.v1-capture{overflow:hidden;background:#171614}
+.v1-capture-screen .v1-camera-viewport{position:absolute;inset:clamp(12px,1.8vw,32px);display:grid;place-items:center;overflow:visible;pointer-events:none}
+.v1-capture-screen .v1-live{position:relative;inset:auto;width:min(100%, 150cqh);height:auto;aspect-ratio:3/2;display:grid;place-items:center;border:2px solid #a98b72;border-radius:18px;overflow:hidden;background:#151412;container-type:size}
+.v1-capture-screen .v1-live img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.v1-capture-screen .v1-crop{position:absolute;inset:auto;width:calc(var(--crop-width) * 100%);height:calc(var(--crop-height) * 100%);max-width:100%;max-height:100%;border:2px solid rgba(255,255,255,.9);border-radius:4px;box-sizing:border-box;pointer-events:none;box-shadow:0 0 0 999px rgba(0,0,0,.13)}
+.v1-capture-screen .v1-crop::before,.v1-capture-screen .v1-crop::after{content:none}
+.v1-capture-screen .v1-capture-top{position:absolute;top:clamp(24px,3vw,48px);left:50%;transform:translateX(-50%);z-index:12;padding:10px 26px;border:1px solid #e8cbb9;border-radius:999px;background:rgba(30,27,24,.75);backdrop-filter:blur(16px);color:white;font-size:clamp(20px,2vw,30px);font-weight:700;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.22)}
+.v1-capture .v1-camera-viewport .v1-countdown,.v1-capture .v1-camera-viewport .v1-countdown-urgent{position:absolute;inset:auto;left:50%;top:50%;width:auto;height:auto;transform:translate(-50%,-50%);border:0;background:none;box-shadow:none;line-height:1;font-size:clamp(96px,15vw,200px);font-variant-numeric:tabular-nums;color:white;text-shadow:0 4px 32px rgba(0,0,0,.8);animation:v1-camera-pulse 1s ease-in-out infinite alternate}
+@keyframes v1-camera-pulse{to{transform:translate(-50%,-50%) scale(1.07)}}
+.v1-capture-screen .v1-shutter{left:50%;bottom:clamp(16px,3vh,36px);transform:translateX(-50%);width:88px;height:88px;border:5px solid white;background:rgba(30,27,24,.7);box-shadow:0 0 0 4px rgba(255,255,255,.45),0 8px 30px rgba(0,0,0,.35)}
+.v1-capture-screen .v1-shutter span{width:66px;height:66px;border:0;background:white;transition:transform .15s ease,background .15s ease}
+.v1-capture-screen .v1-shutter:active:not(:disabled){transform:translateX(-50%) scale(.94)}
+.v1-capture-screen .v1-shutter:active:not(:disabled) span{background:#f5d6c6;transform:scale(.9)}
+@media(prefers-reduced-motion:reduce){.v1-capture .v1-camera-viewport .v1-countdown{animation:none}}
 .v1-frame-workspace{grid-template-columns:minmax(0,1fr) minmax(340px,1fr)}
 .v1-frame-workspace>.v1-preview{width:100%;max-width:440px;justify-self:center}
 .v1-frame-workspace .v1-frame-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;overflow:auto;align-content:start}

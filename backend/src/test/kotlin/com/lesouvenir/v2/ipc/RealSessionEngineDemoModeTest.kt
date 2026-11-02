@@ -24,7 +24,7 @@ class RealSessionEngineDemoModeTest {
             """{"layouts":[{"id":"demo","title":"Demo","family":"Column","shotCount":2,"selectCount":1,"countdownSeconds":0,"printSizeLabel":"5x15","gridColumns":1}]}""")
         val frames = root.resolve("data/frames/5x15/demo/Standard")
         Files.createDirectories(frames)
-        ImageIO.write(BufferedImage(1184, 3580, BufferedImage.TYPE_INT_ARGB), "png", frames.resolve("simple.png").toFile())
+        ImageIO.write(BufferedImage(592, 1790, BufferedImage.TYPE_INT_ARGB), "png", frames.resolve("simple.png").toFile())
         val ledger = SqliteSalesRepository(root)
         val offline = object : CameraController {
             override fun getAvailableCameras() = emptyList<CameraDescriptor>()
