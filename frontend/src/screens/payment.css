@@ -34,3 +34,11 @@
 .v1-payment-instructions{width:100%;min-height:156px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:8px}
 .v1-payment-instructions h2{margin:0}.v1-payment-instructions p{margin:0}.v1-payment-instructions .v1-secondary{min-height:48px}
 @media(max-width:760px){.v1-payment-columns{grid-template-columns:1fr}}
+
+/* VietQR reserves the same real QR footprint during loading and recovery. */
+.v1-payment-qr-slot{width:min(280px,32vh);height:min(280px,32vh);min-width:0;min-height:0;max-width:none;max-height:none;border-radius:8px;background:#fff;border:1px solid #dfd6ce;box-shadow:0 12px 30px rgba(38,30,24,.12)}
+.v1-payment-qr-slot img{display:block;width:calc(100% - 20px);height:calc(100% - 20px);max-width:none;max-height:none;object-fit:contain;border-radius:0;image-rendering:auto}
+.v1-payment-instructions{min-height:clamp(116px,18vh,180px);overflow:auto;overscroll-behavior:contain}
+.v1-payment-qr-panel{background:rgba(255,255,255,.69)!important}
+@media(max-width:1400px) and (max-height:850px){.v1-payment-qr-slot{width:min(250px,30vh);height:min(250px,30vh)}.v1-payment-instructions{min-height:114px}}
+@media(prefers-reduced-motion:reduce){.v1-payment-spinner,.v1-payment-poll .v1-payment-dot{animation:none}}
