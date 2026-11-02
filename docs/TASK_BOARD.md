@@ -1,5 +1,20 @@
 # TASK_BOARD.md
 
+## V1 Geometry Alignment Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-02 22:48)
+
+| Task | Status | Evidence / next gate |
+|---|---|---|
+| Backend regression | **COMPLETED — PASS-AUTOMATED** | 28 suites / 82 total: **80 passed, 0 failed/errors, 2 skipped**; requested offline command exit 0. |
+| Frontend regression | **COMPLETED — PASS-AUTOMATED** | **8/8 files, 55/55 tests**. |
+| Frontend production build | **COMPLETED — PASS-AUTOMATED** | TypeScript/Vite exit 0; 2,017 modules. |
+| Rust compile/test command | **COMPLETED — PASS-AUTOMATED (compile only)** | Cargo absent from PATH; explicit installed Cargo exit 0, one package compiled, no Rust tests reported. |
+| Capture/select/frame geometry source | **COMPLETED — PASS-AUTOMATED (bounded)** | Modified frontend compiles and existing component regressions pass. |
+| Fresh mounted 16:10 / V1 golden comparison | **NOT-RUN** | Required before visual parity can be certified. |
+| V1 100% untouched proof | **BLOCKED** | No V1 command/write/secret read by reviewer; no trusted before/after manifest. |
+| Canon/DNP/performance/installer/licenses | **BLOCKED / NOT-RUN** | Requires authorized hardware lab, packaging, recovery, and legal evidence. |
+
+---
+
 ## Camera Studio UI / Frame Assets Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-02 22:22)
 
 | Task | Status | Evidence / next gate |

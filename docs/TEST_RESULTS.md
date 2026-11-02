@@ -1,5 +1,18 @@
 # Test Results — Independent Consolidated Review
 
+## 2026-11-02 22:48 V1 geometry-alignment rerun (latest)
+
+| Case | Status | Evidence |
+|---|---|---|
+| Backend offline Gradle | **PASS-AUTOMATED** | Exact requested command exit 0; `BUILD SUCCESSFUL in 32s`. XML aggregate: **28 suites, 82 total, 80 passed, 0 failures/errors, 2 skipped**. |
+| Frontend Vitest | **PASS-AUTOMATED** | Exact requested command exit 0: **8/8 files, 55/55 tests**, 10.66s. |
+| Frontend production build | **PASS-AUTOMATED** | Exit 0; TypeScript/Vite passed, **2,017 modules**; JS 391.98 kB, CSS 113.70 kB. This is not an installer test. |
+| Rust | **PASS-AUTOMATED (compile only)** | Cargo absent from `PATH`; explicit `%USERPROFILE%\.cargo\bin\cargo.exe test` exit 0 and compiled one package in 12.88s. No Rust test cases reported. |
+| V1 isolation | **BLOCKED (global proof)** | No reviewer V1 command/write/secret read. No trusted before/after manifest exists, so “100% untouched” cannot be certified. |
+| Geometry/hardware release | **PASS-AUTOMATED (bounded) / BLOCKED** | Source compiles and existing component tests pass. No fresh mounted screenshot/golden comparison, Canon, DNP, Mini-PC, installer, or license evidence. |
+
+**Release gate: BLOCK.** Software regression is green, but geometry parity is not physically or visually certified and all hardware/packaging/legal gates remain open.
+
 ## 2026-11-02 22:22 camera-studio/frame-assets release rerun (latest)
 
 | Case | Status | Evidence |

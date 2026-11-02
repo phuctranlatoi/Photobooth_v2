@@ -4,6 +4,7 @@ import {ActionBar,Heading,KioskPrimaryButton,PrintPreview,type ScreenProps} from
 
 export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected=[]}:ScreenProps&{shots?:{shotId:string;preview:string}[];selected?:number[]}){
    const [lightbox,setLightbox]=useState<number|null>(null);
+   const confirming=useRef(false);
   const [localSelected,setLocalSelected]=useState<number[]>(selected);
   const pending=useRef<{index:number;result:number[]}[]>([]);
   const previousSelected=useRef(selected);
@@ -43,8 +44,8 @@ export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected
   return (
     <>
        <Heading step="Bước 3" title="Chọn ảnh để in" subtitle={`Đã chọn ${localSelected.length}/${layout?.selectCount??0} ảnh · Chạm để chọn, giữ để xem lớn`} back={()=>action('session.back')}/>
-      <div className="v1-selection">
-        <div className="v1-photo-grid">
+       <div className="v1-selection">
+         <section className="v1-selection-photos"><h2>Chọn ảnh để in</h2><p>Đã chọn {localSelected.length}/{layout?.selectCount??0} ảnh</p><div className={`v1-photo-grid ${layout?.photoAspectRatio !== undefined && layout.photoAspectRatio < 1.1 ? 'v1-photo-grid-portrait' : 'v1-photo-grid-landscape'}`}>
           {shots.map((shot,i)=>{
              const order=localSelected.indexOf(i);
             return (
@@ -76,12 +77,7 @@ export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected
                       setLightbox(null);
                     }
                    }}
-                  onPointerLeave={()=>{
-                    clearHold();
-                    if(wasHeld.current){
-                      setLightbox(null);
-                    }
-                   }}
+                   onPointerLeave={()=>{clearHold();}}
                   onClick={()=>{
                     if(wasHeld.current){
                       wasHeld.current=false;
@@ -91,13 +87,13 @@ export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected
                   }}
                 >
                   {safeImage(shot.preview)&&<img src={safeImage(shot.preview)} alt={`Ảnh gốc hoàn chỉnh ${i+1}`} style={{aspectRatio:layout?.photoAspectRatio??1.5}}/>}
-                  <span className={order>=0?'v1-photo-order':''} aria-hidden="true">{order>=0?order+1:i+1}</span>
+                   {order>=0&&<span className="v1-photo-order" aria-hidden="true">{order+1}</span>}
                  </button>
               </div>
             );
           })}
-        </div>
-        <PrintPreview src={preview} ratio={layout?.printAspectRatio} layout={layout} selectedPhotos={selectedPhotos} label="Ảnh đã chọn"/>
+         </div></section>
+         <section className="v1-selection-print"><h2>Bản in đang chọn</h2><p>{localSelected.length}/{layout?.selectCount??0} ảnh</p><PrintPreview src={preview} ratio={layout?.printAspectRatio} layout={layout} selectedPhotos={selectedPhotos} label="Ảnh đã chọn"/></section>
       </div>
       {lightbox!==null&&safeImage(shots[lightbox]?.preview)&&(
         <div
@@ -113,7 +109,7 @@ export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected
       )}
       <ActionBar>
         <span>Chạm vào ảnh theo thứ tự muốn in · Giữ để xem lớn</span>
-          <KioskPrimaryButton disabled={busy||localSelected.length!==(layout?.selectCount??0)} onClick={()=>action('selection.confirm',{selectedIndices:localSelected})}>
+          <KioskPrimaryButton disabled={busy||localSelected.length!==(layout?.selectCount??0)} onClick={()=>{if(confirming.current)return;confirming.current=true;try{void Promise.resolve(action('selection.confirm',{selectedIndices:localSelected})).then(result=>{if(result===false)confirming.current=false}).catch(()=>{confirming.current=false})}catch{confirming.current=false}}}>
           Tiếp tục →
         </KioskPrimaryButton>
       </ActionBar>

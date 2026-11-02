@@ -1,5 +1,11 @@
 # PROGRESS.md
 
+## V1 Capture / Selection / Frame Geometry Alignment (2026-11-02 22:48)
+
+**Status: COMPLETE for bounded automated regression; production release BLOCKED.** Current changes to capture presentation, photo-selection layout, and frame-preview geometry compile and retain the existing interaction suite: backend **80 passed / 2 skipped / 0 failed** of 82 across 28 suites; frontend **55/55 passed across 8 files**; TypeScript/Vite build passed with 2,017 modules. Explicit installed Cargo compiled the Rust package; no Rust tests exist. No fresh mounted 16:10 visual run or V1 golden/pixel comparison was performed, so visual parity remains simulated/source-based. Canon, DNP, Mini-PC performance, installer/recovery, and redistribution licensing remain blocked. No V1 command/write/secret read occurred; complete forensic isolation cannot be certified without a trusted baseline manifest.
+
+---
+
 ## Camera Studio UI / Real Frame Asset Verification (2026-11-02 22:22)
 
 **Status: COMPLETE for bounded automated software scope; production release BLOCKED.** Backend XML reports **80 passed, 2 skipped, 0 failed** of 82; frontend reports **55/55 passed across 8 files**; the TypeScript/Vite build passed with 2,017 modules. Rust compiled through the installed Cargo executable (no Rust test cases reported). Current command-queue recovery coverage passed. Physical Canon/DNP/touchscreen, Mini-PC performance, physical output comparison, installer/recovery, and Canon/ONNX redistribution licensing remain unverified. No V1 command/write/secret read occurred, but 100% global isolation cannot be proven without a trusted baseline manifest.

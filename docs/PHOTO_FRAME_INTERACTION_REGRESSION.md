@@ -1,5 +1,11 @@
 # Touchscreen Interaction & Revenue-Gate Regression — 2026-11-02
 
+## V1 geometry-alignment regression rerun — 2026-11-02 22:48
+
+**Gate: BLOCKED for production release; bounded software regression passed.** The exact requested backend command exited 0 (`BUILD SUCCESSFUL in 32s`); retained JUnit XML aggregates **28 suites / 82 tests / 80 passed / 0 failures / 0 errors / 2 skipped**. Frontend Vitest exited 0 with **8/8 files and 55/55 tests passed**. `npm run build` exited 0 after TypeScript checking and Vite transformed **2,017 modules** (JS 391.98 kB, CSS 113.70 kB). Cargo was absent from `PATH`, but `%USERPROFILE%\.cargo\bin\cargo.exe test` exited 0 and compiled one package; no Rust test cases were reported.
+
+This verifies compilation and existing automated interaction contracts around the Capture/Select geometry changes. It is not a fresh mounted visual journey or a pixel/golden comparison with V1. Physical touchscreen, Canon capture/Live View, DNP output/cutting, Mini-PC performance, and V1 physical print comparison remain **BLOCKED / NOT-RUN**. The reviewer issued no V1 command and made no V1 write or secret read; a forensic “100% untouched” claim remains **BLOCKED** because no trusted pre-task V1 manifest exists.
+
 ## Camera-studio/frame-assets release rerun — 2026-11-02 22:22
 
 **Gate: BLOCKED for release, software regression green.** Backend: **80 passed / 0 failed / 2 skipped** (82 total, 28 XML suites), frontend: **55/55 passed** across 8 files, production build passed, and Rust `cargo test` compiled successfully with no Rust tests reported. The run covers the new camera-studio UI and frame thumbnail contracts only in automation; no mounted touchscreen, Canon capture, DNP output, or V1 print comparison occurred. The earlier queue-poisoning finding is no longer evidenced by current source: command sequencing is delegated to `shared/command-queue.ts`, and its recovery test passed.
