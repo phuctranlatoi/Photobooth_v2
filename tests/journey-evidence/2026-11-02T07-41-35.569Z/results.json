@@ -1,0 +1,351 @@
+{
+  "status": "PASS-SIMULATED",
+  "scope": "Live Tauri executable; DEMO journey plus REAL-mode payment display only",
+  "evidence": "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-02T07-41-35.569Z",
+  "checks": [
+    {
+      "name": "1280x800 no technical metadata on start screen",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 clean unified start screen (no manual mode toggles)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 no raw layout IDs on customer layout cards",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 customer formatted layout names",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 Back button minimum 56x56 touch target (56x56)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 Back button icon centered inside button (dx: 0.5, dy: 0.0)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 Carousel chevrons 56x56 touch target",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 Carousel chevrons aligned on same horizontal axis",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 quantity set to 2",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 zero emoji in UI",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 real calculated price displayed",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 no customer free photo bypass",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 payment step header",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 press-and-hold enlarges photo",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 release finger dismisses enlarged photo",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 active selection timer (Còn lại 02:20)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 selection timer decrements over time (Còn lại 02:20 -> Còn lại 02:17)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 live frame preview renders chosen photos in real-time",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 composed preview",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 no technical metadata on start screen",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 clean unified start screen (no manual mode toggles)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 no raw layout IDs on customer layout cards",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 customer formatted layout names",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 Back button minimum 56x56 touch target (56x56)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 Back button icon centered inside button (dx: 0.5, dy: 0.0)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 Carousel chevrons 56x56 touch target",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 Carousel chevrons aligned on same horizontal axis",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 quantity set to 2",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 zero emoji in UI",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 real calculated price displayed",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 no customer free photo bypass",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 payment step header",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 press-and-hold enlarges photo",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 release finger dismisses enlarged photo",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 active selection timer (Còn lại 02:19)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 selection timer decrements over time (Còn lại 02:19 -> Còn lại 02:17)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 live frame preview renders chosen photos in real-time",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 composed preview",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 no technical metadata on start screen",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 clean unified start screen (no manual mode toggles)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 no raw layout IDs on customer layout cards",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 customer formatted layout names",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 Back button minimum 56x56 touch target (56x56)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 Back button icon centered inside button (dx: 0.5, dy: 0.0)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 Carousel chevrons 56x56 touch target",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 Carousel chevrons aligned on same horizontal axis",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 quantity set to 2",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 real calculated price displayed",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 real payment: Bước 3 Thanh toán",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1280x800 no free trial advertising in real payment",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 no technical metadata on start screen",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 clean unified start screen (no manual mode toggles)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 no raw layout IDs on customer layout cards",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 customer formatted layout names",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 Back button minimum 56x56 touch target (56x56)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 Back button icon centered inside button (dx: 0.5, dy: 0.0)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 Carousel chevrons 56x56 touch target",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 Carousel chevrons aligned on same horizontal axis",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 quantity set to 2",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 real calculated price displayed",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 real payment: Bước 3 Thanh toán",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "1920x1200 no free trial advertising in real payment",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "RealSessionEngineDemoModeTest proves DEMO revenue guard",
+      "ok": true,
+      "detail": "<testsuite name=\"com.lesouvenir.v2.ipc.RealSessionEngineDemoModeTest\" tests=\"1\" skipped=\"0\" failures=\"0\" errors=\"0\" timestamp=\"2026-11-01T18:00:02.218Z\" hostname=\"LAPTOP-3OU251HP\" time=\"6.151\">"
+    }
+  ],
+  "failures": [],
+  "screenshots": [
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-02T07-41-35.569Z\\1280x800-demo-start.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-02T07-41-35.569Z\\1280x800-demo-layout.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-02T07-41-35.569Z\\1280x800-demo-quantity-2.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-02T07-41-35.569Z\\1280x800-demo-payment.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-02T07-41-35.569Z\\1280x800-demo-live.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-02T07-41-35.569Z\\1280x800-demo-select.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-02T07-41-35.569Z\\1280x800-demo-frame.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-02T07-41-35.569Z\\1280x800-demo-confirm.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-02T07-41-35.569Z\\1280x800-demo-delivery.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-02T07-41-35.569Z\\1920x1200-demo-start.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-02T07-41-35.569Z\\1920x1200-demo-layout.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-02T07-41-35.569Z\\1920x1200-demo-quantity-2.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-02T07-41-35.569Z\\1920x1200-demo-payment.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-02T07-41-35.569Z\\1920x1200-demo-live.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-02T07-41-35.569Z\\1920x1200-demo-select.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-02T07-41-35.569Z\\1920x1200-demo-frame.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-02T07-41-35.569Z\\1920x1200-demo-confirm.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-02T07-41-35.569Z\\1920x1200-demo-delivery.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-02T07-41-35.569Z\\1280x800-real-start.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-02T07-41-35.569Z\\1280x800-real-layout.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-02T07-41-35.569Z\\1280x800-real-quantity-2.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-02T07-41-35.569Z\\1280x800-real-payment.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-02T07-41-35.569Z\\1920x1200-real-start.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-02T07-41-35.569Z\\1920x1200-real-layout.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-02T07-41-35.569Z\\1920x1200-real-quantity-2.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\tests\\journey-evidence\\2026-11-02T07-41-35.569Z\\1920x1200-real-payment.png"
+  ]
+}

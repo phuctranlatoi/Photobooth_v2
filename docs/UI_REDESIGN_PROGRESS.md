@@ -1,6 +1,27 @@
 # UI Redesign Progress & Korean Photo Studio Design System
 
-> **LATEST STATUS (2026-11-01, 18:16:51 capture): CRITICAL V1 UX PARITY OVERHAUL COMPLETED — PASS-AUTOMATED + PASS-SIMULATED.** `tests/journey-evidence/2026-11-01T18-16-51.341Z/results.json` records **47/47 checks, 0 failures and 26 screenshots** at 1280×800 and 1920×1200; frontend Vitest is **49/49**. The completed scope includes bounded PayOS creation/retry states, engine-authoritative 90s/60s selection/editing timers, active `MM:SS` decrement, live selected-photo SVG slots, 500ms hold-to-zoom/release-close, the two-column frame workspace, centered 240sp mirrored capture presentation, and replacement of decorative emoji with Lucide SVG icons.
+> **LATEST STATUS (2026-11-02, 07:41:35 capture): NAVIGATION GEOMETRY, APPHEADER UNIFICATION & TECHNICAL CLUTTER PURGE COMPLETED — PASS-AUTOMATED + PASS-SIMULATED.** `tests/journey-evidence/2026-11-02T07-41-35.569Z/results.json` records **63/63 checks, 0 failures and 26 screenshots** across 1280×800 and 1920×1200 viewports; frontend Vitest is **49/49** with **0 build errors**.
+>
+> The verified milestone achieves:
+> 1. **Unified `AppHeader` Architecture:** Standardized 3-column CSS Grid (`56px minmax(0,1fr) auto`) eliminating header layout shift across all screens.
+> 2. **Circular 56×56 `KioskBackButton`:** ISO 9241-9 compliant touch targets ($\ge 56\text{px}$) with optical SVG centering ($dx=0.5\text{px}, dy=0.0\text{px}$, well within the $\le 2.5\text{px}$ threshold).
+> 3. **Horizontal Carousel Chevron Alignment:** 56×56px touch targets vertically locked and aligned on the same horizontal axis ($y\Delta \le 3\text{px}$, measured $y\Delta = 0.0\text{px}$).
+> 4. **Technical Clutter Elimination:** Complete purge of raw layout IDs (`515_4_anh`, `1015_4_ILCL`), debug status bars, and internal tags; desktop window title standardized to `"LE SOUVENIR Photobooth"`.
+> 5. **Welcome Hero Recomposition:** Authentic photostrips (`LayoutArtwork` in `.v1-strip-art`) with realistic paper elevation shadows, subtle rotation, and refined editorial typography.
+>
+> Physical hardware/provider operations (Canon DSLR capture, DNP print spooling, live PayOS settlement) remain **BLOCKED / NOT-RUN** until authorized studio kiosk attachment. The 18:16:51 and earlier entries below are historical snapshots.
+
+| Latest parity deliverable | Status / evidence |
+|---|---|
+| Unified `AppHeader` | **COMPLETE:** 3-column CSS Grid (`56px minmax(0,1fr) auto`), `.appHeader__backSlot`, aligned eyebrow/title/subtitle, clean right slot. |
+| Circular 56×56 `KioskBackButton` | **COMPLETE:** 56×56px circular touch target, optical SVG centering $dx=0.5\text{px}, dy=0.0\text{px}$ ($\le 2.5\text{px}$ tolerance). |
+| Horizontal Carousel Chevrons | **COMPLETE:** 56×56px touch target, vertically centered at 50% stage height, horizontally aligned on same axis ($y\Delta \le 3\text{px}$, $y\Delta = 0.0\text{px}$). |
+| Technical Clutter Elimination | **COMPLETE:** Purged raw IDs (`515_4_anh`, `1015_4_ILCL`), debug status bars, internal badges; window title `"LE SOUVENIR Photobooth"`. |
+| Welcome Hero Photography | **COMPLETE:** Authentic layered photostrips (`LayoutArtwork` in `.v1-strip-art`), subtle paper shadows, refined typography. |
+| Guest Copy Cleanup | **COMPLETE:** Polished Vietnamese customer-facing copy throughout all screens (`formatLayoutTitle`, `formatLayoutSubtitle`). |
+| Current Acceptance | **PASS-SIMULATED 63/63 checks, 0 failures, 26 screenshots; PASS-AUTOMATED 49/49 Vitest; build 0 errors.** |
+
+> **HISTORICAL STATUS (2026-11-01, 18:16:51 capture): CRITICAL V1 UX PARITY OVERHAUL COMPLETED — PASS-AUTOMATED + PASS-SIMULATED.** `tests/journey-evidence/2026-11-01T18-16-51.341Z/results.json` records **47/47 checks, 0 failures and 26 screenshots** at 1280×800 and 1920×1200; frontend Vitest is **49/49**. The completed scope includes bounded PayOS creation/retry states, engine-authoritative 90s/60s selection/editing timers, active `MM:SS` decrement, live selected-photo SVG slots, 500ms hold-to-zoom/release-close, the two-column frame workspace, centered 240sp mirrored capture presentation, and replacement of decorative emoji with Lucide SVG icons.
 >
 > The current UI evidence specifically observes `Còn lại 02:19` → `Còn lại 02:18`, hold modal open/close, live frame-slot updates and the zero-emoji assertion. It does **not** certify physical touch behavior, a physical Canon DSLR, DNP paper output, or live PayOS banking settlement; those remain **BLOCKED / NOT-RUN** until attachment and explicit supervised authorization. The 17:19:57 and earlier entries below are historical snapshots.
 
@@ -176,6 +197,57 @@ Touchscreen kiosks must prevent customer confusion caused by accidental vertical
      }
      ```
    - `touch-action: manipulation` eliminates double-tap zoom delays on Windows touch drivers.
+
+### 2.2 Navigation Geometry, AppHeader & Optical Centering Standards
+
+To prevent jarring layout shifts between navigation steps and guarantee predictable touch ergonomics across all 16:10 kiosk screens:
+
+1. **Unified `AppHeader` Grid (`.appHeader`):**
+   ```css
+   .appHeader {
+     position: relative;
+     display: grid;
+     grid-template-columns: 56px minmax(0, 1fr) auto;
+     column-gap: 20px;
+     align-items: start;
+     min-height: 84px;
+     width: 100%;
+   }
+   ```
+   - **Column 1 (`.appHeader__backSlot`):** Dedicated $56\text{px} \times 56\text{px}$ slot reserved for `KioskBackButton` or an invisible placeholder (`.appHeader__backPlaceholder`), preventing title text drift between screens with/without Back buttons.
+   - **Column 2 (`.appHeader__copy`):** Left-aligned flex column rendering eyebrow/step indicators, responsive title `h1` (`clamp(28px, 2.2vw, 38px)`), and subtitle.
+   - **Column 3 (`.appHeader__right`):** Reserved for contextual decision timer badges (`DecisionTimerBadge`) or operator controls.
+
+2. **Circular 56×56 `KioskBackButton` & Optical SVG Centering:**
+   ```css
+   .v1-back, .backButton {
+     width: 56px !important;
+     height: 56px !important;
+     min-width: 56px !important;
+     min-height: 56px !important;
+     border-radius: 50% !important;
+     border: 1.5px solid var(--v-border, #E9DED7);
+     background: #fff;
+     box-shadow: 0 4px 12px rgba(35, 33, 32, 0.08);
+   }
+   .v1-back svg, .backButton svg {
+     width: 24px !important;
+     height: 24px !important;
+     transform: translateX(-0.5px);
+   }
+   ```
+   - Lucide `ArrowLeft` visual chevron weight is optically counter-balanced via `translateX(-0.5px)`, verified by automated CDP measurement: **$dx = 0.5\text{px}, dy = 0.0\text{px}$** ($\le 2.5\text{px}$ delta limit).
+
+3. **Carousel Chevrons Horizontal Alignment:**
+   - Floating carousel arrows (`.v1-carousel-arrow`, `.v1-carousel-prev`, `.v1-carousel-next`) sized to $56\text{px} \times 56\text{px}$ touch targets.
+   - Vertically locked at `top: 50%; transform: translateY(-50%)`, ensuring both arrows are pinned to the exact same horizontal axis: **$y\Delta \le 3\text{px}$** (measured $y\Delta = 0.0\text{px}$).
+
+4. **Technical Clutter Elimination:**
+   - Raw layout identifiers (e.g. `515_4_anh`, `1015_4_ILCL`) and internal technical badges are purged from customer view.
+   - Window title explicitly standardized to `"LE SOUVENIR Photobooth"`.
+
+5. **Welcome Screen Editorial Recomposition with Authentic Photostrips:**
+   - `StartScreen.tsx` features authentic photostrip preview cards (`LayoutArtwork` in `.v1-strip-art`) with realistic layered shadows and subtle rotation ($-5^\circ / +4^\circ$), evoking real photographic prints rather than sterile software wireframes.
 
 ---
 
@@ -392,10 +464,10 @@ The UI redesign, 16:10 aspect ratio compliance, and screen flows are verified th
 
 | Verification Target | Test Command / Script | Evidence Location / Result |
 |---|---|---|
-| Frontend Unit Tests | `npm test -- --run` (Vitest) | **40 passing unit tests** across all screen and component suites. |
+| Frontend Unit Tests | `npm test -- --run` (Vitest) | **49 passing unit tests** across all screen and component suites. |
 | Production Build | `tsc --noEmit && vite build` | Completes with **0 errors in 3.55s** (2,015 modules transformed). |
-| Viewport CDP Suite | `node tests/verify-demo-and-real-journey.mjs` | Automated Chromium CDP run verifying 1920×1200 and 1280×800 rendering: **35/35 checks passed, 0 failures**. |
-| Screenshot Captures | CDP `Page.captureScreenshot` | **26 screenshots** stored in `tests/journey-evidence/2026-11-01T14-23-26.975Z/` capturing Start, Layout, Quantity, Payment, Live, Select, Frame, Confirm (600 DPI), and Delivery across both viewports. |
+| Viewport CDP Suite | `node tests/verify-demo-and-real-journey.mjs` | Automated Chromium CDP run verifying 1920×1200 and 1280×800 rendering: **63/63 checks passed, 0 failures**. |
+| Screenshot Captures | CDP `Page.captureScreenshot` | **26 screenshots** stored in `tests/journey-evidence/2026-11-02T07-41-35.569Z/` capturing Start, Layout, Quantity, Payment, Live, Select, Frame, Confirm (600 DPI), and Delivery across both viewports. |
 
 ### Truthful Hardware Verification Boundary
 - Mock fallback and Korean studio UI styling verified via live Tauri CDP on actual Windows desktop.

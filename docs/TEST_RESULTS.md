@@ -1,5 +1,61 @@
 # Test Results — Independent Consolidated Review
 
+## 2026-11-02 live desktop acceptance & navigation geometry verification (latest)
+
+| Case | Status | Exact result / boundary |
+|---|---|---|
+| Live Tauri desktop acceptance | **PASS-SIMULATED** | `tests/verify-demo-and-real-journey.mjs`: **63/63 checks passed, 0 failures, 26 screenshots** across 1280×800 and 1920×1200 viewports. Result ledger: `tests/journey-evidence/2026-11-02T07-41-35.569Z/results.json`. Verified DEMO Start→Delivery flow and REAL payment display. |
+| Navigation touch targets & geometry | **PASS-SIMULATED** | Back button minimum 56×56 touch target confirmed ($56\text{px} \times 56\text{px}$); optical centering verified with $dx=0.5\text{px}, dy=0.0\text{px}$ ($\le 2.5\text{px}$ delta limit). Carousel chevrons 56×56 touch targets confirmed; horizontal axis alignment verified with $y\Delta \le 3\text{px}$ ($y\Delta = 0.0\text{px}$). |
+| Technical clutter elimination | **PASS-SIMULATED** | Clean start screen with zero technical metadata / mode toggles; zero raw layout IDs on customer layout cards; customer-formatted layout names verified across all screens. Window title verified as `"LE SOUVENIR Photobooth"`. |
+| Customer copy & iconography | **PASS-SIMULATED** | Zero Unicode emoji assertion passed across customer and operator UI; truthful Vietnamese customer copy; real calculated price displayed without customer free photo bypass. |
+| Interaction & authoritative timers | **PASS-SIMULATED** | Press-and-hold (500ms) photo zoom and release dismissal verified; active selection timer verified and decrements over time (`Còn lại 02:20` → `Còn lại 02:17` at 1280×800; `Còn lại 02:19` → `Còn lại 02:17` at 1920×1200). Live frame preview updates SVG photo slots in real time. |
+| Composed 600-DPI preview | **PASS-SIMULATED** | Final confirmation composed preview loads correctly (`naturalWidth > 0`). |
+| DEMO revenue guard | **PASS-AUTOMATED** | Backend `RealSessionEngineDemoModeTest` proves zero sales ledger writes and zero revenue recording in DEMO mode (`time="6.151s"`). |
+| Frontend Vitest | **PASS-AUTOMATED** | `npm test -- --run` exited 0: **49/49 tests passed** across all component and screen suites. |
+| Frontend production build | **PASS-AUTOMATED** | `tsc --noEmit && vite build` exited 0: **0 errors**, 2,015 modules transformed in 3.55s. |
+| Backend JUnit | **PASS-AUTOMATED** | `gradle test installDist`: **76/76 unit tests passed** across 17 test suites (`BUILD SUCCESSFUL`). |
+| Physical Canon DSLR | **BLOCKED / NOT-RUN** | Physical camera capture, Live View stream orientation, and reconnect remain gated pending attached camera hardware. |
+| Physical DNP printer | **BLOCKED / NOT-RUN** | Spooler submission, paper cutting (2-inch cut flow), and physical print output remain gated pending attached printer hardware. |
+| Live PayOS banking settlement | **BLOCKED / NOT-RUN** | Live payment settlement remains gated pending explicit production authorization. |
+
+### Screenshot artifacts (26)
+
+Evidence root: `tests/journey-evidence/2026-11-02T07-41-35.569Z/`.
+
+**1280×800:**
+1. `1280x800-demo-start.png`
+2. `1280x800-demo-layout.png`
+3. `1280x800-demo-quantity-2.png`
+4. `1280x800-demo-payment.png`
+5. `1280x800-demo-live.png`
+6. `1280x800-demo-select.png`
+7. `1280x800-demo-frame.png`
+8. `1280x800-demo-confirm.png`
+9. `1280x800-demo-delivery.png`
+10. `1280x800-real-start.png`
+11. `1280x800-real-layout.png`
+12. `1280x800-real-quantity-2.png`
+13. `1280x800-real-payment.png`
+
+**1920×1200:**
+14. `1920x1200-demo-start.png`
+15. `1920x1200-demo-layout.png`
+16. `1920x1200-demo-quantity-2.png`
+17. `1920x1200-demo-payment.png`
+18. `1920x1200-demo-live.png`
+19. `1920x1200-demo-select.png`
+20. `1920x1200-demo-frame.png`
+21. `1920x1200-demo-confirm.png`
+22. `1920x1200-demo-delivery.png`
+23. `1920x1200-real-start.png`
+24. `1920x1200-real-layout.png`
+25. `1920x1200-real-quantity-2.png`
+26. `1920x1200-real-payment.png`
+
+No screenshot or CDP assertion is physical Canon, DNP, mounted-touchscreen, or successful-payment evidence.
+
+---
+
 ## 2026-11-01 live desktop external-integrations acceptance
 
 | Case | Status | Exact result / boundary |

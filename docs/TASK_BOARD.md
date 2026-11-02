@@ -1,5 +1,20 @@
 # TASK_BOARD.md
 
+## Korean Photo Atelier UI Navigation, Header Geometry & Visual Polish Overhaul — COMPLETED (2026-11-02)
+
+| Task | Status | Evidence |
+|---|---|---|
+| Priority P0: Unified `AppHeader` architecture | **COMPLETED — PASS-SIMULATED** | Standardized 3-column CSS Grid header (`56px minmax(0, 1fr) auto`), robust `.appHeader__backSlot`, aligned eyebrow/step/title/subtitle, clean right slot across all screens. |
+| Priority P0: Circular 56×56 `KioskBackButton` with optical centering | **COMPLETED — PASS-SIMULATED** | 56×56px touch target (`min-width: 56px; min-height: 56px`), optical centering $dx=0.5\text{px}, dy=0.0\text{px}$ ($\le 2.5\text{px}$ tolerance). |
+| Priority P0: Carousel chevron 56×56 touch targets & horizontal alignment | **COMPLETED — PASS-SIMULATED** | 56×56px floating chevrons centered at 50% stage height and horizontally aligned on exact same axis ($y\Delta \le 3\text{px}$, measured $y\Delta = 0.0\text{px}$). |
+| Priority P1: Elimination of technical clutter & raw layout IDs | **COMPLETED — PASS-SIMULATED** | Purged raw layout IDs (`515_4_anh`, `1015_4_ILCL`, `1015_4_base`), technical badges, debug status bars; window title set to `"LE SOUVENIR Photobooth"`. |
+| Priority P2: Welcome screen editorial recomposition with authentic photostrips | **COMPLETED — PASS-SIMULATED** | Recomposed hero with authentic layered photostrip illustration (`LayoutArtwork` in `.v1-strip-art`), subtle paper shadows, refined typography, and clutter-free presentation. |
+| Live desktop acceptance journey | **COMPLETED — PASS-SIMULATED** | **63/63 checks passing, 0 failures, 26 screenshots** across 1280×800 and 1920×1200: `tests/journey-evidence/2026-11-02T07-41-35.569Z/results.json`. |
+| Frontend regression & production build | **COMPLETED — PASS-AUTOMATED** | Vitest **49/49 passing**, TypeScript/Vite build **0 errors** (2,015 modules). |
+| Hardware boundary | **BOUNDARY ACKNOWLEDGED** | Physical Canon DSLR, DNP printer, and live PayOS bank settlement remain BLOCKED / NOT-RUN pending physical kiosk attachment. |
+
+---
+
 ## Critical V1 UX Parity, Full UI Polish & PayOS Repair — COMPLETED (2026-11-01)
 
 | Task | Status | Evidence |
@@ -118,10 +133,10 @@ Physical Canon/DNP/touchscreen testing, PayOS settlement, Neon/Cloudinary produc
 | M0 — V2 isolation and planning | **DONE** | V2-only workspace and safety guardrails established; this task changed `docs/` only. |
 | M1 — Legacy audit/parity baseline | **DONE (baseline)** | Feature/state/config/UI/camera/printer/business inventories exist; physical parity is a separate gate. |
 | M2 — Desktop bridge and simulator | **DONE — PASS-SIMULATED** | React/Tauri/Kotlin runtime, shutdown path, dual mode, and `installDist` verified in software. |
-| M3 — Touch UI/Korean studio redesign & V1 carousel parity | **DONE — PASS-SIMULATED** | Korean photo studio aesthetic, V1 horizontal snapping carousel (`.v1-layout-carousel`), vector slot artwork (`LayoutArtwork.tsx`), truthful copy, and 1280×800 plus 1920×1200 desktop coverage complete; physical touch pending. |
+| M3 — Touch UI/Korean studio redesign, Navigation Geometry & Clutter Overhaul | **DONE — PASS-SIMULATED** | Korean photo studio aesthetic, unified `AppHeader`, 56×56 `KioskBackButton` with optical centering ($\le 2.5\text{px}$), horizontal carousel chevrons ($y\Delta \le 3\text{px}$), vector slot artwork (`LayoutArtwork.tsx`), technical clutter & raw ID elimination, and 1280×800 plus 1920×1200 desktop coverage complete (63/63 checks); physical touch pending. |
 | M4 — Feature/backend integration | **DONE — PASS-AUTOMATED** | Session engine, catalogs, `CameraConnectionManager` (7 states, 2000ms loop, auto-fallback), composition, dry-run print, payment safety, QR, and revenue guards covered. |
 | M5 — DEMO end-to-end | **DONE — PASS-SIMULATED** | Start→Delivery with 4 mock captures, selection/frame, 600 DPI preview, dry-run print, delivery QR, and zero revenue. |
-| M6 — Regression and REAL payment UI | **DONE** | Backend **76/76**; frontend **45/45 across 8 suites**; build **2,015 modules/0 errors**; CDP journey **35/35 checks, 26 screenshots, 0 failures** at `tests/journey-evidence/2026-11-01T15-38-06.041Z/`. |
+| M6 — Regression and REAL payment UI | **DONE** | Backend **76/76**; frontend **49/49 across all suites**; build **2,015 modules/0 errors**; CDP journey **63/63 checks, 26 screenshots, 0 failures** at `tests/journey-evidence/2026-11-02T07-41-35.569Z/`. |
 | M7 — Canon/DNP/physical kiosk | **BLOCKED / NOT-RUN** | Requires explicit authorization and connected Canon DSLR, DNP RX1HS, physical 16:10 touchscreen, and Mini PC measurement. |
 | M8 — Packaging/production release | **BLOCKED / NOT-RUN** | Requires installer/clean-install/recovery testing, live PayOS/provider checks, V1 physical print comparison, and redistribution licenses remain open. |
 
@@ -130,9 +145,9 @@ Physical Canon/DNP/touchscreen testing, PayOS settlement, Neon/Cloudinary produc
 | Deliverable | Status | Exact result |
 |---|---|---|
 | Backend Gradle (`gradle test installDist`) | **DONE — PASS-AUTOMATED** | **76/76 passed**, including `CameraConnectionManagerTest` (5 tests), `RealSessionEngineDemoModeTest`, `FirebaseCatalogServiceTest`, `DemoCameraAdapterTest`, and `RealSessionEngineTest`. |
-| Frontend Vitest | **DONE — PASS-AUTOMATED** | **45/45 passed across all 8 test files**, including `screens.test.tsx`, `KioskUI.test.tsx`, `PaymentScreen.test.tsx`, and `LayoutArtwork.test.tsx`. |
+| Frontend Vitest | **DONE — PASS-AUTOMATED** | **49/49 passed across all test files**, including `screens.test.tsx`, `KioskUI.test.tsx`, `PaymentScreen.test.tsx`, and `LayoutArtwork.test.tsx`. |
 | Frontend build (`tsc --noEmit && vite build`) | **DONE — PASS-AUTOMATED** | **2,015 modules transformed, 0 errors in 3.55s**. |
-| Live desktop journey (`tests/verify-demo-and-real-journey.mjs`) | **DONE — PASS-SIMULATED** | **35/35 checks passed, 26 screenshots, 0 failures**; evidence at `tests/journey-evidence/2026-11-01T15-38-06.041Z/`. |
+| Live desktop journey (`tests/verify-demo-and-real-journey.mjs`) | **DONE — PASS-SIMULATED** | **63/63 checks passed, 26 screenshots, 0 failures**; evidence at `tests/journey-evidence/2026-11-02T07-41-35.569Z/`. |
 | Physical Canon DSLR capture | **BLOCKED / NOT-RUN** | No physical capture; authorization and safe hardware setup required. |
 | Physical DNP RX1HS print | **BLOCKED / NOT-RUN** | No spool submission or paper output; authorization and supervised setup required. |
 | Live PayOS charge | **BLOCKED / NOT-RUN** | No payment charged; explicit production authorization required. |

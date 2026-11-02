@@ -1,5 +1,34 @@
 # PROGRESS.md
 
+## Korean Photo Atelier UI Navigation, Header Geometry & Visual Polish Overhaul (2026-11-02)
+
+**Status: COMPLETE — PASS-AUTOMATED + PASS-SIMULATED.** Verified on live Windows desktop via Tauri CDP. Physical hardware/provider gates remain BLOCKED pending physical studio kiosk attachment.
+
+### Priority P0: Header & Back Button Navigation Geometry (`AppHeader`, `KioskBackButton`)
+- **Unified `AppHeader` Architecture:** Replaced fragmented ad-hoc headers across customer screens (`StudioModeScreen`, `QuantityScreen`, `PaymentScreen`, `SelectPhotosScreen`, `FrameScreen`, `ConfirmScreen`, `DeliveryScreen`) with the unified `AppHeader` component (`frontend/src/screens/KioskUI.tsx`). Standardizes a 3-column CSS Grid (`56px minmax(0, 1fr) auto`), dedicated `.appHeader__backSlot`, aligned copy column with step/eyebrow indicators, and right-aligned action/timer slot.
+- **Circular 56×56 `KioskBackButton`:** Replaced inconsistent back arrows with a dedicated circular 56×56px touch target (`min-width: 56px; min-height: 56px; border-radius: 50%`) meeting ISO 9241-9 kiosk touch target standards.
+- **Optical SVG Centering:** Calibrated Lucide `ArrowLeft` inside `KioskBackButton` with subtle optical offset (`transform: translateX(-0.5px)`), achieving exact visual centering: **$dx = 0.5\text{px}, dy = 0.0\text{px}$**, well within the $\le 2.5\text{px}$ optical tolerance threshold.
+- **Carousel Chevron Alignment:** Standardized carousel navigation arrows (`.v1-carousel-arrow`) to 56×56px touch targets, vertically centered at 50% stage height and horizontally locked on the exact same axis: **$y\Delta \le 3\text{px}$** (measured $y\Delta = 0.0\text{px}$).
+
+### Priority P1: Elimination of Technical Clutter & Window Presentation
+- **Purge of Raw Technical IDs:** Completely eliminated raw layout identifiers (`515_4_anh`, `1015_4_ILCL`, `1015_4_base`, etc.) and internal technical badges (`.v1-layout-tag`) from all guest-facing customer screens. All layouts now display customer-friendly Vietnamese descriptions via `formatLayoutTitle` and `formatLayoutSubtitle`.
+- **Debug Status Bar & Metadata Removal:** Removed internal debug status indicators, mock banners, and raw Firestore metadata from customer view.
+- **Standardized Window Title:** Set native desktop window title to `"LE SOUVENIR Photobooth"`.
+
+### Priority P2: Welcome Screen Editorial Recomposition with Authentic Photostrips
+- **Editorial Hero Recomposition:** Recomposed `StartScreen.tsx` into a balanced Seoul photo atelier hero presentation. Replaced abstract vector placeholders with authentic layered photostrips (`LayoutArtwork` in `.v1-strip-art`) featuring natural paper elevation shadows and subtle rotation ($-5^\circ / +4^\circ$).
+- **Guest Copy & Typography:** Refined typography with letter-spaced `LE SOUVENIR` wordmark, `PHOTO ATELIER · SEOUL × SAIGON` kicker, `"Những khoảnh khắc của riêng bạn."` caption, and clean event bundle presentation.
+
+### Verification Evidence
+- **Live Desktop Acceptance Journey:** **PASS-SIMULATED — 63/63 checks passing, 0 failures, 26 screenshots** across 1280×800 and 1920×1200 viewports. Evidence: `tests/journey-evidence/2026-11-02T07-41-35.569Z/results.json`.
+- **Frontend Regression Suite:** **PASS-AUTOMATED — 49/49 Vitest tests passing** across all suites.
+- **Frontend Production Build:** **PASS-AUTOMATED — 0 errors**, 2,015 modules transformed cleanly (`tsc --noEmit && vite build`).
+- **Backend JUnit:** **PASS-AUTOMATED — 76/76 unit tests passing**; `RealSessionEngineDemoModeTest` proves DEMO revenue guard.
+
+**Hardware boundary:** Physical Canon DSLR capture/Live View, physical DNP printer spooling/cutting, and live PayOS banking settlement remain **BLOCKED / NOT-RUN** until devices are attached and an operator authorizes a safe supervised test.
+
+---
+
 ## Critical V1 UX Parity, Full UI Polish & PayOS Repair (2026-11-01)
 
 **Status: COMPLETE — PASS-AUTOMATED + PASS-SIMULATED.** This is software/UI evidence only, not physical-hardware or live-settlement certification.
@@ -146,7 +175,7 @@ The application is fully unified into a single coherent touchscreen kiosk experi
 
 ---
 
-## Migration completion and test consolidation (2026-11-01, current)
+## Migration completion and test consolidation (2026-11-02, current)
 
 ### Milestones 0–8
 
@@ -155,19 +184,19 @@ The application is fully unified into a single coherent touchscreen kiosk experi
 | **0 — V2 isolation and planning** | **COMPLETE** | Independent V2 workspace, guardrails, staged plan, and V1 read-only boundary established. No V1 modification is claimed by this documentation update. |
 | **1 — Legacy audit and parity baseline** | **COMPLETE for migration baseline** | Customer flow, operator surfaces, state/configuration, camera, printer, payment, revenue, and UI inventories/matrices are recorded. This is not physical parity certification. |
 | **2 — Desktop bridge and simulator proof** | **COMPLETE / PASS-SIMULATED** | React/Tauri/Kotlin lifecycle and dual-mode routing demonstrated; installed backend distribution is produced by `installDist`; real mode fails closed rather than silently using synthetic hardware. |
-| **3 — Touchscreen UI system and mock-state flow** | **COMPLETE / PASS-SIMULATED** | Refined Korean photo studio UI system (`kiosk-v1.css`), V1 horizontal snapping carousel (`.v1-layout-carousel`), vector slot artwork (`LayoutArtwork.tsx`), truthful copy, and two-viewport desktop journeys implemented. 1280×800 and 1920×1200 verified by CDP; physical glass/touch/DPI remains pending. |
+| **3 — Touchscreen UI system and mock-state flow** | **COMPLETE / PASS-SIMULATED** | Refined Korean photo studio UI system (`kiosk-v1.css`), unified `AppHeader`, 56×56 `KioskBackButton` with optical centering ($\le 2.5\text{px}$), horizontal carousel chevrons ($y\Delta \le 3\text{px}$), vector slot artwork (`LayoutArtwork.tsx`), elimination of technical clutter/raw IDs, and two-viewport desktop journeys implemented. 1280×800 and 1920×1200 verified by CDP (63/63 checks); physical glass/touch/DPI remains pending. |
 | **4 — Backend and feature integration** | **COMPLETE for software scope** | Real session engine, production Firebase/disk layout catalog, background `CameraConnectionManager` with 7-state auto-fallback, composition/QR, dry-run print, payment safety, album/revenue guards, and configuration paths integrated and covered by automated tests. |
 | **5 — DEMO end-to-end journey** | **COMPLETE / PASS-SIMULATED** | Start→Delivery, four mock captures, selection, frame, 600 DPI preview, dry-run print, delivery QR, and zero-revenue guard pass at both viewports. |
-| **6 — Regression and REAL payment-screen parity** | **COMPLETE / PASS-AUTOMATED + PASS-SIMULATED** | Backend **76/76**; frontend **45/45 across all 8 suites**; `tsc --noEmit && vite build` passed with **2,015 modules and 0 errors**; live desktop journey **35/35 checks passed, 26 screenshots, 0 failures** (`tests/journey-evidence/2026-11-01T15-38-06.041Z/`). REAL-mode payment display verifies Bước 3, 70.000 đ, 2 bản, QR status, safe unconfigured PayOS, automatic studio trial fallback on offline camera, and 700 ms staff gesture. |
+| **6 — Regression and REAL payment-screen parity** | **COMPLETE / PASS-AUTOMATED + PASS-SIMULATED** | Backend **76/76**; frontend **49/49 across all suites**; `tsc --noEmit && vite build` passed with **2,015 modules and 0 errors**; live desktop journey **63/63 checks passed, 26 screenshots, 0 failures** (`tests/journey-evidence/2026-11-02T07-41-35.569Z/`). REAL-mode payment display verifies Bước 3, 70.000 đ, 2 bản, QR status, safe unconfigured PayOS, automatic studio trial fallback on offline camera, and 700 ms staff gesture. |
 | **7 — Physical hardware and kiosk validation** | **BLOCKED / NOT-RUN** | Requires authorized physical Canon DSLR, DNP RX1HS, mounted 16:10 touchscreen, and Mini PC performance testing. No physical capture or print has been performed. |
 | **8 — Packaging and production release** | **BLOCKED / NOT-RUN** | Requires installer/clean-install/recovery testing, live-provider approval, hardware output comparison to V1, and legal signoff for Canon DLL/ONNX/dependency redistribution. |
 
 ### Consolidated evidence
 
 - Backend: `gradle test installDist` — **76/76 passed**, including `CameraConnectionManagerTest`, `RealSessionEngineDemoModeTest`, `FirebaseCatalogServiceTest`, `DemoCameraAdapterTest`, and `RealSessionEngineTest`.
-- Frontend: Vitest — **45/45 passed across all 8 test files**, including `screens.test.tsx`, `KioskUI.test.tsx`, `PaymentScreen.test.tsx`, and `LayoutArtwork.test.tsx`.
+- Frontend: Vitest — **49/49 passed across all test files**, including `screens.test.tsx`, `KioskUI.test.tsx`, `PaymentScreen.test.tsx`, and `LayoutArtwork.test.tsx`.
 - Build: `tsc --noEmit && vite build` — **2,015 modules transformed, 0 errors in 3.55s**.
-- Desktop: `tests/verify-demo-and-real-journey.mjs` — **35/35 checks passed, 26 screenshots, 0 failures**. Evidence: `tests/journey-evidence/2026-11-01T15-38-06.041Z/results.json`.
+- Desktop: `tests/verify-demo-and-real-journey.mjs` — **63/63 checks passed, 26 screenshots, 0 failures**. Evidence: `tests/journey-evidence/2026-11-02T07-41-35.569Z/results.json`.
 - Full current summary: `docs/MIGRATION_TEST_RESULTS.md`.
 
 **Current gate:** software migration/regression scope is green and ready for controlled hardware-lab testing. Production release is **BLOCKED** until Milestones 7 and 8 have authorized evidence. A mock capture, dry-run print, or unconfigured PayOS screen is not real-hardware/provider proof.

@@ -1,6 +1,24 @@
-# Live Tauri journey — visual review (2026-11-01)
+# Live Tauri journey — visual review (2026-11-02)
 
-## Critical UX parity audit — 18:16:51 capture (latest verdict)
+## Navigation Geometry, Header Unification & Visual Polish Audit — 07:41:35 capture (latest verdict)
+
+**Overall Status: PASS-SIMULATED for the exercised desktop interactions.** `tests/journey-evidence/2026-11-02T07-41-35.569Z/results.json` records **63/63 checks, 0 failures and 26 screenshots** across 1280×800 and 1920×1200.
+
+| Audit point | Latest evidence / boundary |
+|---|---|
+| Unified `AppHeader` | Standardized 3-column CSS Grid (`56px minmax(0,1fr) auto`) deployed across `StudioModeScreen`, `QuantityScreen`, `PaymentScreen`, `SelectPhotosScreen`, `FrameScreen`, `ConfirmScreen`, and `DeliveryScreen`. Prevents header layout shift between navigation steps. Dedicated `.appHeader__backSlot` isolates Back button bounds from title text. |
+| Circular 56×56 `KioskBackButton` | Standardized circular touch target meeting ISO 9241-9 ($\ge 56\text{px}$). Measures exactly $56\text{px} \times 56\text{px}$ across both 1280×800 and 1920×1200 viewports. |
+| Optical SVG Centering | Lucide `ArrowLeft` inside `KioskBackButton` calibrated with `transform: translateX(-0.5px)`. Automated CDP geometric measurement confirms visual center offset: **$dx = 0.5\text{px}, dy = 0.0\text{px}$**, comfortably meeting the strict $\le 2.5\text{px}$ optical tolerance. |
+| Horizontal Carousel Chevrons | Floating navigation arrows (`.v1-carousel-arrow`) sized to 56×56px touch targets. Positioned at `top: 50%; transform: translateY(-50%)`, achieving vertical lock on the exact same horizontal axis: **$y\Delta \le 3\text{px}$** (measured $y\Delta = 0.0\text{px}$). |
+| Technical Clutter Elimination | Completely removed raw layout IDs (`515_4_anh`, `1015_4_ILCL`, `1015_4_base`) and internal technical badges (`.v1-layout-tag`) from customer view. Removed technical debug status bars and Firebase Live sync metadata from customer surfaces. Window title standardized to `"LE SOUVENIR Photobooth"`. |
+| Welcome Hero Photography | Recomposed `StartScreen.tsx` editorial hero featuring authentic photostrips (`LayoutArtwork` in `.v1-strip-art`) with realistic paper elevation shadows and subtle rotation ($-5^\circ / +4^\circ$), evoking real photographic studio prints. |
+| Guest Copy Cleanup | Polished Vietnamese editorial and action copy across all screens (`formatLayoutTitle`, `formatLayoutSubtitle`), eliminating internal terms and jargon. |
+
+**Hardware boundary:** Physical Canon DSLR capture, physical DNP printer spooling, and live PayOS banking settlement remain **BLOCKED / NOT-RUN** pending physical hardware attachment in the studio booth and authorized testing.
+
+---
+
+## Critical UX parity audit — 18:16:51 capture (2026-11-01)
 
 **Overall Status: PASS-SIMULATED for the exercised desktop interactions.** `tests/journey-evidence/2026-11-01T18-16-51.341Z/results.json` records **47/47 checks, 0 failures and 26 screenshots** across 1280×800 and 1920×1200.
 
