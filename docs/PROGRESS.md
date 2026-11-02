@@ -1,5 +1,11 @@
 # PROGRESS.md
 
+## Payment QR Dimension Stabilization Regression (2026-11-03 00:40)
+
+**Status: bounded automated software checks PASS; production release BLOCKED.** Backend JUnit XML reports **80 passed / 2 skipped / 0 failed** of 82 across 28 suites; frontend Vitest reports **55/55 passed across 8 files**; TypeScript/Vite production build passed with 2,017 modules. Explicit installed Cargo compiled the Rust package successfully, with no Rust test cases reported. These results establish compilation and existing regression compatibility for the payment CSS changes, not mounted proof that QR dimensions remain fixed or that zoom is eliminated at every kiosk scale. No V1 command, write, or secret read occurred; a global 100%-untouched claim remains blocked because no trusted pre-task manifest exists. Canon, DNP, physical touch/scaling, Mini-PC performance, installer/recovery, live providers, and redistribution licensing remain blocked/not run.
+
+---
+
 ## Luxury Korean Atelier UI Regression (2026-11-02 23:05)
 
 **Status: bounded automated software checks PASS; production release BLOCKED.** Backend: **80 passed / 2 skipped / 0 failed** of 82 across 28 suites. Frontend: **55/55 passed across 8 files**. TypeScript/Vite production build passed with 2,017 modules. Cargo compiled the Rust package successfully; no Rust test cases were reported. The new CSS and Start/Prepare/Confirm/Printing changes are compile- and component-regression clean, but no fresh rendered viewport, physical touchscreen, camera, printer, Mini-PC, installer, provider, or licensing acceptance was performed. No V1 command/write/secret read occurred; global forensic isolation remains unprovable without a trusted baseline manifest.

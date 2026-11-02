@@ -1,5 +1,18 @@
 # Test Results — Independent Consolidated Review
 
+## 2026-11-03 00:40 payment QR-dimension regression rerun (latest)
+
+| Case | Status | Evidence |
+|---|---|---|
+| Backend offline Gradle | **PASS-AUTOMATED** | `backend/.toolchain/gradle-8.14.3/bin/gradle.bat --offline test --console=plain` exit 0; `BUILD SUCCESSFUL in 26s`. JUnit XML aggregate: **28 suites, 82 total, 80 passed, 0 failures/errors, 2 skipped**. Gradle reported all seven actionable tasks up-to-date and warned about Gradle 9-incompatible deprecated features. |
+| Frontend Vitest | **PASS-AUTOMATED** | `npm test -- --run` exit 0: **8/8 files, 55/55 tests**, 10.60s. |
+| Frontend production build | **PASS-AUTOMATED** | `npm run build` exit 0; TypeScript and Vite passed, **2,017 modules**, CSS 121.26 kB and JS 392.17 kB. This is not installer or mounted-viewport evidence. |
+| Rust | **PASS-AUTOMATED (compile only)** | `%USERPROFILE%/.cargo/bin/cargo.exe test` exit 0; one package compiled in 12.48s. Cargo reported no Rust test cases. |
+| V1 isolation | **BLOCKED (global proof)** | This reviewer ran no command in V1, performed no V1 write, and read no V1 secret. The attempted V2 Git path query rejected the external V1 path and supplied no integrity evidence. Without a trusted pre-task V1 manifest, **100% untouched cannot be certified**. |
+| Physical/release acceptance | **BLOCKED / NOT-RUN** | No fresh mounted 16:10/scaling/touch run, Canon capture, DNP print, Mini-PC metrics, installer/recovery, live-provider operation, or redistribution-license signoff. |
+
+**Release gate: BLOCK.** The bounded automated regressions are green; payment QR visual stability and physical/release gates are not certified by unit tests or a web asset build.
+
 ## 2026-11-02 23:05 luxury-atelier UI regression rerun (latest)
 
 | Case | Status | Evidence |

@@ -1,5 +1,19 @@
 # TASK_BOARD.md
 
+## Payment QR Dimension Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-03 00:40)
+
+| Task | Status | Evidence / next gate |
+|---|---|---|
+| Backend regression | **COMPLETED — PASS-AUTOMATED** | Requested offline Gradle command exit 0; 28 suites / 82 total: **80 passed, 0 failed/errors, 2 skipped**. |
+| Frontend regression | **COMPLETED — PASS-AUTOMATED** | **8/8 files, 55/55 tests**. |
+| Frontend production build | **COMPLETED — PASS-AUTOMATED** | TypeScript/Vite exit 0; 2,017 modules. |
+| Rust command | **COMPLETED — PASS-AUTOMATED (compile only)** | Explicit installed Cargo exit 0; one package compiled, no Rust tests reported. |
+| QR dimensions / no-zoom visual acceptance | **NOT-RUN** | Existing suites/build are green, but no fresh mounted 1280×800/1920×1200 or 100/125/150% scaling measurement was run. |
+| V1 100% untouched proof | **BLOCKED** | Reviewer made no V1 command/write/secret read; no trusted before/after manifest exists. |
+| Hardware/production/package/licenses | **BLOCKED / NOT-RUN** | Canon, DNP, Mini-PC metrics, live providers, installer/recovery, print comparison, and redistribution rights remain open. |
+
+---
+
 ## Luxury Atelier UI Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-02 23:05)
 
 | Task | Status | Evidence / next gate |

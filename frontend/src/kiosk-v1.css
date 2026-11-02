@@ -439,7 +439,6 @@ html,body,#root{height:100%;overflow:hidden}
 .v1-shell .v1-summary h2:last-of-type{color:#874A33}
 .v1-shell .v1-delivery-qr{box-shadow:0 20px 40px -10px rgba(45,30,20,.22),0 4px 14px rgba(45,30,20,.08)}
 .v1-shell .v1-delivery a{color:#874A33;font-weight:700;text-underline-offset:4px;min-height:56px;display:inline-flex;align-items:center;justify-content:center}
-.v1-shell .v1-payment-qr-slot{box-shadow:0 20px 40px -10px rgba(45,30,20,.22),0 4px 14px rgba(45,30,20,.08)}
 .v1-shell .v1-payment-columns>.v1-panel{scrollbar-width:none}
 .v1-shell .v1-payment-columns>.v1-panel::-webkit-scrollbar{display:none}
 @media(max-width:1400px) and (max-height:850px){.v1-shell .v1-payment-screen,.v1-shell .v1-delivery-screen,.v1-shell .v1-confirm-screen{min-height:0}.v1-shell .v1-start-card{max-height:100%}}
