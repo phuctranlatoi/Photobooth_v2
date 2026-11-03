@@ -1,5 +1,22 @@
 ﻿# TASK_BOARD.md
 
+## App-Wide Korean Atelier Liquid Glass Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-03 11:10)
+
+| Task | Status | Evidence / next gate |
+|---|---|---|
+| Global luminous studio ambience | **COMPLETED — PASS-SIMULATED** | `.v1-shell:not(.v1-camera)` uses warm apricot, rose-quartz and golden-champagne glow; rendered/scaling acceptance remains not run. |
+| Master Liquid Glass customer surfaces | **COMPLETED — PASS-SIMULATED** | Shared treatment covers `.v1-panel`, `.v1-start-card`, `.v1-actionbar`, `.v1-frame-preview-panel`, `.v1-summary`, `.v1-prepare-stage`, `.v1-print-stage`, `.v1-delivery`, and `.v1-modal`. |
+| Buttons, pulse badges, print previews and QR cards | **COMPLETED — PASS-SIMULATED** | Terracotta-coral specular buttons, `atelier-status-pulse`, crisp unblurred floating paper previews, and porcelain VietQR/download cards are present in source; physical touch, animation and scanner acceptance are not run. |
+| Camera studio preservation | **COMPLETED — PASS-SIMULATED** | Dark `#121214` environment, dead-center countdown, and circular shutter are preserved in source. No physical Canon/Live View run. |
+| Backend regression | **COMPLETED — PASS-AUTOMATED** | Offline Gradle exit 0 in 16.75s wall time; 28 suites / 82 total: **80 passed, 2 skipped, 0 failed/errors**. |
+| Frontend regression | **COMPLETED — PASS-AUTOMATED** | **8/8 files, 55/55 tests**; 16.61s wall time. |
+| Frontend production build | **COMPLETED — PASS-AUTOMATED** | TypeScript/Vite exit 0; **2,017 modules**, zero errors; 10.71s wall time. |
+| Rust command | **COMPLETED — PASS-AUTOMATED (compile only)** | Installed Cargo exit 0; one package compiled in 15.17s; no Rust test cases reported. |
+| V1 strict isolation proof | **BLOCKED** | Read-only status shows two modified agent files and two untracked backups of unknown provenance. Reviewer made no V1 write/build/cleanup/secret read; no trusted baseline manifest exists. |
+| Physical/release gates | **BLOCKED / NOT-RUN** | Mounted 16:10 touch/scaling/QR, Canon, DNP, Mini-PC metrics, installer/recovery, live providers, V1 print comparison, and redistribution rights remain open. |
+
+---
+
 ## Full-Bleed Payment Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-03 10:34)
 
 | Task | Status | Evidence / next gate |

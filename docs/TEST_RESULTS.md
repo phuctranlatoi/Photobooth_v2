@@ -1,5 +1,18 @@
 ﻿# Test Results â€” Independent Consolidated Review
 
+## 2026-11-03 11:10 app-wide Korean Atelier Liquid Glass regression
+
+| Case | Status | Evidence / boundary |
+|---|---|---|
+| Backend offline tests | **PASS-AUTOMATED** | `backend: .\.toolchain\gradle-8.14.3\bin\gradle.bat --offline test --console=plain` exit 0; `BUILD SUCCESSFUL in 16s`, measured wall time **16.75s**. JUnit XML: **28 suites, 82 total, 80 passed, 2 skipped, 0 failures/errors**. Gradle reported the test task up-to-date and deprecated features incompatible with Gradle 9. |
+| Frontend Vitest | **PASS-AUTOMATED** | `frontend: npm test -- --run` exit 0; **8/8 files, 55/55 tests passed**; Vitest duration 12.86s, measured wall time **16.61s**. |
+| Frontend production build | **PASS-AUTOMATED** | `frontend: npm run build` exit 0; TypeScript/Vite passed, **2,017 modules transformed**, Vite build 5.36s, measured wall time **10.71s**, zero build errors. |
+| Rust test command | **PASS-AUTOMATED (compile only)** | `src-tauri: %USERPROFILE%\.cargo\bin\cargo.exe test` exit 0; **1 package compiled** in 15.17s. Cargo reported no Rust test cases. |
+| App-wide visual overhaul | **PASS-SIMULATED (source/build only)** | Recorded scope: luminous apricot/rose-quartz/champagne ambience on `.v1-shell:not(.v1-camera)`; shared Liquid Glass customer surfaces; terracotta-coral specular buttons; `atelier-status-pulse`; unblurred floating paper previews; porcelain QR cards; and preserved `#121214` camera studio with centered countdown/circular shutter. Existing tests and compilation pass, but no fresh mounted viewport, QR scan, physical touch, motion/accessibility, or camera-preview acceptance was run. |
+| V1 isolation | **BLOCKED (global proof)** | Read-only `git -C E:\HK1_2026_2027\PhotoboothDesktop status --short` showed modified `.opencode/agents/architect.md`, `.opencode/agents/ui-designer.md` and two untracked `.bak` files. Their provenance predates/is outside this review. This reviewer made no V1 write, build, cleanup, or secret read; without a trusted before/after manifest, strictly untouched status cannot be certified. |
+
+**Release gate: BLOCK.** Bounded software regression is green. Physical 16:10 touchscreen/scaling/QR validation, Canon, DNP, Mini-PC performance, installer/recovery, provider operations, physical V1 print comparison, and Canon/ONNX redistribution-license signoff remain blocked or not run.
+
 ## 2026-11-03 10:34 full-bleed payment regression
 
 | Case | Status | Evidence / boundary |
