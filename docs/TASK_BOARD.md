@@ -1,5 +1,22 @@
 ﻿# TASK_BOARD.md
 
+## Coverflow Wheel Carousel Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-03 11:48)
+
+| Task | Status | Evidence / next gate |
+|---|---|---|
+| Remove visible repeat-selection hint | **COMPLETED — PASS-AUTOMATED** | Hint is `.sr-only`, clean on kiosk screens while retained in DOM and covered by Vitest. |
+| Cardless 3–5 choice stage | **COMPLETED — PASS-SIMULATED** | Cards use `clamp(200px, 22vw, 300px)`, stage max-width 1400px, and evenly spaced `clamp(16px, 2.5vw, 40px)` gap. Mounted viewport confirmation remains not run. |
+| Gradual Coverflow depth | **COMPLETED — PASS-SIMULATED** | Distance tiers: 0=`1.08`/z10 with chromatic aura; 1=`.80`/`.65`/z5; 2=`.62`/`.40`/z2; ≥3=`.48`/`.22`/z1. Hover scales are locked. |
+| Looping wheel navigation | **COMPLETED — PASS-AUTOMATED** | Prev and Next use modular wrap-around; frontend regression covers cycling behavior. |
+| Backend regression | **COMPLETED — PASS-AUTOMATED** | Offline Gradle exit 0, `BUILD SUCCESSFUL in 23s`; XML: **80 passed, 2 skipped, 0 failed/errors**; task up-to-date. |
+| Frontend regression/build | **COMPLETED — PASS-AUTOMATED** | **8/8 files, 56/56 tests** in 9.83s; build passed with **2,017 modules** in 6.25s. |
+| Rust command | **COMPLETED — PASS-AUTOMATED (compile only)** | Installed Cargo exit 0; one package compiled in 11.35s; no Rust tests reported. |
+| V1 strict isolation proof | **BLOCKED** | Reviewer ran no V1 command and made no V1 write/build/cleanup/secret read; no trusted baseline exists for global proof. |
+| Rendered touch/scaling acceptance | **NOT-RUN** | Required at 1920×1200 and 1280×800 with 100/125/150% scaling, physical touch, repeated taps, overflow and visual-spacing review. |
+| Hardware/package/licenses | **BLOCKED / NOT-RUN** | Canon, DNP, Mini-PC metrics, installer/recovery, live providers, physical V1 comparison and redistribution rights remain open. |
+
+---
+
 ## Chromatic Oil-Slick / Cardless Carousel Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-03 11:37)
 
 | Task | Status | Evidence / next gate |

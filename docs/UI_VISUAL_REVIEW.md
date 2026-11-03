@@ -1,5 +1,88 @@
 # Touch kiosk visual review — 2026-11-02
 
+## Implemented layout carousel audit — 2026-11-03 (current source; supersedes wheel handoff below)
+
+**Scope:** inspected V2 `StudioModeScreen.tsx`, final cascade of `frontend/src/kiosk-v1.css` and existing carousel tests. Source-level audit only: no browser screenshots, computed style measurements, Windows scaling test or hardware run. The five-slot wheel in the earlier handoff below remains a **proposal**, not an implemented component.
+
+| Requirement | Current evidence | Result |
+| --- | --- | --- |
+| Hide second-tap hint | Center button renders the literal hint with `v1-carousel-tap-hint sr-only` (`StudioModeScreen.tsx:66`); final `.sr-only,.v1-shell .v1-carousel-tap-hint.sr-only` (`kiosk-v1.css:497`) clips it to 1×1px with `!important`, overriding the visible pill at `:478`. | **Pass in CSS source**; remains in DOM/accessibility tree. Verify computed style in browser. |
+| 3–5 layouts visible at 1920×1200 / 1280×800 | Native carousel is finite, each item `clamp(200px,22vw,300px)` wide, gap `clamp(16px,2.5vw,40px)`, wrap width max 1400px, stage hidden overflow (`:79–84`). At 1920px: 300px items + 40px gaps; 5 full items require 1660px, exceeding the 1400px wrapper. At 1280px: ~282px items + 32px gaps; shell horizontal padding ~51px per side leaves ~1178px, five full items require ~1536px. | **Partial/unverified**: 3+ items may peek but five fully visible cannot fit under these widths; the first/last item cannot have two distinct neighbors on both sides in the finite strip. Verify actual visibility and label readability with screenshots including 125/150% scaling. |
+| Graduated size/opacity and artwork aura | Final `:484–489`: distance 0 `1.08/1`, 1 `.80/.65`, 2 `.62/.40`, 3 **and 4** `.48/.22`; `:494–495` applies static rose/cyan/black drop-shadow to center artwork. `:466–475` remove external white card/check while keeping SVG paper. | **Partial**: distances >=5 have no matching final selector (fall back to `.48/.45` from `:84`/`:144`); hover on distance 1/2 explicitly changes scale/opacity to `.83/.8` and `.65/.55` (`:491–492`), breaking invariant on sticky touch hover. |
+| Even spacing | `:81` specifies `gap:clamp(16px,2.5vw,40px)` with fixed flex bases. | **Pass in source** for unscaled layout centers; visually perceived artwork gaps vary with scale. Measure for art/arrow overlap. |
+| Infinite wheel / seamless arrow wrap | Arrows use modular `(center±1+n)%n` (`StudioModeScreen.tsx:62,69`), disabled when `n<=1`. But `move()` calls `scrollIntoView({behavior:'smooth'})` on a **single finite DOM strip** (`:15–20`): last→first scrolls the entire strip, not one adjacent slot. `data-distance={Math.abs(i-center)}` is linear, so endpoints do not appear adjacent. Scroll-settle/pending logic (`:43–57`) can leave a stale pending ID after a wrap. | **Fail for seamless circular presentation** despite modular logical indexing. Existing test asserts destination and wrap command but not visual travel or endpoint adjacency. Do not call this a seamless wheel. |
+| Reduced motion | CSS `:96` sets scroll behavior auto, `:408` disables button transitions and `:483` reintroduces carousel transition; `:515` only disables selected animations. JS explicitly requests `behavior:'smooth'` in `move()` (`:19`) regardless of preference. | **Fail / needs rendered confirmation**: winning late transition at `:483` defeats earlier reduced-motion selectors (`:408` specificity vs later `:483` must be checked; both `.v1-shell .v1-carousel-card.v1-layout-card` at `:483` is more specific); explicit JS smooth scroll is not preference-gated. Add a final scoped reduced-motion override and choose `behavior:'auto'` when reduced motion is requested. |
+
+**Interaction caveat:** center click still calls `session.confirmSetup`; off-center click/arrow calls `session.setLayout`, and busy blocks the controls. The current optimistic `center` plus `pending.current` does not guarantee backend acknowledgement before a second center tap; failed selection rollback, long-hold/drag-generated click and reordering remain unverified. Coordinate confirmation gating with architect/frontend, preserving existing commands. For a truly seamless wheel render distinct modular visual slots, not repeated interactive IDs, or otherwise implement a proven bounded wrap transition. Add coverage for `n=0,1,2,3,4,5,6+`, distance >=5, first↔last adjacency and actual animation path, sticky hover, 1920×1200 / 1280×800 at 100/125/150% effective CSS viewports, long Vietnamese names, accessible indicators, arrow hitboxes and `prefers-reduced-motion`. No source implementation was changed by this audit; V1 untouched.
+
+## Layout wheel redesign handoff — 2026-11-03 (specification only; newest direction)
+
+**User correction:** visually remove “Chạm lần nữa để chọn dải ảnh này →”; enlarge the layout artwork into a centered hero with progressively smaller, evenly spaced neighbors (3–5 visible); wrap previous/next indefinitely. This section supersedes the *layout-carousel* visual prescriptions below, not the existing backend gates. Reviewed the current V2 `StudioModeScreen.tsx` and final `kiosk-v1.css` cascade; **no TSX/CSS implementation or rendered/device test was performed here**. No V1 file was modified.
+
+### Actual current behavior and risks
+
+- `StudioModeScreen.tsx` indexes `layouts` once, scrolls the `.v1-layout-carousel` to a selected card, updates `session.setLayout` on neighbor/arrow/scroll selection, and calls `session.confirmSetup` only on a subsequent centered-card tap. Existing arrows disable at `center===0` / `center===layouts.length-1`; there is no wrap. A native snap strip with one instance per configured layout cannot display both end neighbors or animate a seamless wrap merely by applying modulo to arrow indices: `scrollIntoView` would travel across the entire strip. Do **not** promise an endless wheel without replacing the strip's visual navigation model.
+- Source uses optimistic `selected.current` and `pending.current`, plus a 160ms scroll-settle callback; a quick second tap can attempt confirmation before layout acknowledgement. `transitioning.current` locks repeat confirm only after it is invoked; verify failure/host navigation resets. A drag may finish on a centered card and generate a click: suppress confirmation if pointer moved beyond the tap threshold. Architect/frontend must clarify whether `action('session.setLayout')` resolves `false` on rejection or whether the authoritative `layout` prop is the only acknowledgement; **do not invent a new backend event**.
+
+### Two presentation options (same business flow)
+
+| Option | Layout composition | Decision |
+| --- | --- | --- |
+| A · flat continuous snap strip | Wider cardless artwork, active `1.08`, neighboring cards scaled through distance classes, native horizontal drag with cloned terminal cards and jump-back on settle. | Reject for this pass: cloned cards and asynchronous snap/jump can expose duplicate accessible buttons and cause distant wrap animation or accidental confirmation. |
+| **B · five-slot circular wheel (chosen)** | Fixed center slot and symmetrical `−2, −1, 0, +1, +2` visual positions computed with modular layout indices, no scroll-driven state; arrows/tap/swipe step the centered logical index. | Clear first/last wrap, stable spacing and strongest booth-distance reading; less prone to scroll-settle race. At 3–4 configured layouts avoid duplicated interactive IDs by rendering at most `min(5, layouts.length)` distinct entries; for 2 entries show only center and one neighbor or use explicit prev/next arrows, not two interactive copies of the same layout. |
+
+**Welcome/Capture decision remains unchanged:** readable lit Welcome and matte, image-free Capture timer region are preferred to a saturated text background and timer across a face. The existing camera face-clearance issue remains open; layout wheel work must not change camera geometry.
+
+### `StudioModeScreen.tsx` implementation contract (frontend owner)
+
+1. Keep `center` as a **logical** index in `[0, layouts.length)`; normalize arrow stepping with `((center + delta) % n + n) % n`, guard `n<=1`, `busy`, selection-pending and confirm-pending. `disabled={busy || layouts.length <= 1 || selectionPending || confirmPending}` for arrows; **never** disable solely at index zero or last. Provide a standalone empty-state status for `n===0`; one layout is large and centered with arrows disabled. Handle live catalog reordering/removal by reconciling against authoritative `layout.id`, never assume old indices remain valid.
+2. Generate unique wheel positions by circular offset from center, render a maximum of five **distinct** configured layout buttons and preserve `LayoutArtwork`/`formatLayoutTitle`/`formatLayoutSubtitle` and backend `shotCount`/print aspect. For `n>=5`, offsets `[-2,-1,0,1,2]`; for `n===4`, use `[-1,0,1,2]` (or balanced `[-2,-1,0,1]` based on available space), never repeat a layout. For `n===3`, offsets `[-1,0,1]`; for `n===2`, center and `+1`; for `n===1`, center only. Actual arrows always step one logical layout, including across the boundary; clicking any visible neighbor centers that layout in **one** selection request. Render slots keyed by layout ID; changing order may remount artwork but must not reset session state.
+3. Assign `data-distance="0|1|2"`, `data-side="left|center|right"` and `aria-pressed={offset===0}` to visual buttons. Center stage has a persistent full-sized hitbox independent of SVG scale; `aria-label` includes layout title/subtitle and, if relevant, a concise confirmation instruction. Render the literal existing hint text **once, only for centered layout** in `<span className="v1-carousel-tap-hint sr-only">Chạm lần nữa để chọn dải ảnh này →</span>` so screen readers and existing `getByText` tests can still locate it, while human-visible hint/pill disappears entirely. `.sr-only` must be a real visually-hidden utility (see CSS below), not `display:none`, `visibility:hidden`, opacity-zero overlay or offscreen focus target. Do not duplicate the hint across slots. Announce center title/count via the existing indicator `aria-live="polite"`; debounce rapid movement so announcements don't stack.
+4. Preserve the **two-step gate**: first neighbor/arrow/swipe invokes `session.setLayout` (only if ID changes); a separate intentional tap on an already centered, **authoritatively selected** layout invokes `session.confirmSetup`. Wrap never auto-confirms. While selection is unacknowledged, show textual “Đang chọn bố cục…” and disable confirmation; on rejection restore authoritative center, display an inline error/status and allow retry. If action responses cannot establish acknowledgement, require architect's existing snapshot/prop reconciliation before enabling confirm. A second tap on the initially acknowledged center may confirm (current behavior). Avoid optimistic index effects re-triggering `setLayout` from prop updates.
+5. Pointer interaction: arrows 56–64px; artwork button hitboxes >=48×48px even for outer entries. `touch-action:pan-y` on wheel stage **only if horizontal swipe is implemented**; horizontal swipe threshold ~48 CSS px and dominant axis, one step per release, no hold-to-repeat. A pointer down/up with >10px motion, pointercancel, swipe, long hold (>500ms), pending command, or recently wrapped animation cannot emit center-confirm click; keyboard Enter/Space on focused center is still a separate intentional confirmation. Always retain arrow navigation so swipe is optional. `busy` and pending states must have explicit disabled and status text; protect `session.back` according to the existing host cancellation contract (do not change cancellation rules).
+6. Wheel layout changes only transforms on illustrative paper/buttons; no transform/filter to actual camera frames, produced photos or QR. Clamp layout title/subtitle wrapping; keep complete accessible labels and full title in the indicator. Do not hardcode capture counts or timings. CSS transforms should be applied to an inner visual layer (or very carefully to the button) so base hitbox layout remains stable and center stage never scrolls horizontally.
+
+### Target CSS rules (scoped to layout stage; illustrative implementation values)
+
+The current stylesheet has competing declarations at lines ~81–96, 258–259 and 466–478 with `!important`; **replace/consolidate those layout-specific declarations** rather than appending another lower-specificity rule that loses to the final `.v1-shell` selectors. Prefer a layout-only class on the stage (`.v1-layout-wheel`) to avoid changing other scrollable surfaces. Preserve white *SVG paper*, remove only the surrounding white button card and its check pseudo-element. Place labels in a readable near-opaque ink/ivory surface if the chromatic background reduces contrast.
+
+```css
+/* If Tailwind's sr-only utility is not guaranteed on this route: */
+.v1-shell .sr-only { position:absolute; width:1px; height:1px; padding:0;
+  margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+.v1-shell .v1-layout-wheel { --wheel-card:clamp(190px,21vw,300px);
+  --wheel-step:clamp(205px,23vw,330px); position:relative; width:100%;
+  height:min(100%,500px); min-height:0; overflow:hidden; }
+.v1-shell .v1-layout-wheel .v1-carousel-card { position:absolute;
+  width:var(--wheel-card); height:min(100%,460px); left:50%; top:50%;
+  margin:0; background:transparent!important; border:0!important;
+  box-shadow:none!important; padding:0!important; overflow:visible;
+  transform:translate(-50%,-50%) translateX(calc(var(--slot) * var(--wheel-step))) scale(var(--wheel-scale))!important;
+  opacity:var(--wheel-opacity); z-index:var(--wheel-z);
+  transition:transform 280ms ease,opacity 280ms ease; }
+.v1-shell .v1-layout-wheel .v1-carousel-card[data-distance="0"] { --wheel-scale:1.08; --wheel-opacity:1; --wheel-z:10; }
+.v1-shell .v1-layout-wheel .v1-carousel-card[data-distance="1"] { --wheel-scale:.80; --wheel-opacity:.72; --wheel-z:5; }
+.v1-shell .v1-layout-wheel .v1-carousel-card[data-distance="2"] { --wheel-scale:.62; --wheel-opacity:.48; --wheel-z:2; }
+.v1-shell .v1-layout-wheel .v1-carousel-card::after { content:none!important; }
+.v1-shell .v1-layout-wheel .v1-carousel-tap-hint { /* sr-only wins; no visible pill */ }
+@media (max-width:1100px), (max-height:680px) {
+  .v1-shell .v1-layout-wheel { --wheel-card:clamp(170px,24vw,235px);
+    --wheel-step:clamp(150px,21vw,240px); height:min(100%,390px); }
+  /* Hide outer visual slots when 5 won't fit; keep arrows + one-step access. */
+  .v1-shell .v1-layout-wheel .v1-carousel-card[data-distance="2"] { visibility:hidden; pointer-events:none; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .v1-shell .v1-layout-wheel .v1-carousel-card { transition:none!important; }
+}
+@media (forced-colors:active) {
+  .v1-shell .v1-layout-wheel .v1-carousel-card[aria-pressed="true"] { outline:3px solid Highlight; outline-offset:3px; }
+}
+```
+
+Set inline `--slot` to signed `-2|-1|0|1|2` after validating data, **not** interpolated backend content; maintain `translate(-50%,-50%)` in `:hover`/`:active` and any earlier `.v1-shell button:active` overrides. Set `pointer-events:none` and `aria-hidden` on visually hidden outer slots, or omit them entirely at compact sizes, while keeping all configured options reachable via arrows. At 1280px CSS width, `--wheel-step` ~294px and card ~269px predict a center hero ~291px, neighbors ~215px, outer artwork ~167px; at 1920px width card caps at 300px and step 330px. These are CSS proposals, **not measured** fit. Reserve side arrow gutters and leave >=20px visual space between neighboring *scaled* cards; side arrow stacking must beat outer art. A light, static chromatic halo only on active SVG artwork may remain, but no animated color or overlay on the print slots. Never rely solely on faded opacity for selection: center size, indicator text and `aria-pressed` all signal it.
+
+**Acceptance (open):** test 0, 1, 2, 3, 4, 5, >5 configured entries, first↔last wrap in both directions, rapid repeated arrows, neighbor tap, optional drag/long hold/cancel, attempted second tap during pending and rejected `setLayout`, backend snapshot reorder and busy/back. Assert exactly one `aria-pressed=true`, no duplicate interactive layout ID, exactly one invisible hint in DOM for center, no visible hint pill, only acknowledged center tap dispatches `session.confirmSetup`, and rejected selection never advances. Screenshot/measure 1920×1200 and 1280×800 × 100/125/150% Windows scaling (effective viewport recorded), <=1024×640 / 853×533 short modes, long Vietnamese labels, card/arrow bounding boxes >=48×48, no image stretch/clipping/overlap, no page overflow, keyboard/reader and reduced-motion/forced-colors. No test/build was run for this documentation-only update.
+
 ## Chromatic oil-slick / cardless carousel implementation audit — 2026-11-03 (latest source findings)
 
 **Scope:** V2 `frontend/src/kiosk-v1.css` and `frontend/src/screens/payment.css` only. Static CSS/cascade inspection; no rendered screenshot, computed-style test, QR scan, device/DPI test or V1 modification. Earlier *proposed/not implemented* chromatic section below describes an older snapshot; the rules at the end of `kiosk-v1.css` are now implemented, subject to the exceptions here.

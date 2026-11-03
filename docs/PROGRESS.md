@@ -1,5 +1,13 @@
 ﻿# PROGRESS.md
 
+## Coverflow Wheel Carousel & Cardless Layouts (2026-11-03 11:48)
+
+**Status: COMPLETE for bounded source and automated regression; production release BLOCKED.** The kiosk no longer visually displays “Chạm lần nữa để chọn dải ảnh này →”; `.sr-only` preserves it for accessibility and Vitest. Layout artwork is cardless and sized `clamp(200px, 22vw, 300px)` within a stage up to 1400px, targeting 3–5 simultaneous choices. Coverflow distance styling is gradual: center `scale(1.08)` with multi-spectral chromatic oil-slick aura and z-index 10; immediate neighbors `scale(0.80)`, opacity `.65`, z-index 5; distance 2 `scale(0.62)`, opacity `.40`, z-index 2; distance ≥3 `scale(0.48)`, opacity `.22`, z-index 1. Gap is `clamp(16px, 2.5vw, 40px)`, hover scaling is locked to prevent touch jumps, and both arrows wrap through modular indexing.
+
+Regression evidence: backend `BUILD SUCCESSFUL in 23s`, with XML aggregate **80 passed / 2 skipped / 0 failed** (task up-to-date); frontend **56/56 tests across 8 files** in 9.83s; production build passed with **2,017 modules** in 6.25s; Cargo compiled one package cleanly in 11.35s and reported no Rust tests. No command was run in V1 and no V1 write or secret read occurred; global forensic isolation remains blocked without a trusted baseline. Rendered 16:10/touch acceptance, hardware, Mini-PC performance, packaging/recovery, live providers, physical V1 comparison, and redistribution-license gates remain open.
+
+---
+
 ## Chromatic Oil-Slick & Cardless Layout Carousel (2026-11-03 11:37)
 
 **Status: COMPLETE for bounded source and automated regression; production release BLOCKED.** The global non-camera shell now layers petrol cyan (`#00e5c9`), electric violet (`#b042ff`), rose-magenta (`#ec4899`), radiant coral (`#ff6f59`), golden amber (`#f6d365`) and sapphire (`#3b82f6`). Customer panels use saturated liquid-glass blur with cyan/violet specular rims; primary CTAs use a dark, multi-spectral oil-slick aura. The layout carousel removes the external white card (`background: transparent !important; border: 0 !important; box-shadow: none !important; padding: 0 !important`) while preserving standalone paper artwork. Artwork uses `drop-shadow(0 20px 45px rgba(20,15,35,.28))`; selected artwork is `scale(1.06)` with the requested rose/cyan/black three-part aura, and `.v1-carousel-tap-hint` is a floating pill. Porcelain-white QR cards and the dark `#121214` camera studio remain preserved.

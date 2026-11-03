@@ -1,5 +1,18 @@
 ﻿# Test Results â€” Independent Consolidated Review
 
+## 2026-11-03 11:48 Coverflow wheel carousel regression
+
+| Case | Status | Evidence / boundary |
+|---|---|---|
+| Backend offline tests | **PASS-AUTOMATED** | `backend: .\.toolchain\gradle-8.14.3\bin\gradle.bat --offline test --console=plain` exit 0; `BUILD SUCCESSFUL in 23s`. JUnit XML aggregate: **82 total, 80 passed, 2 skipped, 0 failed/errors**. Gradle reported `test UP-TO-DATE`, so this run did not freshly execute test bodies. |
+| Frontend Vitest | **PASS-AUTOMATED** | `frontend: npm test -- --run` exit 0; **8/8 files and 56/56 tests passed**; Vitest duration **9.83s**. Coverage includes modular Prev/Next wrap-around and the accessible hint retained in the DOM. |
+| Frontend production build | **PASS-AUTOMATED** | `frontend: npm run build` exit 0; TypeScript/Vite passed, **2,017 modules transformed**, Vite build **6.25s**. |
+| Rust test command | **PASS-AUTOMATED (compile only)** | `src-tauri: %USERPROFILE%\.cargo\bin\cargo.exe test` exit 0; **1 package compiled cleanly in 11.35s**. Cargo reported no Rust test cases. |
+| Coverflow implementation | **PASS-SIMULATED (source/build only)** | Hint text is visually hidden with `.sr-only`; cards use `clamp(200px, 22vw, 300px)`, stage max-width 1400px, and gap `clamp(16px, 2.5vw, 40px)`. Distance tiers are selected `scale(1.08)`/z10, neighbor `0.80`/opacity `.65`/z5, further `0.62`/`.40`/z2, and distance ≥3 `0.48`/`.22`/z1. Prev/Next use modular wrap-around. No mounted 16:10, physical touch, repeated-tap, or visual comparison run was performed. |
+| V1 isolation | **BLOCKED (global proof)** | This reviewer ran **no command in V1**, made no V1 write/build/cleanup, and read no secret. Filesystem-wide untouched status cannot be certified without a trusted before/after manifest. |
+
+**Release gate: BLOCK.** Bounded automated regression is green. Physical touchscreen/scaling/visual acceptance, Canon, DNP, Mini-PC performance, installer/recovery, live providers, V1 print comparison, and Canon/ONNX redistribution-license signoff remain blocked or not run.
+
 ## 2026-11-03 11:37 chromatic oil-slick and cardless-carousel regression
 
 | Case | Status | Evidence / boundary |
