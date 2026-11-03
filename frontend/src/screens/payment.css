@@ -3,7 +3,7 @@
 .v1-shell.v1-shell-payment {
   padding: 0 !important;
   gap: 0 !important;
-  background: #FAF6F0 !important;
+  background: #FAF6F2 !important;
 }
 .v1-payment-screen {
   flex: 1;
@@ -20,10 +20,13 @@
   isolation: isolate;
   padding: clamp(20px, 2.5vh, 32px) clamp(24px, 4vw, 64px);
   box-sizing: border-box;
-  background: radial-gradient(ellipse 55% 65% at 16% 50%, rgba(249, 163, 126, .58), transparent 82%),
-              radial-gradient(ellipse 55% 70% at 84% 40%, rgba(219, 143, 162, .54), transparent 80%),
-              radial-gradient(ellipse 60% 60% at 50% 95%, rgba(233, 191, 119, .62), transparent 84%),
-              #FAF6F0;
+  background: radial-gradient(ellipse 42% 58% at 8% 18%, rgba(0, 229, 201, .44), transparent 82%),
+              radial-gradient(ellipse 48% 60% at 92% 14%, rgba(176, 66, 255, .38), transparent 80%),
+              radial-gradient(ellipse 50% 46% at 80% 88%, rgba(236, 72, 153, .35), transparent 82%),
+              radial-gradient(ellipse 44% 48% at 24% 92%, rgba(255, 111, 89, .32), transparent 82%),
+              radial-gradient(ellipse 40% 40% at 50% 50%, rgba(246, 211, 101, .28), transparent 84%),
+              radial-gradient(ellipse 36% 50% at 62% 24%, rgba(59, 130, 246, .22), transparent 80%),
+              #FAF6F2;
   border-radius: 0;
 }
 .v1-payment-screen .v1-heading-title { touch-action: manipulation; user-select: none; }
@@ -58,11 +61,11 @@
   border-radius: 28px;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.76) 0%, rgba(255, 250, 245, 0.46) 50%, rgba(255, 240, 232, 0.68) 100%);
-  -webkit-backdrop-filter: blur(28px) saturate(190%);
-  backdrop-filter: blur(28px) saturate(190%);
-  border: 1.5px solid rgba(255, 255, 255, 0.88);
-  box-shadow: 0 24px 60px -12px rgba(65, 38, 28, 0.12), 0 8px 24px -4px rgba(65, 38, 28, 0.06), inset 0 1.5px 2px rgba(255, 255, 255, 0.95), inset 0 -1.5px 2px rgba(230, 195, 180, 0.25);
+  background: linear-gradient(150deg, rgba(255, 255, 255, .86) 0%, rgba(252, 248, 255, .62) 50%, rgba(246, 253, 255, .76) 100%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  backdrop-filter: blur(28px) saturate(200%);
+  border: 1.5px solid rgba(255, 255, 255, .92);
+  box-shadow: 0 24px 60px -12px rgba(32, 24, 40, .14), 0 8px 24px -4px rgba(32, 24, 40, .06), inset 0 2px 1.5px rgba(255, 255, 255, .95), inset 0 -2px 1.5px rgba(0, 229, 201, .20), 0 0 0 1px rgba(176, 66, 255, .12);
   transition: none !important;
   animation: none !important;
   transform: none !important;

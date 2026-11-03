@@ -1,5 +1,102 @@
 # Touch kiosk visual review — 2026-11-02
 
+## Chromatic oil-slick / cardless carousel implementation audit — 2026-11-03 (latest source findings)
+
+**Scope:** V2 `frontend/src/kiosk-v1.css` and `frontend/src/screens/payment.css` only. Static CSS/cascade inspection; no rendered screenshot, computed-style test, QR scan, device/DPI test or V1 modification. Earlier *proposed/not implemented* chromatic section below describes an older snapshot; the rules at the end of `kiosk-v1.css` are now implemented, subject to the exceptions here.
+
+| Check | Source evidence | Verdict |
+| --- | --- | --- |
+| Six-color shell palette | `kiosk-v1.css:449` declares cyan, violet, rose, coral, gold, sapphire (`#3b82f6`) and ink tokens, and paints six static radial layers. The blue layer uses the equivalent literal `rgba(59,130,246,.22)`. | **Pass in source.** Rendered color balance remains unverified. |
+| Frosted liquid glass / rim | `kiosk-v1.css:450` applies 28px blur / 200% saturation to the named panels, white hairline, cyan inset and violet outer hairline; `payment.css:51–83` scopes the same treatment and static specular beam to its panels. | **Implemented in CSS**, but rim is cyan/violet highlights, **not a continuous multicolor/conic chromatic rim**. Assess contrast and actual perceived frost in browser before calling it visually approved. |
+| No outer layout card | Final `kiosk-v1.css:466–467` applies `background:transparent!important; border:0!important; box-shadow:none!important; padding:0!important` to normal/selected and restores the first three on `:hover`/`:active`; `:473` removes the earlier selected check pseudo-element. | **Pass in source for the button surface.** Earlier white-card declarations remain in the file but are overridden; SVG paper is intentionally still white. Verify focus/disabled state and browser computed styles. |
+| Floating artwork / sizing | `:470–472` permits artwork overflow, adds paper shadow and exactly `drop-shadow(0 0 25px rgba(236,72,153,.55)) drop-shadow(0 0 45px rgba(0,229,201,.45)) drop-shadow(0 25px 50px rgba(0,0,0,.32))` on selected artwork. `:468–469` request inactive `.85` / `.55` and selected `1.06` / `1`. Stage retains `overflow:hidden` (`:79`) and carousel vertical overflow hidden (`:81`). | **Implemented in static state**, but check the halo/artwork for clipping at compact heights, and keep intrinsic paper/print aspect. No actual rendered measurement yet. |
+| Hover/press invariance | Final high-specificity rules retain idle `.85` and selected `1.06` under hover while preventing white panel restoration. The shared active transform is overridden by the final card rule. | **Pass in source;** verify computed transforms on touch/keyboard/mouse. |
+| Hint | `:476` is a white/violet pill with shadow; `:474–475` keep title/subtitle on the transparent card. | **Pass in source** for a floating pill, subject to actual fit/contrast of long translated text. |
+| Full-bleed payment and QR | `payment.css:2–31` removes outer shell inset and places six radial layers edge to edge on payment stage; `:106–138` makes the QR slot opaque white, contained and explicitly unanimated. Payment panels blur their **backdrop**, not the QR image. | **Pass in CSS intent**, but `--oil-sapphire` is still not named and scan/readability/recovery at 125/150% require device checks. |
+| Camera exclusion | `kiosk-v1.css:323,326` sets shell/capture/live surfaces `#121214`; `:449–450` exclude `.v1-camera` from global oil and glass. | **Pass in source** for camera stage; countdown/face obstruction remains a separate existing blocker. |
+
+**Recommended follow-up:** tester records computed `background`, `border`, `box-shadow`, `padding`, `transform`, `opacity`, artwork `filter`, `backdrop-filter` and overflow for idle/selected/hover/pressed/busy cards. At 1920×1200 and 1280×800 with 100/125/150% Windows scaling (record effective CSS viewport), photograph the layout strip and stage edges, test second-tap confirm versus swipe/hold, long Vietnamese labels and reduced-motion/forced-colors, and check QR scanner contrast and camera faces. Preserve `session.setLayout` → second center tap `session.confirmSetup`, payment authorization, opaque real paper/QR and dark camera; do not infer visual or hardware acceptance from stylesheet declarations.
+
+## User-directed chromatic oil slick and **cardless layout** review — 2026-11-03 (proposed; source-only)
+
+**User request:** “giao diện dầu loang … ở chỗ chọn bố cục … k muốn có cái thẻ trắng … muốn là cái bố cục đó luôn.” This is a **new visual direction**, superseding the previous editorial-ivory *aesthetic proposal*, not the existing session/payment/camera contracts. Inspected current V2 `StudioModeScreen.tsx`, `LayoutArtwork.tsx`, and `kiosk-v1.css` through its final atelier overrides. This section is **specification, not implemented CSS**, a screenshot, device proof or a working UI. No V1 files were touched.
+
+### Decisions and interaction invariants
+
+- **Welcome A (chosen):** pearlescent, layered petrol-cyan/violet/magenta/coral/gold static ambient field; dark ink on a deliberately bright ivory reading zone and one bold dark CTA with a chromatic specular rim. Welcome B: saturated full-screen fluid glass with white copy. Reject B: shifting/saturated colors behind small text obscure Vietnamese labels at kiosk distance.
+- **Capture A (chosen):** opaque matte `#121214` image stage and *image-free* matte timer/control region, chromatic hairline only outside the video; large white configured countdown and configured `Ảnh n/N`. Capture B: animated liquid-glass numerals floating on live pixels. Reject B: face occlusion and unstable contrast. **Current CSS still places a huge full-viewport timer/scrim over the image**; an image-free region requires frontend/camera geometry validation before claiming this is delivered. Do not filter, recolor, crop, distort or animate the camera stream.
+- The existing `StudioModeScreen` button `.v1-carousel-card.v1-layout-card` contains `.v1-carousel-art > LayoutArtwork` and title, subtitle and conditional second-tap hint. The current white panel comes from its own `background:#fff; border:3px solid …; padding:…; box-shadow:…` at stylesheet line 84, followed by active overrides at 85, 144, 258–259, 392 and **466**. The SVG `<rect fill="#fff">` in `LayoutArtwork` is the **actual paper strip/postcard**, not the unwanted external card: keep the SVG paper opaque, proportional to `layout.printAspectRatio`, with slots/print geometry unchanged. Do not delete or make transparent the SVG paper.
+- Retain the existing real flow: adjacent tap/arrow/swipe selects via `session.setLayout`; **only another center tap** invokes `session.confirmSetup`. `busy` disables buttons/arrows; `aria-pressed` tracks center; the bottom indicator remains authoritative for full title, select count, print size, configured countdown and `shotCount`. Do not add a Continue button or make first tap auto-confirm. When selected layout has not been acknowledged, frontend must prevent confirm until backend acknowledgement/reconciliation; current optimistic local selection and scroll logic need contract review.
+
+### Implementation-ready CSS design contract (frontend-owned, not applied here)
+
+Place a single scoped `chromatic-oil.css` **after** the existing kiosk stylesheet and payment-specific geometry (or consolidate old declarations); check import order. Avoid more broad unscoped `!important` patches. These examples are visual targets, not tested drop-in CSS:
+
+```css
+.v1-shell:not(.v1-camera) {
+  --oil-cyan:#00e5c9; --oil-violet:#b042ff; --oil-rose:#ec4899;
+  --oil-coral:#ff6f59; --oil-gold:#f6d365; --oil-ink:#201828;
+  background:
+    radial-gradient(ellipse 35% 55% at 10% 22%, rgba(0,229,201,.42), transparent 82%),
+    radial-gradient(ellipse 46% 56% at 88% 16%, rgba(176,66,255,.35), transparent 81%),
+    radial-gradient(ellipse 48% 43% at 76% 88%, rgba(236,72,153,.30), transparent 83%),
+    radial-gradient(ellipse 40% 44% at 28% 90%, rgba(255,111,89,.27), transparent 82%),
+    radial-gradient(ellipse 38% 37% at 52% 45%, rgba(246,211,101,.24), transparent 84%),
+    #f8f5f1;
+}
+/* Retain a luminous but near-opaque reading plane; rim carries the rainbow, not body copy. */
+.v1-shell:not(.v1-camera) :is(.v1-panel,.v1-start-card,.v1-actionbar,.v1-summary) {
+  background:linear-gradient(150deg,rgba(255,255,255,.94),rgba(251,248,252,.88));
+  border:1.5px solid rgba(99,73,112,.36);
+  box-shadow:0 20px 48px rgba(32,24,40,.15), inset 0 2px 1px #fff,
+    inset 0 -2px 1px rgba(0,229,201,.20), 0 0 0 1px rgba(176,66,255,.10);
+  -webkit-backdrop-filter:blur(20px); backdrop-filter:blur(20px);
+}
+.v1-shell .v1-primary:not(:disabled) {
+  background:#292039!important; color:#fff!important;
+  border:2px solid rgba(176,66,255,.68)!important;
+  box-shadow:inset 0 2px 1px rgba(255,255,255,.38),0 10px 28px rgba(32,24,40,.24),
+    0 0 20px rgba(0,229,201,.25),0 0 28px rgba(236,72,153,.18)!important;
+}
+/* Stage button has NO white card: only its SVG strip is paper. */
+.v1-shell .v1-carousel-card.v1-layout-card,
+.v1-shell .v1-carousel-card.v1-layout-card[aria-pressed=true] {
+  background:transparent!important; border:0!important; box-shadow:none!important;
+  padding:0!important; border-radius:0;
+}
+.v1-shell .v1-carousel-card.v1-layout-card:not([aria-pressed=true]) {
+  transform:scale(.85); opacity:.55;
+}
+.v1-shell .v1-carousel-card.v1-layout-card[aria-pressed=true] {
+  transform:scale(1.06); opacity:1;
+}
+.v1-shell .v1-carousel-card .v1-carousel-art {
+  overflow:visible; min-height:0;
+}
+.v1-shell .v1-carousel-card .v1-layout-artwork {
+  filter:drop-shadow(0 20px 45px rgba(20,15,35,.28));
+}
+.v1-shell .v1-carousel-card[aria-pressed=true] .v1-layout-artwork {
+  filter:drop-shadow(0 0 25px rgba(236,72,153,.5))
+    drop-shadow(0 0 45px rgba(0,229,201,.4))
+    drop-shadow(0 25px 50px rgba(0,0,0,.3));
+}
+.v1-shell .v1-carousel-card.v1-layout-card::after {content:none!important;}
+.v1-shell .v1-carousel-tap-hint {
+  display:inline-block; padding:8px 14px; border-radius:999px;
+  color:#241c30; background:rgba(255,255,255,.95);
+  border:1px solid rgba(176,66,255,.48); font-size:clamp(14px,1.1vw,17px);
+}
+```
+
+**Important cascade/layout details:** The shared `.v1-shell button:active:not(:disabled){transform:scale(.96)}` and carousel `:hover` rules override selected/idle scale on touch emulated hover/press; explicitly restore `.85` / `1.06` in equally scoped `:hover` and `:active` selectors (or scale a noninteractive artwork child instead of the hitbox). Keep `scroll-snap-align:center`, element width, arrows >=56×56, and `scrollIntoView` geometry unchanged. Remove the inherited selected `::after` check: it floats over paper and obscures photo slots; use `aria-pressed`, centered scale/halo, and bottom indicator/text for non-color confirmation. A transparent **button still occupies its original full hitbox**; no tiny strip-only target. Do not apply `filter`, opacity, or blur to the global `.v1-layout-artwork`, QR, real composed photos or live image. CSS color may not indicate backend selection acknowledgement: pending and failed selection need host-driven textual status.
+
+**Oil-slick rim:** optional 2-layer `background:linear-gradient(near-opaque ivory) padding-box, conic-gradient(from 25deg,#00e5c9,#b042ff,#ec4899,#ff6f59,#f6d365,#00e5c9) border-box; border:2px solid transparent` on a **panel surface only**, never on a print/QR/image. `conic-gradient` is a fixed light reflection, not constant rotation. If replacing `border` above, do so in one declaration. Keep card/title surfaces near-opaque; check normal text contrast >=4.5:1, large text >=3:1, visible 3px keyboard focus in dark ink, and forced-colors fallback with solid system borders. Do not apply panel rule to `.v1-layout-card`, `.v1-preview`, `.v1-camera`, or payment QR slot; payment screen owns QR dimensions/contrast, and its background/plates may need narrowly scoped overrides rather than editing payment/payment-state geometry.
+
+**Geometry and motion:** SVG `viewBox` is derived from backend `printAspectRatio` (300×ratio by 300); keep `height:100%;width:auto;max-width:100%;max-height:100%` so 5×15 and 10×15 both fit without stretch. Reserve text/hint below image inside the existing ~470px stage (~390px at <=1400×850); if 1.06× artwork clips, reduce artwork *available height* or add stage breathing room without shrinking the touch hitbox, and verify side arrows don't overlap the strip. A floating title on the background needs an opaque pill when color patches under it are bright; bottom indicator continues to provide full title/subtitle. Card transitions: 220–280ms transform/opacity **on a non-video element**; never animate print paper pixels, QR, countdown numbers or underlying feed. `prefers-reduced-motion:reduce` turns off scaling **transitions**/glow animation but retains static active differentiation; `forced-colors:active` uses a 3px solid active-artwork outline or adjacent selected label. No animation is required to understand selected state.
+
+**Acceptance still open:** compare screenshots/DOM hitboxes at 1920×1200 and 1280×800, Windows 100/125/150% (effective ~1536×960 / 1024×640 and ~1280×800 / 853×533), long Vietnamese titles, 0/1/many layouts, narrow/short aspect variations. Confirm artwork itself appears directly on stage with **no rectangular white wrapper**, no fake check overlay or cropped art, full-size paper ratio, center/adjacent taps and swipe settling, arrows, indicator + second-tap hint, busy/failed command states, no unexpected confirmation on drag and no horizontal page overflow. Verify text contrast/forced colors/reduced motion and QR scanning separately. No screenshots or hardware measurements were performed in this spec pass.
+
 ## Scope and evidence
 
 Inspected `kiosk-v1.css`, Frame, StudioMode, Payment, SelectPhotos, Confirm, KioskUI and Admin screens; also inspected imported payment/operator/settings styles. This is a **source and CSS audit**, not a browser screenshot or physical touch-monitor test. No camera, printer, QR payment or admin ACL was exercised. The existing operator screen explicitly identifies itself as a local simulator, not production admin authorization. V1 was not edited.

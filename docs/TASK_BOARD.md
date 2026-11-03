@@ -1,5 +1,22 @@
 ﻿# TASK_BOARD.md
 
+## Chromatic Oil-Slick / Cardless Carousel Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-03 11:37)
+
+| Task | Status | Evidence / next gate |
+|---|---|---|
+| Six-color oil-slick shell | **COMPLETED — PASS-SIMULATED** | Non-camera shell includes cyan, violet, rose, coral, amber and sapphire layers; mounted visual/contrast acceptance remains not run. |
+| Liquid-glass panels and chromatic CTA | **COMPLETED — PASS-SIMULATED** | Saturated 28px frost, cyan/violet highlight rims and multi-spectral primary CTA aura are source-verified. |
+| Cardless layout carousel | **COMPLETED — PASS-SIMULATED** | Outer white wrapper is transparent with zero border/shadow/padding; floating paper retains 3D shadow, selected `1.06` scale and requested chromatic aura; pill tap-hint is present. |
+| QR and camera exclusions | **COMPLETED — PASS-SIMULATED** | White porcelain QR surfaces and dark `#121214` camera studio remain preserved in source. QR scan and real Live View were not run. |
+| Backend regression | **COMPLETED — PASS-AUTOMATED** | Offline Gradle exit 0 in 22.54s; aggregate **80 passed, 2 skipped, 0 failed/errors**; task was up-to-date. |
+| Frontend regression/build | **COMPLETED — PASS-AUTOMATED** | **8/8 files, 55/55 tests** in 10.82s; build passed with **2,017 modules** in 11.93s. |
+| Rust command | **COMPLETED — PASS-AUTOMATED (compile only)** | Installed Cargo exit 0; one package compiled in 11.19s; no Rust tests reported. |
+| V1 strict isolation proof | **BLOCKED** | Reviewer ran no V1 command and made no V1 write/build/cleanup/secret read; no trusted baseline exists for global proof. |
+| Rendered touch/QR acceptance | **NOT-RUN** | Required at 1920×1200 and 1280×800 with 100/125/150% scaling, including repeated taps, clipping, forced colors and QR scanning. |
+| Hardware/package/licenses | **BLOCKED / NOT-RUN** | Canon, DNP, Mini-PC metrics, installer/recovery, live providers, physical V1 comparison and redistribution rights remain open. |
+
+---
+
 ## App-Wide Korean Atelier Liquid Glass Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-03 11:10)
 
 | Task | Status | Evidence / next gate |

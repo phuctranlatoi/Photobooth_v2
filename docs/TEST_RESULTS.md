@@ -1,5 +1,18 @@
 ﻿# Test Results â€” Independent Consolidated Review
 
+## 2026-11-03 11:37 chromatic oil-slick and cardless-carousel regression
+
+| Case | Status | Evidence / boundary |
+|---|---|---|
+| Backend offline tests | **PASS-AUTOMATED** | `backend: .\.toolchain\gradle-8.14.3\bin\gradle.bat --offline test --console=plain` exit 0; `BUILD SUCCESSFUL in 22s`, measured wall time **22.54s**. Existing JUnit aggregate is **82 total: 80 passed, 2 skipped, 0 failed/errors**; Gradle reported `test UP-TO-DATE`, so this invocation did not freshly execute test bodies. |
+| Frontend Vitest | **PASS-AUTOMATED** | `frontend: npm test -- --run` exit 0; **8/8 files and 55/55 tests passed**; Vitest 8.46s, measured wall time **10.82s**. |
+| Frontend production build | **PASS-AUTOMATED** | `frontend: npm run build` exit 0; TypeScript/Vite passed, **2,017 modules transformed**, measured wall time **11.93s**. |
+| Rust test command | **PASS-AUTOMATED (compile only)** | `src-tauri: %USERPROFILE%\.cargo\bin\cargo.exe test` exit 0; **1 package compiled cleanly** in 11.19s. Cargo reported no Rust test cases. |
+| “Dầu loang” shell and cardless layout | **PASS-SIMULATED (source/build only)** | `.v1-shell:not(.v1-camera)` contains petrol cyan `#00e5c9`, electric violet `#b042ff`, rose-magenta `#ec4899`, coral `#ff6f59`, amber `#f6d365`, and sapphire `#3b82f6`; panels use saturated blur/specular cyan-violet rims and primary CTA uses a chromatic aura. Layout button wrapper is transparent with zero border/shadow/padding; artwork has the requested 3D shadow, selected `scale(1.06)` and exact rose/cyan/black aura; `.v1-carousel-tap-hint` is pill-shaped. Porcelain QR surfaces and camera `#121214` remain scoped separately. No mounted viewport, computed-style, touch, contrast, or QR scanner test was run. |
+| V1 isolation | **BLOCKED (global proof)** | This reviewer ran **no command in V1**, made no V1 write/build/cleanup, and read no secret. Strict filesystem-wide untouched status cannot be certified without a trusted before/after manifest; prior documentation records pre-existing V1 changes of unknown provenance. |
+
+**Release gate: BLOCK.** Bounded automated regression is green, but visual/touch/scaling/QR acceptance, Canon, DNP, Mini-PC performance, installer/recovery, production providers, physical V1 print comparison, and Canon/ONNX redistribution-license signoff remain blocked or not run.
+
 ## 2026-11-03 11:10 app-wide Korean Atelier Liquid Glass regression
 
 | Case | Status | Evidence / boundary |
