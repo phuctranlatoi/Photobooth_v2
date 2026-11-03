@@ -1,5 +1,23 @@
 ﻿# TASK_BOARD.md
 
+## Kiosk Typography, Visual Rhythm & Column Alignment Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-03 21:00)
+
+| Task | Status | Evidence / next gate |
+|---|---|---|
+| Eliminate white step pills ("Bước 1 2 3...") | **COMPLETED — PASS-SIMULATED** | Replaced clunky white pill bars with clean, elegant Korean photobooth typography; preserved step text in accessibility tree for screen readers & Vitest assertions. |
+| Header back button and title vertical alignment | **COMPLETED — PASS-SIMULATED** | Aligned back button, title, and subtitle to unified vertical center; standardized line height and margins. |
+| Photo selection baseline alignment | **COMPLETED — PASS-SIMULATED** | Removed redundant subheadings and counter paragraphs; photo gallery and print preview pinned to identical vertical baseline. |
+| Frame screen preview & grid alignment | **COMPLETED — PASS-SIMULATED** | Left preview panel and right frame grid vertically aligned; frame card titles and thumbnails centered symmetrically. |
+| Quantity screen stepper & tabular numbers | **COMPLETED — PASS-SIMULATED** | Stepper buttons and number centered with `place-items: center` and `tabular-nums`; aligned pricing breakdown. |
+| Payment details label/value alignment | **COMPLETED — PASS-SIMULATED** | Detail items aligned cleanly via 2-column baseline grid; tabular currency values and scrollable QR slot. |
+| Confirm screen & action bar touch alignment | **COMPLETED — PASS-SIMULATED** | Order summary rows cleanly aligned; action bar helper text and primary buttons vertically centered with 56px touch target. |
+| Acceptance runner lifecycle & process cleanup | **COMPLETED — PASS-AUTOMATED** | Added `cleanupPreviousInstance()` in `tests/verify-demo-and-real-journey.mjs` targeting only V2 processes; 100% pass across 1280×800 and 1920×1200 with 26 screenshots. |
+| Frontend test suite & production build | **COMPLETED — PASS-AUTOMATED** | Vitest: **57/57 passed** across 8 suites; Vite build: **2,017 modules transformed, 0 errors**. |
+| Strict V1 isolation | **VERIFIED READ-ONLY** | V1 (`E:\HK1_2026_2027\PhotoboothDesktop`) remained strictly untouched; no writes or builds executed against V1. |
+| Physical hardware / release gates | **BLOCKED / GATED** | Physical Canon DSLR, physical DNP DS-RX1HS spooling/cutting, live PayOS credentials, and commercial redistribution review remain unverified without physical hardware. |
+
+---
+
 ## Option D UI/UX & Functional Polish Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-03 19:15)
 
 | Task | Status | Evidence / next gate |

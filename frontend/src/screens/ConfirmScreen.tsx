@@ -15,13 +15,13 @@ export function ConfirmScreen({layout,pricing,busy,action,preview,snapshot,simul
         <PrintPreview src={composed} ratio={layout?.printAspectRatio} layout={layout} label="Bản ghép hoàn thiện"/>
         <section className="v1-panel v1-summary">
           <h2>Đơn hàng của bạn</h2>
-          <p>Bố cục <strong>{layout?formatLayoutTitle(layout):'Bố cục'}</strong></p>
-          <p>Khổ in <strong>{layout?.printSizeLabel??'—'}</strong></p>
-          <p>Số lượng <strong>{pricing?.quantity??'—'}</strong></p>
-          {pricing?.basePrice!=null&&<p>Giá gốc <Vnd amount={pricing.basePrice}/></p>}
-          {!!pricing?.extraQuantity&&<p>In thêm <Vnd amount={pricing.extraAmount}/></p>}
-          <hr/>
-          <h2>Tổng cộng {pricing?.totalAmount!=null?<Vnd amount={pricing.totalAmount}/>: '—'}</h2>
+           <p><span>Bố cục</span><strong>{layout?formatLayoutTitle(layout):'Bố cục'}</strong></p>
+           <p><span>Khổ in</span><strong>{layout?.printSizeLabel??'—'}</strong></p>
+           <p><span>Số lượng</span><strong>{pricing?.quantity??'—'}</strong></p>
+           {pricing?.basePrice!=null&&<p><span>Giá gốc</span><strong><Vnd amount={pricing.basePrice}/></strong></p>}
+           {!!pricing?.extraQuantity&&<p><span>In thêm</span><strong><Vnd amount={pricing.extraAmount}/></strong></p>}
+           <hr/>
+           <h2 className="v1-summary-total"><span>Tổng cộng</span><strong>{pricing?.totalAmount!=null?<Vnd amount={pricing.totalAmount}/>: '—'}</strong></h2>
           <small>{real?'Xác nhận để gửi bản in đến máy in':'Chế độ mô phỏng · Không gửi lệnh in thật'}</small>
         </section>
       </div>

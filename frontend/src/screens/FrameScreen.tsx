@@ -54,13 +54,13 @@ export function FrameScreen({layout, busy, action, preview, snapshot, frames = [
   const selectedPhotos = (snapshot?.selectedIndices ?? []).map(index => snapshot?.shots?.[index]?.preview);
 
   return <>
-    <Heading step="Bước 4 · Chọn khung trang trí" title="Chọn khung trang trí"
+    <Heading step="Bước 4" title="Chọn khung trang trí"
       subtitle="Chọn khung phù hợp với khoảnh khắc" back={() => action('session.back')}/>
     <div className="v1-split v1-frame-workspace">
-      <div className="v1-frame-preview-panel"><div className="v1-frame-preview-heading"><h2>Bản in xem trước</h2><p>{formatFrameName(selectedFrame?.name ?? 'Khung mặc định')} · {layout?.printSizeLabel ?? ''}</p></div><PrintPreview src={snapshot?.frameId === effectiveFrameId ? preview : undefined} ratio={layout?.printAspectRatio} layout={layout}
+      <div className="v1-frame-preview-panel"><h2 className="v1-frame-preview-heading">Bản in xem trước</h2><PrintPreview src={snapshot?.frameId === effectiveFrameId ? preview : undefined} ratio={layout?.printAspectRatio} layout={layout}
         selectedPhotos={safeImage(preview) && snapshot?.frameId === effectiveFrameId ? undefined : selectedPhotos}
          frameOverlayUrl={safeImage(selectedFrame?.thumbDataUrl) || safeImage(selectedFrame?.thumbnailDataUrl) || safeImage(selectedFrame?.previewDataUrl)}
-         label="Bản in xem trước"/></div>
+          label={`Bản in xem trước · ${formatFrameName(selectedFrame?.name ?? 'Khung mặc định')} · ${layout?.printSizeLabel ?? ''}`}/></div>
       <div className="v1-frame-grid">
         {frames.length ? frames.map(frame => {
           const thumb = safeImage(frame.thumbDataUrl) || safeImage(frame.thumbnailDataUrl) || safeImage(frame.previewDataUrl);

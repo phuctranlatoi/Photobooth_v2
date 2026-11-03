@@ -1,5 +1,42 @@
 ﻿# PROGRESS.md
 
+## Kiosk Typography, Visual Rhythm & Column Alignment Polish (2026-11-03 21:00)
+
+**Status: PASS-SIMULATED across both 1280×800 and 1920×1200 viewports; physical hardware gates remain unverified without physical Canon DSLR or DNP DS-RX1HS.**
+
+Key polish delivered and verified:
+1. **Elimination of Clunky White Step Pills:** Replaced the intrusive white pill/capsule badges at the top of screens ("Bước 1 2 3...") with clean, refined Korean photobooth typography. The step text is preserved visually unobtrusively and in the accessibility DOM tree (`.appHeader__eyebrow`, `.v1-heading-eyebrow`) for automated assertions, screen readers, and Vitest specs without visually cluttering the customer experience.
+2. **Unified Header Alignment & Geometry:**
+   - Vertically centered the header back button with the screen title and subtitle (`align-items: center; align-self: center`).
+   - Standardized header title line height (`1.2`), letter spacing (`-0.02em`), and subtitle spacing (`4px 0 0`) across all screens.
+3. **Photo Selection Vertical Baseline Alignment:**
+   - Eliminated redundant subheadings (`<h2>Chọn ảnh để in</h2>`, `<h2>Bản in đang chọn</h2>`, and redundant counter paragraphs) that previously offset the tops of the photo grid and print preview.
+   - Pinned both the candidate photo gallery and the live print preview to the exact same vertical baseline (`align-self: stretch; padding: 0; margin-top: 0`).
+4. **Frame Screen Grid & Preview Alignment:**
+   - Vertically aligned the left print preview panel with the right frame card grid (`align-items: stretch`).
+   - Visually clipped the internal preview header (`.v1-frame-preview-heading`) while retaining accessibility labels, centering frame card titles and thumbnails symmetrically.
+5. **Quantity Screen Stepper & Tabular Numerals:**
+   - Centered stepper buttons (`+`, `−`) and quantity digits with `display: grid; place-items: center`.
+   - Applied tabular numerals (`font-variant-numeric: tabular-nums`) to quantity and pricing to eliminate visual jumping when incrementing/decrementing.
+   - Refined the pricing summary into clean flex/grid rows with muted labels and bold aligned amounts.
+6. **Payment Screen Label/Value Alignment:**
+   - Restructured payment detail items into clean 2-column grid tracks (`grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: baseline; gap: 16px`).
+   - Aligned labels and tabular prices consistently with zero baseline jitter.
+   - Adjusted QR container overflow behavior to prevent unintended clipping while maintaining rock-solid dimensions.
+7. **Confirm Screen & Action Bar Touch Alignment:**
+   - Realigned the order summary with clean grid baselines and tabular currency values.
+   - Vertically centered action bar helper text and primary buttons with fluid 56px touch height across resolutions.
+8. **Acceptance Runner Process Lifecycle Management:**
+   - Updated `tests/verify-demo-and-real-journey.mjs` with `cleanupPreviousInstance()` using safe PowerShell CIM process filtering.
+   - Explicitly targets only V2 workspace processes (`le-souvenir-v2.exe`, detached Java sidecar on V2 path, and V2 WebView2 instances), preventing orphaned process locks or port conflicts.
+   - Acceptance runner passed 100% across both 1280×800 and 1920×1200 viewports with 26 high-resolution journey screenshots captured.
+9. **Test Suite Verification:**
+   - Frontend Vitest: **57/57 passed** across 8 test suites (exit 0).
+   - Frontend production build: **2,017 modules transformed, 0 errors** (exit 0).
+   - Strict V1 Isolation: `E:\HK1_2026_2027\PhotoboothDesktop` remains strictly untouched and read-only.
+
+---
+
 ## Option D UI/UX & Functional Polish: Korean Atelier Liquid Glass, Zero-Lag Selection & Direct Frame Confirmation (2026-11-03 19:15)
 
 **Status: PASS-SIMULATED across both 1280×800 and 1920×1200 viewports; physical hardware gates remain unverified without physical Canon DSLR or DNP DS-RX1HS.**

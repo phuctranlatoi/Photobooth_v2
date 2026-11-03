@@ -56,7 +56,7 @@ export function StudioModeScreen({layout,layouts,busy,action}:ScreenProps){
     if(selected.current!==next.id){selected.current=next.id;action('session.setLayout',{layoutId:next.id})}
   },160);
  };
-  return <><Heading title="Bố cục" eyebrow="LE SOUVENIR · BỐ CỤC" subtitle="Chọn kiểu ảnh yêu thích" back={()=>action('session.back')}/>
+   return <><Heading title="Bố cục" subtitle="Chọn kiểu ảnh yêu thích" back={()=>action('session.back')}/>
   <section className="v1-layout-stage" aria-label="Chọn bố cục ảnh">
    {layouts.length?<><div className="v1-carousel-wrap">
        <button type="button" className="v1-carousel-arrow v1-carousel-prev" aria-label="Bố cục trước" disabled={busy||layouts.length<=1} onClick={()=>move((center-1+layouts.length)%layouts.length)}><ChevronLeft size={24} strokeWidth={2.4} aria-hidden="true"/></button>

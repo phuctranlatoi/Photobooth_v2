@@ -57,7 +57,7 @@ export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected
     <>
        <Heading step="Bước 3" title="Chọn ảnh để in" subtitle={`Đã chọn ${localSelected.length}/${layout?.selectCount??0} ảnh · Chạm để chọn, giữ để xem lớn`} back={()=>action('session.back')}/>
        <div className="v1-selection">
-         <section className="v1-selection-photos"><h2>Chọn ảnh để in</h2><p>Đã chọn {localSelected.length}/{layout?.selectCount??0} ảnh</p><div className={`v1-photo-grid ${layout?.photoAspectRatio !== undefined && layout.photoAspectRatio < 1.1 ? 'v1-photo-grid-portrait' : 'v1-photo-grid-landscape'}`}>
+          <section className="v1-selection-photos" aria-label="Ảnh để chọn"><div className={`v1-photo-grid ${layout?.photoAspectRatio !== undefined && layout.photoAspectRatio < 1.1 ? 'v1-photo-grid-portrait' : 'v1-photo-grid-landscape'}`}>
           {shots.map((shot,i)=>{
              const order=localSelected.indexOf(i);
             return (
@@ -109,7 +109,7 @@ export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected
             );
           })}
          </div></section>
-         <section className="v1-selection-print"><h2>Bản in đang chọn</h2><p>{localSelected.length}/{layout?.selectCount??0} ảnh</p><PrintPreview src={preview} ratio={layout?.printAspectRatio} layout={layout} selectedPhotos={selectedPhotos} label="Ảnh đã chọn"/></section>
+          <section className="v1-selection-print" aria-label="Bản in đang chọn"><PrintPreview src={preview} ratio={layout?.printAspectRatio} layout={layout} selectedPhotos={selectedPhotos} label="Ảnh đã chọn"/></section>
       </div>
       {lightbox!==null&&safeImage(shots[lightbox]?.preview)&&(
         <div
