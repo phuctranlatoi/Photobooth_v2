@@ -16,12 +16,16 @@ export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected
     else pending.current=[];
     setLocalSelected(pending.current.reduce<number[]>((current,{index})=>current.includes(index)?current.filter(i=>i!==index):[...current,index],selected));
   },[selected]);
-  const holdTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
-  const wasHeld=useRef(false);
+   const holdTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
+   const suppressionResetTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
+   const wasHeld=useRef(false);
 
-  const clearHold=()=>{
-    if(holdTimer.current!==null){clearTimeout(holdTimer.current);holdTimer.current=null;}
-  };
+   const clearHold=()=>{
+     if(holdTimer.current!==null){clearTimeout(holdTimer.current);holdTimer.current=null;}
+   };
+   const clearSuppressionReset=()=>{
+     if(suppressionResetTimer.current!==null){clearTimeout(suppressionResetTimer.current);suppressionResetTimer.current=null;}
+   };
 
   useEffect(()=>{
       const release=()=>{clearHold();setLightbox(null)};
@@ -29,7 +33,7 @@ export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected
      window.addEventListener('pointerup',release);
      window.addEventListener('pointercancel',release);
      window.addEventListener('keydown',escape);
-     return ()=>{clearHold();window.removeEventListener('pointerup',release);window.removeEventListener('pointercancel',release);window.removeEventListener('keydown',escape)};
+      return ()=>{clearHold();clearSuppressionReset();window.removeEventListener('pointerup',release);window.removeEventListener('pointercancel',release);window.removeEventListener('keydown',escape)};
     },[]);
 
   const selectedPhotos=localSelected.map(index=>shots[index]?.preview);
@@ -58,8 +62,9 @@ export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected
                    className={order<0&&localSelected.length>=(layout?.selectCount??Infinity)?'v1-photo-dimmed':''}
                   onPointerDown={event=>{
                     if(event.pointerType==='mouse'&&event.button!==0)return;
-                    clearHold();
-                    wasHeld.current=false;
+                     clearHold();
+                     clearSuppressionReset();
+                     wasHeld.current=false;
                      holdTimer.current=setTimeout(()=>{
                        wasHeld.current=true;
                         setLightbox(i);
@@ -67,9 +72,11 @@ export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected
                   }}
                    onPointerUp={()=>{
                      clearHold();
-                     if(wasHeld.current){
-                       setLightbox(null);
-                     }
+                      if(wasHeld.current){
+                        setLightbox(null);
+                        clearSuppressionReset();
+                        suppressionResetTimer.current=setTimeout(()=>{wasHeld.current=false;suppressionResetTimer.current=null;},200);
+                      }
                    }}
                   onPointerCancel={()=>{
                     clearHold();
@@ -78,9 +85,10 @@ export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected
                     }
                    }}
                    onPointerLeave={()=>{clearHold();}}
-                  onClick={()=>{
-                    if(wasHeld.current){
-                      wasHeld.current=false;
+                   onClick={()=>{
+                     if(wasHeld.current){
+                       clearSuppressionReset();
+                       wasHeld.current=false;
                       return;
                     }
                      toggle(i);

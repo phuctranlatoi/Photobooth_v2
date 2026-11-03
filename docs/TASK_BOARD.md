@@ -1,5 +1,21 @@
 ﻿# TASK_BOARD.md
 
+## Frame Decoration Loading Resolution & Full End-to-End Kiosk Journey Verification Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-03 17:55)
+
+| Task | Status | Evidence / next gate |
+|---|---|---|
+| Frame decoration loading resolution | **COMPLETED — PASS-SIMULATED** | Resolved `-32004 Stale session or generation` during `frame.list`. Streamlined `frameDto` to compute `thumbDataUrl` once and eliminated redundant thumbnail fields exceeding the 1 MiB IPC frame limit. Tolerated omitted `generationId` when session matches. |
+| Camera shutter centering across viewports | **COMPLETED — PASS-SIMULATED** | Removed competing position rules in `kiosk-v1.css`; `.v1-shutter-control` centrally positions 88px (1280×800) and 108px (1920×1200) shutter buttons. |
+| React async selection state fix | **COMPLETED — PASS-AUTOMATED** | Removed immediate synchronous `aria-pressed` re-click in `verify-demo-and-real-journey.mjs` that caused accidental photo deselection. |
+| Full live acceptance journey suite | **COMPLETED — PASS-SIMULATED** | `node tests/verify-demo-and-real-journey.mjs` executed against debug `le-souvenir-v2.exe`. **63/63 checks passed, 0 failed** across both 1280×800 and 1920×1200 viewports. 26 screenshots saved in `tests/journey-evidence/2026-11-03T10-54-45.783Z/`. |
+| DEMO revenue zero-record guarantee | **COMPLETED — PASS-AUTOMATED** | Confirmed by `RealSessionEngineDemoModeTest` (2/2 passed, 0 failures, 0 errors). Zero revenue recorded in ledger. |
+| Backend test suite | **COMPLETED — PASS-AUTOMATED** | Offline Gradle test exit 0: **86 passed, 2 skipped, 0 failed** across 30 suites. |
+| Frontend test suite | **COMPLETED — PASS-AUTOMATED** | Vitest: **56/56 passed** across 8 test suites. |
+| V1 strict isolation proof | **VERIFIED READ-ONLY** | V1 (`E:\HK1_2026_2027\PhotoboothDesktop`) remained strictly untouched; no writes or builds executed against V1. |
+| Physical hardware / release gates | **BLOCKED / GATED** | Physical Canon DSLR, physical DNP DS-RX1HS spooling/cutting, live PayOS credentials, and commercial redistribution review remain unverified without physical hardware and explicit operator signoff. |
+
+---
+
 ## Mock Capture & Print-Signal Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-03 15:04)
 
 | Task | Status | Evidence / next gate |

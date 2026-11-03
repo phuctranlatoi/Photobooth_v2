@@ -159,16 +159,17 @@ class RealSessionEngine(
         } finally { writer.dispose() }
         return "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(out.toByteArray())
     }
-    private fun frameDto(f: FramePack) = mapOf("id" to f.id, "name" to f.title, "title" to f.title,
+    private fun frameDto(f: FramePack): Map<String, Any?> {
+        val thumb = f.customImagePath?.let { frameStore.frameThumbDataUrl(it) }
+        return mapOf("id" to f.id, "name" to f.title, "title" to f.title,
         "isCustom" to f.isCustom, "isSpecial" to f.isSpecial, "specialEventName" to f.specialEventName,
         "targetPrintSize" to f.targetPrintSize, "targetLayoutId" to f.targetLayoutId,
-        "thumbDataUrl" to f.customImagePath?.let { frameStore.frameThumbDataUrl(it) },
-        "thumbnailDataUrl" to f.customImagePath?.let { frameStore.frameThumbDataUrl(it) },
-        "previewDataUrl" to f.customImagePath?.let { frameStore.frameThumbDataUrl(it) },
+        "thumbDataUrl" to thumb,
         "width" to f.customImagePath?.let { frameStore.imageSize(it)?.first },
         "height" to f.customImagePath?.let { frameStore.imageSize(it)?.second },
         "qrCodeX" to f.qrCodeX, "qrCodeY" to f.qrCodeY, "qrCodeSize" to f.qrCodeSize)
-    private fun availableFrames() = frameStore.loadFrames(layout.id).ifEmpty { listOf(FramePack("default", "Default", "", 0L)) }
+    }
+    private fun availableFrames() = frameStore.loadFrames(layout.id, layout.printSizeLabel).ifEmpty { listOf(FramePack("default", "Default", "", 0L)) }
     private fun bundleDto() = frameStore.loadBundles().map { mapOf("id" to it.id, "name" to it.name,
         "coverDataUrl" to it.coverDataUrl, "layoutId" to it.layoutId, "frameCount" to it.frames.size) }
     private fun catalogDto() = obj(
@@ -313,7 +314,7 @@ class RealSessionEngine(
         val requested = string(p, "sessionId")
         if (runCatching { UUID.fromString(requested) }.getOrNull()?.version() != 4) fail(-32602, "UUID v4 required")
         val gen = p["generationId"]?.asString ?: ""
-        if (method != "session.start" && (requested != sid || gen != generation)) fail(-32004, "Stale session or generation")
+        if (method != "session.start" && (requested != sid || (gen.isNotEmpty() && generation.isNotEmpty() && gen != generation))) fail(-32004, "Stale session or generation")
         if (method == "session.getState") return snapshot()
         if (method == "frame.list") { requireState("EDITING"); return obj("frames" to availableFrames().map(::frameDto), "bundles" to bundleDto()) }
         if (method == "payment.checkStatus") {

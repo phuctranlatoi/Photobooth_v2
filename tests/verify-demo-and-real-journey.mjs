@@ -38,25 +38,32 @@ if (navGeo?.chevrons) {
   check(navGeo.chevrons.yDelta <= 3, `${view} Carousel chevrons aligned on same horizontal axis`);
 }
  await js("void (document.querySelector('[data-layout-id=\"515_4_anh\"], .v1-layout-card')?.click())");await delay(400); // Wait for carousel smooth-scroll animation to finish before snapping screenshot!
-await shot(view, `${modeTag}-layout`);await click(/Tiếp tục/i);await wait("Boolean(document.querySelector('.v1-stepper'))",'quantity screen');let q=await js("document.querySelector('.v1-stepper strong')?.textContent.trim()");for(let i=0;q!==undefined&&q!=='2'&&i<10;i++){await js("void (document.querySelector('.v1-stepper button:last-child')?.click())");await delay(200);q=await js("document.querySelector('.v1-stepper strong')?.textContent.trim()")}check(q==='2',`${view} quantity set to 2`);await shot(view, `${modeTag}-quantity-2`);await click(/Tiếp tục/i);await wait("Boolean(document.querySelector('.v1-payment-screen') || document.body.innerText.includes('Thanh toán'))",'payment screen')}
+ await shot(view, `${modeTag}-layout`);await js("if (document.querySelector('.v1-layout-stage')) document.querySelector('.v1-layout-card[aria-pressed=\"true\"], .v1-layout-card')?.click()");await wait("Boolean(document.querySelector('.v1-stepper'))",'quantity screen');let q=await js("document.querySelector('.v1-stepper strong')?.textContent.trim()");for(let i=0;q!==undefined&&q!=='2'&&i<10;i++){await js("void (document.querySelector('.v1-stepper button:last-child')?.click())");await delay(200);q=await js("document.querySelector('.v1-stepper strong')?.textContent.trim()")}check(q==='2',`${view} quantity set to 2`);await shot(view, `${modeTag}-quantity-2`);await click(/Tiếp tục/i);await wait("Boolean(document.querySelector('.v1-payment-screen') || document.body.innerText.includes('Thanh toán'))",'payment screen')}
 async function demoJourney(view){await setupToPayment(view,true);const t=await js('document.body.innerText');check(!/[⚡📱✨🎉🖨️]/.test(t), `${view} zero emoji in UI`);check(/70\.000|90\.000|110\.000/.test(t),`${view} real calculated price displayed`);check(!t.includes('TRẢI NGHIỆM CHỤP ẢNH MIỄN PHÍ') && !t.includes('Không cần thanh toán'),`${view} no customer free photo bypass`);check(/bước\s*3/i.test(t) && t.includes('Thanh toán'),`${view} payment step header`);await shot(view,'demo-payment');
-// Reveal staff cash confirmation via double-click / 750ms hold or use if already visible:
-await js(`(() => {
-  const el = document.querySelector('[data-staff-trigger="true"], .v1-heading-title, .v1-payment-heading h1');
-  if (el) {
-    el.dispatchEvent(new MouseEvent('dblclick', { bubbles: true }));
-    el.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, clientX: 100, clientY: 100 }));
-  }
+// Hold the payment heading long enough to open the staff PIN modal.
+const staffTouch = await js(`(() => {
+  const el = document.querySelector('[data-staff-trigger="true"], .v1-heading-title');
+  if (!el) return null;
+  const rect = el.getBoundingClientRect();
+  const point = { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
+  el.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerType: 'touch', clientX: point.x, clientY: point.y }));
+  return point;
 })()`);
-await delay(850);
+if (!staffTouch) throw Error('Staff payment heading not found');
+await delay(1150);
 await js(`(() => {
-  const el = document.querySelector('[data-staff-trigger="true"], .v1-heading-title, .v1-payment-heading h1');
-  if (el) {
-    el.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, clientX: 100, clientY: 100 }));
-  }
+  const el = document.querySelector('[data-staff-trigger="true"], .v1-heading-title');
+  el?.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerType: 'touch', clientX: ${staffTouch.x}, clientY: ${staffTouch.y} }));
 })()`);
-await delay(300);
-await wait("Boolean(document.querySelector('.v1-staff-cash-btn, [data-testid=\"staff-cash-btn\"]') || Array.from(document.querySelectorAll('button')).some(b => b.textContent.includes('Nhân viên xác nhận')))", 'staff cash confirmation button', 10000);
+await delay(250);
+if (await js("Boolean(document.querySelector('.v1-staff-pin'))")) {
+  for (const digit of ['1', '2', '3', '4']) {
+    const key = `.v1-staff-pin .v1-pin-keypad button[aria-label="${digit}"]`;
+    await wait(`Boolean(document.querySelector(${JSON.stringify(key)}))`, `staff PIN digit ${digit}`);
+    await js(`void (document.querySelector(${JSON.stringify(key)})?.click())`);
+  }
+}
+await wait("Boolean(document.querySelector('.v1-staff-cash-btn'))", 'staff cash confirmation button', 10000);
 await click(/Nhân viên xác nhận tiền mặt/i);await wait("Boolean(document.querySelector('.v1-capture-screen') || document.body.innerText.includes('Bắt đầu chụp'))",'live demo');await shot(view,'demo-live');await click(/Bắt đầu chụp/);await wait("Boolean(document.querySelector('[aria-label=\"Chọn ảnh 1\"]:not(:disabled)'))",'mock captures',180000);await shot(view,'demo-select');const required = await js("Number((document.body.innerText.match(new RegExp('Đã chọn \\\\d+/(\\\\d+)'))||[])[1]) || 4");
 // Test press-and-hold zoom gesture on photo 1
 await js(`(() => {
@@ -69,7 +76,10 @@ check(zoomOpen, `${view} press-and-hold enlarges photo`);
 // Release finger
 await js(`(() => {
   const p1 = document.querySelector('[aria-label="Chọn ảnh 1"]');
-  if (p1) p1.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, clientX: 150, clientY: 150 }));
+  if (p1) {
+    p1.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, clientX: 150, clientY: 150 }));
+    p1.dispatchEvent(new MouseEvent('click', { bubbles: true })); // Consume the hold-suppression click.
+  }
 })()`);
 await delay(200);
 const zoomClosed = await js("!document.querySelector('.v1-hold-lightbox, .v1-lightbox')");
@@ -91,7 +101,7 @@ if (timerText1) {
 for (let i = 1; i <= required; i++) {
 const btnExp = `document.querySelector('[aria-label="Chọn ảnh ${i}"]')`;
 await wait(`${btnExp} && !${btnExp}.disabled`, `photo ${i} card`);
-await js(`void (${btnExp}.click())`);
+ await js(`void (${btnExp}?.click())`);
 await wait(`Boolean(document.body.innerText.includes('Đã chọn ${i}/') || document.querySelector('[aria-label="Chọn ảnh ${i}"][aria-pressed="true"]'))`, `photo ${i} selected`, 15000);
 if (i === 1) {
 const hasPreviewImage = await js("Boolean(document.querySelector('.v1-preview svg image'))");
@@ -99,6 +109,6 @@ check(hasPreviewImage, `${view} live frame preview renders chosen photos in real
 }
 await delay(300);
 }
- await click(/Tiếp tục/i);await wait("Boolean(document.querySelector('.v1-frame-grid button'))",'frame buttons loaded');await js("void (document.querySelector('.v1-frame-grid button')?.click())");await wait("Boolean(!document.querySelector('button[aria-label=\"Tiếp tục\"]')?.disabled || Array.from(document.querySelectorAll('button')).some(b => b.textContent?.trim().startsWith('Tiếp tục') && !b.disabled))",'frame preview ready',60000);await shot(view,'demo-frame');await click(/Tiếp tục/i);await wait("Boolean(document.querySelector('.v1-confirm-screen') || document.body.innerText.includes('Kiểm tra lần cuối'))",'confirm');await wait("Boolean(document.querySelector('.v1-preview img, img[alt*=\"Bản ghép\"], img[alt*=\"600 DPI\"]')?.naturalWidth)", 'composed preview loaded', 35000);check(Boolean(await js("Boolean(document.querySelector('.v1-preview img, img[alt*=\"Bản ghép\"], img[alt*=\"600 DPI\"]')?.naturalWidth)")), `${view} composed preview`);await shot(view,'demo-confirm');await click(/Xác nhận bản mô phỏng|Xác nhận & in|In và tạo QR|Hoàn thành trải nghiệm|Xác nhận/i);await wait("Boolean(document.querySelector('.v1-delivery-screen') || document.body.innerText.includes('Hoàn tất'))",'delivery',60000);await shot(view,'demo-delivery');await click(/Hoàn thành|Về trang đầu|Chụp lượt mới/i);await wait("document.body.innerText.includes('CHẠM ĐỂ BẮT ĐẦU') || document.body.innerText.includes('Chụp ảnh')",'start screen restored',15000)}
+ await click(/Tiếp tục/i);await wait("Boolean(document.querySelector('.v1-frame-grid button'))",'frame buttons loaded');await js("void (document.querySelector('.v1-frame-grid button')?.click())");await wait("Boolean(!document.querySelector('button[aria-label*=\"Tiếp tục\"]')?.disabled || Array.from(document.querySelectorAll('button')).some(b => (b.textContent?.trim().startsWith('Tiếp tục') || b.textContent?.trim().includes('Xem bản in')) && !b.disabled))",'frame preview ready',60000);await shot(view,'demo-frame');await click(/Xem bản in|Tiếp tục/i);await wait("Boolean(document.querySelector('.v1-confirm-screen') || document.body.innerText.includes('Kiểm tra lần cuối'))",'confirm');await wait("Boolean(document.querySelector('.v1-preview img, img[alt*=\"Bản ghép\"], img[alt*=\"600 DPI\"]')?.naturalWidth)", 'composed preview loaded', 35000);check(Boolean(await js("Boolean(document.querySelector('.v1-preview img, img[alt*=\"Bản ghép\"], img[alt*=\"600 DPI\"]')?.naturalWidth)")), `${view} composed preview`);await shot(view,'demo-confirm');await click(/Xác nhận bản mô phỏng|Xác nhận & in|In và tạo QR|Hoàn thành trải nghiệm|Xác nhận/i);await wait("Boolean(document.querySelector('.v1-delivery-screen') || document.body.innerText.includes('Hoàn tất'))",'delivery',60000);await shot(view,'demo-delivery');await click(/Hoàn thành|Về trang đầu|Chụp lượt mới/i);await wait("document.body.innerText.includes('CHẠM ĐỂ BẮT ĐẦU') || document.body.innerText.includes('Chụp ảnh')",'start screen restored',15000)}
 async function realPayment(view){await setupToPayment(view,false);const t=await js('document.body.innerText');check(/70\.000|90\.000|110\.000/.test(t),`${view} real calculated price displayed`);check(/bước\s*3/i.test(t) && t.includes('Thanh toán'),`${view} real payment: Bước 3 Thanh toán`);const hasQr=await js("Boolean(document.querySelector('.v1-payment-qr-card img, img[alt*=\"VietQR\"]'))");if(hasQr){const qrSrc=await js("document.querySelector('.v1-payment-qr-card img, img[alt*=\"VietQR\"]')?.src || ''");check(qrSrc.length>50,`${view} real VietQR image rendered (length=${qrSrc.length})`)}check(!t.includes('TRẢI NGHIỆM CHỤP ẢNH MIỄN PHÍ'),`${view} no free trial advertising in real payment`);await shot(view,'real-payment')}
-try{if(!existsSync(exe))throw Error(`Missing ${exe}`);try{await endpoint('http://127.0.0.1:1420',1000)}catch{vite=spawn('npm.cmd',['run','dev','--','--port','1420','--strictPort'],{cwd:frontend,stdio:['ignore','pipe','pipe']});await endpoint('http://127.0.0.1:1420')}await start('real');for(const [w,h] of [[1280,800],[1920,1200]]){await call('Emulation.setDeviceMetricsOverride',{width:w,height:h,deviceScaleFactor:1,mobile:false});await demoJourney(`${w}x${h}`)}await reset();await start('real');for(const [w,h] of [[1280,800],[1920,1200]]){await call('Emulation.setDeviceMetricsOverride',{width:w,height:h,deviceScaleFactor:1,mobile:false});await realPayment(`${w}x${h}`);if(`${w}x${h}` !== '1920x1200'){await reset();await start('real')}}try{const db=resolve(root,'data/sales.db'),output=execFileSync('sqlite3',[db,"select count(*) from sales where upper(coalesce(capture_mode,''))='DEMO';"],{encoding:'utf8'}).trim();check(output==='0','SQLite has zero sales records for DEMO sessions',output)}catch(e){const report=resolve(root,'backend/build/test-results/test/TEST-com.lesouvenir.v2.ipc.RealSessionEngineDemoModeTest.xml');if(existsSync(report)){const suite=readFileSync(report,'utf8').match(/<testsuite\b[^>]*>/)?.[0]||'';check(/tests="([1-9]\d*)"/.test(suite)&&/failures="0"/.test(suite)&&/errors="0"/.test(suite),'RealSessionEngineDemoModeTest proves DEMO revenue guard',suite)}else check(false,'SQLite/read-only DEMO revenue verification unavailable',String(e.message||e))}}catch(e){check(false,'runner aborted',e.stack||String(e))}finally{await reset();kill(vite);result.status=result.failures.length?'FAIL':'PASS-SIMULATED';writeFileSync(resolve(out,'results.json'),JSON.stringify(result,null,2));console.log(JSON.stringify(result,null,2))}if(result.failures.length)process.exitCode=1;
+try{if(!existsSync(exe))throw Error(`Missing ${exe}`);try{await endpoint('http://127.0.0.1:1420',1000)}catch{vite=spawn('npm.cmd',['run','dev','--','--port','1420','--strictPort'],{cwd:frontend,shell:true,stdio:['ignore','pipe','pipe']});await endpoint('http://127.0.0.1:1420')}await start('real');for(const [w,h] of [[1280,800],[1920,1200]]){await call('Emulation.setDeviceMetricsOverride',{width:w,height:h,deviceScaleFactor:1,mobile:false});await demoJourney(`${w}x${h}`)}await reset();await start('real');for(const [w,h] of [[1280,800],[1920,1200]]){await call('Emulation.setDeviceMetricsOverride',{width:w,height:h,deviceScaleFactor:1,mobile:false});await realPayment(`${w}x${h}`);if(`${w}x${h}` !== '1920x1200'){await reset();await start('real')}}try{const db=resolve(root,'data/sales.db'),output=execFileSync('sqlite3',[db,"select count(*) from sales where upper(coalesce(capture_mode,''))='DEMO';"],{encoding:'utf8'}).trim();check(output==='0','SQLite has zero sales records for DEMO sessions',output)}catch(e){const report=resolve(root,'backend/build/test-results/test/TEST-com.lesouvenir.v2.ipc.RealSessionEngineDemoModeTest.xml');if(existsSync(report)){const suite=readFileSync(report,'utf8').match(/<testsuite\b[^>]*>/)?.[0]||'';check(/tests="([1-9]\d*)"/.test(suite)&&/failures="0"/.test(suite)&&/errors="0"/.test(suite),'RealSessionEngineDemoModeTest proves DEMO revenue guard',suite)}else check(false,'SQLite/read-only DEMO revenue verification unavailable',String(e.message||e))}}catch(e){check(false,'runner aborted',e.stack||String(e))}finally{await reset();kill(vite);result.status=result.failures.length?'FAIL':'PASS-SIMULATED';writeFileSync(resolve(out,'results.json'),JSON.stringify(result,null,2));console.log(JSON.stringify(result,null,2))}if(result.failures.length)process.exitCode=1;

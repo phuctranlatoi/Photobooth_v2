@@ -1,5 +1,24 @@
 ﻿# PROGRESS.md
 
+## Frame Decoration Loading Resolution & Full End-to-End Kiosk Journey Verification (2026-11-03 17:55)
+
+**Status: PASS-SIMULATED across both 1280×800 and 1920×1200 viewports; physical hardware gates remain unverified without physical Canon DSLR or DNP DS-RX1HS.**
+
+Key resolutions delivered:
+1. **Frame Decoration Loading & IPC Frame Limit:** Resolved `-32004 Stale session or generation` error occurring during `frame.list` on `FrameScreen`. In `RealSessionEngine.kt`, `frameDto` previously invoked `frameThumbDataUrl` three separate times (`thumbDataUrl`, `thumbnailDataUrl`, `previewDataUrl`), inflating response payloads beyond the 1 MiB IPC limit and triggering backend drops. Streamlined `frameDto` to compute `thumbDataUrl` once and omit redundant duplicate fields. Updated session checking in `RealSessionEngine.kt` and `SimulatorSessionEngine.kt` to allow queries with omitted `generationId` when `sessionId` matches, while preserving strict generation latching when explicitly specified.
+2. **Camera Shutter Alignment:** Removed conflicting `left`, `bottom`, and `translateX(-50%)` declarations from `.v1-capture-screen .v1-shutter` in `kiosk-v1.css` so that `.v1-shutter-control` centrally positions the touch trigger cleanly across both 1280×800 (88px) and 1920×1200 (108px) resolutions.
+3. **Photo Selection React Asynchrony Fix:** In `tests/verify-demo-and-real-journey.mjs`, eliminated an immediate synchronous `aria-pressed` re-click that caused accidental photo deselection in automated acceptance runs.
+4. **End-to-End Live Acceptance Suite Pass:** Executed `node tests/verify-demo-and-real-journey.mjs` against the live debug Tauri executable (`le-souvenir-v2.exe`). Verified 63/63 checks passed across both 1280×800 and 1920×1200 viewports with zero failures. Captured 26 full-resolution journey screenshots in `tests/journey-evidence/2026-11-03T10-54-45.783Z/`.
+5. **DEMO Revenue Protection:** Zero revenue recorded for DEMO sessions, confirmed by `RealSessionEngineDemoModeTest` (2/2 passed, 0 failures, 0 errors).
+6. **Strict V1 Isolation:** V1 (`E:\HK1_2026_2027\PhotoboothDesktop`) remained strictly untouched and read-only.
+
+Test suites:
+- Backend Gradle: **86 passed, 2 skipped, 0 failed** (exit 0)
+- Frontend Vitest: **56/56 passed** across 8 test suites (exit 0)
+- End-to-End Live Tauri Journey: **63/63 passed, 0 failed** across 1280×800 and 1920×1200
+
+---
+
 ## Unlocked Mock Capture & End-to-End Print Signal Verification (2026-11-03 15:04)
 
 **Status: COMPLETE for camera-free simulated operation and bounded automated regression; physical hardware/release gates remain BLOCKED.** A full photobooth session can now run without a connected Canon DSLR or DNP printer. Capture produces synthetic high-resolution mock portraits, the full composition engine renders the exact print canvas, and the print path either dispatches to Windows Print Spooler when system printing is enabled or records a simulated successful transmission with complete job telemetry. `DeliveryScreen` prominently reports **“TÍN HIỆU IN: ĐÃ TRUYỀN THÀNH CÔNG”** in a green status badge. `PaymentScreen` tells staff how to unlock payment by holding the title for one second and entering PIN `1234`.

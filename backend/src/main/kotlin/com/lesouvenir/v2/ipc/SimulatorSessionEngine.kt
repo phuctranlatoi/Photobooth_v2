@@ -50,8 +50,9 @@ class SimulatorSessionEngine(
     private val operatorStore = OperatorLayoutStore(workspace)
     private val settingsStore = OperatorSettingsStore(workspace)
     private val frameStore = FrameStore(workspace, null)
-    private fun availableFrames(): List<FramePack> = frameStore.loadFrames(layout.id).filter { it.targetPrintSize == layout.printSizeLabel }
-    private fun defaultFrameId(): String = availableFrames().firstOrNull()?.id ?: "synthetic-border"
+    private fun availableFrames(): List<FramePack> = frameStore.loadFrames(layout.id, layout.printSizeLabel)
+    // Simulator fixtures default to their own frame even when V2 contains frames of the same print size.
+    private fun defaultFrameId(): String = "synthetic-border"
     private val executor = Executors.newSingleThreadScheduledExecutor { r -> Thread(r, "v2-simulator-session").apply { isDaemon=true } }
     private val camera by lazy { SimulatorCamera(SimulatorAuthorization(enabled), workspace, config["sourceCount"].asInt,
         config["captureWidth"].asInt, config["captureHeight"].asInt, config["previewWidth"].asInt, config["previewHeight"].asInt) }
@@ -197,7 +198,7 @@ class SimulatorSessionEngine(
         val requested = text(p,"sessionId"); uuid(requested)
         val gen = if(p.has("generationId")) text(p,"generationId").also { uuid(it) } else ""
         if(method=="session.start" && ((requested==sid && gen!=generation) || (requested!=sid && requested in seenSessions))) bad(-32004,"Stale session or generation")
-        if(method!="session.start" && (requested!=sid || gen!=generation)) bad(-32004,"Stale session or generation")
+        if(method!="session.start" && (requested!=sid || (gen.isNotEmpty() && generation.isNotEmpty() && gen!=generation))) bad(-32004,"Stale session or generation")
         val mutation = method !in setOf("session.getState","frame.list")
         val cid = if(mutation) text(p,"commandId").also { uuid(it) } else ""
         val signature = method + p.toString()
@@ -243,14 +244,14 @@ class SimulatorSessionEngine(
                 if(frameId==null) frameId=defaultFrameId()
                 composeSafely(); state="EDITING"
             }
-            "frame.list" -> { guard("EDITING"); val frames=availableFrames(); return obj("frames" to if(frames.isEmpty()) listOf(mapOf("id" to "synthetic-border","name" to "LE SOUVENIR fallback frame","thumbDataUrl" to frameThumb())) else frames.mapNotNull { pack -> pack.customImagePath?.let { path -> frameStore.frameThumbDataUrl(path)?.let { mapOf("id" to pack.id,"name" to pack.title,"thumbDataUrl" to it) } } }) }
-            "frame.select" -> { guard("EDITING"); val id=text(p,"frameId"); if(id!=defaultFrameId() && availableFrames().none { it.id==id }) bad(-32602,"Unknown frame"); frameId=id; composeSafely() }
+            "frame.list" -> { guard("EDITING"); val frames=availableFrames(); return obj("frames" to (listOf(mapOf("id" to "synthetic-border","name" to "LE SOUVENIR fallback frame","thumbDataUrl" to frameThumb())) + frames.mapNotNull { pack -> pack.customImagePath?.let { path -> frameStore.frameThumbDataUrl(path)?.let { mapOf("id" to pack.id,"name" to pack.title,"thumbDataUrl" to it) } } })) }
+            "frame.select" -> { guard("EDITING"); val id=text(p,"frameId"); if(id!="synthetic-border" && availableFrames().none { it.id==id }) bad(-32602,"Unknown frame"); frameId=id; composeSafely() }
             "frame.confirm" -> {
                 guard("EDITING")
                 val previousFrameId=frameId
                 if(p.has("frameId")) {
                     val requestedFrame=text(p,"frameId")
-                    if(requestedFrame!=defaultFrameId() && availableFrames().none { it.id==requestedFrame }) bad(-32602,"Unknown frame")
+                    if(requestedFrame!="synthetic-border" && availableFrames().none { it.id==requestedFrame }) bad(-32602,"Unknown frame")
                     frameId=requestedFrame
                 }
                 if(frameId==null) frameId=defaultFrameId()
@@ -306,8 +307,8 @@ class SimulatorSessionEngine(
     private fun composeSafely() { try { compose() } catch (_: Exception) { composition=null; printImage=null } }
     private fun compose() {
         composition=null; printImage=null
-        val stored = availableFrames().firstOrNull { it.id==frameId }?.customImagePath
-        if(stored==null && availableFrames().isNotEmpty()) error("Selected frame unavailable")
+        val stored = if(frameId=="synthetic-border") null else availableFrames().firstOrNull { it.id==frameId }?.customImagePath
+        if(stored==null && frameId!="synthetic-border" && availableFrames().isNotEmpty()) error("Selected frame unavailable")
         val overlay = stored ?: directory().resolve("synthetic-transparent-frame.png").also { ImageIO.write(frame(),"png",it.toFile()) }
         val token=UUID.randomUUID().toString()
         val c=directory().resolve("composition-$token.png"); val p=directory().resolve("print-image-$token.png")

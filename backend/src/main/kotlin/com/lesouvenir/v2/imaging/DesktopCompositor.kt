@@ -39,11 +39,13 @@ class DesktopCompositor(
 
         Files.createDirectories(outputDir)
 
-        val isStrip = layout.printSizeLabel.contains("5x15", ignoreCase = true) || layout.printSizeLabel.contains("5 x 15", ignoreCase = true)
-        val is15x10 = !isStrip && (
-            layout.printSizeLabel.contains("15x10", ignoreCase = true) ||
-                layout.printSizeLabel.contains("15 x 10", ignoreCase = true)
-            )
+        val sizeLabel = layout.printSizeLabel.lowercase().replace(Regex("\\s+"), "")
+        val isStrip = "5x15" in sizeLabel || "515" in sizeLabel ||
+            ("10x15" !in sizeLabel && "15x10" !in sizeLabel && layout.printAspectRatio in 0.30f..0.36f)
+        // The 10x15 stock may be mounted in either orientation; the catalog ratio determines which.
+        val is15x10 = !isStrip && ("15x10" in sizeLabel ||
+            ("10x15" in sizeLabel && layout.printAspectRatio > 1f) ||
+            ("10x15" !in sizeLabel && layout.printAspectRatio > 1f))
 
         val renderScale = 1 // Native 300 DPI output.
         val width = when {

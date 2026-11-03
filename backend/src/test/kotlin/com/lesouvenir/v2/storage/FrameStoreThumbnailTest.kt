@@ -52,4 +52,23 @@ class FrameStoreThumbnailTest {
         assertEquals(2,store.loadFrames("strip-5x15").size)
         assertEquals(1,store.loadFrames("print-10x15").size)
     }
+
+    @Test fun catalogIdsAndSizeLabelsFindCompatibleFramesWithoutMixingPaperSizes() {
+        for (relative in listOf(
+            "5x15/strip-5x15/Standard/strip.png",
+            "10x15/print-10x15/Standard/landscape.png"
+        )) {
+            val path = workspace.resolve("data/frames/$relative")
+            Files.createDirectories(path.parent)
+            ImageIO.write(BufferedImage(8, 8, BufferedImage.TYPE_INT_ARGB), "png", path.toFile())
+        }
+        val store = FrameStore(workspace, null)
+        assertEquals(listOf("5x15"), store.loadFrames("515_4_anh").map { it.targetPrintSize })
+        for (id in listOf("1015_4_base", "1015_4_ILCL")) {
+            assertEquals(listOf("10x15"), store.loadFrames(id).map { it.targetPrintSize })
+        }
+        assertEquals(listOf("5x15"), store.loadFrames("unknown", "5 x 15 cm").map { it.targetPrintSize })
+        assertEquals(listOf("10x15"), store.loadFrames("unknown", "10 x 15 cm").map { it.targetPrintSize })
+        assertEquals(emptyList(), store.loadFrames("unknown", "unknown"))
+    }
 }

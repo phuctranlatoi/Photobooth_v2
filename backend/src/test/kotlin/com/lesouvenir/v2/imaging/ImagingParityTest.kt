@@ -77,6 +77,26 @@ class ImagingParityTest {
         } finally { dir.toFile().deleteRecursively() }
     }
 
+    @Test fun catalogPaperOrientationUsesRatioAndNormalizedLabel() {
+        val dir = Files.createTempDirectory("imaging-catalog-orientation-test")
+        try {
+            val photo = dir.resolve("photo.png")
+            ImageIO.write(BufferedImage(8, 8, BufferedImage.TYPE_INT_RGB), "png", photo.toFile())
+            val frame = FramePack("f", "F", "", 0)
+            for ((label, ratio, expected) in listOf(
+                Triple("10x15", 1.5f, 1790 to 1184),
+                Triple("10 x 15 cm", 1.5f, 1790 to 1184),
+                Triple("15x10", 1.5f, 1790 to 1184),
+                Triple("15 x 10 cm", 1.5f, 1790 to 1184),
+                Triple("10 x 15 cm", 2f / 3, 1184 to 1790),
+                Triple("unknown", 1f / 3, 592 to 1790)
+            )) {
+                val result = DesktopCompositor().renderFinal(layout(label).copy(printAspectRatio = ratio), frame, listOf(photo), dir)
+                ImageIO.read(result.finalImagePath.toFile()).let { assertEquals(expected, it.width to it.height, label) }
+            }
+        } finally { dir.toFile().deleteRecursively() }
+    }
+
     @Test fun zxingQrDecodeMatchesUrl() {
         val dir = Files.createTempDirectory("imaging-qr-test")
         try {

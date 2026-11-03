@@ -66,6 +66,19 @@ class SimulatorSessionTest {
             }
         }
     }
+    @Test fun omittedGenerationOnQueryUsesSessionIdButExplicitMismatchIsStale() {
+        SimulatorSessionEngine(root, config(), true, 1, 1, 60000, root.resolve("backend/build/generation-${id()}")).use { engine ->
+            val c = Client(engine)
+            c.call("session.start", "layoutId" to "strip-2")
+            assertEquals(c.sid, engine.dispatch("session.getState", JsonObject().apply { addProperty("sessionId", c.sid) })["sessionId"].asString)
+            assertEquals(-32004, assertFailsWith<SimulatorError> {
+                engine.dispatch("session.getState", JsonObject().apply {
+                    addProperty("sessionId", c.sid)
+                    addProperty("generationId", UUID.randomUUID().toString())
+                })
+            }.code)
+        }
+    }
     @Test fun timeoutAutoPrintNoSaleAndCancelMatrix() {
         SimulatorSessionEngine(root,config(),true,1,1,500,root.resolve("backend/build/timeout-${id()}")).use { e ->
             val c=Client(e); c.capture("strip-2"); c.waitFor("DELIVERY")

@@ -73,6 +73,6 @@ export function FrameScreen({layout, busy, action, preview, snapshot, frames = [
         }) : <p>Đang tải khung…</p>}
       </div>
     </div>
-    <ActionBar><KioskSecondaryButton onClick={() => action('session.back')}>Quay lại</KioskSecondaryButton><KioskPrimaryButton disabled={busy || !effectiveFrameId} onClick={() => {if(confirming.current)return;confirming.current=true;void Promise.resolve(action('frame.confirm',{frameId:effectiveFrameId})).then(result=>{if(result===false)confirming.current=false}).catch(()=>{confirming.current=false})}}>Xem bản in →</KioskPrimaryButton></ActionBar>
+    <ActionBar><KioskSecondaryButton onClick={() => action('session.back')}>Quay lại</KioskSecondaryButton><KioskPrimaryButton aria-label="Tiếp tục - Xem bản in" disabled={busy || !effectiveFrameId} onClick={() => {if(confirming.current)return;confirming.current=true;void Promise.resolve(action('frame.confirm',{frameId:effectiveFrameId})).then(result=>{if(result===false)confirming.current=false}).catch(()=>{confirming.current=false})}}>Xem bản in →</KioskPrimaryButton></ActionBar>
   </>;
 }

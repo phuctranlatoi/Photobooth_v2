@@ -15,14 +15,33 @@ data class BundlePack(val id: String, val name: String, val coverDataUrl: String
 /** Only V2-owned frame directories are inspected; invalid images are ignored. */
 class FrameStore(private val workspace: Path, localAppData: String? = System.getenv("LOCALAPPDATA")) {
     private val roots = listOfNotNull(workspace.resolve("data"), localAppData?.let { Path.of(it).resolve("LeSouvenirDesktop/data") })
-    fun loadFrames(layoutId: String? = null): List<FramePack> = roots.flatMap { root ->
+    fun loadFrames(layoutId: String? = null, printSize: String? = null): List<FramePack> = roots.flatMap { root ->
         val directory = root.resolve("frames")
         if (!Files.isDirectory(directory)) emptyList() else Files.walk(directory).use { paths ->
             paths.filter { Files.isRegularFile(it) && it.fileName.toString().endsWith(".png", true) &&
                 !it.fileName.toString().startsWith("thumb_", true) }
                 .map { path -> frame(directory, path) }.filter { it != null }.map { it!! }.toList()
         }
-    }.distinctBy { it.id }.filter { layoutId == null || it.targetLayoutId == layoutId }
+    }.distinctBy { it.id }.filter { frame ->
+        if (layoutId == null && printSize == null) true
+        else {
+            val size = normalizedPrintSize(layoutId) ?: normalizedPrintSize(printSize)
+            frame.targetLayoutId == layoutId || when (size) {
+                "5x15" -> frame.targetPrintSize == size || frame.targetLayoutId == "strip-5x15"
+                "10x15" -> frame.targetPrintSize == size || frame.targetLayoutId == "print-10x15"
+                else -> false
+            }
+        }
+    }
+
+    private fun normalizedPrintSize(value: String?): String? {
+        val compact = value?.lowercase()?.replace(Regex("[\\s×x_-]+"), "") ?: return null
+        return when {
+            "1015" in compact || "1510" in compact -> "10x15"
+            "515" in compact || "155" in compact -> "5x15"
+            else -> null
+        }
+    }
 
     private fun frame(root: Path, path: Path): FramePack? = runCatching {
         val pieces = root.relativize(path).map { it.toString() }.toList()

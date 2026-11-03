@@ -152,6 +152,26 @@ class RealSessionEngineTest {
             SqliteSalesRepository(workspace), operatorAuthorized = { true }, firebaseCatalog = offlineCatalog(workspace))
     }
 
+    @Test fun omittedGenerationOnQueryUsesSessionIdButExplicitMismatchIsStale() {
+        session(StubCamera()).use { engine ->
+            val sid = UUID.randomUUID().toString()
+            val start = JsonObject().apply {
+                addProperty("sessionId", sid)
+                addProperty("generationId", UUID.randomUUID().toString())
+                addProperty("commandId", UUID.randomUUID().toString())
+                addProperty("layoutId", "test")
+            }
+            engine.dispatch("session.start", start)
+            assertEquals(sid, engine.dispatch("session.getState", JsonObject().apply { addProperty("sessionId", sid) })["sessionId"].asString)
+            assertEquals(-32004, assertFailsWith<SimulatorError> {
+                engine.dispatch("session.getState", JsonObject().apply {
+                    addProperty("sessionId", sid)
+                    addProperty("generationId", UUID.randomUUID().toString())
+                })
+            }.code)
+        }
+    }
+
     @Test fun timedRealCaptureSelectionAndCompositionUseOriginalWithoutBeauty() {
         val camera = StubCamera()
         session(camera).use { engine ->
