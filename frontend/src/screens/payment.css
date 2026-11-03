@@ -1,11 +1,13 @@
 /* Payment is an authoritative backend gate. The staff control is not authentication. */
 .v1-payment-screen {
   flex: 1;
+  width: 100%;
+  height: 100%;
   min-height: 0;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 20px;
+  gap: clamp(16px, 2vh, 24px);
   overflow: auto;
   overscroll-behavior: contain;
   position: relative;
@@ -16,45 +18,44 @@
 .v1-payment-screen .v1-heading-title { touch-action: manipulation; user-select: none; }
 .v1-payment-screen > .v1-heading, .v1-payment-screen > .appHeader, .v1-payment-staff { position: relative; z-index: 1; }
 
-/* Fixed CSS-pixel plate geometry: QR arrival and staff control must not resize either plate. */
+/* Fill the available kiosk stage; the persistent QR and instruction slots prevent state jumps. */
 .v1-payment-columns {
   box-sizing: border-box;
-  width: 940px;
-  height: 560px;
-  flex: 0 0 560px;
-  margin: auto;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  flex: 1 1 0;
   display: grid;
-  grid-template-columns: 430px 470px;
-  grid-template-rows: 560px;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
   align-items: stretch;
-  gap: 40px;
+  gap: clamp(24px, 3vw, 48px);
   position: relative;
   z-index: 1;
 }
 /* Scoped specificity overrides the shared kiosk card skin, regardless of CSS import order. */
 .v1-shell:not(.v1-camera) .v1-payment-columns > .v1-panel {
   box-sizing: border-box;
-  height: 560px;
-  min-height: 560px;
-  max-height: 560px;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 28px;
+  padding: clamp(28px, 3.2vw, 48px);
   border-radius: 28px;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.70) 0%, rgba(255, 248, 243, 0.40) 50%, rgba(255, 238, 230, 0.65) 100%);
-  -webkit-backdrop-filter: blur(32px) saturate(210%);
-  backdrop-filter: blur(32px) saturate(210%);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.76) 0%, rgba(255, 250, 245, 0.46) 50%, rgba(255, 240, 232, 0.68) 100%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  backdrop-filter: blur(28px) saturate(190%);
   border: 1.5px solid rgba(255, 255, 255, 0.88);
-  box-shadow: 0 30px 64px -16px rgba(74, 39, 33, .23), 0 12px 28px rgba(94, 52, 42, .09), inset 0 2px 2px rgba(255,255,255,.94), inset 0 -2px 3px rgba(238,188,173,.32);
+  box-shadow: 0 24px 60px -12px rgba(65, 38, 28, 0.12), 0 8px 24px -4px rgba(65, 38, 28, 0.06), inset 0 1.5px 2px rgba(255, 255, 255, 0.95), inset 0 -1.5px 2px rgba(230, 195, 180, 0.25);
   transition: none !important;
   animation: none !important;
   transform: none !important;
 }
-.v1-shell:not(.v1-camera) .v1-payment-summary { width: 430px; min-width: 430px; max-width: 430px; }
-.v1-shell:not(.v1-camera) .v1-payment-qr-panel { width: 470px; min-width: 470px; max-width: 470px; }
 .v1-shell:not(.v1-camera) .v1-payment-columns > .v1-panel::before {
   content: '';
   position: absolute;
@@ -69,7 +70,7 @@
 
 .v1-payment-summary { overflow-y: auto !important; overscroll-behavior: contain; scrollbar-width: thin; }
 .v1-payment-label { font-size: 16px; font-weight: 600; color: #5C5854 !important; letter-spacing: .04em; text-transform: uppercase; margin: 0 0 8px; }
-.v1-payment-price { font-size: 52px; font-weight: 900; line-height: 1.14; letter-spacing: -.02em; color: #9E3F28; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.v1-payment-price { font-size: clamp(46px, 4.2vw, 68px); font-weight: 900; line-height: 1.14; letter-spacing: -.02em; color: #9E3F28; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
 .v1-payment-details { margin: clamp(16px, 2.5vh, 32px) 0 0; flex: 1; }
 .v1-payment-details div { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: clamp(12px, 1.8vh, 18px) 0; border-bottom: 1px solid rgba(220, 200, 190, 0.45); font-size: clamp(16px, 1.3vw, 19px); }
 .v1-payment-details dt { color: #5C5854; font-weight: 500; }
@@ -80,25 +81,24 @@
 .v1-payment-dot { display: inline-block; flex: none; width: 9px; height: 9px; border-radius: 50%; background: currentColor; }
 .v1-payment-chip-amber .v1-payment-dot { box-shadow: 0 0 0 5px rgba(217,119,6,.16); animation: atelier-status-pulse 1.6s ease-in-out infinite; }
 
-.v1-shell .v1-payment-qr-panel {
+.v1-shell:not(.v1-camera) .v1-payment-columns > .v1-payment-qr-panel {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-   gap: 16px;
+  justify-content: safe center;
+  gap: 16px;
   text-align: center;
 }
 .v1-payment-qr-slot {
   box-sizing: border-box;
   flex: none;
-   width: 320px;
-   height: 320px;
-   min-width: 320px;
-   min-height: 320px;
-   padding: 24px;
+  width: clamp(290px, 37vh, 390px);
+  height: clamp(290px, 37vh, 390px);
+  aspect-ratio: 1;
+  padding: clamp(16px, 2vh, 24px);
   background: #FFFFFF;
   border-radius: 24px;
-   border: 1px solid rgba(255, 255, 255, 0.95);
+  border: 1.5px solid rgba(255, 255, 255, 0.95);
   box-shadow: 0 20px 48px -8px rgba(60, 35, 25, 0.18), 0 6px 18px rgba(60, 35, 25, 0.08), inset 0 1px 1.5px rgba(255, 255, 255, 1);
   display: flex;
   align-items: center;
@@ -111,8 +111,8 @@
 }
 .v1-payment-qr-slot img {
   display: block;
-   width: 100%;
-   height: 100%;
+  width: 100%;
+  height: 100%;
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
@@ -124,7 +124,7 @@
 }
 .v1-payment-spinner { width: 80px; height: 80px; border: 7px solid rgba(194, 115, 87, 0.15); border-top-color: #C27357; border-radius: 50%; animation: v1-payment-spin .85s linear infinite; }
 .v1-payment-warning { display: grid; place-items: center; width: 72px; height: 72px; border-radius: 50%; background: #fff2dd; color: #8A4C05; }
-.v1-payment-instructions { box-sizing: border-box; width: 100%; min-height: 130px; max-height: 130px; height: 130px; flex: none; display: flex; flex-direction: column; align-items: center; justify-content: safe center; text-align: center; gap: 8px; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
+.v1-payment-instructions { box-sizing: border-box; width: 100%; min-height: 130px; height: 130px; flex: none; display: flex; flex-direction: column; align-items: center; justify-content: safe center; text-align: center; gap: 8px; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
 .v1-payment-instructions h2 { font-size: clamp(20px, 1.8vw, 26px); font-weight: 800; color: #24201D; margin: 0; }
 .v1-payment-instructions p { font-size: 15px; color: #5C5854; margin: 0; max-width: 440px; line-height: 1.5; }
 .v1-payment-poll { display: inline-flex; align-items: center; gap: 9px; font-size: 15px; font-weight: 600; color: #8A4C05; padding: 6px 16px; border-radius: 999px; background: rgba(255, 243, 224, 0.8); border: 1px solid rgba(235, 180, 120, 0.4); box-shadow: 0 2px 8px rgba(217, 119, 6, 0.08); }
@@ -141,16 +141,22 @@
 
 @keyframes v1-payment-spin { to { transform: rotate(360deg); } }
 @keyframes atelier-status-pulse { 50% { opacity: .35; box-shadow: 0 0 0 9px rgba(217,119,6,.12); } }
-/* Effective CSS viewports below 1040x680 (including 150% DPI): stack the SAME rigid plates,
-   scroll inside the payment screen; never squeeze the QR or clip the recovery actions. */
-@media (max-width: 1039px), (max-height: 679px) {
-  .v1-payment-screen { border-radius: 16px; gap: 12px; }
-  .v1-payment-columns { width: 470px; height: 1160px; flex: 0 0 1160px; grid-template-columns: 470px; grid-template-rows: 560px 560px; gap: 40px; margin: 0 auto; }
-  .v1-payment-staff { position: relative; bottom: auto; padding-bottom: 12px; }
-  .v1-shell:not(.v1-camera) .v1-payment-summary { justify-self: center; }
+/* Keep both surfaces across 16:10 DPI variants; on short viewports scroll each plate
+   from the top instead of clipping the QR behind a centered overflow. */
+@media (max-height: 720px) {
+  .v1-shell:not(.v1-camera) .v1-payment-columns > .v1-panel { padding: clamp(16px, 2vh, 28px); }
+  .v1-shell:not(.v1-camera) .v1-payment-columns > .v1-payment-qr-panel { overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
 }
-/* Narrow windows retain plate sizes and expose a horizontal scroll rather than zooming content. */
-@media (max-width: 540px) { .v1-payment-columns { margin-left: 0; margin-right: 0; } }
+/* Only truly narrow CSS viewports stack. Each panel stays full width, never a rigid 470px plate. */
+@media (max-width: 760px) {
+  .v1-payment-screen { height: auto; overflow-y: auto; }
+  .v1-payment-columns { height: auto; flex: none; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto; }
+  .v1-shell:not(.v1-camera) .v1-payment-columns > .v1-panel { height: auto; min-height: 0; }
+  .v1-payment-staff { position: relative; bottom: auto; padding-bottom: 12px; }
+}
+/* The revealed staff action must not obscure the bottom of either payment surface. */
+.v1-payment-screen:has(.v1-payment-staff) .v1-payment-columns { margin-bottom: 72px; }
+@media (max-width: 760px) { .v1-payment-screen:has(.v1-payment-staff) .v1-payment-columns { margin-bottom: 0; } }
 @media (prefers-reduced-motion: reduce) {
   .v1-payment-spinner, .v1-payment-poll .v1-payment-dot, .v1-payment-chip-amber .v1-payment-dot { animation: none; }
 }

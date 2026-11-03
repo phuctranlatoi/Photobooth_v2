@@ -1,6 +1,6 @@
 ﻿# TASK_BOARD.md
 
-## Payment Liquid-Glass Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-03 08:57)
+## Full-Stage Payment Liquid-Glass Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-03 09:25)
 
 | Task | Status | Evidence / next gate |
 |---|---|---|
@@ -8,7 +8,7 @@
 | Frontend regression | **COMPLETED — PASS-AUTOMATED** | **8/8 files, 55/55 tests**. |
 | Frontend production build | **COMPLETED — PASS-AUTOMATED** | TypeScript/Vite exit 0; 2,017 modules. |
 | Rust command | **COMPLETED — PASS-AUTOMATED (compile only)** | Installed Cargo exit 0; one package compiled, no Rust tests reported. |
-| Liquid-glass payment source geometry | **COMPLETED — PASS-SIMULATED** | Rigid 940×560px container; 430px summary plate; 470px QR plate; floating 320×320px porcelain QR card; fixed 130px instructions; 32px frost over ambient apricot/rose/champagne radial illumination. Rendered/device acceptance remains NOT-RUN. |
+| Liquid-glass payment source geometry | **COMPLETED — PASS-SIMULATED** | Full-stage 100% width/height grid at `1.05fr : 1fr`, 24–48px gap, 28–48px padding; panels stretch evenly. Square QR card `clamp(290px, 37vh, 390px)` has transform/transition/animation disabled; instructions are fixed at 130px. Frost uses `blur(28px) saturate(190%)` over warm apricot/rose/champagne ambience. Rendered/device acceptance remains NOT-RUN. |
 | Payment geometry/scanner acceptance | **NOT-RUN** | No fresh mounted state-to-state rectangle measurements, 100/125/150% scaling, physical touch, or QR scan. |
 | V1 100% untouched proof | **BLOCKED** | No V1 write/build/secret read; read-only status attempt denied before execution; no trusted before/after manifest. |
 | Hardware/production/package/licenses | **BLOCKED / NOT-RUN** | Canon, DNP, Mini-PC, live providers, installer/recovery, print comparison, and redistribution rights remain open. |

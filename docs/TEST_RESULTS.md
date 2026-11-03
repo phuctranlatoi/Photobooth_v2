@@ -1,17 +1,19 @@
 ﻿# Test Results â€” Independent Consolidated Review
 
-## 2026-11-03 08:57 liquid-glass payment regression
+## 2026-11-03 09:25 full-stage liquid-glass payment regression
 
 | Case | Status | Evidence / boundary |
 |---|---|---|
 | Frontend Vitest | **PASS-AUTOMATED** | **8/8 test files, 55/55 tests passed**. |
 | Frontend production build | **PASS-AUTOMATED** | TypeScript/Vite build passed; **2,017 modules** transformed. |
 | Backend offline tests | **PASS-AUTOMATED** | **80 passed / 2 skipped / 0 failed** (82 total). |
-| Rust Cargo | **PASS-AUTOMATED (compile only)** | `cargo test` compiled the package cleanly; no Rust test cases were reported. |
-| Payment geometry | **PASS-SIMULATED (source/CSS only)** | Rigid **940×560px** container: **430px** summary plate, **470px** QR plate, **320×320px** floating porcelain QR card, fixed **130px** instructions; **32px** deep frosted glassmorphism blur over ambient radial apricot/rose/champagne illumination. No mounted viewport or QR scan was run. |
+| Rust Cargo | **PASS-AUTOMATED (compile only)** | `%USERPROFILE%\.cargo\bin\cargo.exe test` exit 0; package compiled cleanly in 5.53s and no Rust test cases were reported. |
+| Payment geometry | **PASS-SIMULATED (source/CSS only)** | Rigid 940×560px box was replaced by a full-stage 100% width/height responsive grid (`1.05fr : 1fr`), fluid 24–48px gap and 28–48px panel padding. Both panels stretch evenly. The porcelain QR card is square `clamp(290px, 37vh, 390px)` with transition/animation/transform disabled; instructions reserve 130px. Frost is `blur(28px) saturate(190%)` over a warm apricot/rose/champagne backdrop. No mounted viewport or QR scan was run. |
 | V1 isolation | **BLOCKED (global proof)** | This reviewer ran no command in V1, made no V1 write, and read no V1 secret. Without a trusted before/after manifest, filesystem-wide untouched status cannot be certified. |
 
 **Release gate: BLOCK.** Automated regression is green; physical viewport/touch/QR, hardware, packaging, provider and licensing gates remain open.
+
+Commands: `frontend: npm test -- --run`; `frontend: npm run build`; `backend: .\.toolchain\gradle-8.14.3\bin\gradle.bat --offline test --console=plain`; `src-tauri: %USERPROFILE%\.cargo\bin\cargo.exe test`. Frontend: 8/8 files and 55/55 tests, build 2,017 modules. Backend XML: 28 suites, 82 total, 80 passed, 2 skipped, 0 failed/errors; build successful in 59s.
 
 ## 2026-11-03 00:40 payment QR-dimension regression rerun (latest)
 
