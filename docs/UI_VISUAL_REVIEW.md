@@ -1,5 +1,92 @@
 # Touch kiosk visual review — 2026-11-02
 
+## Carousel correction — 2026-11-03 (CURRENT design handoff; not implemented)
+
+**Supersedes earlier carousel opacity/halo/wheel visual proposals below.** Current V2 source `frontend/src/kiosk-v1.css:449,466–497` still paints a saturated backdrop, applies dark/chromatic artwork shadows and dims sides to `.65/.40/.22`; `StudioModeScreen.tsx:15–70` is a finite horizontally draggable native snap strip. This pass changes **documentation only**; it does not claim that CSS has been changed or the UI visually tested. Preserve actual `LayoutArtwork` SVG paper, print ratio/slots, full button hitboxes, arrow controls and existing `session.setLayout` then separately acknowledged center-tap `session.confirmSetup` gate. Do not confuse the existing modular arrow *destination* with seamless visual wrap: endpoint-to-endpoint `scrollIntoView` still traverses the finite strip. Coordinate wrap-motion correction separately with frontend; do not replace native swipe/snap with an untested wheel as part of a shadow fix.
+
+### Exact frontend CSS handoff (consolidate winning rules in `kiosk-v1.css`)
+
+Remove/replace the **earlier conflicting carousel declarations**, notably `.v1-carousel-card` at ~84–87, 144, 258–259, 392, 466–497 and reduced-motion overrides at 96/277/408/516; inspect computed styles after consolidation, including `:hover`, `:active`, `:focus`, `:focus-visible`, `[disabled]`, `[aria-pressed]`, `[data-distance]`, `::before` and `::after`. Explicitly delete old `drop-shadow(0 25px 50px rgba(0,0,0,.32))`, `drop-shadow(0 0 25px rgba(236,72,153,.55))`, `drop-shadow(0 20px 45px rgba(20,15,35,.28))` **and** the other cyan/black halos at ~473–497; merely adding a weaker new filter will not override the existing late selectors. Scope every artwork filter to the **carousel**, never `.v1-preview-empty`, `.v1-strip`, captured images, QR or Live View. The following is a target replacement block, not a claim of deployed code:
+
+```css
+/* One common ambient recipe; shell owns the visible customer surface.
+   Camera/payment have independent backgrounds: retain their existing exclusions. */
+:root {
+  --layout-ambient:
+    radial-gradient(ellipse 75% 65% at 10% 15%, rgba(0, 229, 201, .20) 0%, transparent 70%),
+    radial-gradient(ellipse 70% 60% at 90% 12%, rgba(176, 66, 255, .16) 0%, transparent 70%),
+    radial-gradient(ellipse 65% 65% at 85% 85%, rgba(236, 72, 153, .14) 0%, transparent 70%),
+    radial-gradient(ellipse 70% 60% at 15% 88%, rgba(255, 111, 89, .13) 0%, transparent 70%),
+    radial-gradient(ellipse 75% 65% at 50% 50%, rgba(246, 211, 101, .10) 0%, transparent 75%),
+    #FAF7F2;
+}
+html, body, #root { min-height:100%; background:var(--layout-ambient) !important; }
+.v1-shell:not(.v1-camera):not(:has(.v1-payment-screen)) {
+  background:var(--layout-ambient) !important;
+}
+.v1-shell .v1-layout-stage,
+.v1-shell .v1-carousel-wrap,
+.v1-shell .v1-layout-carousel,
+.v1-shell .v1-carousel-art {
+  background:transparent !important;
+  -webkit-backdrop-filter:none !important; backdrop-filter:none !important;
+  box-shadow:none !important;
+}
+.v1-shell .v1-carousel-card.v1-layout-card,
+.v1-shell .v1-carousel-card.v1-layout-card:is(:hover,:active,:focus,:focus-visible),
+.v1-shell .v1-carousel-card.v1-layout-card[aria-pressed="true"],
+.v1-shell .v1-carousel-card.v1-layout-card:disabled {
+  background:transparent !important; border:0 !important;
+  box-shadow:none !important; outline:none !important;
+  -webkit-backdrop-filter:none !important; backdrop-filter:none !important;
+  filter:none !important; opacity:1 !important;
+  padding:0 !important;
+}
+.v1-shell .v1-carousel-card.v1-layout-card::before,
+.v1-shell .v1-carousel-card.v1-layout-card::after { content:none !important; box-shadow:none !important; }
+.v1-shell .v1-carousel-card .v1-carousel-art { border:0 !important; outline:0 !important; }
+.v1-shell .v1-carousel-card .v1-layout-artwork {
+  filter:drop-shadow(0 6px 16px rgba(0,0,0,.08))
+         drop-shadow(0 1px 3px rgba(0,0,0,.04));
+  /* Preserve existing aspect-correct SVG sizing, no image opacity or blur. */
+}
+.v1-shell .v1-carousel-card:is([data-distance="0"],[aria-pressed="true"]) .v1-layout-artwork {
+  filter:drop-shadow(0 10px 24px rgba(0,0,0,.11))
+         drop-shadow(0 2px 6px rgba(0,0,0,.05));
+}
+.v1-shell .v1-carousel-card.v1-layout-card,
+.v1-shell .v1-carousel-card.v1-layout-card:is(:hover,:active,:focus,:focus-visible) {
+  transition:transform .3s cubic-bezier(.2,.8,.25,1) !important;
+}
+.v1-shell .v1-carousel-card.v1-layout-card:is([data-distance="0"],[aria-pressed="true"]),
+.v1-shell .v1-carousel-card.v1-layout-card:is([data-distance="0"],[aria-pressed="true"]):is(:hover,:active,:focus,:focus-visible) {
+  transform:scale(1.04) !important; z-index:10; opacity:1 !important;
+}
+.v1-shell .v1-carousel-card.v1-layout-card[data-distance="1"],
+.v1-shell .v1-carousel-card.v1-layout-card[data-distance="1"]:is(:hover,:active,:focus,:focus-visible) {
+  transform:scale(.92) !important; z-index:5; opacity:1 !important;
+}
+.v1-shell .v1-carousel-card.v1-layout-card[data-distance]:not([data-distance="0"]):not([data-distance="1"]),
+.v1-shell .v1-carousel-card.v1-layout-card[data-distance]:not([data-distance="0"]):not([data-distance="1"]):is(:hover,:active,:focus,:focus-visible) {
+  transform:scale(.82) !important; z-index:2; opacity:1 !important;
+}
+/* Existing scroll geometry remains untouched: x mandatory + card center snap.
+   Do not set scroll-snap or padding on a scaled artwork child. */
+.v1-shell .v1-layout-carousel { scroll-snap-type:x mandatory; }
+.v1-shell .v1-carousel-card.v1-layout-card { scroll-snap-align:center; }
+@media (prefers-reduced-motion:reduce) {
+  .v1-shell .v1-carousel-card.v1-layout-card,
+  .v1-shell .v1-carousel-card.v1-layout-card:is(:hover,:active,:focus,:focus-visible) {
+    transition:none !important;
+  }
+  .v1-shell .v1-layout-carousel { scroll-behavior:auto !important; }
+}
+```
+
+**Implementation details/limitations:** `:has(.v1-payment-screen)` is a payment exclusion example; check the actual shell/stage classes and `payment.css` import cascade so the payment-specific QR backdrop is not unintentionally overwritten. A shared root gradient under an opaque shell is fallback only; do not create differently colored nested gradient tiles. Keep artwork SVG intrinsic aspect (including actual white print paper), transparent outer button/padding, no faux white box, no mask/opacity/blur on neighbors. Existing `overflow:hidden` on stage/track may visibly *clip* even a soft shadow; measure bounds before changing overflow, preserving native horizontal scrolling and arrow accessibility. `outline:none` applies to the **artwork button surface only** at the user's request: supply a visible >=3px **nonrectangular external focus cue** (e.g. underline on the title or focus indicator adjacent to the artwork) for keyboard and forced-colors users; no hidden-only focus. A disabled button may be functionally unavailable but artwork remains at 100% opacity: convey disabled/pending with adjacent readable status text, not a haze. Existing `scrollIntoView({behavior:'smooth'})` ignores reduced-motion CSS: frontend should use `matchMedia('(prefers-reduced-motion: reduce)')` and `behavior:'auto'` for JS navigation. Keep `touch-action`/scroll and 56px arrows; suppress drag/long-hold generated confirm and gate center confirmation on authoritative selection acknowledgement with architect. No CSS can itself fix this logic.
+
+**Acceptance still open:** in browser capture 1920×1200 and 1280×800 at 100/125/150% Windows scaling (record effective CSS viewport), idle/center/neighbor/last distant, sticky-hover/press/focus/disabled and drag/settled states. Assert computed `opacity===1`, `filter` only the two specified paper shadows, no wrapper/pseudo background, border, blur, box shadow or rectangular shadow cutoff; side images sharp/full-color, SVG white paper intact and aspect correct. Check uninterrupted gradient across all layout edges (including short viewport), no horizontal color seam, readable titles and external focus cue, finger hitboxes >=48px, arrows >=56px, snap-to-center, motion/reduced-motion and first↔last transition path. Test long Vietnamese strings, 0/1/many layouts, failed selection and no drag-to-confirm. No browser measurements, tests, build or hardware operations were run in this design-only pass; V1 was not changed.
+
 ## Operator / Settings redesign review — 2026-11-03 (handoff; no production claim)
 
 **Decision:** do not remove the simulator warning or advertise an “official” production Admin while `Operator.tsx` still calls `simulator_request`, `Status.productionAdminAcl` is literally `false`, `V1Settings.tsx` requires `hardwareApply:'PENDING_DISABLED'` and all production gates false. Removing the warning under those conditions falsely implies that printer, camera and ACL are operational. Architect/backend must supply authenticated authorization, device-specific read/apply acknowledgements and a non-simulator command before frontend can change these claims. This is a design/source review, not a hardware test. V1 was read-only.

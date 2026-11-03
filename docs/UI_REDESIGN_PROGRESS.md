@@ -1,5 +1,12 @@
 # Redesign progress — 2026-11-02
 
+## 2026-11-03 carousel shadow/clarity correction — design handoff only (CURRENT)
+
+- Updated `UI_VISUAL_REVIEW.md` with exact scoped CSS replacement and acceptance matrix for the user-requested carousel correction. **No frontend CSS/TSX implementation or screenshot/viewport/hardware test in this pass; V1 untouched.** This supersedes previous carousel recommendations for rose/cyan/black aura, dimmed neighbors, strong gradient, and visually separated wheel slots.
+- Frontend coder: consolidate `kiosk-v1.css` carousel overrides rather than append a lower-priority patch; remove dark/chromatic drop shadows, outer card/wrapper/pseudo backgrounds, border/box-shadow and backdrop blur; leave genuine SVG print paper untouched. Apply only the specified two-tier weak paper drop shadows; all distances at opacity 1 with center 1.04, neighbor .92 and distance >=2 .82, including hover/press/focus/disabled. Use the five-radial muted ivory gradient on the customer shell and transparent layout-stage wrappers; preserve camera and payment-specific surfaces. Native horizontal scrolling, mandatory snap-to-center and 300ms transform remain. Maintain visible nonrectangular keyboard focus cue despite removing rectangular artwork outline.
+- Frontend/architect: existing finite strip makes modular first↔last navigation a long smooth traverse, **not** seamless circular motion. JS scroll must respect reduced motion. Preserve acknowledged `session.setLayout` → separately intentional centered `session.confirmSetup`; suppress accidental hold/drag confirmations, handle selection rejection. No new confirmation/payment flow and no backend event invented.
+- Tester: computed-style and screenshot checks at 1920×1200 / 1280×800 × Windows 100/125/150% with effective viewport noted; inspect seam/rectangular shadow clipping, every card sharp at 100% opacity, intrinsic paper, keyboard focus, long language, finger targets, swipe/snap, wrap path, reduced motion and busy/error gates. Acceptance **not yet achieved**.
+
 ## 2026-11-03 Operator/Settings production-readiness design handoff
 
 - Added source-driven Operator/Settings hierarchy, parity gaps, visual option comparison, geometry, touch/state behavior and pending viewport matrix to `UI_VISUAL_REVIEW.md`. Chosen editorial porcelain with restrained static chromatic highlights instead of a saturated moving glass dashboard. This is a **design handoff only**: no TSX/CSS, build, tests or live hardware changed in this pass; V1 remained read-only.
