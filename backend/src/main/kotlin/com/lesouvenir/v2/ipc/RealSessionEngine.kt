@@ -438,7 +438,7 @@ class RealSessionEngine(
                 requireState("EDITING")
                 frame = availableFrames().find { it.id == string(p, "frameId") }
                     ?: fail(-32602, "Unknown frame")
-                composeSafely()
+                composition = null; printImage = null
                 snapshot()
             }
             "frame.confirm" -> {

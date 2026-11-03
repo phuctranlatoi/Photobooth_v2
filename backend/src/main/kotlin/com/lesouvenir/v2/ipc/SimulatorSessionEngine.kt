@@ -245,7 +245,7 @@ class SimulatorSessionEngine(
                 composeSafely(); state="EDITING"
             }
             "frame.list" -> { guard("EDITING"); val frames=availableFrames(); return obj("frames" to (listOf(mapOf("id" to "synthetic-border","name" to "LE SOUVENIR fallback frame","thumbDataUrl" to frameThumb())) + frames.mapNotNull { pack -> pack.customImagePath?.let { path -> frameStore.frameThumbDataUrl(path)?.let { mapOf("id" to pack.id,"name" to pack.title,"thumbDataUrl" to it) } } })) }
-            "frame.select" -> { guard("EDITING"); val id=text(p,"frameId"); if(id!="synthetic-border" && availableFrames().none { it.id==id }) bad(-32602,"Unknown frame"); frameId=id; composeSafely() }
+            "frame.select" -> { guard("EDITING"); val id=text(p,"frameId"); if(id!="synthetic-border" && availableFrames().none { it.id==id }) bad(-32602,"Unknown frame"); frameId=id; composition=null; printImage=null }
             "frame.confirm" -> {
                 guard("EDITING")
                 val previousFrameId=frameId

@@ -114,8 +114,12 @@ class SimulatorSessionTest {
         SimulatorSessionEngine(root,config(),true,1,1,60000,out).use { e ->
             val c=Client(e); c.capture("strip-2")
             c.call("selection.toggle","shotIndex" to 0); c.call("selection.toggle","shotIndex" to 1)
-            c.call("selection.confirm"); c.call("frame.select","frameId" to "synthetic-border")
+            c.call("selection.confirm")
             assertFalse(c.call("session.getState")["previewDataUrl"].isJsonNull)
+            val selectedFrame=c.call("frame.select","frameId" to "synthetic-border")
+            assertEquals("synthetic-border",selectedFrame["frameId"].asString)
+            assertTrue(selectedFrame["compositionDataUrl"].isJsonNull)
+            assertTrue(selectedFrame["previewDataUrl"].isJsonNull)
             c.call("session.back"); c.call("selection.toggle","shotIndex" to 0); c.call("selection.toggle","shotIndex" to 2)
             assertTrue(c.call("session.getState")["previewDataUrl"].isJsonNull)
             c.call("selection.confirm")
@@ -145,6 +149,22 @@ class SimulatorSessionTest {
             assertEquals("synthetic-border",editing["frameId"].asString)
             assertFalse(editing["compositionDataUrl"].isJsonNull)
             assertEquals("PRINT_PENDING",c.call("frame.confirm")["state"].asString)
+        }
+    }
+    @Test fun frameSelectionDefersCompositionUntilConfirmation() {
+        SimulatorSessionEngine(root,config(),true,1,1,60000,root.resolve("backend/build/deferred-frame-${id()}")).use { e ->
+            val c=Client(e); c.capture("strip-2")
+            c.call("selection.toggle","shotIndex" to 0); c.call("selection.toggle","shotIndex" to 1)
+            assertFalse(c.call("selection.confirm")["compositionDataUrl"].isJsonNull)
+            val selected=c.call("frame.select","frameId" to "synthetic-border")
+            assertEquals("EDITING",selected["state"].asString)
+            assertEquals("synthetic-border",selected["frameId"].asString)
+            assertTrue(selected["compositionDataUrl"].isJsonNull)
+            assertTrue(selected["printImageDataUrl"].isJsonNull)
+            val confirmed=c.call("frame.confirm")
+            assertEquals("PRINT_PENDING",confirmed["state"].asString)
+            assertFalse(confirmed["compositionDataUrl"].isJsonNull)
+            assertFalse(confirmed["printImageDataUrl"].isJsonNull)
         }
     }
     @Test fun atomicSelectionAndHighResolutionPreviews() {
