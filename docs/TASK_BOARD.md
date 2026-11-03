@@ -1,5 +1,20 @@
 ﻿# TASK_BOARD.md
 
+## Full-Bleed Payment Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-03 10:34)
+
+| Task | Status | Evidence / next gate |
+|---|---|---|
+| Backend regression | **COMPLETED — PASS-AUTOMATED** | Offline Gradle exit 0; 28 suites / 82 total: **80 passed, 0 failed/errors, 2 skipped**. |
+| Frontend regression | **COMPLETED — PASS-AUTOMATED** | **8/8 files, 55/55 tests**. |
+| Frontend production build | **COMPLETED — PASS-AUTOMATED** | TypeScript/Vite exit 0; **2,017 modules**. |
+| Rust command | **COMPLETED — PASS-AUTOMATED (compile only)** | Installed Cargo exit 0; one package compiled cleanly, no Rust tests reported. |
+| Edge-to-edge payment source | **COMPLETED — PASS-SIMULATED** | Payment shell padding/gap removed; outer radius zero; ambient apricot/rose/champagne glow extends to intended pixel `(0,0)` with no intended white border. Internal bezel padding remains `clamp(20px, 2.5vh, 32px) clamp(24px, 4vw, 64px)`. |
+| Mounted pixel/scaling/touch acceptance | **NOT-RUN** | Verify actual zero-white-border output at 1280×800 and 1920×1200, 100/125/150% scaling, physical touch and QR scanning. |
+| V1 100% untouched proof | **BLOCKED** | Reviewer made no V1 command/write/secret read; no trusted before/after manifest exists. |
+| Hardware/package/licenses | **BLOCKED / NOT-RUN** | Canon, DNP, Mini-PC, installer/recovery, physical V1 print comparison, live providers and redistribution rights remain open. |
+
+---
+
 ## Full-Stage Payment Liquid-Glass Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-03 09:25)
 
 | Task | Status | Evidence / next gate |

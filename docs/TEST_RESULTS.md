@@ -1,5 +1,18 @@
 ﻿# Test Results â€” Independent Consolidated Review
 
+## 2026-11-03 10:34 full-bleed payment regression
+
+| Case | Status | Evidence / boundary |
+|---|---|---|
+| Frontend Vitest | **PASS-AUTOMATED** | `npm test -- --run` exit 0: **8/8 files, 55/55 tests passed** in 13.60s. |
+| Frontend production build | **PASS-AUTOMATED** | `npm run build` exit 0; TypeScript/Vite passed and **2,017 modules** were transformed. |
+| Backend offline tests | **PASS-AUTOMATED** | Requested Gradle command exit 0 (`BUILD SUCCESSFUL in 29s`). JUnit XML aggregate: **28 suites, 82 total, 80 passed, 2 skipped, 0 failed/errors**. The test task was up-to-date. |
+| Rust Cargo | **PASS-AUTOMATED (compile only)** | `%USERPROFILE%\.cargo\bin\cargo.exe test` exit 0; **1 package compiled cleanly** in 16.32s. Cargo reported no Rust test cases. |
+| Full-bleed payment geometry | **PASS-SIMULATED (source/build only)** | Outer shell payment padding/gap are zero; payment screen outer radius is zero. Apricot/rose/champagne radial ambience reaches pixel `(0,0)` with no intended white outer border. Internal bezel protection remains `clamp(20px, 2.5vh, 32px) clamp(24px, 4vw, 64px)`. No fresh mounted viewport, scaling, touch, or pixel measurement was run. |
+| V1 isolation | **BLOCKED (global proof)** | This reviewer ran no command in V1, made no V1 write, and read no V1 secret. A trusted pre-task manifest was not provided, so **100% untouched cannot be certified**. |
+
+**Release gate: BLOCK.** Automated software regression is green; physical viewport/touch/QR, Canon, DNP, Mini-PC, packaging/recovery, provider and redistribution-license gates remain open.
+
 ## 2026-11-03 09:25 full-stage liquid-glass payment regression
 
 | Case | Status | Evidence / boundary |

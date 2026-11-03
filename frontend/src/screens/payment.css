@@ -1,4 +1,10 @@
 /* Payment is an authoritative backend gate. The staff control is not authentication. */
+.v1-shell:has(.v1-payment-screen),
+.v1-shell.v1-shell-payment {
+  padding: 0 !important;
+  gap: 0 !important;
+  background: #FAF6F0 !important;
+}
 .v1-payment-screen {
   flex: 1;
   width: 100%;
@@ -12,8 +18,13 @@
   overscroll-behavior: contain;
   position: relative;
   isolation: isolate;
-  background: radial-gradient(ellipse 38% 55% at 19% 56%, rgba(249, 163, 126, .53), transparent 83%), radial-gradient(ellipse 39% 58% at 81% 39%, rgba(219, 143, 162, .48), transparent 80%), radial-gradient(ellipse 45% 44% at 60% 91%, rgba(233, 191, 119, .55), transparent 85%), #faf7f2;
-  border-radius: 32px;
+  padding: clamp(20px, 2.5vh, 32px) clamp(24px, 4vw, 64px);
+  box-sizing: border-box;
+  background: radial-gradient(ellipse 55% 65% at 16% 50%, rgba(249, 163, 126, .58), transparent 82%),
+              radial-gradient(ellipse 55% 70% at 84% 40%, rgba(219, 143, 162, .54), transparent 80%),
+              radial-gradient(ellipse 60% 60% at 50% 95%, rgba(233, 191, 119, .62), transparent 84%),
+              #FAF6F0;
+  border-radius: 0;
 }
 .v1-payment-screen .v1-heading-title { touch-action: manipulation; user-select: none; }
 .v1-payment-screen > .v1-heading, .v1-payment-screen > .appHeader, .v1-payment-staff { position: relative; z-index: 1; }
