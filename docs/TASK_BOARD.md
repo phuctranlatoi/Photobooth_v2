@@ -8,6 +8,7 @@
 | Frontend regression | **COMPLETED — PASS-AUTOMATED** | **8/8 files, 55/55 tests**. |
 | Frontend production build | **COMPLETED — PASS-AUTOMATED** | TypeScript/Vite exit 0; 2,017 modules. |
 | Rust command | **COMPLETED — PASS-AUTOMATED (compile only)** | Installed Cargo exit 0; one package compiled, no Rust tests reported. |
+| Liquid-glass payment source geometry | **COMPLETED — PASS-SIMULATED** | Rigid 940×560px container; 430px summary plate; 470px QR plate; floating 320×320px porcelain QR card; fixed 130px instructions; 32px frost over ambient apricot/rose/champagne radial illumination. Rendered/device acceptance remains NOT-RUN. |
 | Payment geometry/scanner acceptance | **NOT-RUN** | No fresh mounted state-to-state rectangle measurements, 100/125/150% scaling, physical touch, or QR scan. |
 | V1 100% untouched proof | **BLOCKED** | No V1 write/build/secret read; read-only status attempt denied before execution; no trusted before/after manifest. |
 | Hardware/production/package/licenses | **BLOCKED / NOT-RUN** | Canon, DNP, Mini-PC, live providers, installer/recovery, print comparison, and redistribution rights remain open. |

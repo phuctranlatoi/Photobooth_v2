@@ -1,5 +1,18 @@
 ﻿# Test Results â€” Independent Consolidated Review
 
+## 2026-11-03 08:57 liquid-glass payment regression
+
+| Case | Status | Evidence / boundary |
+|---|---|---|
+| Frontend Vitest | **PASS-AUTOMATED** | **8/8 test files, 55/55 tests passed**. |
+| Frontend production build | **PASS-AUTOMATED** | TypeScript/Vite build passed; **2,017 modules** transformed. |
+| Backend offline tests | **PASS-AUTOMATED** | **80 passed / 2 skipped / 0 failed** (82 total). |
+| Rust Cargo | **PASS-AUTOMATED (compile only)** | `cargo test` compiled the package cleanly; no Rust test cases were reported. |
+| Payment geometry | **PASS-SIMULATED (source/CSS only)** | Rigid **940×560px** container: **430px** summary plate, **470px** QR plate, **320×320px** floating porcelain QR card, fixed **130px** instructions; **32px** deep frosted glassmorphism blur over ambient radial apricot/rose/champagne illumination. No mounted viewport or QR scan was run. |
+| V1 isolation | **BLOCKED (global proof)** | This reviewer ran no command in V1, made no V1 write, and read no V1 secret. Without a trusted before/after manifest, filesystem-wide untouched status cannot be certified. |
+
+**Release gate: BLOCK.** Automated regression is green; physical viewport/touch/QR, hardware, packaging, provider and licensing gates remain open.
+
 ## 2026-11-03 00:40 payment QR-dimension regression rerun (latest)
 
 | Case | Status | Evidence |
