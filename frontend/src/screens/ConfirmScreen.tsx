@@ -11,7 +11,7 @@ export function ConfirmScreen({layout,pricing,busy,action,preview,snapshot,simul
   return (
     <div className="v1-confirm-screen">
       <Heading title="Kiểm tra lần cuối" subtitle="Kiểm tra bản ghép trước khi xác nhận" back={()=>action('session.back')}/>
-      <div className="v1-split">
+       <div className="v1-split v1-confirm-workspace">
         <PrintPreview src={composed} ratio={layout?.printAspectRatio} layout={layout} label="Bản ghép hoàn thiện"/>
         <section className="v1-panel v1-summary">
           <h2>Đơn hàng của bạn</h2>

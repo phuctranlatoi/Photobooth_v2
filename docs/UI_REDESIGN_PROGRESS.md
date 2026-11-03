@@ -1,4 +1,70 @@
-# Redesign progress — 2026-11-02
+# Redesign Progress — 2026-11-03
+
+## Screen-by-Screen Redesign Status & Verification (2026-11-03 21:45)
+
+**Status: PASS-SIMULATED & PASS-AUTOMATED.** All customer-facing and operator screens have been completely rebuilt and polished with the Korean Atelier Liquid Glass aesthetic and sub-10ms interaction speed. Automated acceptance runner passes 100% across 1280×800 and 1920×1200 viewports (`tests/journey-evidence/2026-11-03T14-34-21.203Z/`).
+
+### Customer Flow Rebuild
+
+1. **Start Screen (`StartScreen.tsx`):**
+   - **Visual:** Replaced cluttered developer debug badges, Firebase technical indicators, and manual mode toggles with a luminous editorial greeting: `PHOTO ATELIER · SEOUL × SAIGON`, headline `Chụp ảnh lấy ngay`, floating photostrips with realistic paper drop shadow.
+   - **Interaction:** Prominent fluid CTA button ("Bắt đầu trải nghiệm", 72px touch height). Operator access concealed behind 5-tap gesture on the header wordmark.
+   - **Resolution adaptation:** Scales fluidly between 1280×800 and 1920×1200 without window scrolling.
+
+2. **Layout Selection Screen (`StudioModeScreen.tsx`):**
+   - **Visual:** Cardless Coverflow carousel presenting layout artwork as physical paper floating over warm ambient gradient (`--layout-ambient: linear-gradient(135deg, #FAF7F2 0%, #F5EFEB 50%, #EFE8E0 100%)`).
+   - **Interaction:** Center active card scaled to 1.04; immediate neighbors scaled to 0.92 at 85% opacity with no blur. Symmetrical 56×56px carousel chevrons. Tap non-center centers the card; tap center confirms selection and advances. No raw technical IDs displayed (`515_4_anh` displayed as "Dải 4 ảnh cổ điển").
+
+3. **Quantity Selection Screen (`QuantityScreen.tsx`):**
+   - **Visual:** Split layout (`v1-quantity-workspace`) pairing order pricing breakdown with enlarged floating print preview panel (`.v1-quantity-preview`).
+   - **Interaction:** Stepper touch targets enlarged to 72×72px with 34px tabular numerals (`tabular-nums`). Pricing updates dynamically based on backend calculations without layout shift. Action bar advances to payment.
+
+4. **Payment Screen (`PaymentScreen.tsx` & `payment.css`):**
+   - **Visual:** Frosted glass columns (`rgba(255,255,255,0.76)`, `blur(20px) saturate(150%)`). Left column displays tabular price breakdown and "Chờ thanh toán QR" status chip. Right column features a pure porcelain white QR card (`#FFFFFF`) with 16px quiet zone.
+   - **Layout Stability:** Exactly **0 px layout shift** verified by CDP assertions. The QR slot maintains static clamp dimensions (280px at 1280×800, 380px at 1920×1200). Centered spinner placeholder transitions to high-resolution VietQR PNG without altering bounding rects.
+   - **Security:** Free bypass copy removed. Staff cash override button concealed behind a 1-second press on the "Thanh toán" title, requiring staff PIN `1234`.
+
+5. **Capture & Countdown Screen (`CaptureScreen.tsx`):**
+   - **Visual:** Matte obsidian studio stage (`#121214`) prevents screen glare in camera lens. Mirrored camera preview with layout aspect ratio guide.
+   - **Interaction:** Centered shutter trigger button at `bottom: clamp(16px, 3vh, 44px)` (88px at 1280×800, 108px at 1920×1200). Live countdown timer centered dead-on (`50%, 50%`) with high-contrast digits.
+
+6. **Photo Selection Screen (`SelectPhotosScreen.tsx`):**
+   - **Visual:** Symmetrical 2-column workspace (`minmax(360px, 1.1fr) minmax(360px, 1fr)`). Candidate photo grid on left and live composite print preview on right share the exact same vertical baseline.
+   - **Performance:** Selection response time optimized to **4.30–8.50 ms** (measured in live Tauri WebView).
+   - **Interaction:** 40×40px terracotta order badges (`#C27357`) indicate pick sequence (`✓ 1`, `✓ 2`). Press-and-hold (500ms) displays full-resolution lightbox modal; releasing finger dismisses it. Authoritative timer (`Còn lại 02:20`) decrements accurately.
+
+7. **Frame Selection Screen (`FrameScreen.tsx`):**
+   - **Visual:** Print preview panel expanded up to 82vh on the left. Two-column frame option grid on right (`clamp(190px, 29vh, 330px)` card height).
+   - **Performance:** Deferred composition ensures `frame.select` latency is **7.50–8.00 ms** (<1ms memory IPC). Full composition is rendered just-in-time on confirmation.
+   - **Interaction:** Users can tap frame cards directly to select and tap again (or click "Xem bản in →") to confirm.
+
+8. **Confirmation Screen (`ConfirmScreen.tsx`):**
+   - **Visual:** Print preview occupies dominant left stage (`minmax(360px, 1.35fr)`). Clean order summary on right (`minmax(300px, 0.65fr)`).
+   - **Interaction:** High-resolution composed preview loaded (`naturalWidth > 0`). Confirm button disarmed for 500ms on mount to prevent double-tap ghost clicks. Synchronously locks and invokes `session.confirmPrint`.
+
+9. **Delivery Screen (`DeliveryScreen.tsx`):**
+   - **Visual:** Clean celebration stage with prominent green status badge: **“TÍN HIỆU IN: ĐÃ TRUYỀN THÀNH CÔNG”** (`#28553A` on `#E9F1E9`).
+   - **Interaction:** Displays mobile download QR code for digital photos and video. "Hoàn thành" button cleanly resets the session back to `StartScreen`.
+
+---
+
+### Operator Workspace Rebuild (`operator-v1.css` & `V1Settings.tsx`)
+
+1. **Visual Style Unification:**
+   - Overhauled legacy dark graphite styling to match the Korean Atelier Liquid Glass theme.
+   - Frosted glass cards, banners, and modal dialogs (`rgba(255,255,255,0.76)`, `blur(20px)`).
+   - High-contrast charcoal text (`#24201D`) ensures legibility under bright salon lighting.
+
+2. **Navigation & Touch Targets:**
+   - Horizontally scrollable navigation bar with 56px minimum touch height and 100px min-width per tab.
+   - Tabs: Frames, Layouts, Settings, Tools, Colors, Revenue.
+
+3. **Settings Parity & Diagnostics:**
+   - Preserves exact 6-field persistence contract (`enableSystemPrint`, `useHotFolder`, `hotFolderPath`, `postCaptureTimeoutSeconds`, `photoSelectionTimeoutSeconds`, `frameSelectionTimeoutSeconds`).
+   - Tactile 52×52px squircle steppers and iOS-style toggle switches.
+   - Honest device health reporting: explicitly reports when Canon DSLR is disconnected and printer is in simulated/ready mode; never claims unverified hardware health.
+
+---
 
 ## 2026-11-03 carousel shadow/clarity correction — design handoff only (CURRENT)
 

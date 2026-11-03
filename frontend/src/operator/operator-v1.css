@@ -13,3 +13,13 @@
 .operator-workspace .v1-admin-banner{border-radius:20px}.operator-workspace .v1-admin-banner small{color:#625750}.operator-workspace .op-overlay{background:rgba(36,32,29,.52);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 .operator-workspace [role="alert"]{color:#713b29;background:rgba(255,245,239,.9);border:1px solid #c27357;border-radius:16px;padding:14px}
 @media(max-width:680px){.operator-workspace>nav{overflow-x:auto}.operator-workspace .op-columns{grid-template-columns:minmax(0,1fr)}}
+
+/* The operator sees the same warm atelier; device status retains explicit labels. */
+.operator-workspace{background:linear-gradient(135deg,#FAF7F2 0%,#F5EFEB 50%,#EFE8E0 100%)!important;color:#24201D!important}
+.operator-workspace>header,.operator-workspace>nav,.operator-workspace :is(.op-panel,.op-card,.op-dialog,.v1-admin-banner,.v1-admin-pills span){background:rgba(255,255,255,.76);border:1px solid rgba(255,255,255,.9);-webkit-backdrop-filter:blur(20px) saturate(150%);backdrop-filter:blur(20px) saturate(150%);box-shadow:inset 0 1px 1px rgba(255,255,255,.9),0 12px 32px rgba(40,25,15,.08)}
+.operator-workspace>nav{overflow-x:auto;scrollbar-width:thin}
+.operator-workspace>nav button{min-width:100px;min-height:56px;white-space:nowrap}
+.operator-workspace .op-columns{min-width:0;grid-template-columns:minmax(250px,1fr) minmax(0,1.5fr)}
+.operator-workspace .op-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}
+.operator-workspace .op-card img{object-fit:contain}
+@media(max-width:800px){.operator-workspace .op-columns{grid-template-columns:minmax(0,1fr)}.operator-workspace>header{flex-wrap:wrap}}

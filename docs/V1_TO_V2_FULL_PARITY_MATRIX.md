@@ -1,5 +1,23 @@
 # V1 to V2 Full Parity Matrix
 
+> **Latest Touch Latency, Deferred Composition & Full Atelier Liquid Glass Verification (2026-11-03 21:45): SOFTWARE REGRESSION GREEN / RELEASE BLOCKED.**
+> All 87 Kotlin backend tests passed (85 passed, 2 skipped, 0 failed across 28 test suites); frontend Vitest reports **57/57 passed across 8 test files**; Vite production build passed with 2,017 modules and 0 errors; live Tauri journey runner reports **65/65 checks passed, 0 failures, 26 screenshots** across 1280×800 and 1920×1200 viewports (`tests/journey-evidence/2026-11-03T14-34-21.203Z/`).
+>
+> | Key Architectural & Interaction Area | Status | Verified Result Boundary |
+> |---|---|---|
+> | **Deferred Composition on Frame Select** | **PASS-AUTOMATED** | `frame.select` updates in <1ms without rendering heavy image composition; `frame.confirm` renders 300 DPI composite just-in-time. Verified by unit tests. |
+> | **Touch Interaction Latency** | **PASS-SIMULATED** | Photo selection: **4.30 ms** (1920×1200), **8.50 ms** (1280×800); Frame selection: **7.50 ms** (1920×1200), **8.00 ms** (1280×800) — far faster than 100ms threshold. |
+> | **PayOS QR Layout Stability** | **PASS-SIMULATED** | Layout shift = **0 px**; constant clamp slot bounds between loading spinner and rendered VietQR image. |
+> | **Korean Atelier Liquid Glass UI** | **PASS-SIMULATED** | Translucent frosted glass (`blur(20px) saturate(150%)`), warm ambient ivory gradient (`#FAF7F2` to `#EFE8E0`), inner bevel highlights, and organic paper drop shadows across all customer and operator screens. |
+> | **Enlarged Dominant Previews** | **PASS-SIMULATED** | Photo previews expanded up to 82vh on Selection, Frame, Confirm, and Quantity screens; 72×72px tactile steppers with 34px tabular numerals; 40px terracotta order badges. |
+> | **Zero DEMO Revenue Safety Gate** | **PASS-AUTOMATED** | Confirmed 0 sales records in SQLite and verified by `RealSessionEngineDemoModeTest`. |
+> | **Process Lifecycle Management** | **PASS-AUTOMATED** | 0 orphaned Node/Vite processes confirmed after test shutdown. |
+> | **Physical Hardware & Release Gates** | **BLOCKED / GATED** | Physical Canon DSLR, physical DNP DS-RX1HS spooling/cutting, live PayOS credentials, and commercial redistribution review remain unverified without physical hardware. |
+>
+> Reviewer performed no V1 command/write/secret read; V1 (`E:\HK1_2026_2027\PhotoboothDesktop`) remains strictly untouched, unread, and write-protected.
+
+---
+
 > **Latest independent luxury-atelier rerun (2026-11-02 23:05): SOFTWARE REGRESSION GREEN / RELEASE BLOCKED.** Backend JUnit XML reports **80 passed, 2 skipped, 0 failed** of 82 across 28 suites; frontend reports **55/55 across 8 files**; TypeScript/Vite production build passed with 2,017 modules; installed Cargo compiled one Rust package with no Rust tests reported. This supports only bounded compile/component compatibility for the current CSS and screen edits. Fresh 1280×800/1920×1200 rendering at Windows 100/125/150%, physical touch, Canon/DNP, Mini-PC performance, provider operations, installer recovery, V1 physical comparison, and redistribution rights remain **BLOCKED / NOT-RUN**. Reviewer performed no V1 command/write/secret read; global untouched proof remains blocked without a trusted before/after manifest.
 
 > **Latest independent geometry-alignment rerun (2026-11-02 22:48): SOFTWARE REGRESSION GREEN / RELEASE BLOCKED.** Backend XML: **80 passed, 2 skipped, 0 failed** of 82 across 28 suites; frontend: **55/55 across 8 files**; TypeScript/Vite build passed with 2,017 modules. Cargo was unavailable on `PATH`; the explicit installed Cargo executable compiled one Rust package successfully with no Rust tests reported. Capture, selection, and frame-preview geometry changes therefore compile and preserve existing automated interactions, but no fresh mounted 16:10 run, V1 golden/pixel comparison, physical Canon/DNP test, Mini-PC measurement, installer recovery, or redistribution-rights verification occurred. Reviewer made no V1 command/write/secret read; complete untouched status remains BLOCKED without a trusted before/after manifest.

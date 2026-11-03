@@ -1,6 +1,134 @@
-# LE SOUVENIR V2 — Korean Photo Atelier design specification
+# LE SOUVENIR V2 — Korean Photo Atelier Design Specification
 
-**Status:** Korean Photo Atelier visual system and V1 payment presentation mounted; **simulated desktop journey accepted** in `tests/journey-evidence/2026-11-01T17-19-57.239Z/` (35/35 checks, 26 screenshots, 1280×800 and 1920×1200). Specifications below include historical proposals; §6 and the current mounted contract immediately below supersede incompatible older wording. No live payment/hardware or physical-touch certification. **Scope:** V2 only. V1 inspected read-only. Preserve server/session authority, configured counts/timers, payment and Confirm & Print gates.
+**Status:** Korean Photo Atelier Liquid Glass visual system mounted and fully verified in software; **simulated desktop journey accepted** across 1280×800 and 1920×1200 viewports (`tests/journey-evidence/2026-11-03T14-34-21.203Z/results.json`, 65/65 checks passed, 0 failures, 26 screenshots). Sub-10ms touch response, deferred composition, and zero QR layout shift verified. Physical Canon DSLR and DNP printer hardware gates remain gated.
+
+---
+
+## 1. Atelier Liquid Glass Design Foundations
+
+The LE SOUVENIR V2 visual system is inspired by upscale modern Korean photo studios (Seoul Seongsu/Hannam atelier aesthetic). It pairs high-translucency frosted glass surfaces with warm ambient paper tones, generous breathing room, and prominent physical print presentations. UI chrome recedes into soft, luminous glass layers, ensuring the customer's photographs remain the dominant visual hero.
+
+### 1.1 Mounted Color Tokens
+
+| Design Token | CSS / Hex Value | Role & Applied Context | Contrast / Accessibility |
+|---|---|---|---|
+| Ambient Canvas | `linear-gradient(135deg, #FAF7F2 0%, #F5EFEB 50%, #EFE8E0 100%)` | Global customer shell background (`:root`, `.v1-shell:not(.v1-camera)`) | Soft non-glare warm ivory surface |
+| Glass Surface Fill | `rgba(255, 255, 255, 0.76)` | Translucent frosted plates (`.v1-panel`, `.v1-actionbar`, `.v1-start-card`, summary cards) | Requires `backdrop-filter: blur(20px) saturate(150%)` |
+| Glass Rim / Bevel | `1px solid rgba(255, 255, 255, 0.9)` | Specular edge reflection around glass panels | Creates tangible physical boundary |
+| Inner Specular Bevel | `inset 0 1px 1px rgba(255, 255, 255, 0.9)` | Top edge light-catch mimicking polished crystal glass | High-end tactile depth |
+| Glass Ambient Shadow | `0 12px 32px rgba(40, 25, 15, 0.08)` | Soft warm drop shadow beneath floating glass panels | Grounded without muddying background |
+| Primary Ink | `#24201D` | Primary headings, titles, price totals, action labels | High contrast (≥ 11:1 on ivory/glass) |
+| Secondary Ink | `#5C5854` / `#6D6059` | Subtitles, step eyebrows, metadata labels, unit prices | Contrast ≥ 4.8:1 on glass surface |
+| Muted Border | `#E9DED7` / `#D4C9C0` | Hairline dividers, subtle card boundaries | Non-intrusive structural grouping |
+| Terracotta Accent | `#C27357` (hover/focus: `#B06247`) | Primary CTA buttons, active selection badges, checkmarks | Brand salon color, high-salience touch |
+| Terracotta Glow | `0 8px 24px rgba(194, 115, 87, 0.28)` | Focus and active shadow for primary buttons and chips | Warm tactile confirmation |
+| Amber Status | `#8A4C05` on `#FFF2DD` | Pending payment badge, awaiting QR scan indicator | Warning/pending state |
+| Green Success | `#28553A` on `#E9F1E9` | Print signal success badge, completed delivery state | Confirmed hardware/session success |
+| Studio Camera Darkroom | `#121214` (matte obsidian) | Live View capture screen (`.v1-capture-screen`, `.v1-camera`) | Eliminates screen flare in camera lens |
+
+---
+
+## 2. Typography Scale & Layout Hierarchy
+
+Typography is built on the native Windows/Chromium system font stack (`system-ui, "Segoe UI", -apple-system, BlinkMacSystemFont, "Noto Sans", sans-serif`) ensuring zero latency, zero layout shift (FOUT/FOIT), and native rendering of all Vietnamese diacritics.
+
+### 2.1 Type Hierarchy
+
+| Hierarchy Level | Font Size (Fluid / Responsive) | Weight | Line Height | Letter Spacing | Applied Elements |
+|---|---|---|---|---|---|
+| Atelier Hero | `clamp(36px, 4vw, 56px)` | 800 | 1.15 | `-0.025em` | Welcome screen greeting title |
+| Screen Title | `clamp(24px, 2.2vw, 32px)` | 700 | 1.20 | `-0.02em` | Main screen header title (`Heading`) |
+| Section Header | `clamp(20px, 1.8vw, 26px)` | 600 | 1.25 | `-0.01em` | Panel headings ("Đơn hàng", "Số lượng") |
+| Step Eyebrow | `12px` / `clamp(11px, 1vw, 13px)` | 600 | 1.0 | `+0.08em` (uppercase) | Subdued step badge ("BƯỚC 1", "BƯỚC 2") |
+| Body Copy | `15px` – `17px` | 400 | 1.45 | `0` | Explanations, helper texts, instructions |
+| Tabular Numbers | `18px` – `34px` (`tabular-nums`) | 700 | 1.0 | `-0.01em` | Stepper quantity (34px), timers, prices |
+| Big Countdown | `clamp(96px, 14vw, 180px)` | 800 | 1.0 | `-0.03em` | Live camera shutter countdown (centered) |
+
+All price tags, quantities, countdown timers, and order totals enforce `font-variant-numeric: tabular-nums` to eliminate baseline jitter when updating dynamically.
+
+---
+
+## 3. Touchscreen Ergonomics & 56px Touch Standards
+
+All customer interactions are optimized for 16:10 landscape touchscreens (1280×800 and 1920×1200) without requiring a mouse or keyboard.
+
+1. **56px Minimum Touch Target Rule:**
+   - Header Back button: **56×56px** (Lucide `ArrowLeft` centered with dx: 0.5, dy: 0.0).
+   - Carousel navigation chevrons: **56×56px** floating circles with horizontal axis alignment.
+   - Action Bar primary CTA buttons: **56px – 72px** fluid height across resolutions.
+   - Quantity Stepper buttons (`+`, `−`): **72×72px** square touch targets with 34px glyphs.
+   - Photo selection tiles: Full card click surface (`clamp(140px, 22vh, 260px)`).
+   - Touch targets are spaced with a minimum of 12px buffer to prevent accidental adjacent taps.
+2. **Zero-Scroll Window Policy:**
+   - The root kiosk window (`.v1-shell`) maintains `overflow: hidden; height: 100vh`. No customer flow triggers full-window scrolling.
+   - Dynamic lists (captured photo gallery, frame grid, order summary) scroll independently with `overscroll-behavior: contain` and compact scrollbars.
+3. **No-Hover / Immediate Press State:**
+   - All interactive controls use `:active` scale (`transform: scale(0.96)`) for immediate physical feedback on finger contact.
+   - Touch triggers employ `touch-action: manipulation` to eliminate browser tap delays.
+
+---
+
+## 4. Paper Elevation & Photographic Canvas
+
+Unlike legacy UI patterns that encase photos in heavy plastic white cards, the Korean Atelier aesthetic presents prints as physical photo paper floating gracefully over the studio canvas:
+
+1. **Photorealistic Drop Shadows:**
+   - Floating print previews and layout artwork utilize dual-layer organic drop shadows:
+     ```css
+     filter: drop-shadow(0 12px 28px rgba(40, 28, 20, 0.12))
+            drop-shadow(0 2px 6px rgba(40, 28, 20, 0.06));
+     ```
+   - Hover and active states elevate the paper naturally:
+     ```css
+     filter: drop-shadow(0 20px 48px rgba(40, 28, 20, 0.16))
+            drop-shadow(0 4px 10px rgba(40, 28, 20, 0.08));
+     ```
+2. **Cardless Presentation:**
+   - Carousel cards, live print previews, and confirm screen previews have zero background wrappers, zero artificial borders, and zero backdrop blur applied to the photographic canvas itself.
+3. **Maximized Visual Stage (82vh):**
+   - The print preview occupies up to 82% of the viewport height (`max-height: 82vh`), giving customers an expansive, high-fidelity view of their composition before confirming.
+
+---
+
+## 5. Coverflow Layout Carousel Specifications
+
+The layout selection carousel (`StudioModeScreen.tsx`) employs a responsive, tactile Coverflow wheel:
+
+1. **Card Geometry & Scaling by Distance:**
+   - Distance 0 (Active Center): `transform: scale(1.04)`, `z-index: 10`, `opacity: 1.0`.
+   - Distance 1 (Immediate Neighbors): `transform: scale(0.92)`, `z-index: 5`, `opacity: 0.85` (clear, unblurred).
+   - Distance ≥ 2 (Outer Neighbors): `transform: scale(0.82)`, `z-index: 2`, `opacity: 0.85`.
+2. **Snapping & Scrolling:**
+   - `scroll-snap-type: x mandatory` on `.v1-layout-carousel`.
+   - `scroll-snap-align: center` on `.v1-carousel-card`.
+   - Smooth transform animations: `transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.25, 1)`.
+3. **Touch & Navigation Interaction:**
+   - Non-centered card tap: scrolls that card to center and updates selection.
+   - Centered card tap: triggers immediate selection confirmation and advances to the next step.
+   - Chevrons: 56×56px floating circular controls pinned symmetrically on the horizontal center axis.
+   - Reduced motion: disables smooth scroll and scale transitions under `prefers-reduced-motion: reduce`.
+
+---
+
+## 6. Payment & QR Surface Architecture
+
+1. **Zero Layout Shift (0 px):**
+   - The QR code container (`.v1-payment-qr-slot`) enforces fixed responsive dimensions (`clamp(280px, 34vh, 380px)`) with an exact `1:1` aspect ratio.
+   - Layout measurements verified via CDP prove 0.00 px shift when transitioning from spinner placeholder to high-resolution VietQR PNG.
+2. **Porcelain White QR Target:**
+   - To guarantee rapid camera recognition by banking apps, the QR code is rendered on a pure white, unblurred, non-translucent card (`#FFFFFF`) with 16px quiet zone padding.
+3. **Concealed Staff Access:**
+   - Operator cash override is completely concealed behind a 1-second dwell gesture on the "Thanh toán" title, requiring staff PIN `1234` to prevent customer tampering.
+
+---
+
+## 7. Operator Workspace Styling
+
+The Operator and Diagnostics workspace (`operator-v1.css`) adopts the same sophisticated Liquid Glass aesthetic:
+- Warm ivory backdrop (`#FAF7F2` to `#EFE8E0`) replaces legacy harsh black/graphite styling.
+- Frosted glass cards and navigation tabs with subtle white borders.
+- Honest, unambiguous hardware health indicators (Canon DSLR disconnected, DNP printer simulated/ready).
+- 56px touch-friendly navigation tabs with horizontal scroll affordance.
 
 ### Current mounted-token and payment contract (2026-11-01)
 

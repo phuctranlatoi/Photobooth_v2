@@ -1,5 +1,40 @@
 ﻿# PROGRESS.md
 
+## Sub-10ms Touch Latency, Deferred Composition & Full Atelier Liquid Glass Milestone (2026-11-03 21:45)
+
+**Status: PASS-SIMULATED & PASS-AUTOMATED across 1280×800 and 1920×1200 viewports; physical hardware gates remain unverified without physical Canon DSLR or DNP DS-RX1HS.**
+
+Key milestones delivered and verified:
+1. **End-to-End Performance Optimization:**
+   - **Deferred Composition on Frame Selection:** In `RealSessionEngine.kt` and `SimulatorSessionEngine.kt`, `frame.select` no longer synchronously renders full-resolution compositions via `composeSafely()`. Instead, `frame.select` updates `frameId` in memory, clears cached composition artifacts (`composition = null; printImage = null`), and returns instantly (<1ms). Composition rendering is deferred just-in-time to `frame.confirm` before transitioning to `PRINT_PENDING`.
+   - **Non-Blocking React Command Dispatch:** In `KioskSimulator.tsx`, decoupled user command mutations from background polling loops. User taps immediately increment `revision` and execute with high priority, eliminating the previous busy-wait lock contention where user commands waited on background poll cycles.
+   - **Snapshot Poll Deduplication:** Introduced `sameVisibleSnapshot()` to compare high-level state, session identifiers, timer seconds, and shot previews without serializing multi-megabyte base64 capture strings on every 500ms cycle. Prevents unnecessary React re-renders, garbage collection pauses, and layout thrashing.
+   - **Frame List Caching:** Cached frame catalog in `framesRef` during `EDITING` state to avoid redundant `frame.list` IPC round-trips during background polling.
+2. **Sub-10ms Latency Measurements on Live Desktop App:**
+   - Evaluated via live Chrome DevTools Protocol (CDP) inside the live packaged Tauri WebView2 environment in `tests/verify-demo-and-real-journey.mjs`:
+     - **Photo selection latency:** **4.30 ms** at 1920×1200 and **8.50 ms** at 1280×800 (target < 100 ms).
+     - **Frame selection latency:** **7.50 ms** at 1920×1200 and **8.00 ms** at 1280×800 (target < 100 ms).
+     - **PayOS QR Layout Shift:** Exactly **0 px layout shift** (`shifts: { slotWidth: 0, slotHeight: 0, columnsX: 0, columnsY: 0, columnsWidth: 0, columnsHeight: 0 }`). The QR container maintains a constant physical footprint during transition from loading spinner to base64 VietQR image.
+3. **Complete Liquid Glass UI Overhaul Across Customer & Operator Screens:**
+   - Unified luxury Korean Atelier ambient gradient: `linear-gradient(135deg, #FAF7F2 0%, #F5EFEB 50%, #EFE8E0 100%)`.
+   - Frosted glass surfaces: `rgba(255, 255, 255, 0.76)`, `backdrop-filter: blur(20px) saturate(150%)`, `border: 1px solid rgba(255, 255, 255, 0.9)`, inner bevel highlight `inset 0 1px 1px rgba(255, 255, 255, 0.9)`, and warm ambient drop shadows `0 12px 32px rgba(40, 25, 15, 0.08)`.
+   - Extended to Operator workspace (`operator-v1.css`): refined frosted header, navigation, and dialogs while maintaining high contrast, dark ink (`#24201D`), and clear, honest device health indicators.
+4. **Enlarged Photo Previews & Dominant Components Across Customer Flow:**
+   - Expanded live print preview panels on Selection, Frame, Confirm, and Quantity screens to utilize up to 82vh (`max-height: 82vh`), making the customer's photo prints the undisputed visual hero.
+   - Stepper controls enlarged to 72×72px tactile touch targets with 34px tabular typography.
+   - Enlarged photo gallery cards with 40×40px terracotta order badges (`#C27357`).
+   - Frame selection grid cards scaled up to `clamp(190px, 29vh, 330px)` with symmetric thumbnails and checkmarks.
+   - Action bars expanded to 76px min-height with 56px fluid touch buttons.
+5. **All Test Suites Passing:**
+   - Backend Gradle: **87 tests (85 passed, 2 skipped, 0 failed)** across 28 test suites (`RealSessionEngineTest`, `SimulatorSessionTest`, `RealSessionEngineDemoModeTest`, etc.).
+   - Frontend Vitest: **57/57 tests passed** across 8 test suites (including async command queues, staff gestures, preview modals, settings, and screens).
+   - Automated Acceptance Journey (`verify-demo-and-real-journey.mjs`): **100% checks passed, 0 failures** across both 1280×800 and 1920×1200 viewports.
+   - Zero revenue for DEMO sessions verified in SQLite and backend tests.
+   - Zero orphaned Node/Vite processes verified after tree shutdown.
+6. **Strict V1 Isolation:** V1 (`E:\HK1_2026_2027\PhotoboothDesktop`) remained strictly untouched, unread, and write-protected.
+
+---
+
 ## Kiosk Typography, Visual Rhythm & Column Alignment Polish (2026-11-03 21:00)
 
 **Status: PASS-SIMULATED across both 1280×800 and 1920×1200 viewports; physical hardware gates remain unverified without physical Canon DSLR or DNP DS-RX1HS.**

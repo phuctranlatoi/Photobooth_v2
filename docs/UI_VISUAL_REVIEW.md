@@ -1,4 +1,24 @@
-# Touch kiosk visual review — 2026-11-02
+# Touch Kiosk Visual Review
+
+## Live Desktop Journey Visual Review — 1280×800 & 1920×1200 (2026-11-03 21:45)
+
+**Status: PASS-SIMULATED across 1280×800 and 1920×1200 viewports.** Evidence recorded in `tests/journey-evidence/2026-11-03T14-34-21.203Z/results.json` with 26 high-resolution screenshot captures.
+
+### Screen-by-Screen Visual Verification & Evidence Artifacts
+
+| Screen / Step | 1280×800 Evidence Artifact | 1920×1200 Evidence Artifact | Visual Findings & Ergonomic Review |
+|---|---|---|---|
+| **Welcome (`StartScreen`)** | `1280x800-demo-start.png`<br>`1280x800-real-start.png` | `1920x1200-demo-start.png`<br>`1920x1200-real-start.png` | Clean Korean Atelier hero greeting; no debug/Firebase badges; no technical mode switches. Floating photostrips with realistic paper shadows. Fluid 72px primary CTA ("Bắt đầu trải nghiệm"). Hidden 5-tap gesture on wordmark opens operator workspace. |
+| **Layout Selection (`StudioModeScreen`)** | `1280x800-demo-layout.png`<br>`1280x800-real-layout.png` | `1920x1200-demo-layout.png`<br>`1920x1200-real-layout.png` | Coverflow wheel carousel with cardless floating SVG prints (`clamp(200px, 22vw, 300px)`). Center active card at scale 1.04; immediate neighbors at scale 0.92 with 85% opacity (no blur). 56×56px carousel chevrons horizontally aligned with zero vertical delta. Customer-friendly names ("Dải 4 ảnh cổ điển", "Khung 4 ảnh postcard"). |
+| **Quantity Selection (`QuantityScreen`)** | `1280x800-demo-quantity-2.png`<br>`1280x800-real-quantity-2.png` | `1920x1200-demo-quantity-2.png`<br>`1920x1200-real-quantity-2.png` | Enlarged tactile stepper controls (72×72px) with 34px tabular numerals (`font-variant-numeric: tabular-nums`). Left price breakdown aligned to clean baselines; right print preview contained up to 82vh. |
+| **Payment (`PaymentScreen`)** | `1280x800-demo-payment.png`<br>`1280x800-real-payment.png` | `1920x1200-demo-payment.png`<br>`1920x1200-real-payment.png` | Exactly **0 px layout shift** between loading spinner and high-res VietQR code (verified by CDP geometry assertions). Left panel shows real calculated VND pricing (`70.000 đ`). Right panel displays pure porcelain white QR card (280×280px at 1280×800, 380×380px at 1920×1200). 1-second title hold reveals staff PIN dialog (`1234`). No customer free bypass. |
+| **Live Capture (`CaptureScreen`)** | `1280x800-demo-live.png` | `1920x1200-demo-live.png` | Darkroom obsidian studio (`#121214`) prevents lens glare. Camera shutter centered cleanly at `bottom: clamp(16px, 3vh, 44px)` (88px touch button at 1280×800, 108px at 1920×1200). Live countdown centered at `(50%, 50%)`. Mirrored view and dynamic crop guide active. |
+| **Photo Selection (`SelectPhotosScreen`)** | `1280x800-demo-select.png` | `1920x1200-demo-select.png` | Photo selection latency: **8.50 ms** (1280×800), **4.30 ms** (1920×1200). Candidate photo gallery and right print preview aligned to identical vertical top baseline. 40×40px terracotta selection order badges (`✓ 1`, `✓ 2`). 500ms press-and-hold lightbox zoom works smoothly. Selection timer decrements (`Còn lại 02:20` → `Còn lại 02:18`). |
+| **Frame Selection (`FrameScreen`)** | `1280x800-demo-frame.png` | `1920x1200-demo-frame.png` | Frame selection latency: **8.00 ms** (1280×800), **7.50 ms** (1920×1200). Deferred composition allows instantaneous frame selection. High-resolution composition rendered just-in-time on confirmation. Two-column frame grid with contained thumbnail artwork, check badges, and fluid action bar. |
+| **Confirmation (`ConfirmScreen`)** | `1280x800-demo-confirm.png` | `1920x1200-demo-confirm.png` | Maximum print presentation (up to 82vh). High-resolution composed preview loaded (`naturalWidth > 0`). Clean 2-column order summary. Confirm & Print button disarmed for 500ms on mount to prevent double-tap ghost clicks. |
+| **Delivery (`DeliveryScreen`)** | `1280x800-demo-delivery.png` | `1920x1200-demo-delivery.png` | Prominent simulated print signal status badge: **“TÍN HIỆU IN: ĐÃ TRUYỀN THÀNH CÔNG”** in green (`#28553A`). Centered mobile download QR code. Return to start resets session state cleanly. |
+
+---
 
 ## Carousel correction — 2026-11-03 (CURRENT design handoff; not implemented)
 

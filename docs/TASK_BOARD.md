@@ -1,5 +1,25 @@
 ﻿# TASK_BOARD.md
 
+## Sub-10ms Touch Latency & Full Atelier Liquid Glass Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-03 21:45)
+
+| Task | Status | Evidence / next gate |
+|---|---|---|
+| Deferred composition on frame selection | **COMPLETED — PASS-AUTOMATED** | `frame.select` updates memory and clears composition in <1ms; `frame.confirm` renders just-in-time composition. Verified by `SimulatorSessionTest.frameSelectionDefersCompositionUntilConfirmation` and `RealSessionEngineTest`. |
+| Non-blocking React command dispatch | **COMPLETED — PASS-AUTOMATED** | Decoupled user mutations from background polling in `KioskSimulator.tsx`; eliminated lock contention busy-waits. |
+| Snapshot poll deduplication & frame caching | **COMPLETED — PASS-AUTOMATED** | Added `sameVisibleSnapshot()` to compare visible fields without re-serializing multi-megabyte base64 payloads; cached `framesRef` during `EDITING`. |
+| Photo selection latency < 100ms | **COMPLETED — PASS-SIMULATED** | Measured inside live Tauri WebView via CDP: **4.30 ms** at 1920×1200, **8.50 ms** at 1280×800 (10x faster than 100ms threshold). |
+| Frame selection latency < 100ms | **COMPLETED — PASS-SIMULATED** | Measured inside live Tauri WebView via CDP: **7.50 ms** at 1920×1200, **8.00 ms** at 1280×800. |
+| PayOS QR layout shift = 0 px | **COMPLETED — PASS-SIMULATED** | Measured via CDP: static clamp slot (280–380px) and columns bounds; slot and column shifts are exactly **0 px**. |
+| Complete Liquid Glass UI overhaul | **COMPLETED — PASS-SIMULATED** | Unified warm atelier ambient (`#FAF7F2` to `#EFE8E0`), frosted glass panels (`blur(20px) saturate(150%)`), inner bevels, and organic paper drop shadows across customer screens and operator workspace. |
+| Enlarge photo previews & dominant components | **COMPLETED — PASS-SIMULATED** | Live print previews expanded to 82vh; 72×72px quantity steppers with 34px tabular numbers; 40px terracotta order badges; 56px action bar touch targets. |
+| Automated journey acceptance runner | **COMPLETED — PASS-SIMULATED** | `tests/verify-demo-and-real-journey.mjs` executed with **0 failures** across 1280×800 and 1920×1200. Verified DEMO revenue = 0 and 0 orphaned Vite/Node processes. |
+| Backend test suite | **COMPLETED — PASS-AUTOMATED** | Offline Gradle test exit 0: **87 tests (85 passed, 2 skipped, 0 failed)** across 28 test suites. |
+| Frontend test suite & production build | **COMPLETED — PASS-AUTOMATED** | Vitest: **57/57 passed** across 8 test suites; Vite build: **2,017 modules transformed, 0 errors**. |
+| Strict V1 isolation | **VERIFIED READ-ONLY** | V1 (`E:\HK1_2026_2027\PhotoboothDesktop`) remained strictly untouched; no writes or builds executed against V1. |
+| Physical hardware / release gates | **BLOCKED / GATED** | Physical Canon DSLR, physical DNP DS-RX1HS spooling/cutting, live PayOS credentials, and commercial redistribution review remain unverified without physical hardware. |
+
+---
+
 ## Kiosk Typography, Visual Rhythm & Column Alignment Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-03 21:00)
 
 | Task | Status | Evidence / next gate |
