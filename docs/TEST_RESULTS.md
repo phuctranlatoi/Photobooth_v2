@@ -1,4 +1,4 @@
-# Test Results — Independent Consolidated Review
+﻿# Test Results â€” Independent Consolidated Review
 
 ## 2026-11-03 00:40 payment QR-dimension regression rerun (latest)
 
@@ -34,7 +34,7 @@
 | Frontend Vitest | **PASS-AUTOMATED** | Exact requested command exit 0: **8/8 files, 55/55 tests**, 10.66s. |
 | Frontend production build | **PASS-AUTOMATED** | Exit 0; TypeScript/Vite passed, **2,017 modules**; JS 391.98 kB, CSS 113.70 kB. This is not an installer test. |
 | Rust | **PASS-AUTOMATED (compile only)** | Cargo absent from `PATH`; explicit `%USERPROFILE%\.cargo\bin\cargo.exe test` exit 0 and compiled one package in 12.88s. No Rust test cases reported. |
-| V1 isolation | **BLOCKED (global proof)** | No reviewer V1 command/write/secret read. No trusted before/after manifest exists, so “100% untouched” cannot be certified. |
+| V1 isolation | **BLOCKED (global proof)** | No reviewer V1 command/write/secret read. No trusted before/after manifest exists, so â€œ100% untouchedâ€ cannot be certified. |
 | Geometry/hardware release | **PASS-AUTOMATED (bounded) / BLOCKED** | Source compiles and existing component tests pass. No fresh mounted screenshot/golden comparison, Canon, DNP, Mini-PC, installer, or license evidence. |
 
 **Release gate: BLOCK.** Software regression is green, but geometry parity is not physically or visually certified and all hardware/packaging/legal gates remain open.
@@ -47,7 +47,7 @@
 | Frontend Vitest | **PASS-AUTOMATED** | Requested command exit 0: **8/8 files, 55/55 tests**, 7.94s. |
 | Frontend production build | **PASS-AUTOMATED** | Exit 0; TypeScript/Vite passed, 2,017 modules; JS 391.34 kB, CSS 114.69 kB. Not an installer test. |
 | Rust | **PASS-AUTOMATED (compile only)** | Plain `cargo test` failed because Cargo was absent from `PATH`; `%USERPROFILE%\.cargo\bin\cargo.exe test` exit 0, compiled 1 package in 4.48s. No Rust test cases were reported. |
-| V1 isolation | **BLOCKED (global proof)** | No reviewer V1 command/write/secret read; no trusted before/after manifest exists, so “100% untouched” cannot be certified. |
+| V1 isolation | **BLOCKED (global proof)** | No reviewer V1 command/write/secret read; no trusted before/after manifest exists, so â€œ100% untouchedâ€ cannot be certified. |
 | Hardware/release | **BLOCKED / NOT-RUN** | Canon, DNP, mounted touch, Mini-PC metrics, physical V1 comparison, installer/recovery and redistribution licenses remain open. |
 
 **Release gate: BLOCK.** Automated software regression is green; required physical, packaging, licensing and forensic-isolation evidence is absent.
@@ -74,7 +74,7 @@
 | Frontend production build | **PASS-AUTOMATED** | `npm run build`: exit 0; `tsc --noEmit && vite build`, **2,016 modules**, built in 5.60s. |
 | Touch interactions | **PASS-AUTOMATED** | Frame no-Continue/300ms/default/lockout, layout center-then-confirm, hidden cash plus 1000ms PIN hold, and 500ms Confirm arming are component-tested. |
 | 300 DPI and revenue gate | **PASS-AUTOMATED** | Native scale-1 compositor plus encoded 300-DPI metadata tests; revenue is written only after spooler submission, while mock/frame/demo paths remain false. No real print/DB write. |
-| V1 strict isolation | **BLOCKED (global proof)** | Reviewer ran no V1 command, made no V1 write and read no secret. “Completely untouched” cannot be forensically established without a trusted pre-task manifest. |
+| V1 strict isolation | **BLOCKED (global proof)** | Reviewer ran no V1 command, made no V1 write and read no secret. â€œCompletely untouchedâ€ cannot be forensically established without a trusted pre-task manifest. |
 | Hardware/performance | **BLOCKED / NOT-RUN** | No Canon, DNP, physical touchscreen, Mini-PC metrics, physical V1 print comparison, payment, upload or DB write. |
 
 **Gate:** bounded software regression is green; production release remains blocked by hardware, physical touch/performance, packaging/recovery and license gates.
@@ -83,11 +83,11 @@
 
 | Case | Status | Exact result / boundary |
 |---|---|---|
-| Live Tauri desktop acceptance | **PASS-SIMULATED** | `tests/verify-demo-and-real-journey.mjs`: **63/63 checks passed, 0 failures, 26 screenshots** across 1280×800 and 1920×1200 viewports. Result ledger: `tests/journey-evidence/2026-11-02T07-41-35.569Z/results.json`. Verified DEMO Start→Delivery flow and REAL payment display. |
-| Navigation touch targets & geometry | **PASS-SIMULATED** | Back button minimum 56×56 touch target confirmed ($56\text{px} \times 56\text{px}$); optical centering verified with $dx=0.5\text{px}, dy=0.0\text{px}$ ($\le 2.5\text{px}$ delta limit). Carousel chevrons 56×56 touch targets confirmed; horizontal axis alignment verified with $y\Delta \le 3\text{px}$ ($y\Delta = 0.0\text{px}$). |
+| Live Tauri desktop acceptance | **PASS-SIMULATED** | `tests/verify-demo-and-real-journey.mjs`: **63/63 checks passed, 0 failures, 26 screenshots** across 1280Ã—800 and 1920Ã—1200 viewports. Result ledger: `tests/journey-evidence/2026-11-02T07-41-35.569Z/results.json`. Verified DEMO Startâ†’Delivery flow and REAL payment display. |
+| Navigation touch targets & geometry | **PASS-SIMULATED** | Back button minimum 56Ã—56 touch target confirmed ($56\text{px} \times 56\text{px}$); optical centering verified with $dx=0.5\text{px}, dy=0.0\text{px}$ ($\le 2.5\text{px}$ delta limit). Carousel chevrons 56Ã—56 touch targets confirmed; horizontal axis alignment verified with $y\Delta \le 3\text{px}$ ($y\Delta = 0.0\text{px}$). |
 | Technical clutter elimination | **PASS-SIMULATED** | Clean start screen with zero technical metadata / mode toggles; zero raw layout IDs on customer layout cards; customer-formatted layout names verified across all screens. Window title verified as `"LE SOUVENIR Photobooth"`. |
 | Customer copy & iconography | **PASS-SIMULATED** | Zero Unicode emoji assertion passed across customer and operator UI; truthful Vietnamese customer copy; real calculated price displayed without customer free photo bypass. |
-| Interaction & authoritative timers | **PASS-SIMULATED** | Press-and-hold (500ms) photo zoom and release dismissal verified; active selection timer verified and decrements over time (`Còn lại 02:20` → `Còn lại 02:17` at 1280×800; `Còn lại 02:19` → `Còn lại 02:17` at 1920×1200). Live frame preview updates SVG photo slots in real time. |
+| Interaction & authoritative timers | **PASS-SIMULATED** | Press-and-hold (500ms) photo zoom and release dismissal verified; active selection timer verified and decrements over time (`CÃ²n láº¡i 02:20` â†’ `CÃ²n láº¡i 02:17` at 1280Ã—800; `CÃ²n láº¡i 02:19` â†’ `CÃ²n láº¡i 02:17` at 1920Ã—1200). Live frame preview updates SVG photo slots in real time. |
 | Composed 600-DPI preview | **PASS-SIMULATED** | Final confirmation composed preview loads correctly (`naturalWidth > 0`). |
 | DEMO revenue guard | **PASS-AUTOMATED** | Backend `RealSessionEngineDemoModeTest` proves zero sales ledger writes and zero revenue recording in DEMO mode (`time="6.151s"`). |
 | Frontend Vitest | **PASS-AUTOMATED** | `npm test -- --run` exited 0: **49/49 tests passed** across all component and screen suites. |
@@ -101,7 +101,7 @@
 
 Evidence root: `tests/journey-evidence/2026-11-02T07-41-35.569Z/`.
 
-**1280×800:**
+**1280Ã—800:**
 1. `1280x800-demo-start.png`
 2. `1280x800-demo-layout.png`
 3. `1280x800-demo-quantity-2.png`
@@ -116,7 +116,7 @@ Evidence root: `tests/journey-evidence/2026-11-02T07-41-35.569Z/`.
 12. `1280x800-real-quantity-2.png`
 13. `1280x800-real-payment.png`
 
-**1920×1200:**
+**1920Ã—1200:**
 14. `1920x1200-demo-start.png`
 15. `1920x1200-demo-layout.png`
 16. `1920x1200-demo-quantity-2.png`
@@ -139,9 +139,9 @@ No screenshot or CDP assertion is physical Canon, DNP, mounted-touchscreen, or s
 
 | Case | Status | Exact result / boundary |
 |---|---|---|
-| Live Tauri desktop acceptance | **PASS-SIMULATED** | `tests/verify-demo-and-real-journey.mjs`: **37 checks, 0 failures**, at 1280×800 and 1920×1200. Result ledger: `tests/journey-evidence/2026-11-01T13-13-52.592Z/results.json`. The classification remains simulated because capture and printing were camera-free/dry-run. |
+| Live Tauri desktop acceptance | **PASS-SIMULATED** | `tests/verify-demo-and-real-journey.mjs`: **37 checks, 0 failures**, at 1280Ã—800 and 1920Ã—1200. Result ledger: `tests/journey-evidence/2026-11-01T13-13-52.592Z/results.json`. The classification remains simulated because capture and printing were camera-free/dry-run. |
 | Firebase layouts | **PASS-SIMULATED** | Live Firestore source identified as `FIREBASE_LIVE`; 10 named layouts displayed; disk-cache path retained. This was a live read, not a production write. |
-| PayOS VietQR | **PASS-SIMULATED** | Live link creation reached `READY`; QR image rendered at both viewports from a 132-character payload. Recorded data URL length was 2746 (the archived 1920×1200 result records 2738). No payment settlement was attempted. |
+| PayOS VietQR | **PASS-SIMULATED** | Live link creation reached `READY`; QR image rendered at both viewports from a 132-character payload. Recorded data URL length was 2746 (the archived 1920Ã—1200 result records 2738). No payment settlement was attempted. |
 | DEMO capture | **PASS-SIMULATED** | Camera-free touch flow completed through delivery; dry-run 600-DPI preview and `revenueRecorded=false` verified. |
 | Backend JUnit | **PASS-AUTOMATED** | **70 passed, 1 skipped**. A skip is not counted as a pass. |
 | Frontend Vitest | **PASS-AUTOMATED** | **40 passed**, 0 reported failures. |
@@ -150,7 +150,7 @@ No screenshot or CDP assertion is physical Canon, DNP, mounted-touchscreen, or s
 
 Evidence root: `tests/journey-evidence/2026-11-01T13-13-52.592Z/`.
 
-**1280×800:**
+**1280Ã—800:**
 
 1. `1280x800-start.png`
 2. `1280x800-layout.png`
@@ -163,7 +163,7 @@ Evidence root: `tests/journey-evidence/2026-11-01T13-13-52.592Z/`.
 9. `1280x800-demo-delivery.png`
 10. `1280x800-real-payment.png`
 
-**1920×1200:**
+**1920Ã—1200:**
 
 11. `1920x1200-start.png`
 12. `1920x1200-layout.png`
@@ -206,9 +206,9 @@ Resolved software findings in the consolidated result:
 | Revenue ledger gate | PASS-SIMULATED | `RealSessionEngine.kt:325-343` calls `ledger.recordSale` only after `outcome.result is PrintResult.Submitted`; failures return `-32002`, and existing-sale reconciliation prevents duplicate submission. `Submitted` is driver handoff, not physical completion. |
 | Real-mode fake fallback | PASS-SIMULATED | `RealSessionEngine.kt:224-259,280-293,325-345` has no synthetic fallback; missing camera/printer is `-32000`, capture failure enters `RECOVERY`, and spool/render failures are `-32002`. Fixture tests are not Canon/DNP evidence. |
 | PayOS create/status | FAIL | Requests and polling exist (`PayOsClient.kt:12-27`, `RealSessionEngine.kt:179-188,209-217`), but tests prove only deterministic 64-character HMAC and fixture HTTP. They do **not** compare against an official PayOS signature vector/SDK or sandbox; validity remains unverified. |
-| 600-DPI composition | PASS-SIMULATED | Tests verify 5×15 2-up **2452×3658**, duplicate placement, and landscape **3658×2452** (`ImagingParityTest.kt:48-76`). |
+| 600-DPI composition | PASS-SIMULATED | Tests verify 5Ã—15 2-up **2452Ã—3658**, duplicate placement, and landscape **3658Ã—2452** (`ImagingParityTest.kt:48-76`). |
 | Embedded ZXing QR correctness | FAIL | Production compositor contains ZXing rendering, but tests do not decode the rendered QR. More critically, real flow passes `albumUrl` at `RealSessionEngine.kt:320`, while no reviewed path assigns it, so real output is currently composed without an album QR. |
-| V1 strict isolation | BLOCKED | Read-only `git status --short` in V1 showed pre-existing/unattributed changes: modified `.opencode/agents/architect.md`, `.opencode/agents/ui-designer.md`, plus two `.bak` files. Reviewer made no V1 write, but “completely untouched” cannot be established without a clean/baseline manifest. |
+| V1 strict isolation | BLOCKED | Read-only `git status --short` in V1 showed pre-existing/unattributed changes: modified `.opencode/agents/architect.md`, `.opencode/agents/ui-designer.md`, plus two `.bak` files. Reviewer made no V1 write, but â€œcompletely untouchedâ€ cannot be established without a clean/baseline manifest. |
 
 **Gate: BLOCK / NOT RELEASE READY.** Automated suites/build are green, but PayOS compatibility, real QR delivery, physical Canon/DNP/touch validation, installer/recovery, and licensing remain unresolved.
 
@@ -261,9 +261,9 @@ See `BRIDGE_MILESTONE_REVIEW.md` for commands and security/lifecycle analysis.
 | Frontend component behavior | PASS-AUTOMATED | `npm run test` exit 0, 4 tests |
 | Frontend production build | PASS-AUTOMATED | `npm run build` exit 0 |
 | Rust/Tauri binary compilation | PASS-AUTOMATED | Explicit installed MSVC cargo `test --bins`/`build --bins` exit 0; no fresh per-test lines, so not counted as fresh Rust unit execution |
-| Rust bridge → installed JVM | PASS-SIMULATED | Probe exit 0; JVM 21.0.12, simulator true, health-only, EOF cleanup |
+| Rust bridge â†’ installed JVM | PASS-SIMULATED | Probe exit 0; JVM 21.0.12, simulator true, health-only, EOF cleanup |
 | Native window opens/closes | NOT-RUN | Prior report is not independent evidence for this review |
-| React WebView invoke → JVM | NOT-RUN | Component tests inject a fake; probe bypasses WebView/Tauri invoke |
+| React WebView invoke â†’ JVM | NOT-RUN | Component tests inject a fake; probe bypasses WebView/Tauri invoke |
 | Window close with active JVM | NOT-RUN | Requires live invoke then child PID termination observation |
 | Forced timeout/tree cleanup | NOT-RUN | Source has 10 s timeout/3 s graceful wait/taskkill fallback; fallback not exercised |
 | Gradle ZIP publisher checksum | PASS-AUTOMATED | HTTPS publisher checksum equals local ZIP SHA-256 exactly |
@@ -307,3 +307,4 @@ From V2 `backend`, ran Gradle `test --rerun-tasks` with V2-local temp/cache/proj
 Requested `backend/test-foundation.ps1`: initial direct invocation exit 1 because its Stop policy treated Gradle's `JAVA_TOOL_OPTIONS` stderr as `NativeCommandError`; no test failure inferred. Rerun through fresh PowerShell with redirected output exited **0**, `BUILD SUCCESSFUL in 9s`, tasks up-to-date. XML aggregation: **8 suites, 24 tests, 0 failures/errors/skips**. Logs: `backend/independent-final-24-tests.log` and `backend/independent-final-24-tests-rerun.log`.
 
 `IsolatedHotFolderTest` adds two synthetic tests for authorization/path denial, partial-write stability/decode, deterministic candidate handling, duplicate suppression, baseline late-file exclusion, cancellation, timeout, no-overwrite and source retention. **PASS-AUTOMATED synthetic fixture only**; real Hot Folder producer, restart persistence and cross-shot late-file ownership remain NOT-RUN.
+
