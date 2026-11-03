@@ -1,5 +1,11 @@
 # Redesign progress — 2026-11-02
 
+## 2026-11-03 Operator/Settings production-readiness design handoff
+
+- Added source-driven Operator/Settings hierarchy, parity gaps, visual option comparison, geometry, touch/state behavior and pending viewport matrix to `UI_VISUAL_REVIEW.md`. Chosen editorial porcelain with restrained static chromatic highlights instead of a saturated moving glass dashboard. This is a **design handoff only**: no TSX/CSS, build, tests or live hardware changed in this pass; V1 remained read-only.
+- **Cannot honestly remove** the simulator/local-only notice or claim production Admin yet: current operator still calls `simulator_request`, type states `productionAdminAcl:false`, and Settings validates `hardwareApply:'PENDING_DISABLED'` with all production gates false. A cosmetic removal would misrepresent security and real printer/camera status. Escalate request for operational V1 parity to architect/backend: authorization, verified device health, Canon capability/read/write routes, configured printer names, cloud/booth identity and native folder picker, safe device-apply acknowledgement. Frontend owns subsequent `V1Settings.tsx`, `Operator.tsx`, `v1-settings.css` and `operator-v1.css` implementation once contracts exist. Preserve existing test IDs, six-field save acknowledgement, 10-second steppers, next-session semantics and guarded exit until the contract deliberately changes.
+- Acceptance remains open: no rendered 1920×1200 / 1280×800 screenshots at 100/125/150%, language overflow measurements or touch monitor testing; no real print, live camera or service integration has been asserted.
+
 ## Current carousel audit — 2026-11-03 (source only; supersedes proposed wheel status below)
 
 - Audited the implemented V2 `StudioModeScreen.tsx`, final `kiosk-v1.css` cascade and carousel tests. **Documentation-only**; no screenshot, DPI/device test, build or V1 modification. Detailed evidence and acceptance matrix: `UI_VISUAL_REVIEW.md` → “Implemented layout carousel audit”.

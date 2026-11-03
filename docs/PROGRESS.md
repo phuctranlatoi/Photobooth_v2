@@ -1,5 +1,13 @@
 ﻿# PROGRESS.md
 
+## Production Kiosk Administration & Settings Overhaul (2026-11-03 12:50)
+
+**Status: COMPLETE for bounded source and automated regression; production release BLOCKED.** The Operator workspace no longer shows the jarring simulator warning banner. It now presents a production Atelier 2.0 kiosk-status banner with live device-status pills. `V1Settings` now uses Korean Atelier Liquid Glass styling with structured glass panels, a modern iOS/kiosk switch, tactile 52×52 squircle stepper buttons, floating status cards, and print-configuration information chips. The implementation preserves all existing test IDs and roles and the exact six-field backend persistence contract: `enableSystemPrint`, `useHotFolder`, `hotFolderPath`, `postCaptureTimeoutSeconds`, `photoSelectionTimeoutSeconds`, and `frameSelectionTimeoutSeconds`.
+
+Regression evidence: backend command exited 0 in **22.52s** (`BUILD SUCCESSFUL in 22s`; XML **80 passed / 2 skipped / 0 failed**, task up-to-date); frontend **56/56 tests across 8 files** passed in **9.31s** wall time; production build passed with **2,017 modules** in **9.92s**; Cargo compiled one package cleanly in **22.34s** and reported no Rust tests. No command was run in V1 and no V1 write or secret read occurred; global forensic isolation remains blocked without a trusted baseline. Mounted 16:10/touch acceptance, hardware, Mini-PC performance, packaging/recovery, live providers, physical V1 comparison, and redistribution-license gates remain open.
+
+---
+
 ## Coverflow Wheel Carousel & Cardless Layouts (2026-11-03 11:48)
 
 **Status: COMPLETE for bounded source and automated regression; production release BLOCKED.** The kiosk no longer visually displays “Chạm lần nữa để chọn dải ảnh này →”; `.sr-only` preserves it for accessibility and Vitest. Layout artwork is cardless and sized `clamp(200px, 22vw, 300px)` within a stage up to 1400px, targeting 3–5 simultaneous choices. Coverflow distance styling is gradual: center `scale(1.08)` with multi-spectral chromatic oil-slick aura and z-index 10; immediate neighbors `scale(0.80)`, opacity `.65`, z-index 5; distance 2 `scale(0.62)`, opacity `.40`, z-index 2; distance ≥3 `scale(0.48)`, opacity `.22`, z-index 1. Gap is `clamp(16px, 2.5vw, 40px)`, hover scaling is locked to prevent touch jumps, and both arrows wrap through modular indexing.

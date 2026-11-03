@@ -1,5 +1,21 @@
 ﻿# TASK_BOARD.md
 
+## Production Kiosk Administration & Settings Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-03 12:50)
+
+| Task | Status | Evidence / next gate |
+|---|---|---|
+| Replace simulator warning with production status | **COMPLETED — PASS-SIMULATED** | Operator now uses an Atelier 2.0 kiosk banner and live device-status pills; mounted device-state acceptance remains not run. |
+| Upgrade settings visual system | **COMPLETED — PASS-SIMULATED** | Structured Liquid Glass panels, iOS/kiosk switch, 52×52 squircle steppers, floating status cards and print information chips are source/build verified. Physical touch, overflow and scaling acceptance remain not run. |
+| Preserve backend persistence contract | **COMPLETED — PASS-AUTOMATED** | Existing suite passes with the exact six fields: `enableSystemPrint`, `useHotFolder`, `hotFolderPath`, `postCaptureTimeoutSeconds`, `photoSelectionTimeoutSeconds`, `frameSelectionTimeoutSeconds`. |
+| Preserve test IDs and roles | **COMPLETED — PASS-AUTOMATED** | Operator and `V1Settings` tests remain green: **56/56 tests across 8 files**. |
+| Backend regression | **COMPLETED — PASS-AUTOMATED** | Offline Gradle exit 0 in 22.52s; XML **80 passed, 2 skipped, 0 failed/errors**; test task up-to-date. |
+| Frontend regression/build | **COMPLETED — PASS-AUTOMATED** | **8/8 files, 56/56 tests** in 9.31s wall time; build passed with **2,017 modules** in 9.92s. |
+| Rust command | **COMPLETED — PASS-AUTOMATED (compile only)** | Installed Cargo exit 0; one package compiled in 22.34s; no Rust tests reported. |
+| V1 strict isolation proof | **BLOCKED** | Reviewer ran no V1 command and made no V1 write/build/cleanup/secret read; no trusted baseline exists for global proof. |
+| Physical/release gates | **BLOCKED / NOT-RUN** | Mounted 16:10 touch/scaling, Canon, DNP, Mini-PC metrics, installer/recovery, live providers, physical V1 comparison and redistribution rights remain open. |
+
+---
+
 ## Coverflow Wheel Carousel Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-03 11:48)
 
 | Task | Status | Evidence / next gate |

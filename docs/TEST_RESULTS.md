@@ -1,5 +1,18 @@
 ﻿# Test Results â€” Independent Consolidated Review
 
+## 2026-11-03 12:50 Production Kiosk Administration & Settings Overhaul
+
+| Case | Status | Evidence / boundary |
+|---|---|---|
+| Backend offline tests | **PASS-AUTOMATED** | `backend: .\.toolchain\gradle-8.14.3\bin\gradle.bat --offline test --console=plain` exit 0; `BUILD SUCCESSFUL in 22s`, measured wall time **22.52s**. JUnit XML aggregate: **82 total, 80 passed, 2 skipped, 0 failed/errors**. Gradle reported `test UP-TO-DATE`, so test bodies were not freshly executed. |
+| Frontend Vitest | **PASS-AUTOMATED** | `frontend: npm test -- --run` exit 0; **8/8 files and 56/56 tests passed**; Vitest duration 7.09s, measured wall time **9.31s**. Existing test IDs and roles remained compatible. |
+| Frontend production build | **PASS-AUTOMATED** | `frontend: npm run build` exit 0; TypeScript/Vite passed, **2,017 modules transformed**, Vite build 4.46s, measured wall time **9.92s**. |
+| Rust test command | **PASS-AUTOMATED (compile only)** | `src-tauri: %USERPROFILE%\.cargo\bin\cargo.exe test` exit 0; **1 package compiled cleanly in 22.34s**. Cargo reported no Rust test cases. |
+| Administration/settings overhaul | **PASS-SIMULATED (source/build only)** | Operator simulator-warning banner was removed and replaced with an Atelier 2.0 kiosk status banner and live device-status pills. `V1Settings` received structured Liquid Glass panels, switch controls, 52×52 squircle steppers, floating status cards and print-configuration chips. Exact six-field persistence remains `enableSystemPrint`, `useHotFolder`, `hotFolderPath`, `postCaptureTimeoutSeconds`, `photoSelectionTimeoutSeconds`, and `frameSelectionTimeoutSeconds`. No mounted kiosk, physical touch, device, or V1 side-by-side acceptance was run. |
+| V1 isolation | **BLOCKED (global proof)** | This reviewer ran **no command in V1**, made no V1 write/build/cleanup, and read no secret. Filesystem-wide untouched status cannot be certified without a trusted before/after manifest. |
+
+**Release gate: BLOCK.** Automated software regression is green, but physical touchscreen/scaling acceptance, Canon, DNP, Mini-PC metrics, installer/recovery, live providers, V1 print comparison, and Canon/ONNX redistribution-license signoff remain blocked or not run.
+
 ## 2026-11-03 11:48 Coverflow wheel carousel regression
 
 | Case | Status | Evidence / boundary |
