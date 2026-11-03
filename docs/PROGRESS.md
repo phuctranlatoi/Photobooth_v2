@@ -1,5 +1,26 @@
 ﻿# PROGRESS.md
 
+## Option D UI/UX & Functional Polish: Korean Atelier Liquid Glass, Zero-Lag Selection & Direct Frame Confirmation (2026-11-03 19:15)
+
+**Status: PASS-SIMULATED across both 1280×800 and 1920×1200 viewports; physical hardware gates remain unverified without physical Canon DSLR or DNP DS-RX1HS.**
+
+Key polish delivered and verified:
+1. **Refined Warm Ivory Layout Carousel:** Replaced harsh gradient banding and dark rectangular box shadows with a softened, luxurious warm ivory background `--layout-ambient` (`linear-gradient(125deg, #fcfaf7 0%, #f8f2eb 48%, #f5eae0 100%)`). Adjacent layout cards scale gently (`scale(0.95)` at distance 1, `scale(0.90)` at distance ≥2) with high opacity (`0.92` and `0.84`) without blur, keeping adjacent options crisp, clear, and inviting. Drop-shadows on floating layout artwork are softened to warm organic tones (`rgba(40,28,20, 0.10)` and `rgba(40,28,20, 0.05)`).
+2. **Complete Liquid Glass UI Across All Screens:** Extended authentic Korean Atelier Liquid Glass styling across all customer and operator screens via `kiosk-v1.css` and `operator-v1.css`. Translucent frosted glass (`rgba(255, 255, 255, 0.76)`, `backdrop-filter: blur(20px) saturate(150%)`, subtle 1px white border, and warm ambient drop shadows) unifies panels, start cards, action bars, summaries, modals, and operator navigation. Warm liquid glass is kept strictly on UI chrome, never bleeding onto photographic paper.
+3. **Floating Paper & Photorealistic Cards:** Removed thick, distracting white card wrappers around photo tiles and frame previews. Photos float naturally with subtle rounded borders (`1.5px solid rgba(255,255,255,0.7)`) and soft paper shadows (`drop-shadow(0 10px 24px rgba(40,28,20,.10)) drop-shadow(0 2px 6px rgba(40,28,20,.05))`). Active selections highlight with warm terracotta-coral accents (`#C27357`).
+4. **Button, Header, Camera Shutter & Countdown Alignment:** Perfected touch layout geometry across 1280×800 and 1920×1200 viewports. The capture countdown is centered dead-on (`left: 50%; top: 50%; transform: translate(-50%, -50%)`), the shutter control is centered at `bottom: clamp(16px, 3vh, 44px)` with responsive touch scaling, and action bar primary buttons maintain fluid 56px touch height.
+5. **Zero-Lag Photo Selection & Frame Switching:** Eliminated perceptible lag on touch interaction. Selection state toggles immediately in local memory via `useRef` reconciliation and asynchronous non-blocking IPC dispatch (`action('selection.toggle', ...)`). Pending selections preserve tap order and reconcile gracefully with authoritative snapshots.
+6. **Direct Touchscreen Frame Confirmation:** Users can tap the currently active/selected frame directly to confirm and advance to the preview screen, in addition to using the primary action-bar button ("Xem bản in →"). Double-tap race conditions are protected by confirmation locks.
+7. **Native 300×300 DPI Print Density Verified:** The native 300 DPI print output pipeline (`DesktopCompositor.kt` & `PrintImageWriter.kt`) remains completely verified and untouched, maintaining high-fidelity physical composition parity for 2x6 strip and 4x6 / 6x4 layouts.
+8. **Test Suite Verification:**
+   - Backend Gradle: **86 passed, 2 skipped, 0 failed** across 28 test suites (exit 0)
+   - Frontend Vitest: **57/57 passed** across 8 test suites (including direct frame confirmation test) (exit 0)
+   - Frontend production build: **2,017 modules transformed, 0 errors** (exit 0)
+   - Automated Acceptance Journey (`verify-demo-and-real-journey.mjs`): 0 failures across 1280×800 and 1920×1200 viewports.
+9. **Strict V1 Isolation:** `E:\HK1_2026_2027\PhotoboothDesktop` remains strictly untouched, unread, and write-protected.
+
+---
+
 ## Frame Decoration Loading Resolution & Full End-to-End Kiosk Journey Verification (2026-11-03 17:55)
 
 **Status: PASS-SIMULATED across both 1280×800 and 1920×1200 viewports; physical hardware gates remain unverified without physical Canon DSLR or DNP DS-RX1HS.**

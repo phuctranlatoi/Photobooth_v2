@@ -21,3 +21,11 @@ captures/
 sessions/
 **/simulator-label-*/
 
+# Test journey evidence and screenshots
+/Screenshot*.png
+/Screenshot (*).png
+tests/journey-evidence/20*
+backend/gradlew
+backend/gradlew.bat
+
+

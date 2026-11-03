@@ -33,13 +33,21 @@ export function FrameScreen({layout, busy, action, preview, snapshot, frames = [
   }, [frameId]);
 
   const handleUserFrameTap = (chosenId: string) => {
-    if (busy || confirming.current) return;
+    if (chosenId === effectiveFrameId) { confirm(chosenId); return; }
+    if (confirming.current) return;
     desiredFrameId.current=chosenId;
     setLocalFrameId(chosenId);
     try {void Promise.resolve(action('frame.select', {frameId: chosenId})).then(accepted=>{
       if(accepted===false && mounted.current && desiredFrameId.current===chosenId){desiredFrameId.current=null;setLocalFrameId(frameId??null)}
     }).catch(()=>{if(mounted.current&&desiredFrameId.current===chosenId){desiredFrameId.current=null;setLocalFrameId(frameId??null)}})}
     catch {desiredFrameId.current=null;setLocalFrameId(frameId??null)}
+  };
+
+  const confirm = (chosenId: string) => {
+    if (confirming.current) return;
+    confirming.current=true;
+    try {void Promise.resolve(action('frame.confirm',{frameId:chosenId})).then(result=>{if(result===false)confirming.current=false}).catch(()=>{confirming.current=false})}
+    catch {confirming.current=false}
   };
 
   const selectedFrame = frames.find(frame => frame.id === effectiveFrameId);
@@ -57,7 +65,7 @@ export function FrameScreen({layout, busy, action, preview, snapshot, frames = [
         {frames.length ? frames.map(frame => {
           const thumb = safeImage(frame.thumbDataUrl) || safeImage(frame.thumbnailDataUrl) || safeImage(frame.previewDataUrl);
           const selected = effectiveFrameId === frame.id;
-           return <button type="button" key={frame.id} aria-pressed={selected} disabled={busy} onClick={() => handleUserFrameTap(frame.id)}>
+           return <button type="button" key={frame.id} aria-pressed={selected} onClick={() => handleUserFrameTap(frame.id)}>
              <span className="v1-frame-art" style={{aspectRatio:layout?.printAspectRatio && layout.printAspectRatio>0 ? layout.printAspectRatio : 1/3}}>
              {thumb ? <img src={thumb} alt={formatFrameName(frame.name)}/> :
               <svg className="v1-frame-silhouette" viewBox="0 0 96 112" fill="none" aria-hidden="true">
@@ -73,6 +81,6 @@ export function FrameScreen({layout, busy, action, preview, snapshot, frames = [
         }) : <p>Đang tải khung…</p>}
       </div>
     </div>
-    <ActionBar><KioskSecondaryButton onClick={() => action('session.back')}>Quay lại</KioskSecondaryButton><KioskPrimaryButton aria-label="Tiếp tục - Xem bản in" disabled={busy || !effectiveFrameId} onClick={() => {if(confirming.current)return;confirming.current=true;void Promise.resolve(action('frame.confirm',{frameId:effectiveFrameId})).then(result=>{if(result===false)confirming.current=false}).catch(()=>{confirming.current=false})}}>Xem bản in →</KioskPrimaryButton></ActionBar>
+    <ActionBar><KioskSecondaryButton onClick={() => action('session.back')}>Quay lại</KioskSecondaryButton><KioskPrimaryButton disabled={!effectiveFrameId} onClick={() => {if(effectiveFrameId)confirm(effectiveFrameId)}}>Xem bản in →</KioskPrimaryButton></ActionBar>
   </>;
 }

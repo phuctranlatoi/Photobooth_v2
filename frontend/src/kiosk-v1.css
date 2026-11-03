@@ -470,12 +470,7 @@ html,body,#root{height:100%;overflow:hidden}
 /* Layout artwork alone receives a soft paper shadow; every surrounding surface stays clear. */
 :root {
   --layout-ambient:
-    radial-gradient(ellipse 75% 65% at 10% 15%, rgba(0, 229, 201, .20) 0%, transparent 70%),
-    radial-gradient(ellipse 70% 60% at 90% 12%, rgba(176, 66, 255, .16) 0%, transparent 70%),
-    radial-gradient(ellipse 65% 65% at 85% 85%, rgba(236, 72, 153, .14) 0%, transparent 70%),
-    radial-gradient(ellipse 70% 60% at 15% 88%, rgba(255, 111, 89, .13) 0%, transparent 70%),
-    radial-gradient(ellipse 75% 65% at 50% 50%, rgba(246, 211, 101, .10) 0%, transparent 75%),
-    #FAF7F2;
+    linear-gradient(125deg,#fcfaf7 0%,#f8f2eb 48%,#f5eae0 100%);
 }
 html, body, #root { min-height:100%; background:var(--layout-ambient) !important; }
 .v1-shell:not(.v1-camera):not(:has(.v1-payment-screen)) { background:var(--layout-ambient) !important; }
@@ -501,7 +496,7 @@ html, body, #root { min-height:100%; background:var(--layout-ambient) !important
 .v1-shell .v1-carousel-card.v1-layout-card::after { content:none !important; box-shadow:none !important; }
 .v1-shell .v1-carousel-card .v1-carousel-art { border:0 !important; outline:0 !important; }
 .v1-shell .v1-carousel-card .v1-layout-artwork {
-  filter:drop-shadow(0 6px 16px rgba(0,0,0,.08)) drop-shadow(0 1px 3px rgba(0,0,0,.04));
+  filter:drop-shadow(0 10px 24px rgba(40,28,20,.10)) drop-shadow(0 2px 6px rgba(40,28,20,.05));
 }
 .v1-shell .v1-carousel-card.v1-layout-card,
 .v1-shell .v1-carousel-card.v1-layout-card:is(:hover,:active,:focus,:focus-visible) {
@@ -513,11 +508,11 @@ html, body, #root { min-height:100%; background:var(--layout-ambient) !important
 }
 .v1-shell .v1-carousel-card.v1-layout-card[data-distance="1"],
 .v1-shell .v1-carousel-card.v1-layout-card[data-distance="1"]:is(:hover,:active,:focus,:focus-visible) {
-  transform:scale(.92) !important; z-index:5; opacity:1 !important;
+  transform:scale(.95) !important; z-index:5; opacity:.92 !important;
 }
 .v1-shell .v1-carousel-card.v1-layout-card[data-distance]:not([data-distance="0"]):not([data-distance="1"]),
 .v1-shell .v1-carousel-card.v1-layout-card[data-distance]:not([data-distance="0"]):not([data-distance="1"]):is(:hover,:active,:focus,:focus-visible) {
-  transform:scale(.82) !important; z-index:2; opacity:1 !important;
+  transform:scale(.90) !important; z-index:2; opacity:.84 !important;
 }
 .v1-shell .v1-layout-carousel { scroll-snap-type:x mandatory; }
 .v1-shell .v1-carousel-card.v1-layout-card { scroll-snap-align:center; }
@@ -552,3 +547,22 @@ html, body, #root { min-height:100%; background:var(--layout-ambient) !important
 .v1-shell .v1-delivery-qr{background:#fff;border:10px solid #fff;border-radius:18px;box-shadow:0 18px 38px rgba(65,38,28,.16)}
 .v1-shell .v1-qr-placeholder{background:#fff;border-radius:18px}
 @media(prefers-reduced-motion:reduce){.v1-shell :is(.v1-kicker-dot,.v1-payment-dot,.v1-pipeline>div span.active){animation:none}.v1-carousel-card.v1-layout-card{transition:none!important}}
+
+/* Option D: warm liquid glass belongs to the chrome, never to photographic paper. */
+.v1-shell:not(.v1-camera) :is(.v1-panel,.v1-start-card,.v1-actionbar,.v1-summary,.v1-prepare-stage,.v1-print-stage,.v1-delivery,.v1-modal,.v1-event-card,.v1-pills span,.v1-timer){background:rgba(255,255,255,.76);border:1px solid rgba(255,255,255,.75);-webkit-backdrop-filter:blur(20px) saturate(150%);backdrop-filter:blur(20px) saturate(150%);box-shadow:inset 0 1px 1px rgba(255,255,255,.9),0 12px 32px rgba(40,25,15,.08)}
+.v1-shell .v1-primary{background:#9e5139!important;border:1px solid #87432f!important;color:#fff!important;box-shadow:inset 0 1px 1px rgba(255,255,255,.3),0 8px 20px rgba(114,56,37,.22)!important}
+.v1-shell .v1-primary:hover:not(:disabled){background:#87432f!important;box-shadow:0 10px 22px rgba(114,56,37,.26)!important}
+.v1-shell :is(.v1-secondary,.v1-back,.v1-carousel-arrow,.v1-stepper button,.v1-frame-grid button){background:rgba(255,255,255,.78)!important;border:1px solid rgba(255,255,255,.75)!important;-webkit-backdrop-filter:blur(20px) saturate(150%);backdrop-filter:blur(20px) saturate(150%);box-shadow:inset 0 1px 1px rgba(255,255,255,.9),0 12px 32px rgba(40,25,15,.08)!important;color:#24201D}
+.v1-shell .v1-frame-grid button[aria-pressed=true]{border:2px solid #C27357!important;box-shadow:0 0 0 2px rgba(194,115,87,.28),0 8px 20px rgba(194,115,87,.2)!important}
+.v1-shell .v1-selection .v1-photo-tile>button:first-child{display:block;width:100%;min-width:0;padding:0!important;overflow:hidden;border-radius:12px;background:transparent!important;border:1.5px solid rgba(255,255,255,.7)!important;box-shadow:0 6px 16px rgba(40,28,20,.09)!important;-webkit-backdrop-filter:none;backdrop-filter:none}
+.v1-shell .v1-selection .v1-photo-tile>button:first-child[aria-pressed=true]{border-color:#C27357!important;box-shadow:0 0 0 2px #C27357,0 8px 20px rgba(194,115,87,.25)!important}
+.v1-shell .v1-selection .v1-photo-tile img{display:block;width:100%;height:auto;object-fit:contain}
+.v1-shell :is(.v1-frame-preview-panel,.v1-selection-print,.v1-preview,.v1-preview-empty){background:transparent!important;border:0!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.v1-shell :is(.v1-frame-preview-panel,.v1-selection-print,.v1-preview){padding:0!important}
+.v1-shell :is(.v1-frame-preview-panel,.v1-selection-print) .v1-preview>img,.v1-shell :is(.v1-frame-preview-panel,.v1-selection-print) .v1-layout-artwork{filter:drop-shadow(0 10px 24px rgba(40,28,20,.10)) drop-shadow(0 2px 6px rgba(40,28,20,.05));object-fit:contain}
+.v1-shell .v1-heading{display:grid;grid-template-columns:56px minmax(0,1fr) auto;align-items:center;gap:clamp(14px,2vw,32px);min-height:84px}
+.v1-shell .appHeader__copy{min-width:0}.v1-shell .appHeader__eyebrow{display:inline-flex;align-items:center;padding:5px 12px;border-radius:999px;background:rgba(255,255,255,.78);color:#87432f;letter-spacing:.06em}.v1-shell .appHeader__subtitle{margin-top:4px}
+.v1-shell .v1-actionbar{justify-content:flex-end;gap:16px}.v1-shell .v1-actionbar>span{margin-right:auto}.v1-shell .v1-actionbar button{min-height:56px}
+.v1-capture-screen.v1-capture>.v1-countdown{left:50%;top:50%;right:auto;bottom:auto;inset:auto;transform:translate(-50%,-50%);width:auto;height:auto;background:transparent;font-size:clamp(120px,17vw,230px);text-shadow:0 4px 22px rgba(0,0,0,.95),0 0 40px rgba(0,0,0,.65)}
+.v1-capture-screen .v1-shutter-control{left:50%;right:auto;transform:translateX(-50%);bottom:clamp(16px,3vh,44px);display:flex;flex-direction:column;align-items:center;white-space:nowrap}
+.v1-capture-screen .v1-capture-top{left:50%;transform:translateX(-50%);white-space:nowrap}

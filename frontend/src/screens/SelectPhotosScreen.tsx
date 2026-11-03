@@ -6,6 +6,7 @@ export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected
    const [lightbox,setLightbox]=useState<number|null>(null);
    const confirming=useRef(false);
   const [localSelected,setLocalSelected]=useState<number[]>(selected);
+  const selectedRef=useRef(selected);
   const pending=useRef<{index:number;result:number[]}[]>([]);
   const previousSelected=useRef(selected);
   useEffect(()=>{
@@ -14,7 +15,9 @@ export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected
     const acknowledged=pending.current.findIndex(entry=>entry.result.join(',')===selected.join(','));
     if(acknowledged>=0)pending.current.splice(0,acknowledged+1);
     else pending.current=[];
-    setLocalSelected(pending.current.reduce<number[]>((current,{index})=>current.includes(index)?current.filter(i=>i!==index):[...current,index],selected));
+     const reconciled=pending.current.reduce<number[]>((current,{index})=>current.includes(index)?current.filter(i=>i!==index):[...current,index],selected);
+     selectedRef.current=reconciled;
+     setLocalSelected(reconciled);
   },[selected]);
    const holdTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
    const suppressionResetTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
@@ -38,11 +41,16 @@ export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected
 
   const selectedPhotos=localSelected.map(index=>shots[index]?.preview);
   const toggle=(index:number)=>{
-    if(!localSelected.includes(index)&&localSelected.length>=(layout?.selectCount??Infinity))return;
-    const next=localSelected.includes(index)?localSelected.filter(i=>i!==index):[...localSelected,index];
-    pending.current.push({index,result:next});
-    setLocalSelected(next);
-    action('selection.toggle',{shotIndex:index});
+     const current=selectedRef.current;
+     if(!current.includes(index)&&current.length>=(layout?.selectCount??Infinity))return;
+     const next=current.includes(index)?current.filter(i=>i!==index):[...current,index];
+     selectedRef.current=next;
+     pending.current.push({index,result:next});
+     setLocalSelected(next);
+     // The backend contract exposes ordered toggles, not session.selectPhotos.
+     // Keep taps immediate while reconciling acknowledgements in arrival order.
+     try {void Promise.resolve(action('selection.toggle',{shotIndex:index})).catch(()=>{/* authoritative snapshot reconciles on reconnect */})}
+     catch {/* authoritative snapshot reconciles on reconnect */}
   };
 
   return (

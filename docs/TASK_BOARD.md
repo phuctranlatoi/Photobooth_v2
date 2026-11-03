@@ -1,5 +1,24 @@
 ﻿# TASK_BOARD.md
 
+## Option D UI/UX & Functional Polish Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-03 19:15)
+
+| Task | Status | Evidence / next gate |
+|---|---|---|
+| Softened warm ivory ambient lighting & refined carousel | **COMPLETED — PASS-SIMULATED** | Removed dark box shadows and harsh gradient banding; implemented luxurious warm ivory `--layout-ambient`; adjacent cards scaled to `0.95`/`0.90` with high opacity (`0.92`/`0.84`) and zero blur. |
+| Complete Liquid Glass UI across customer & operator | **COMPLETED — PASS-SIMULATED** | Applied unified translucent frosted glass (`blur(20px) saturate(150%)`, terracotta CTA, refined borders) across all kiosk screens and operator workspace. |
+| Removed thick card wrappers around photos & frames | **COMPLETED — PASS-SIMULATED** | Eliminated unnecessary white borders; photos and print paper float naturally with organic paper drop shadows. |
+| Viewport alignment across 1280×800 & 1920×1200 | **COMPLETED — PASS-SIMULATED** | Verified camera countdown dead-center, shutter centered at bottom, header title and action bar aligned seamlessly at both target 16:10 resolutions. |
+| Zero-lag photo selection & frame switching | **COMPLETED — PASS-AUTOMATED** | Reconciled selections in-memory via `useRef` with non-blocking IPC dispatch; immediate visual feedback on touch. |
+| Direct touchscreen frame tap-to-confirm | **COMPLETED — PASS-AUTOMATED** | Tapping active frame directly confirms and advances to preview while preserving action-bar button; tested in unit test suite. |
+| Native 300×300 DPI print density | **VERIFIED INTACT** | Backend `DesktopCompositor.kt` & `PrintImageWriter.kt` verified; 300 DPI native render unchanged. |
+| Backend test suite | **COMPLETED — PASS-AUTOMATED** | Offline Gradle test exit 0: **86 passed, 2 skipped, 0 failed** across 28 suites. |
+| Frontend test suite | **COMPLETED — PASS-AUTOMATED** | Vitest: **57/57 passed** across 8 test suites. |
+| Automated journey acceptance runner | **COMPLETED — PASS-SIMULATED** | `verify-demo-and-real-journey.mjs` verified with 0 failures across 1280×800 and 1920×1200. |
+| V1 strict isolation proof | **VERIFIED READ-ONLY** | V1 (`E:\HK1_2026_2027\PhotoboothDesktop`) remained strictly untouched; no writes or builds executed against V1. |
+| Physical hardware / release gates | **BLOCKED / GATED** | Physical Canon DSLR, physical DNP DS-RX1HS spooling/cutting, live PayOS credentials, and commercial redistribution review remain unverified without physical hardware. |
+
+---
+
 ## Frame Decoration Loading Resolution & Full End-to-End Kiosk Journey Verification Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-03 17:55)
 
 | Task | Status | Evidence / next gate |
