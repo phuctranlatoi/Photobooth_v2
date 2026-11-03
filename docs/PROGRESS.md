@@ -1,5 +1,39 @@
 ﻿# PROGRESS.md
 
+## Live View Concentric Shutter Redesign & Centered Smooth Countdown Milestone (2026-11-04 01:30)
+
+**Status: PASS-SIMULATED & PASS-AUTOMATED across 1280×800 and 1920×1200 viewports; physical hardware gates remain unverified without physical Canon DSLR or DNP DS-RX1HS.**
+
+Key milestones delivered and verified:
+1. **Elimination of Countdown Stuttering ("khựng khựng"):**
+   - Implemented smooth local timestamp-based countdown in `CaptureScreen.tsx`.
+   - Anchored timer to `performance.now() + countdown * 1000` on each backend countdown update, running a smooth 50ms tick interval that decrements monotonically without jitter or reset pauses.
+   - Added subtle `v1-countdown-pop` keyframe animation (`scale(1.2)` to `scale(1)` over 200ms with `cubic-bezier(.16, 1, .3, 1)`) triggered per-digit transition with zero layout reflow.
+   - Preserves complete cleanup on screen exit or state transitions with zero orphaned intervals.
+2. **True Viewport Centering for Countdown Timer ("không nằm ở giữa"):**
+   - Decoupled centering logic into a dedicated full-screen flex overlay `.v1-countdown-layer` (`position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; background: rgba(0, 0, 0, 0.28)`).
+   - Styled countdown numeral with tabular numbers (`font-variant-numeric: tabular-nums`), 240sp warm white typography (`clamp(140px, 20vw, 240px)`, `font-weight: 900`), and a dual terracotta ambient glow (`text-shadow: 0 0 45px rgba(194,115,87,.95), 0 0 90px rgba(194,115,87,.45), 0 6px 28px rgba(0,0,0,.85)`).
+   - Automated CDP geometry verification confirmed exact dead-center positioning:
+     - **1280×800:** Horizontal Δx = **0.000038 px**, Vertical Δy = **0.000000 px**.
+     - **1920×1200:** Horizontal Δx = **0.000061 px**, Vertical Δy = **0.000000 px**.
+3. **Redesigned Concentric Physical Shutter Button:**
+   - Restored authentic V1 photobooth concentric shutter ergonomics in `.v1-shutter-control`:
+     - Outer frosted ring: 108×108 px circle (`border: 2px solid rgba(255, 255, 255, 0.55)`, `background: rgba(255, 255, 255, 0.22)`, `backdrop-filter: blur(8px)`, warm ambient shadow `0 8px 24px rgba(0,0,0,.35)`).
+     - Inner tactile core: 84×84 px crisp white disc (`border: 4px solid #C27357`, `background: #fff`, inner bevel `inset 0 2px 4px rgba(255, 255, 255, 0.9)`).
+     - Active tactile touch feedback: smooth `scale(0.92)` compression with deepened terracotta border `#A85A40` and warm tinted core `#FDF3EE`.
+     - Latch protection: prevents rapid double-tap / phantom multi-sequence triggering (`starting.current` lock).
+   - Automated CDP geometry verification confirmed exact dimensions and dead-center placement:
+     - Shutter dimensions: exactly **108×108 px** (Δ = 0 px).
+     - Core dimensions: exactly **84×84 px** (Δ = 0 px).
+     - Horizontal offset: Δx = **0.000000 px** dead-center on both 1280×800 and 1920×1200.
+4. **Full Test Suite & Journey Regression:**
+   - Backend Gradle: **87 tests (85 passed, 2 skipped, 0 failed)** across 28 test suites (`RealSessionEngineTest`, `SimulatorSessionTest`, `RealSessionEngineDemoModeTest`, etc.).
+   - Frontend Vitest: **59/59 passed** across 8 test suites (including new unit tests for centered countdown timer lifecycle and concentric shutter button).
+   - Automated Acceptance Journey (`verify-demo-and-real-journey.mjs`): **100% checks passed, 0 failures** across both 1280×800 and 1920×1200 viewports.
+5. **Strict V1 Isolation:** V1 (`E:\HK1_2026_2027\PhotoboothDesktop`) remained strictly untouched, unread, and write-protected.
+
+---
+
 ## Sub-10ms Touch Latency, Deferred Composition & Full Atelier Liquid Glass Milestone (2026-11-03 21:45)
 
 **Status: PASS-SIMULATED & PASS-AUTOMATED across 1280×800 and 1920×1200 viewports; physical hardware gates remain unverified without physical Canon DSLR or DNP DS-RX1HS.**

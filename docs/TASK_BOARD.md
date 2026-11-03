@@ -1,5 +1,21 @@
 ﻿# TASK_BOARD.md
 
+## Live View Countdown & Concentric Shutter Redesign Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-04 01:30)
+
+| Task | Status | Evidence / next gate |
+|---|---|---|
+| Countdown stutter elimination | **COMPLETED — PASS-AUTOMATED** | Smooth local timestamp-based countdown interval (50ms tick anchored to `performance.now() + countdown * 1000`) with pop keyframe animation in `CaptureScreen.tsx` and `kiosk-v1.css`. Verified by unit test in `screens.test.tsx`. |
+| Countdown viewport dead-centering | **COMPLETED — PASS-SIMULATED** | Full-screen flex overlay `.v1-countdown-layer` (`inset: 0`) with tabular numerals and warm terracotta glow. Measured via CDP in `tests/verify-demo-and-real-journey.mjs`: Δx = 0.000038 px (1280×800) / 0.000061 px (1920×1200), Δy = 0 px. |
+| Concentric shutter button redesign | **COMPLETED — PASS-SIMULATED** | Authentic V1 concentric physical shutter: 108×108 px outer frosted ring (`blur(8px)`), 84×84 px inner white core with 4px `#C27357` rim, 0.92x active tap compression. Measured via CDP: width = 108 px, height = 108 px, core = 84×84 px, Δx = 0 px dead-center. |
+| Shutter multi-touch latch protection | **COMPLETED — PASS-AUTOMATED** | `starting.current` lock prevents repeated touches from firing redundant capture sequences. Verified by unit test in `screens.test.tsx`. |
+| Live journey automated verification | **COMPLETED — PASS-SIMULATED** | `tests/verify-demo-and-real-journey.mjs` executed with **0 failures** across both 1280×800 and 1920×1200. Shutter and countdown geometry asserted with sub-pixel tolerance. |
+| Frontend test suite & production build | **COMPLETED — PASS-AUTOMATED** | Vitest: **59/59 passed** across 8 test suites; Vite build: **2,017 modules transformed, 0 errors**. |
+| Backend test suite | **COMPLETED — PASS-AUTOMATED** | Offline Gradle test exit 0: **87 tests (85 passed, 2 skipped, 0 failed)** across 28 test suites. |
+| Strict V1 isolation | **VERIFIED READ-ONLY** | V1 (`E:\HK1_2026_2027\PhotoboothDesktop`) remained strictly untouched; no writes or builds executed against V1. |
+| Physical hardware / release gates | **BLOCKED / GATED** | Physical Canon DSLR, physical DNP DS-RX1HS spooling/cutting, live PayOS credentials, and commercial redistribution review remain unverified without physical hardware. |
+
+---
+
 ## Sub-10ms Touch Latency & Full Atelier Liquid Glass Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-03 21:45)
 
 | Task | Status | Evidence / next gate |

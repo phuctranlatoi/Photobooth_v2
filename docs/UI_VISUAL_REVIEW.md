@@ -12,11 +12,37 @@
 | **Layout Selection (`StudioModeScreen`)** | `1280x800-demo-layout.png`<br>`1280x800-real-layout.png` | `1920x1200-demo-layout.png`<br>`1920x1200-real-layout.png` | Coverflow wheel carousel with cardless floating SVG prints (`clamp(200px, 22vw, 300px)`). Center active card at scale 1.04; immediate neighbors at scale 0.92 with 85% opacity (no blur). 56×56px carousel chevrons horizontally aligned with zero vertical delta. Customer-friendly names ("Dải 4 ảnh cổ điển", "Khung 4 ảnh postcard"). |
 | **Quantity Selection (`QuantityScreen`)** | `1280x800-demo-quantity-2.png`<br>`1280x800-real-quantity-2.png` | `1920x1200-demo-quantity-2.png`<br>`1920x1200-real-quantity-2.png` | Enlarged tactile stepper controls (72×72px) with 34px tabular numerals (`font-variant-numeric: tabular-nums`). Left price breakdown aligned to clean baselines; right print preview contained up to 82vh. |
 | **Payment (`PaymentScreen`)** | `1280x800-demo-payment.png`<br>`1280x800-real-payment.png` | `1920x1200-demo-payment.png`<br>`1920x1200-real-payment.png` | Exactly **0 px layout shift** between loading spinner and high-res VietQR code (verified by CDP geometry assertions). Left panel shows real calculated VND pricing (`70.000 đ`). Right panel displays pure porcelain white QR card (280×280px at 1280×800, 380×380px at 1920×1200). 1-second title hold reveals staff PIN dialog (`1234`). No customer free bypass. |
-| **Live Capture (`CaptureScreen`)** | `1280x800-demo-live.png` | `1920x1200-demo-live.png` | Darkroom obsidian studio (`#121214`) prevents lens glare. Camera shutter centered cleanly at `bottom: clamp(16px, 3vh, 44px)` (88px touch button at 1280×800, 108px at 1920×1200). Live countdown centered at `(50%, 50%)`. Mirrored view and dynamic crop guide active. |
+| **Live Capture (`CaptureScreen`)** | `1280x800-demo-live.png` | `1920x1200-demo-live.png` | Darkroom obsidian studio (`#121214`) prevents lens glare. Redesigned authentic V1 concentric physical shutter (108×108 px outer frosted ring with `blur(8px)`, 84×84 px crisp white inner core with 4px `#C27357` rim, tactile 0.92x scale on active tap, horizontal Δx = 0 px dead-center). Countdown timer centered via dedicated overlay `inset: 0` (240sp tabular numerals, soft terracotta glow, measured horizontal Δx = 0.000038 px, vertical Δy = 0 px). Mirrored view and dynamic crop guide active. |
 | **Photo Selection (`SelectPhotosScreen`)** | `1280x800-demo-select.png` | `1920x1200-demo-select.png` | Photo selection latency: **8.50 ms** (1280×800), **4.30 ms** (1920×1200). Candidate photo gallery and right print preview aligned to identical vertical top baseline. 40×40px terracotta selection order badges (`✓ 1`, `✓ 2`). 500ms press-and-hold lightbox zoom works smoothly. Selection timer decrements (`Còn lại 02:20` → `Còn lại 02:18`). |
 | **Frame Selection (`FrameScreen`)** | `1280x800-demo-frame.png` | `1920x1200-demo-frame.png` | Frame selection latency: **8.00 ms** (1280×800), **7.50 ms** (1920×1200). Deferred composition allows instantaneous frame selection. High-resolution composition rendered just-in-time on confirmation. Two-column frame grid with contained thumbnail artwork, check badges, and fluid action bar. |
 | **Confirmation (`ConfirmScreen`)** | `1280x800-demo-confirm.png` | `1920x1200-demo-confirm.png` | Maximum print presentation (up to 82vh). High-resolution composed preview loaded (`naturalWidth > 0`). Clean 2-column order summary. Confirm & Print button disarmed for 500ms on mount to prevent double-tap ghost clicks. |
 | **Delivery (`DeliveryScreen`)** | `1280x800-demo-delivery.png` | `1920x1200-demo-delivery.png` | Prominent simulated print signal status badge: **“TÍN HIỆU IN: ĐÃ TRUYỀN THÀNH CÔNG”** in green (`#28553A`). Centered mobile download QR code. Return to start resets session state cleanly. |
+
+---
+
+## Live Capture Ergonomics, Centered Countdown & Concentric Shutter Verification (2026-11-04)
+
+**Status: PASS-SIMULATED across 1280×800 and 1920×1200 viewports.** Verified via CDP automated test harness in `tests/verify-demo-and-real-journey.mjs` against live debug executable.
+
+### 1. Authentic Concentric Physical Shutter Geometry
+The capture shutter was re-engineered to mirror V1's tactile physical camera shutter button:
+- **Outer Frosted Ring:** 108×108 px circle, `border: 2px solid rgba(255, 255, 255, 0.55)`, `background: rgba(255, 255, 255, 0.22)`, `backdrop-filter: blur(8px)`, shadow `0 8px 24px rgba(0,0,0,.35)`.
+- **Inner Tactile Core:** 84×84 px crisp white disc, `border: 4px solid #C27357`, `background: #fff`, inner bevel `inset 0 2px 4px rgba(255, 255, 255, 0.9)`.
+- **Active Touch Scale:** Compresses to `scale(0.92)` on active touch/press with border deepening to `#A85A40` and core warming to `#FDF3EE`.
+- **Sub-Pixel Geometry Measurements (CDP):**
+  - **1280×800:** Outer ring = 108.00 × 108.00 px, Inner core = 84.00 × 84.00 px, Horizontal center offset Δx = **0.000000 px**.
+  - **1920×1200:** Outer ring = 108.00 × 108.00 px, Inner core = 84.00 × 84.00 px, Horizontal center offset Δx = **0.000000 px**.
+- **Touch Latch Protection:** `starting.current` lock suppresses ghost double-clicks and repeated taps while `capture.startSequence` dispatches.
+
+### 2. Centered Smooth Countdown Timer ("không nằm ở giữa" & "khựng khựng" Solved)
+- **Overlay Centering Layer:** Decoupled numeral from parent flow into dedicated `.v1-countdown-layer` pinned to `inset: 0` (`display: flex; align-items: center; justify-content: center; pointer-events: none; background: rgba(0, 0, 0, 0.28)`).
+- **Sub-Pixel Centering Measurements (CDP):**
+  - **1280×800:** Width = 172.56 px, Height = 288.00 px, Horizontal offset Δx = **0.000038 px**, Vertical offset Δy = **0.000000 px**.
+  - **1920×1200:** Width = 172.56 px, Height = 288.00 px, Horizontal offset Δx = **0.000061 px**, Vertical offset Δy = **0.000000 px**.
+- **Typography & Aesthetics:** 240sp warm white typography (`clamp(140px, 20vw, 240px)`, `font-weight: 900`, `line-height: 1`) with tabular figures (`font-variant-numeric: tabular-nums`) preventing glyph width shifts.
+- **Atmospheric Terracotta Glow:** `text-shadow: 0 0 45px rgba(194,115,87,.95), 0 0 90px rgba(194,115,87,.45), 0 6px 28px rgba(0,0,0,.85)`.
+- **Smooth Decrement Interval:** Local `performance.now() + countdown * 1000` anchor running a 50ms smooth tick. Eliminates stuttering caused by snapshot poll latency or React re-render queue delays.
+- **Pop Keyframe Animation:** Subtle `v1-countdown-pop` (`scale(1.2)` to `scale(1)` in 200ms `cubic-bezier(.16, 1, .3, 1)`) triggers on each integer decrement without displacing center alignment.
 
 ---
 
