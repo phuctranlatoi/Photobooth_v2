@@ -1,5 +1,23 @@
 ﻿# TASK_BOARD.md
 
+## Mock Capture & Print-Signal Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-03 15:04)
+
+| Task | Status | Evidence / next gate |
+|---|---|---|
+| Run full session without Canon/DNP attached | **COMPLETED — PASS-SIMULATED** | Unlocked flow supports end-to-end camera-free sessions; this is not physical hardware evidence. |
+| Synthetic high-resolution mock capture | **COMPLETED — PASS-SIMULATED** | Mock portraits feed the normal downstream selection and composition path. |
+| Exact print-canvas composition | **COMPLETED — PASS-SIMULATED** | Full composition engine renders the print canvas; physical V1/DNP output comparison remains not run. |
+| Print-signal transmission and telemetry | **COMPLETED — PASS-SIMULATED** | Dispatches to Windows Print Spooler when system printing is enabled, otherwise records simulated signal transmission with complete job telemetry. No physical DNP output was submitted by this review. |
+| Delivery success badge | **COMPLETED — PASS-AUTOMATED (bounded)** | Delivery displays green **“TÍN HIỆU IN: ĐÃ TRUYỀN THÀNH CÔNG”** status; frontend suite/build are green. |
+| Staff payment unlock helper | **COMPLETED — PASS-AUTOMATED (bounded)** | Payment displays the 1-second title-hold helper and PIN `1234`; existing staff-gesture regression passes. |
+| Backend regression | **COMPLETED — PASS-AUTOMATED** | Offline Gradle exit 0; XML **80 passed, 2 skipped, 0 failed/errors** of 82 across 28 suites; task up-to-date. |
+| Frontend regression/build | **COMPLETED — PASS-AUTOMATED** | **8/8 files, 56/56 tests**; production build passed with **2,017 modules**. |
+| Rust check | **COMPLETED — PASS-AUTOMATED (compile only)** | Installed Cargo `check` exited 0; Tauri package compiled in 5.86s. |
+| V1 strict isolation proof | **BLOCKED** | Reviewer ran no V1 command and made no V1 write/build/cleanup/secret read; no trusted before/after manifest exists for global proof. |
+| Physical/release gates | **BLOCKED / NOT-RUN** | Canon, DNP output/cut, mounted touch/scaling, Mini-PC metrics, installer/recovery, live providers, physical V1 comparison, and redistribution rights remain open. |
+
+---
+
 ## Production Kiosk Administration & Settings Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-03 12:50)
 
 | Task | Status | Evidence / next gate |

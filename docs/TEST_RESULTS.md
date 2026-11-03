@@ -1,5 +1,20 @@
 ﻿# Test Results â€” Independent Consolidated Review
 
+## 2026-11-03 15:04 Mock capture and print-signal transmission verification
+
+| Case | Status | Evidence / boundary |
+|---|---|---|
+| Backend offline tests | **PASS-AUTOMATED** | Requested `backend: .\.toolchain\gradle-8.14.3\bin\gradle.bat --offline test --console=plain` exited 0; `BUILD SUCCESSFUL in 32s`. JUnit XML aggregate: **82 total, 80 passed, 2 skipped, 0 failed/errors** across 28 suites. Gradle reported `test UP-TO-DATE`, so test bodies were not freshly executed. |
+| Frontend Vitest | **PASS-AUTOMATED** | Requested `frontend: npm test -- --run` exited 0; **8/8 files and 56/56 tests passed**; Vitest duration 9.19s. |
+| Frontend production build | **PASS-AUTOMATED** | Requested `frontend: npm run build` exited 0; TypeScript/Vite passed, **2,017 modules transformed**, built in 7.83s. |
+| Rust check | **PASS-AUTOMATED (compile only)** | Requested `src-tauri: C:\Users\ASUS\.cargo\bin\cargo.exe check` exited 0; the `le-souvenir-v2` dev profile compiled successfully in 5.86s. This was `check`, not Rust test execution. |
+| Unlocked mock capture and print signal | **PASS-SIMULATED** | The unlocked camera-free flow supports full end-to-end sessions with synthetic high-resolution mock portraits. The production composition engine renders the exact print canvas. Print dispatch sends to Windows Print Spooler when system printing is enabled; otherwise it records simulated signal transmission with complete job telemetry. Delivery presents the prominent green **“TÍN HIỆU IN: ĐÃ TRUYỀN THÀNH CÔNG”** badge, and Payment provides the staff helper for a 1-second title hold and PIN `1234`. No physical Canon DSLR capture, DNP spool/output, cut, or paper result was performed. |
+| V1 isolation | **BLOCKED (global proof)** | This reviewer ran no command in V1, made no V1 write/build/cleanup, and read no V1 secret. V1 was kept outside all command working directories. Filesystem-wide untouched status cannot be certified without a trusted before/after manifest. |
+
+**Release gate: BLOCK.** Mock end-to-end capture/composition/print-signal behavior and bounded software regression are green. Physical Canon/DNP output, mounted touchscreen/scaling, Mini-PC performance, installer/recovery, live-provider operations, physical V1 comparison, and redistribution-license signoff remain blocked or not run.
+
+---
+
 ## 2026-11-03 12:50 Production Kiosk Administration & Settings Overhaul
 
 | Case | Status | Evidence / boundary |

@@ -1,5 +1,13 @@
 ﻿# PROGRESS.md
 
+## Unlocked Mock Capture & End-to-End Print Signal Verification (2026-11-03 15:04)
+
+**Status: COMPLETE for camera-free simulated operation and bounded automated regression; physical hardware/release gates remain BLOCKED.** A full photobooth session can now run without a connected Canon DSLR or DNP printer. Capture produces synthetic high-resolution mock portraits, the full composition engine renders the exact print canvas, and the print path either dispatches to Windows Print Spooler when system printing is enabled or records a simulated successful transmission with complete job telemetry. `DeliveryScreen` prominently reports **“TÍN HIỆU IN: ĐÃ TRUYỀN THÀNH CÔNG”** in a green status badge. `PaymentScreen` tells staff how to unlock payment by holding the title for one second and entering PIN `1234`.
+
+Regression evidence: requested backend offline Gradle command exited 0 (`BUILD SUCCESSFUL in 32s`; XML **80 passed / 2 skipped / 0 failed** across 28 suites; test task up-to-date); frontend **56/56 tests across 8 files** passed in 9.19s; production build passed with **2,017 modules** in 7.83s; requested Cargo `check` compiled the Tauri package successfully in 5.86s. No physical Canon capture, DNP spool/output, cutting, or paper comparison was performed. No command was run in V1 and no V1 write or secret read occurred; global forensic isolation remains blocked without a trusted baseline manifest.
+
+---
+
 ## Production Kiosk Administration & Settings Overhaul (2026-11-03 12:50)
 
 **Status: COMPLETE for bounded source and automated regression; production release BLOCKED.** The Operator workspace no longer shows the jarring simulator warning banner. It now presents a production Atelier 2.0 kiosk-status banner with live device-status pills. `V1Settings` now uses Korean Atelier Liquid Glass styling with structured glass panels, a modern iOS/kiosk switch, tactile 52×52 squircle stepper buttons, floating status cards, and print-configuration information chips. The implementation preserves all existing test IDs and roles and the exact six-field backend persistence contract: `enableSystemPrint`, `useHotFolder`, `hotFolderPath`, `postCaptureTimeoutSeconds`, `photoSelectionTimeoutSeconds`, and `frameSelectionTimeoutSeconds`.

@@ -12,6 +12,7 @@ export interface Snapshot extends SessionGetStateResult {
   userConfirmed: boolean;
   revenueRecorded: boolean;
   printAccepted: boolean;
+  printStatus?: string | null;
   qrCodeUrl?: string | null;
   albumUrl?: string | null;
   paymentUrl?: string | null;

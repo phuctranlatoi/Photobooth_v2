@@ -26,6 +26,10 @@ body{margin:0}.v1-shell{position:relative;isolation:isolate;display:flex;flex-di
 .v1-photo-grid button{min-height:0;align-self:start;overflow:hidden}.v1-photo-grid img{max-height:clamp(115px,24vh,260px);object-fit:contain}.v1-photo-grid button span{width:auto;min-width:32px;padding:0 6px;box-shadow:var(--v-glow)}
 .v1-capture-top{background:#232120dd;box-shadow:var(--v-glow)}.v1-countdown{width:clamp(132px,18vw,240px);height:clamp(132px,18vw,240px);border-radius:50%;border:8px solid var(--v-peach);background:var(--v-nude);display:grid;place-items:center;font-size:clamp(80px,12vw,160px);box-shadow:0 0 0 14px #e07a5f45,0 12px 48px #0006;animation:v1-countdown-pulse 1s ease-in-out infinite alternate}.v1-flash{opacity:1;animation:v1-flash .2s ease-out forwards}@keyframes v1-countdown-pulse{to{transform:scale(1.06);box-shadow:0 0 0 24px #e07a5f24,0 12px 48px #0006}}
 .v1-delivery{box-shadow:var(--v-shadow)}.v1-delivery-qr{border-radius:18px;box-shadow:var(--v-shadow)}
+.v1-print-transmission-card{margin:8px 0;padding:12px 20px;border-radius:14px;background:rgba(46,139,87,.08);border:1.5px solid rgba(46,139,87,.25);display:flex;flex-direction:column;gap:4px;text-align:center}
+.v1-print-signal-badge{display:flex;align-items:center;justify-content:center;gap:8px;color:#1E5F38;font-size:14px;font-weight:700}
+.v1-print-signal-desc{margin:0;font-size:12px;color:#355342}
+.v1-staff-tip{display:block;margin-top:6px;font-size:12px;color:#8C5E3C;font-style:italic}
 @media(max-width:1400px) and (max-height:850px){.v1-shell{padding:14px 32px;gap:10px}.v1-heading{min-height:72px}.v1-start h1{font-size:clamp(48px,5vw,70px)}.v1-start-card{height:min(63vh,390px)}.v1-start .v1-primary{min-height:60px}.v1-start section>p:not(.v1-kicker){font-size:18px}.v1-actionbar{padding:10px 18px}.v1-panel{padding:clamp(16px,2vw,30px)}.v1-photo-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(prefers-reduced-motion:reduce){.v1-countdown,.v1-layout-card,.v1-frame-grid button,.v1-photo-grid button,.v1-bundles button{animation:none;transition:none}}
 

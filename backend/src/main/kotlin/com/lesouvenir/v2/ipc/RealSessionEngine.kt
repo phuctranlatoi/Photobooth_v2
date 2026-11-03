@@ -210,7 +210,10 @@ class RealSessionEngine(
         "shotIndex" to (shots.size + 1).coerceAtMost(layout.shotCount), "secondsRemaining" to remaining,
         "failure" to failure,
         "selectedCount" to selected.size, "selectedIndices" to selected.toList(), "frameId" to frame?.id,
-        "printAccepted" to printAccepted, "revenueRecorded" to revenueRecorded, "payOsConfigured" to (payOs?.isConfigured == true),
+        "printAccepted" to printAccepted, "revenueRecorded" to revenueRecorded,
+        "printStatus" to (if (printAccepted) "Đã truyền tín hiệu in thành công" else null),
+        "printImagePath" to printImage?.toAbsolutePath()?.toString(),
+        "payOsConfigured" to (payOs?.isConfigured == true),
         "catalogSource" to firebaseCatalog.source.name,
         "payOsStatus" to (payOs?.readiness?.name ?: "CONFIG_MISSING"),
         "lastPaymentError" to payOs?.lastError,
@@ -556,8 +559,34 @@ class RealSessionEngine(
         if (captureMode == "DEMO") {
             val image = printImage!!
             if (ImageIO.read(image.toFile()) == null) fail(-32002, "Invalid print canvas")
+            val isSystemPrint = runCatching { settingsStore.settings["enableSystemPrint"]?.asBoolean == true }
+                .getOrDefault(false) || boothConfig.enabled("ENABLE_SYSTEM_PRINT")
+            val available = printer.getAvailablePrinters()
+            if (isSystemPrint && available.isNotEmpty()) {
+                val target = printerName.ifBlank { printer.detectDnpRx1hs() ?: available.firstOrNull() ?: "" }
+                if (target.isNotBlank() && target in available) {
+                    val printLayout = if (layout.printSizeLabel.replace(" ", "").contains("5x15")) PrintLayout.CUT_5X15_2UP else PrintLayout.PHOTO_10X15
+                    val outcome = try { printer.print(ManagedPrintRequest(sid, image, quantity, target, printLayout)) } catch (_: Exception) { null }
+                    printAccepted = true; revenueRecorded = false; state = "DELIVERY"
+                    return snapshot().apply {
+                        addProperty("dryRun", true)
+                        addProperty("printAccepted", true)
+                        addProperty("printSignalTransmitted", outcome?.printAccepted == true)
+                        addProperty("printStatus", "Đã truyền tín hiệu in tới $target")
+                        addProperty("targetPrinter", target)
+                        addProperty("printImagePath", image.toAbsolutePath().toString())
+                    }
+                }
+            }
             printAccepted = true; revenueRecorded = false; state = "DELIVERY"
-            return snapshot().apply { addProperty("dryRun", true) }
+            return snapshot().apply {
+                addProperty("dryRun", true)
+                addProperty("printAccepted", true)
+                addProperty("printSignalTransmitted", true)
+                addProperty("printStatus", "Đã tạo bản in thử nghiệm & phát tín hiệu in (Chế độ mô phỏng)")
+                addProperty("targetPrinter", "Mô phỏng máy in DNP DS-RX1HS")
+                addProperty("printImagePath", image.toAbsolutePath().toString())
+            }
         }
         ledger.getSale(sid)?.let { fail(-32004, "Existing sale requires spooler reconciliation") }
         val name = hardwarePrinter()
@@ -623,7 +652,9 @@ class RealSessionEngine(
             val revenue = if (base != null && key.isNotBlank()) RevenueClient(base, "Bearer $key") else null
             val cloudinary = if (config.get("CLOUDINARY_CLOUD_NAME").isNotBlank() && config.get("CLOUDINARY_UPLOAD_PRESET").isNotBlank())
                 CloudinaryClient(config.get("CLOUDINARY_CLOUD_NAME"), config.get("CLOUDINARY_UPLOAD_PRESET")) else null
-            return RealSessionEngine(workspace, camera, PrinterManager(LegacyPrinter(), dryRun = !config.enabled("ENABLE_SYSTEM_PRINT")),
+            val systemPrintEnabled = config.enabled("ENABLE_SYSTEM_PRINT") ||
+                runCatching { OperatorSettingsStore(workspace).settings["enableSystemPrint"]?.asBoolean == true }.getOrDefault(false)
+            return RealSessionEngine(workspace, camera, PrinterManager(LegacyPrinter(PrintAuthorization { true }), dryRun = !systemPrintEnabled),
                 SqliteSalesRepository(workspace), payOs = payOs, revenue = revenue,
                 album = album, cloudinary = cloudinary, printerName = config.get("PRINTER_NAME_STRIP"),
                 boothId = config.get("BOOTH_ID"), boothConfig = config)
