@@ -1,5 +1,21 @@
 ﻿# TASK_BOARD.md
 
+## Pricing & Allowed Quantity Matrix Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-05 10:15)
+
+| Task | Status | Evidence / next gate |
+|---|---|---|
+| 70k base price across all layouts | **COMPLETED — PASS-AUTOMATED** | `PricingCalculator.kt`: `base = 70000L` for both 5x15 and 10x15/15x10 (min 2 prints). Unit price 20k/strip, 30k/postcard. Verified by `FoundationTest.pricingCharacterization`. |
+| 5x15 even-quantity stepping (2..50 step 2) | **COMPLETED — PASS-AUTOMATED** | `PricingCalculator.kt`: `allowedOptions("5x15")` returns `(2..50 step 2)`. Odd numbers rejected/sanitized. Prevents DNP printer half-cut waste. Verified by `FoundationTest`. |
+| 10x15 / 15x10 sequential stepping (2..50) | **COMPLETED — PASS-AUTOMATED** | `PricingCalculator.kt`: `allowedOptions("10x15")` returns `(2..50)`. Verified by `FoundationTest`. |
+| Engine & IPC catalog synchronization | **COMPLETED — PASS-AUTOMATED** | `RealSessionEngine.kt` and `SimulatorSessionEngine.kt` export `printBasePrice = 70000`, `stripBasePrice = 70000`. Verified by `RealSessionEngineTest`. |
+| Frontend layout normalization & stepper options | **COMPLETED — PASS-AUTOMATED** | `KioskSimulator.tsx` normalizes `printSizeLabel` to select correct allowed quantity list; `QuantityScreen.tsx` adapts stepper options with fallbacks. Verified by `screens.test.tsx`. |
+| Frontend test suite & production build | **COMPLETED — PASS-AUTOMATED** | Vitest: **59/59 passed** across 8 suites; Vite build: **2,017 modules transformed, 0 errors**. |
+| Backend test suite | **COMPLETED — PASS-AUTOMATED** | Offline Gradle test exit 0: **87 tests (85 passed, 2 skipped, 0 failed)** across 28 test suites. |
+| Strict V1 isolation | **VERIFIED READ-ONLY** | V1 (`E:\HK1_2026_2027\PhotoboothDesktop`) remained strictly untouched; no writes or builds executed against V1. |
+| Physical hardware / release gates | **BLOCKED / GATED** | Physical Canon DSLR, physical DNP DS-RX1HS spooling/cutting, live PayOS credentials, and commercial redistribution review remain unverified without physical hardware. |
+
+---
+
 ## Unboxed Atelier & Liquid Glass UI Overhaul Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-05 02:40)
 
 | Task | Status | Evidence / next gate |

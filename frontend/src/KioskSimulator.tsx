@@ -61,12 +61,12 @@ export function KioskSimulator(){
     void next.finally(()=>{queuedCount.current--;if(alive.current&&queuedCount.current===0)setBusy(false)});
     return next;
   }
-   const state=snapshot?.state??(session.current?'CONNECTING':'IDLE');const layout=snapshot?.layout,pricing=snapshot?.pricing,preview=safeImage(snapshot?.previewDataUrl);const common={layout,layouts:catalog?.layouts??[],pricing,busy:busy||!!error,preview,snapshot,simulator:catalog?.simulator??(snapshot?.runtimeMode!=='REAL'),action:(method:SimulatorMethod,params?:object)=>command(method,params)};
+   const state=snapshot?.state??(session.current?'CONNECTING':'IDLE');const layout=snapshot?.layout,pricing=snapshot?.pricing,preview=safeImage(snapshot?.previewDataUrl);const isStripLayout=layout?.printSizeLabel ? layout.printSizeLabel.replace(/\s/g,'').toLowerCase().includes('5x15') : false;const common={layout,layouts:catalog?.layouts??[],pricing,busy:busy||!!error,preview,snapshot,simulator:catalog?.simulator??(snapshot?.runtimeMode!=='REAL'),action:(method:SimulatorMethod,params?:object)=>command(method,params)};
  if(admin)return <AdminScreen onClose={()=>setAdmin(false)}/>;
       return <AppShell camera={['LIVE_VIEW','COUNTDOWN','CAPTURING'].includes(state)} className={`atelier-customer${state==='PAYMENT_PENDING'?' v1-shell-payment':''}`}>{error&&<div className="v1-error" role="alert"><p>{error}</p><KioskSecondaryButton onClick={()=>{if(lock.current)return;lock.current=true;void (async()=>{try{const c=await rpc<CatalogGetResult>('catalog.get');if(!alive.current)return;setCatalog(c);loaded.current=true;setError('');await refresh();if(alive.current)setError('')}catch(e){if(alive.current)setError(String(e))}finally{lock.current=false}})()}}>Kiểm tra lại trạng thái · Không gửi lại lệnh</KioskSecondaryButton></div>}
    {state==='IDLE'&&<StartScreen layouts={catalog?.layouts??[]} defaultLayoutId={catalog?.defaultLayoutId} bundles={catalog?.bundles} catalogSource={catalog?.catalogSource} lastSyncError={catalog?.lastSyncError} busy={busy||!!error} onStart={(layoutId)=>void command('session.start',{layoutId})} onAdmin={()=>setAdmin(true)}/>}
  {state==='SELECTING'&&<StudioModeScreen {...common}/>}
- {state==='SELECTING_QUANTITY'&&<QuantityScreen {...common} allowed={layout?.printSizeLabel==='5x15'?catalog?.pricing.stripAllowedQuantities:catalog?.pricing.printAllowedQuantities}/>}
+  {state==='SELECTING_QUANTITY'&&<QuantityScreen {...common} allowed={isStripLayout?catalog?.pricing.stripAllowedQuantities:catalog?.pricing.printAllowedQuantities}/>}
  {state==='PAYMENT_PENDING'&&<PaymentScreen {...common}/>}
  {state==='PREPARING'&&<PrepareScreen {...common}/>}
  {['LIVE_VIEW','COUNTDOWN','CAPTURING'].includes(state)&&<CaptureScreen {...common} live={snapshot?.livePreviewDataUrl??''} count={snapshot?.capturedCount} countdown={snapshot?.secondsRemaining} state={state}/>}

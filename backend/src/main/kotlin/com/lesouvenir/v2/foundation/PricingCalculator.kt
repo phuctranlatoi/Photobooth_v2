@@ -1,6 +1,6 @@
 package com.lesouvenir.v2.foundation
 
-// V1 model/PricingCalculator.kt:3-38; package changed only.
+// Based on V1 model/PricingCalculator.kt:3-38; V2 pricing updated to the approved 70,000 VND base.
 data class PricingSnapshot(
     val printSize: String,
     val quantity: Int,
@@ -33,7 +33,7 @@ object PricingCalculator {
             "Unsupported quantity $quantity for $printSize"
         }
         val extra = maxOf(0, quantity - 2)
-        val base = if (strip) 70000L else 90000L
+        val base = 70000L
         val unit = if (strip) 20000L else 30000L
         return PricingSnapshot(if (strip) "5x15" else "10x15", quantity, 2, extra, base, unit, extra * unit, base + extra * unit)
     }

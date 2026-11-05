@@ -52,7 +52,7 @@ class RealSessionEngineTest {
             val pricing = catalog["pricing"].asJsonObject
             assertEquals(70000, pricing["stripBasePrice"].asInt)
             assertEquals(20000, pricing["stripUnitPrice"].asInt)
-            assertEquals(90000, pricing["printBasePrice"].asInt)
+            assertEquals(70000, pricing["printBasePrice"].asInt)
             assertEquals(30000, pricing["printUnitPrice"].asInt)
             assertEquals(PricingCalculator.allowedOptions("5x15"), pricing["stripAllowedQuantities"].asJsonArray.map { it.asInt })
             assertEquals(PricingCalculator.allowedOptions("10x15"), pricing["printAllowedQuantities"].asJsonArray.map { it.asInt })

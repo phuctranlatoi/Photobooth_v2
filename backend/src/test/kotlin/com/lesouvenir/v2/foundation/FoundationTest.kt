@@ -41,12 +41,23 @@ class FoundationTest {
 
     @Test fun pricingCharacterization() {
         assertEquals(110000L, PricingCalculator.calculatePrice("5 x 15 cm", 4).totalAmount)
-        assertEquals(120000L, PricingCalculator.calculatePrice("15x10", 3).totalAmount)
+        assertEquals(100000L, PricingCalculator.calculatePrice("15x10", 3).totalAmount)
+        for ((size, quantities, prices) in listOf(
+            Triple("5x15", listOf(2, 4, 6, 8), listOf(70000L, 110000L, 150000L, 190000L)),
+            Triple("10x15", listOf(2, 3, 4, 5), listOf(70000L, 100000L, 130000L, 160000L)),
+            Triple("15x10", listOf(2, 3, 4, 5), listOf(70000L, 100000L, 130000L, 160000L))
+        )) {
+            quantities.zip(prices).forEach { (quantity, price) ->
+                assertEquals(price, PricingCalculator.calculatePrice(size, quantity).totalAmount)
+            }
+        }
         assertEquals("10x15", PricingCalculator.calculatePrice("15x10", 2).printSize)
         assertEquals(4, PricingCalculator.sanitizeQuantity("5x15", 3))
         assertEquals(52, PricingCalculator.sanitizeQuantity("5x15", 51)) // no upper clamp in V1
         assertEquals(25, PricingCalculator.allowedOptions("5x15").size)
         assertEquals(49, PricingCalculator.allowedOptions("10x15").size)
+        assertEquals((2..50 step 2).toList(), PricingCalculator.allowedOptions("5x15"))
+        assertEquals((2..50).toList(), PricingCalculator.allowedOptions("15x10"))
         assertFailsWith<IllegalArgumentException> { PricingCalculator.calculatePrice("5x15", 3) }
         assertFailsWith<IllegalArgumentException> { PricingCalculator.calculatePrice("square", 2) }
     }

@@ -190,7 +190,7 @@ class SimulatorSessionEngine(
         if(method=="catalog.get") return obj("layouts" to layouts,"defaultLayoutId" to config["defaultLayoutId"].asString,
             "sourceCount" to config["sourceCount"].asInt,"previewWidth" to config["previewWidth"].asInt,"previewHeight" to config["previewHeight"].asInt,
             "captureWidth" to config["captureWidth"].asInt,"captureHeight" to config["captureHeight"].asInt,"simulator" to true,
-            "pricing" to mapOf("stripBasePrice" to 70000,"stripUnitPrice" to 20000,"printBasePrice" to 90000,"printUnitPrice" to 30000,
+            "pricing" to mapOf("stripBasePrice" to 70000,"stripUnitPrice" to 20000,"printBasePrice" to 70000,"printUnitPrice" to 30000,
                 "stripAllowedQuantities" to PricingCalculator.allowedOptions("5x15"),"printAllowedQuantities" to PricingCalculator.allowedOptions("10x15")))
         if(method=="device.getStatus") return obj("camera" to mapOf("connected" to enabled,"name" to "Simulator","liveViewActive" to (state=="LIVE_VIEW")),
             "printer" to mapOf("available" to false,"queueLength" to 0),"beauty" to mapOf("modelsLoaded" to false),

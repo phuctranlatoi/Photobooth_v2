@@ -1,5 +1,31 @@
 ﻿# PROGRESS.md
 
+## Pricing & Allowed Quantity Rules Update Milestone (2026-11-05 10:15)
+
+**Status: PASS-SIMULATED & PASS-AUTOMATED across 1280×800 and 1920×1200 viewports; physical hardware gates remain unverified without physical Canon DSLR or DNP DS-RX1HS.**
+
+Key milestones delivered and verified:
+1. **70,000 VNĐ Uniform Base Price:**
+   - Updated base price from 90,000 VNĐ to **70,000 VNĐ** for 10x15 and 15x10 layouts (minimum 2 prints).
+   - Reaffirmed base price of **70,000 VNĐ** for 5x15 photo strip layouts (minimum 2 prints).
+2. **Even vs. Sequential Quantity Matrix:**
+   - **5x15 (dải ảnh):** Min 2, even quantities only (`2..50 step 2`: 2, 4, 6, 8, ... up to 50). Extra print unit price is 20,000 VNĐ/print (e.g., 2 prints = 70,000 VNĐ; 4 prints = 70,000 + 40,000 = 110,000 VNĐ; 6 prints = 150,000 VNĐ). Aligned with the physical DNP DS-RX1HS cutter mechanism (cutting 10x15 sheets in half).
+   - **10x15 and 15x10 (khổ đơn):** Min 2, sequential quantities (`2..50`: 2, 3, 4, 5, ... up to 50). Extra print unit price is 30,000 VNĐ/print (e.g., 2 prints = 70,000 VNĐ; 3 prints = 70,000 + 30,000 = 100,000 VNĐ; 4 prints = 130,000 VNĐ).
+3. **Backend Engine & IPC Synchronization:**
+   - Updated `PricingCalculator.kt`: `base = 70000L` uniformly; `unit = if (strip) 20000L else 30000L`; `allowedOptions("5x15") = (2..50 step 2).toList()`; `allowedOptions("10x15") = (2..50).toList()`. Odd strip counts in `sanitizeQuantity` round up to next even number.
+   - Updated `RealSessionEngine.kt` and `SimulatorSessionEngine.kt`: `printBasePrice = 70000` in `catalog.get` and session pricing payloads.
+4. **Frontend Layout Detection & Stepper Guardrails:**
+   - `KioskSimulator.tsx`: Robust `isStripLayout` normalization (`layout?.printSizeLabel.replace(/\s/g,'').toLowerCase().includes('5x15')`) correctly passes `stripAllowedQuantities` or `printAllowedQuantities` to `QuantityScreen`.
+   - `QuantityScreen.tsx`: Enforces backend-supplied allowed array with fallback `[2, 4, 6, 8, ...]` for strips and `[2, 3, 4, 5, ...]` for postcards, preventing invalid quantity selection.
+5. **Full Regression & Verification:**
+   - Backend Gradle: **87 tests (85 passed, 2 skipped, 0 failed)** across 28 test suites, including `FoundationTest.pricingCharacterization` and `RealSessionEngineTest`.
+   - Frontend Vitest: **59/59 passed** across 8 test suites (`command-queue.test.ts`, `PhotoPreview.test.tsx`, `StaffGestures.test.tsx`, `V1Settings.test.tsx`, `Simulator.test.tsx`, `App.test.tsx`, `Operator.test.tsx`, `screens.test.tsx`).
+   - Production Vite build: **2,017 modules transformed, 0 errors**.
+   - Journey runner passing at 1280×800 and 1920×1200 viewports.
+6. **Strict V1 Isolation:** V1 (`E:\HK1_2026_2027\PhotoboothDesktop`) remained strictly untouched, unread, and write-protected.
+
+---
+
 ## Unboxed Atelier & Genuine Liquid Glass Controls Milestone (2026-11-05 02:40)
 
 **Status: PASS-SIMULATED & PASS-AUTOMATED across 1280×800 and 1920×1200 viewports; physical hardware gates remain unverified without physical Canon DSLR or DNP DS-RX1HS.**

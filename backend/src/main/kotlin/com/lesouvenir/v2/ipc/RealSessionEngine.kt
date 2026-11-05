@@ -180,7 +180,7 @@ class RealSessionEngine(
         "lastSyncTimestamp" to firebaseCatalog.lastSyncTimestamp,
         "pricing" to mapOf(
             "stripBasePrice" to 70000, "stripUnitPrice" to 20000,
-            "printBasePrice" to 90000, "printUnitPrice" to 30000,
+            "printBasePrice" to 70000, "printUnitPrice" to 30000,
             "stripAllowedQuantities" to PricingCalculator.allowedOptions("5x15"),
             "printAllowedQuantities" to PricingCalculator.allowedOptions("10x15")))
     private fun fail(code: Int, message: String): Nothing = throw SimulatorError(code, message)

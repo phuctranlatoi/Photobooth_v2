@@ -43,6 +43,7 @@
 | 018 | Korean Touchscreen UI Design Tokens & Layout Plan | ✅ Accepted | 2026-11-01 |
 | 019 | V1 Horizontal Snapping Carousel Restoration, Vector Slot Geometry Previews, and Tauri Bridge Failure Teardown | ✅ Accepted | 2026-11-01 |
 | 020 | Direct Manipulation Touchscreen Architecture, One-Tap Selection Flows, Staff Payment Authorization, and Liquid Glass 16:10 Geometry | ✅ Accepted | 2026-11-02 |
+| 021 | Updated Pricing Matrix and Allowed Print Quantities (70k Base, 5x15 Even Steps, 10x15 Sequential Steps) | ✅ Accepted | 2026-11-05 |
 
 ---
 
@@ -495,6 +496,58 @@ Following the comprehensive Touchscreen Interaction Audit (`docs/TOUCHSCREEN_INT
 - Eliminates customer payment bypass vulnerabilities and ghost-click misprints.
 - Establishes a floating, premium Korean atelier aesthetic with zero page scrolling.
 - See `docs/TOUCHSCREEN_ARCHITECTURE_SPEC.md` for complete engineering specifications and IPC schemas.
+
+---
+
+## ADR-021: Updated Pricing Matrix and Allowed Print Quantities (70k Base, 5x15 Even Steps, 10x15 Sequential Steps)
+
+**Date**: 2026-11-05  
+**Status**: Accepted  
+**Authors**: Solutions Architect (V2)  
+**Supersedes/Extends**: Extends ADR-015
+
+### Context
+In legacy V1, `10x15` and `15x10` print layouts had a base price of 90,000 VNĐ (for 2 prints) and an extra unit price of 30,000 VNĐ per additional print. `5x15` photo strips had a base price of 70,000 VNĐ (for 2 prints) and 20,000 VNĐ per additional print.
+
+To simplify customer pricing, optimize commercial conversion, and strictly prevent physical printer media waste, the pricing matrix and print quantity rules have been updated:
+1. **Uniform 70k Base Price:** All print sizes (5x15 dải ảnh, 10x15, and 15x10) now feature a uniform base price of **70,000 VNĐ** for the mandatory minimum package of 2 prints.
+2. **5x15 Photo Strip Constraints (Even-Only Quantities):**
+   - Minimum 2 prints.
+   - Allowed quantities must be strictly even: `2, 4, 6, 8, ... up to 50` (`(2..50 step 2)`).
+   - Base 2 prints = 70,000 VNĐ.
+   - Each additional print = 20,000 VNĐ (e.g., 4 prints = 70,000 + 2 × 20,000 = 110,000 VNĐ).
+   - Hardware rationale: DNP DS-RX1HS prints 5x15 by cutting 10x15 dye-sub sheets in half (2-inch cut mode). Printing an odd number of strips would force an unused half-cut or print blank media, creating mechanical/media waste.
+3. **10x15 and 15x10 Constraints (Sequential Quantities):**
+   - Minimum 2 prints.
+   - Allowed quantities are sequential: `2, 3, 4, 5, ... up to 50` (`(2..50)`).
+   - Base 2 prints = 70,000 VNĐ.
+   - Each additional print = 30,000 VNĐ (e.g., 3 prints = 70,000 + 1 × 30,000 = 100,000 VNĐ; 4 prints = 130,000 VNĐ).
+
+### Decision
+1. **Backend Pricing Engine (`PricingCalculator.kt`):**
+   - Base price set uniformly to `70000L` regardless of layout.
+   - Unit price set conditionally: `unit = if (strip) 20000L else 30000L`.
+   - Formula: `totalAmount = base + maxOf(0, quantity - 2) * unit`.
+   - Allowed options:
+     - `allowedOptions("5x15")` returns `(2..50 step 2).toList()`.
+     - `allowedOptions("10x15")` and `allowedOptions("15x10")` return `(2..50).toList()`.
+   - Quantity sanitization: `sanitizeQuantity("5x15", q)` rounds odd values up to the next even integer (min 2). Any odd quantity directly passed to `calculatePrice` for a strip layout throws `IllegalArgumentException`.
+2. **IPC Engine & Catalog Synchronization (`RealSessionEngine.kt`, `SimulatorSessionEngine.kt`):**
+   - `catalog.get` returns:
+     - `stripBasePrice`: `70000`, `stripUnitPrice`: `20000`, `stripAllowedQuantities`: `[2, 4, 6, ..., 50]`
+     - `printBasePrice`: `70000`, `printUnitPrice`: `30000`, `printAllowedQuantities`: `[2, 3, 4, ..., 50]`
+3. **Frontend Presentation & Stepper Guardrails (`KioskSimulator.tsx`, `QuantityScreen.tsx`):**
+   - `KioskSimulator.tsx` normalizes layout label via `layout?.printSizeLabel.replace(/\s/g,'').toLowerCase().includes('5x15')` to select either `stripAllowedQuantities` or `printAllowedQuantities`.
+   - `QuantityScreen.tsx` maps the stepper index directly to the allowed options array, preventing selection of non-stepped numbers. Includes fallback arrays matching backend rules (`[2,4,6,8,10,12,14,16,18,20]` for strips, `[2..10]` for single sheets) if catalog IPC is delayed.
+4. **Verification & Automated Characterization:**
+   - Unit tests in `FoundationTest.kt` assert exact pricing matrices for 5x15, 10x15, and 15x10, verifying stepping, boundary checks, and sanitization.
+   - Integration tests in `RealSessionEngineTest.kt` assert catalog payload pricing.
+   - Vitest suite in `screens.test.tsx` (59/59 passing) verifies quantity stepper interaction and pricing calculation on the kiosk display.
+
+### Consequences
+- Unifies base pricing at 70,000 VNĐ, lowering barrier to entry for standard postcard prints (previously 90,000 VNĐ).
+- Mechanically safe print spooling: guarantees DNP DS-RX1HS cutter always operates on paired 5x15 strips.
+- Preserves backend authority as single source of truth for pricing calculations and payment invoices.
 
 ---
 

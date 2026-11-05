@@ -5,7 +5,9 @@ import {formatLayoutTitle} from './LayoutArtwork';
 export function QuantityScreen({layout,pricing,busy,action,preview,allowed=[]}:ScreenProps & {allowed?:number[]}){
  const [choice,setChoice]=useState<number>();
  const sent=useRef(false);
- const options=[...allowed].sort((a,b)=>a-b);
+  const isStrip=layout?.printSizeLabel ? layout.printSizeLabel.replace(/\s/g,'').toLowerCase().includes('5x15') : false;
+  const fallbackOptions=isStrip ? [2,4,6,8,10,12,14,16,18,20] : [2,3,4,5,6,7,8,9,10];
+  const options=(allowed&&allowed.length>0?[...allowed]:fallbackOptions).sort((a,b)=>a-b);
  const q=choice??(options.includes(pricing?.quantity??-1)?pricing!.quantity:options[0]);
  const index=options.indexOf(q);
  const verified=q===pricing?.quantity;
