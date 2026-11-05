@@ -55,11 +55,11 @@
   border-radius: 28px;
   position: relative;
   overflow: hidden;
-   background: rgba(255,255,255,.76);
-   -webkit-backdrop-filter: blur(20px) saturate(150%);
-   backdrop-filter: blur(20px) saturate(150%);
-   border: 1px solid rgba(255,255,255,.9);
-   box-shadow: inset 0 1px 1px rgba(255,255,255,.9),0 12px 32px rgba(40,25,15,.08);
+    background: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border: 0;
+    box-shadow: none;
   transition: none !important;
   animation: none !important;
   transform: none !important;
@@ -116,12 +116,27 @@
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  border-radius: 12px;
+  border-radius: 0;
   transition: none !important;
   animation: none !important;
   transform: none !important;
   image-rendering: auto;
 }
+/* The receipt sits on the canvas; only the QR surround is frosted. Keep
+   the QR image and its four-module renderer quiet zone fully opaque. */
+.v1-shell.atelier-customer .v1-payment-columns > .v1-payment-summary {
+  background: transparent !important; border: 0 !important; box-shadow: none !important;
+  -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
+  padding-inline: clamp(0px, 2vw, 28px);
+}
+.v1-shell.atelier-customer .v1-payment-columns > .v1-payment-qr-panel {
+  background: rgba(255,255,255,.55) !important;
+  border: 1px solid rgba(255,255,255,.75) !important;
+  -webkit-backdrop-filter: blur(20px) !important; backdrop-filter: blur(20px) !important;
+  box-shadow: inset 0 1px 2px #fff,0 12px 32px rgba(45,30,20,.07) !important;
+}
+.v1-shell.atelier-customer .v1-payment-qr-slot,
+.v1-shell.atelier-customer .v1-payment-qr-slot img {background:#fff !important;opacity:1;filter:none;}
  .v1-payment-spinner { display:grid;place-items:center;width:100%;height:100%;flex:none;border-radius:12px;background:#fff; }
  .v1-payment-spinner::after { content:'';width:80px;height:80px;border:7px solid rgba(194,115,87,.15);border-top-color:#C27357;border-radius:50%;animation:v1-payment-spin .85s linear infinite; }
 .v1-payment-warning { display: grid; place-items: center; width: 72px; height: 72px; border-radius: 50%; background: #fff2dd; color: #8A4C05; }

@@ -1,61 +1,124 @@
 # LE SOUVENIR V2 — Korean Photo Atelier Design Specification
 
-**Status:** Korean Photo Atelier Liquid Glass visual system mounted and fully verified in software; **simulated desktop journey accepted** across 1280×800 and 1920×1200 viewports (`tests/journey-evidence/2026-11-03T14-34-21.203Z/results.json`, 65/65 checks passed, 0 failures, 26 screenshots). Sub-10ms touch response, deferred composition, and zero QR layout shift verified. Physical Canon DSLR and DNP printer hardware gates remain gated.
+**Status:** Unboxed Atelier & Liquid Glass visual system fully mounted and verified across customer screens; **simulated desktop journey accepted** across 1280×800 and 1920×1200 viewports (`tests/journey-evidence/2026-11-05T02-34-00.652Z/results.json`, 0 failures, 26 screenshots). Sub-10ms touch response, unboxed photographic canvas, genuine liquid glass controls, deferred composition, concentric shutter button, and zero QR layout shift verified. Physical Canon DSLR and DNP printer hardware gates remain gated.
 
 ---
 
-## 1. Atelier Liquid Glass Design Foundations
+## 1. Unboxed Atelier & Liquid Glass Foundations
 
-The LE SOUVENIR V2 visual system is inspired by upscale modern Korean photo studios (Seoul Seongsu/Hannam atelier aesthetic). It pairs high-translucency frosted glass surfaces with warm ambient paper tones, generous breathing room, and prominent physical print presentations. UI chrome recedes into soft, luminous glass layers, ensuring the customer's photographs remain the dominant visual hero.
+The LE SOUVENIR V2 visual system is inspired by upscale modern Korean photo studios (Seoul Seongsu/Hannam atelier aesthetic). The **Unboxed Atelier** design philosophy strips away heavy, opaque white card containers (`.v1-panel`, `.v1-start-card`, `.v1-summary`, `.v1-quantity-pricing`, `.v1-prepare-stage`, `.v1-print-stage`, `.v1-delivery`, `.v1-frame-preview-panel`) across all customer-facing stages. Photographs and print layouts float as authentic physical paper directly over a warm ambient ivory canvas, while UI chrome recedes into genuine liquid glass controls with heavy optical refraction.
 
-### 1.1 Mounted Color Tokens
+### 1.1 Unboxed Customer Shell Tokens (`.v1-shell.atelier-customer`)
 
 | Design Token | CSS / Hex Value | Role & Applied Context | Contrast / Accessibility |
 |---|---|---|---|
-| Ambient Canvas | `linear-gradient(135deg, #FAF7F2 0%, #F5EFEB 50%, #EFE8E0 100%)` | Global customer shell background (`:root`, `.v1-shell:not(.v1-camera)`) | Soft non-glare warm ivory surface |
-| Glass Surface Fill | `rgba(255, 255, 255, 0.76)` | Translucent frosted plates (`.v1-panel`, `.v1-actionbar`, `.v1-start-card`, summary cards) | Requires `backdrop-filter: blur(20px) saturate(150%)` |
-| Glass Rim / Bevel | `1px solid rgba(255, 255, 255, 0.9)` | Specular edge reflection around glass panels | Creates tangible physical boundary |
-| Inner Specular Bevel | `inset 0 1px 1px rgba(255, 255, 255, 0.9)` | Top edge light-catch mimicking polished crystal glass | High-end tactile depth |
-| Glass Ambient Shadow | `0 12px 32px rgba(40, 25, 15, 0.08)` | Soft warm drop shadow beneath floating glass panels | Grounded without muddying background |
-| Primary Ink | `#24201D` | Primary headings, titles, price totals, action labels | High contrast (≥ 11:1 on ivory/glass) |
-| Secondary Ink | `#5C5854` / `#6D6059` | Subtitles, step eyebrows, metadata labels, unit prices | Contrast ≥ 4.8:1 on glass surface |
-| Muted Border | `#E9DED7` / `#D4C9C0` | Hairline dividers, subtle card boundaries | Non-intrusive structural grouping |
-| Terracotta Accent | `#C27357` (hover/focus: `#B06247`) | Primary CTA buttons, active selection badges, checkmarks | Brand salon color, high-salience touch |
-| Terracotta Glow | `0 8px 24px rgba(194, 115, 87, 0.28)` | Focus and active shadow for primary buttons and chips | Warm tactile confirmation |
-| Amber Status | `#8A4C05` on `#FFF2DD` | Pending payment badge, awaiting QR scan indicator | Warning/pending state |
-| Green Success | `#28553A` on `#E9F1E9` | Print signal success badge, completed delivery state | Confirmed hardware/session success |
-| Studio Camera Darkroom | `#121214` (matte obsidian) | Live View capture screen (`.v1-capture-screen`, `.v1-camera`) | Eliminates screen flare in camera lens |
+| `--at-canvas` | `#F6F1EA` | Base ivory studio canvas | Soft non-glare warm ivory surface |
+| `--at-canvas-light` | `#FBF8F3` | Elevated light tone for paper accents | Pure photographic baseline |
+| `--at-ink` | `#24201D` | Primary headings, titles, price totals, action labels | High contrast (≥ 11:1 on ivory canvas) |
+| `--at-secondary` | `#514842` | Subtitles, step descriptions, receipt item labels | Contrast ≥ 5.2:1 on canvas |
+| `--at-muted` | `#645950` | Metadata labels, unit prices, captions | Subdued secondary information |
+| `--at-hairline` | `rgba(89, 65, 49, 0.19)` | Delicate dividers for unboxed receipt/summary rows | Subtle structural separation without boxing |
+| `--at-coral-1` | `#C27357` | Primary CTA gradient start, active badges | Brand salon terracotta accent |
+| `--at-coral-2` | `#A85A40` | Primary CTA gradient midpoint, border accents | Deep terracotta-coral body |
+| `--at-coral-3` | `#8E442D` | Primary CTA gradient bottom edge, active depth | Rich terracotta anchor |
+| `--at-glass` | `rgba(255, 255, 255, 0.65)` | Translucent refractive glass fill (secondary, back, stepper, dock) | Requires `backdrop-filter: blur(24px) saturate(180%)` |
+| `--at-glass-rim` | `rgba(255, 255, 255, 0.85)` | Specular edge reflection around glass elements | Creates tangible physical boundary |
+| `--at-glass-shadow` | `0 6px 18px rgba(45, 30, 20, 0.06)` | Soft ambient shadow beneath glass buttons | Grounded without darkening the canvas |
+| `--at-paper-shadow` | `0 22px 38px -13px rgba(44,30,23,.26), 0 5px 11px rgba(44,30,23,.13)` | Deep photorealistic dual drop shadow for floating prints | Distinct paper elevation in open space |
+| Ambient Light Gradient | `radial-gradient(ellipse 48% 63% at 77% 46%, rgba(214,178,150,.19), transparent 86%), #F6F1EA` | Background applied to customer shell (`.atelier-customer`) | Creates a shallow, warm atmospheric glow behind artwork |
+| Darkroom Obsidian | `#121214` (matte obsidian) | Live View capture screen (`.v1-capture-screen`, `.v1-camera`) | Eliminates screen flare in camera lens |
 
 ---
 
-## 2. Typography Scale & Layout Hierarchy
+## 2. Genuine Liquid Glass Controls
 
-Typography is built on the native Windows/Chromium system font stack (`system-ui, "Segoe UI", -apple-system, BlinkMacSystemFont, "Noto Sans", sans-serif`) ensuring zero latency, zero layout shift (FOUT/FOIT), and native rendering of all Vietnamese diacritics.
+Interactive controls are engineered with genuine optical glass characteristics rather than generic translucent boxes:
 
-### 2.1 Type Hierarchy
+### 2.1 Primary Pill CTA (`.v1-primary`)
+- **Dimensions & Shape:** Minimum height **68px** (up to 72px), full pill border-radius (`9999px`), ample horizontal padding.
+- **Core Gradient:** `linear-gradient(135deg, #C27357 0%, #A85A40 50%, #8E442D 100%)`.
+- **Specular Rim:** Deep terracotta border `1px solid #793924` with top-edge specular light catch `inset 0 1.5px 2px rgba(255, 255, 255, 0.45)`.
+- **Radiant Shadow:** `0 8px 24px rgba(168, 90, 64, 0.35)`.
+- **Active Press:** Compresses to `transform: scale(0.96); filter: brightness(0.96)` over 190ms `cubic-bezier(0.2, 1.3, 0.3, 1)`.
 
-| Hierarchy Level | Font Size (Fluid / Responsive) | Weight | Line Height | Letter Spacing | Applied Elements |
+### 2.2 Refractive Glass Secondary & Back Buttons (`.v1-secondary`, `.v1-back`, Stepper)
+- **Dimensions:** Back button **56×56px** circle; Quantity stepper buttons **72×72px** tactile touch targets; secondary buttons **56px** minimum height.
+- **Refraction Body:** Translucent fill `rgba(255, 255, 255, 0.65)` with heavy optical diffusion `-webkit-backdrop-filter: blur(24px) saturate(180%)` and `backdrop-filter: blur(24px) saturate(180%)`.
+- **Dual Specular Rims:** Outer crisp reflection `1px solid rgba(255, 255, 255, 0.85)` + inner light catch `inset 0 1.5px 2px rgba(255, 255, 255, 0.95)`.
+- **Shadow:** Grounded with `0 6px 18px rgba(45, 30, 20, 0.06)`.
+- **Active Touch:** Compresses to `transform: scale(0.94)` on finger contact.
+- **Fall-Back:** Gracefully degrades to `#F2EBE4` on browsers/environments lacking backdrop-filter support.
+
+### 2.3 Floating Actionbar Dock (`.v1-actionbar`)
+- Floating frosted glass dock (`border-radius: 28px`), `backdrop-filter: blur(24px) saturate(180%)`, border `1px solid rgba(255, 255, 255, 0.85)`, inner highlight `inset 0 1.5px 2px rgba(255, 255, 255, 0.95)`, and soft elevated drop shadow `0 10px 26px rgba(45, 30, 20, 0.08)`.
+- Pinned at the bottom of the viewport with a fluid gap, housing primary and secondary actions without visual clutter.
+
+---
+
+## 3. Unboxed Typography & Clean Spatial Hierarchy
+
+Typography is built on the native Windows/Chromium system font stack (`system-ui, "Segoe UI", -apple-system, BlinkMacSystemFont, "Noto Sans", sans-serif`) with Georgia serif accents, ensuring zero latency, zero FOUT/FOIT, and pristine rendering of all Vietnamese diacritics.
+
+### 3.1 Unboxed Type Hierarchy
+
+| Hierarchy Level | Font Size (Fluid / Responsive) | Weight / Style | Line Height | Letter Spacing | Applied Elements |
 |---|---|---|---|---|---|
-| Atelier Hero | `clamp(36px, 4vw, 56px)` | 800 | 1.15 | `-0.025em` | Welcome screen greeting title |
-| Screen Title | `clamp(24px, 2.2vw, 32px)` | 700 | 1.20 | `-0.02em` | Main screen header title (`Heading`) |
-| Section Header | `clamp(20px, 1.8vw, 26px)` | 600 | 1.25 | `-0.01em` | Panel headings ("Đơn hàng", "Số lượng") |
-| Step Eyebrow | `12px` / `clamp(11px, 1vw, 13px)` | 600 | 1.0 | `+0.08em` (uppercase) | Subdued step badge ("BƯỚC 1", "BƯỚC 2") |
-| Body Copy | `15px` – `17px` | 400 | 1.45 | `0` | Explanations, helper texts, instructions |
-| Tabular Numbers | `18px` – `34px` (`tabular-nums`) | 700 | 1.0 | `-0.01em` | Stepper quantity (34px), timers, prices |
-| Big Countdown | `clamp(96px, 14vw, 180px)` | 800 | 1.0 | `-0.03em` | Live camera shutter countdown (centered) |
+| Atelier Brand Trigger | `clamp(18px, 1.8vw, 24px)` | 700 / Georgia Serif | 1.0 | `+0.06em` | Hidden 5-tap operator wordmark |
+| Welcome Hero Headline | `clamp(42px, 4.7vw, 82px)` | 800 / Segoe UI | 1.08 | `-0.045em` | Welcome greeting ("Chụp ảnh lấy ngay") |
+| Editorial Italic Accent | `clamp(26px, 2.7vw, 48px)` | Italic 400 / Georgia Serif | 1.0 | `-0.02em` | Decorative flourish ("Yours forever.") |
+| Screen Title | `clamp(24px, 2.2vw, 32px)` | 700 / Segoe UI | 1.20 | `-0.02em` | Main screen header title (`Heading`) |
+| Section Header | `clamp(20px, 1.8vw, 26px)` | 600 / Segoe UI | 1.25 | `-0.01em` | Panel headings ("Đơn hàng", "Số lượng") |
+| Step Eyebrow | `12px` / `clamp(11px, 1vw, 13px)` | 600 / Segoe UI | 1.0 | `+0.08em` | Subdued step badge ("BƯỚC 1", "BƯỚC 2") |
+| Unboxed Receipt Rows | `clamp(15px, 1.2vw, 18px)` | 400 / 600 | 1.40 | `0` | Quantity and confirm detail lines |
+| Tabular Numbers | `18px` – `34px` (`tabular-nums`) | 700 / Segoe UI | 1.0 | `-0.01em` | Stepper quantity (34px), timers, prices |
+| Big Countdown | `clamp(140px, 20vw, 240px)` | 900 / Segoe UI | 1.0 | `-0.03em` | Live camera shutter countdown (centered) |
 
-All price tags, quantities, countdown timers, and order totals enforce `font-variant-numeric: tabular-nums` to eliminate baseline jitter when updating dynamically.
+### 3.2 Unboxed Receipts & Order Summaries
+- `.v1-quantity-pricing` and `.v1-summary` render with `background: transparent; border: 0; box-shadow: none`.
+- Summary rows are separated solely by delicate hairline dividers (`border-bottom: 1px solid var(--at-hairline)`).
+- Final totals are highlighted by an upper hairline divider (`border-top: 1px solid var(--at-hairline); padding-top: 16px`) and bold tabular figures, eliminating the need for opaque receipt cards.
 
 ---
 
-## 3. Touchscreen Ergonomics & 56px Touch Standards
+## 4. Floating Paper Elevation & Photographic Canvas
+
+Unlike legacy UI patterns that encase photos in heavy plastic white cards, the Unboxed Atelier aesthetic presents prints as physical photo paper floating gracefully over the studio canvas:
+
+1. **Photorealistic Drop Shadows:**
+   - Floating print previews and layout artwork utilize deep organic paper drop shadows:
+     ```css
+     box-shadow: var(--at-paper-shadow);
+     /* 0 22px 38px -13px rgba(44,30,23,.26), 0 5px 11px rgba(44,30,23,.13) */
+     ```
+   - Layout artwork SVG filters apply matching organic drops:
+     ```css
+     filter: drop-shadow(0 16px 28px rgba(45,30,20,.14))
+            drop-shadow(0 3px 6px rgba(45,30,20,.06));
+     ```
+2. **StartScreen Layered Open Gallery:**
+   - Left copy column (`minmax(0, 1.08fr)`): Editorial greeting, bilingual accent, description, small borderless glass value pills (`Bản in lưu niệm`, `Album ảnh qua QR`), and 68px primary CTA.
+   - Right gallery column (`minmax(0, 0.92fr)`):
+     - An open spatial gallery `.atelier-welcome__gallery` with zero outer card frame.
+     - Central ambient halo `.atelier-welcome__halo` (`radial-gradient(ellipse, rgba(203,159,127,.21), transparent 69%)`).
+     - Rear portrait print `.atelier-print--portrait` rotated −7° with native layout aspect ratio (`layout.printAspectRatio`).
+     - Front 4-cut strip print `.atelier-print--strip` rotated +6° with z-index 1.
+     - Brand signature `LE SOUVENIR · PHOTO ATELIER` in italic Georgia serif.
+3. **Cardless Presentation Across Stages:**
+   - Live print previews on Selection, Frame, and Confirm screens float directly on the canvas without outer container wrappers.
+   - Frame selection grid buttons use borderless layout artwork buttons with a subtle terracotta accent rim (`border: 2px solid #a85a40`) strictly on the selected item.
+4. **Maximized Visual Stage (82vh):**
+   - The print preview occupies up to 82% of the viewport height (`max-height: 82vh`), giving customers an expansive, high-fidelity view of their composition before confirming.
+
+---
+
+## 5. Touchscreen Ergonomics & 56px Touch Standards
 
 All customer interactions are optimized for 16:10 landscape touchscreens (1280×800 and 1920×1200) without requiring a mouse or keyboard.
 
 1. **56px Minimum Touch Target Rule:**
    - Header Back button: **56×56px** (Lucide `ArrowLeft` centered with dx: 0.5, dy: 0.0).
    - Carousel navigation chevrons: **56×56px** floating circles with horizontal axis alignment.
-   - Action Bar primary CTA buttons: **56px – 72px** fluid height across resolutions.
+   - Action Bar primary CTA buttons: **58px – 68px** fluid height across resolutions.
    - Quantity Stepper buttons (`+`, `−`): **72×72px** square touch targets with 34px glyphs.
    - Photo selection tiles: Full card click surface (`clamp(140px, 22vh, 260px)`).
    - Touch targets are spaced with a minimum of 12px buffer to prevent accidental adjacent taps.
@@ -68,36 +131,26 @@ All customer interactions are optimized for 16:10 landscape touchscreens (1280×
 
 ---
 
-## 4. Paper Elevation & Photographic Canvas
+## 6. Payment & QR Surface Architecture
 
-Unlike legacy UI patterns that encase photos in heavy plastic white cards, the Korean Atelier aesthetic presents prints as physical photo paper floating gracefully over the studio canvas:
-
-1. **Photorealistic Drop Shadows:**
-   - Floating print previews and layout artwork utilize dual-layer organic drop shadows:
-     ```css
-     filter: drop-shadow(0 12px 28px rgba(40, 28, 20, 0.12))
-            drop-shadow(0 2px 6px rgba(40, 28, 20, 0.06));
-     ```
-   - Hover and active states elevate the paper naturally:
-     ```css
-     filter: drop-shadow(0 20px 48px rgba(40, 28, 20, 0.16))
-            drop-shadow(0 4px 10px rgba(40, 28, 20, 0.08));
-     ```
-2. **Cardless Presentation:**
-   - Carousel cards, live print previews, and confirm screen previews have zero background wrappers, zero artificial borders, and zero backdrop blur applied to the photographic canvas itself.
-3. **Maximized Visual Stage (82vh):**
-   - The print preview occupies up to 82% of the viewport height (`max-height: 82vh`), giving customers an expansive, high-fidelity view of their composition before confirming.
+1. **Zero Layout Shift (0 px):**
+   - The QR code container (`.v1-payment-qr-slot`) enforces fixed responsive dimensions (`clamp(280px, 34vh, 380px)`) with an exact `1:1` aspect ratio.
+   - Layout measurements verified via CDP prove 0.00 px shift when transitioning from spinner placeholder to high-resolution VietQR PNG.
+2. **Porcelain White QR Quiet Zone:**
+   - To guarantee rapid camera recognition by banking apps, the QR code and its container enforce an opaque porcelain white quiet zone (`background: #fff !important; opacity: 1; filter: none`).
+   - The payment summary sits unboxed directly on the ivory canvas. Only the QR panel features a translucent frosted glass surround (`rgba(255,255,255,.55)`, `blur(20px)`), ensuring maximum contrast for the QR payload while maintaining atelier ambiance.
+3. **Concealed Staff Access:**
+   - Operator cash override is completely concealed behind a 1-second dwell gesture on the "Thanh toán" title, requiring staff PIN `1234` to prevent customer tampering.
 
 ---
 
-## 5. Coverflow Layout Carousel Specifications
+## 7. Operator Workspace Styling
 
-The layout selection carousel (`StudioModeScreen.tsx`) employs a responsive, tactile Coverflow wheel:
-
-1. **Card Geometry & Scaling by Distance:**
-   - Distance 0 (Active Center): `transform: scale(1.04)`, `z-index: 10`, `opacity: 1.0`.
-   - Distance 1 (Immediate Neighbors): `transform: scale(0.92)`, `z-index: 5`, `opacity: 0.85` (clear, unblurred).
-   - Distance ≥ 2 (Outer Neighbors): `transform: scale(0.82)`, `z-index: 2`, `opacity: 0.85`.
+The Operator and Diagnostics workspace (`operator-v1.css`) adopts the same sophisticated Liquid Glass aesthetic:
+- Warm ivory backdrop (`#FAF7F2` to `#EFE8E0`) replaces legacy harsh black/graphite styling.
+- Frosted glass cards and navigation tabs with subtle white borders.
+- Honest, unambiguous hardware health indicators (Canon DSLR disconnected, DNP printer simulated/ready).
+- 56px touch-friendly navigation tabs with horizontal scroll affordance.
 2. **Snapping & Scrolling:**
    - `scroll-snap-type: x mandatory` on `.v1-layout-carousel`.
    - `scroll-snap-align: center` on `.v1-carousel-card`.

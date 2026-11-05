@@ -1,3 +1,51 @@
+# Redesign Progress — 2026-11-05
+
+## Screen-by-Screen Unboxed Atelier & Liquid Glass Transformation (2026-11-05 02:40)
+
+**Status: PASS-SIMULATED & PASS-AUTOMATED.** All customer screens have been completely transformed with the Unboxed Atelier Liquid Glass architecture. Opaque white card containers have been eliminated across the flow in favor of floating prints, open canvas, hairline dividers, and genuine liquid glass controls. Verified via `tests/verify-demo-and-real-journey.mjs` with 0 failures across 1280×800 and 1920×1200 viewports (evidence in `tests/journey-evidence/2026-11-05T02-34-00.652Z/`).
+
+### Screen-by-Screen Unboxed Transformation
+
+1. **Start Screen (`StartScreen.tsx` & `kiosk-v1.css`):**
+   - **Before:** Wrapped artwork in `.v1-start-card`, an opaque rectangular white box that boxed in the layout strips and created artificial visual separation.
+   - **Unboxed Transformation:** Completely eliminated `.v1-start-card`. Replaced with an open, layered photographic gallery (`.atelier-welcome__gallery`):
+     - Soft ambient light halo (`.atelier-welcome__halo`) in radial warm glow (`radial-gradient(ellipse, rgba(203,159,127,.21), transparent 69%)`).
+     - Dual floating prints in open space: rear portrait print (`.atelier-print--portrait`) rotated −7° and front 4-cut strip (`.atelier-print--strip`) rotated +6° with z-index 1, both styled with deep paper drop shadows (`var(--at-paper-shadow)`).
+     - Brand signature `LE SOUVENIR · PHOTO ATELIER` in italic Georgia serif.
+     - Left column features editorial title with Georgia italic accent `Yours forever.`, borderless glass value pills (`Bản in lưu niệm`, `Album ảnh qua QR`), and 68px primary CTA pill button with terracotta-coral gradient, specular rim, and inner light-catch bevel.
+     - Preserved 5-tap operator gesture on brand wordmark and dynamic event bundle showcase.
+
+2. **Layout Selection Screen (`StudioModeScreen.tsx` & `kiosk-v1.css`):**
+   - **Before:** Outer card wrappers competed with SVG print artwork.
+   - **Unboxed Transformation:** Cardless Coverflow presentation. SVG print paper floats directly on the warm studio canvas (`--layout-ambient`) with organic drop shadows. 56×56px liquid glass chevron buttons with dual specular rims. Customer-friendly names displayed without raw technical IDs.
+
+3. **Quantity Selection Screen (`QuantityScreen.tsx` & `kiosk-v1.css`):**
+   - **Before:** Wrapped pricing summary in `.v1-panel.v1-quantity-pricing`.
+   - **Unboxed Transformation:** Removed background, border, and box-shadow from `.v1-quantity-pricing`. Receipt rows float directly on canvas, bounded only by fine hairline dividers (`border-top: 1px solid rgba(89,65,49,.15); border-bottom: 1px solid rgba(89,65,49,.15)`). Enlarged 72×72px liquid glass stepper buttons with 24px blur, dual specular rims, and 34px tabular numerals. Print preview floats naturally with organic drop shadows.
+
+4. **Payment Screen (`PaymentScreen.tsx`, `payment.css`, & `kiosk-v1.css`):**
+   - **Before:** Two competing heavy white cards (`.v1-payment-summary.v1-panel` and `.v1-payment-qr-panel.v1-panel`).
+   - **Unboxed Transformation:** Unboxed single-stage architecture. Left order summary card background is completely transparent; line items and tabular totals sit on the canvas with hairline dividers. Right QR panel features a subtle translucent frosted glass surround (`rgba(255,255,255,.55)`, `blur(20px)`), with the QR code and its container enforcing an opaque porcelain white quiet zone (`background: #fff !important`). Exactly **0 px layout shift** verified between spinner and VietQR image.
+
+5. **Capture & Countdown Screen (`CaptureScreen.tsx` & `kiosk-v1.css`):**
+   - **Visual:** Matte obsidian darkroom stage (`#121214`).
+   - **Ergonomics:** Concentric physical camera shutter (108×108px outer frosted ring, 84×84px inner white core with 4px `#C27357` rim, 0.92x active tap compression, horizontal Δx = 0 px). Full-screen overlay `.v1-countdown-layer` centers tabular countdown numeral with sub-pixel precision (Δx = 0.000038 px, Δy = 0 px) and warm terracotta glow.
+
+6. **Photo Selection Screen (`SelectPhotosScreen.tsx` & `kiosk-v1.css`):**
+   - **Unboxed Transformation:** Photo tiles float as physical photographic prints with organic paper drop shadows, without thick white card wrappers. 40×40px terracotta order badges in safe corners. Selected item highlighted with clean terracotta outline. Sub-10ms touch selection (4.50–7.10 ms). Floating composite print preview on the right baseline.
+
+7. **Frame Selection Screen (`FrameScreen.tsx` & `kiosk-v1.css`):**
+   - **Unboxed Transformation:** Removed `.v1-frame-preview-panel` white container. Preview floats directly on canvas. Frame option buttons in grid rendered without card borders or background plates; selected frame emphasized with crisp `#A85A40` outline. Sub-10ms deferred frame selection. Floating liquid glass actionbar dock.
+
+8. **Confirmation Screen (`ConfirmScreen.tsx` & `kiosk-v1.css`):**
+   - **Before:** Wrapped order details in `.v1-panel.v1-summary`.
+   - **Unboxed Transformation:** Completely transparent `.v1-summary` with order details organized as an editorial ticket separated by delicate hairlines (`var(--at-hairline)`). Bold tabular total amount. Large high-resolution composed print floats on canvas up to 82vh. Liquid glass actionbar dock with primary Confirm & Print CTA (disarmed 500ms on mount).
+
+9. **Stage Transitions (`PrepareScreen.tsx`, `PrintingScreen.tsx`, `DeliveryScreen.tsx`):**
+   - **Unboxed Transformation:** Stripped `.v1-panel` card styling from `.v1-prepare-stage`, `.v1-print-stage`, and `.v1-delivery`. Stages unfold seamlessly over the warm studio canvas with floating status indicators, green print signal badge (`#28553A`), and pure white mobile download QR quiet zone.
+
+---
+
 # Redesign Progress — 2026-11-03
 
 ## Screen-by-Screen Redesign Status & Verification (2026-11-03 21:45)

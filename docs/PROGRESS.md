@@ -1,5 +1,37 @@
 ﻿# PROGRESS.md
 
+## Unboxed Atelier & Genuine Liquid Glass Controls Milestone (2026-11-05 02:40)
+
+**Status: PASS-SIMULATED & PASS-AUTOMATED across 1280×800 and 1920×1200 viewports; physical hardware gates remain unverified without physical Canon DSLR or DNP DS-RX1HS.**
+
+Key milestones delivered and verified:
+1. **Elimination of Clunky White Backing Cards Across All Customer Screens:**
+   - Stripped away obsolete opaque white card containers (`.v1-panel`, `.v1-start-card`, `.v1-quantity-pricing`, `.v1-summary`, `.v1-prepare-stage`, `.v1-print-stage`, `.v1-delivery`, `.v1-frame-preview-panel`) across StartScreen, Quantity, Payment, Confirm, and Stage transitions.
+   - Replaced artificial boxed enclosures with pure floating physical prints, authentic paper drop shadows (`var(--at-paper-shadow)`: `0 22px 38px -13px rgba(44,30,23,.26), 0 5px 11px rgba(44,30,23,.13)`), and airy Korean photo atelier spatial hierarchy.
+   - Maintained clean, borderless typographic summaries and receipts defined strictly by delicate hairline dividers (`var(--at-hairline)`: `rgba(89,65,49,.19)`).
+2. **StartScreen Layered Photographic Gallery Refactor:**
+   - Refactored `StartScreen.tsx` into an open, layered photographic gallery (`.atelier-welcome__gallery`) in place of the rigid legacy `.v1-start-card`.
+   - Dual floating paper prints in open space:
+     - Rear portrait print (`.atelier-print--portrait`): rotated −7°, aspect ratio mapped directly from layout metadata (`printAspectRatio >= 0.5`).
+     - Front 4-cut strip print (`.atelier-print--strip`): rotated +6°, aspect ratio mapped from strip metadata (`printAspectRatio < 0.5`), elevated with z-index 1.
+   - Soft ambient light halo (`.atelier-welcome__halo`): radial glow (`radial-gradient(ellipse, rgba(203,159,127,.21), transparent 69%)`) anchored behind floating prints.
+   - Authentic atelier caption: italicized Georgia serif brand signature `LE SOUVENIR · PHOTO ATELIER`.
+   - Fluid two-column grid (`minmax(0, 1.08fr) minmax(0, 0.92fr)`), responsive typography, and preserved hidden 5-tap gesture on the brand wordmark for operator access.
+3. **Genuine Liquid Glass Interactive Controls:**
+   - Scoped `.atelier-customer` design tokens and cascade overrides in `kiosk-v1.css` and `payment.css` winning cleanly over legacy CSS without affecting camera darkroom or operator tools.
+   - **Primary Pill CTA (`.v1-primary`):** 68px minimum touch height, terracotta-coral gradient core (`linear-gradient(135deg, #C27357 0%, #A85A40 50%, #8E442D 100%)`), 1px deep terracotta edge (`#793924`), inner specular light catch (`inset 0 1.5px 2px rgba(255,255,255,.45)`), and warm radiant drop shadow (`0 8px 24px rgba(168,90,64,.35)`). Active press compresses to `scale(0.96)`.
+   - **Secondary & Back Buttons (`.v1-secondary`, `.v1-back`, stepper buttons):** 56px minimum touch targets (72×72px for steppers), high-translucency glass body (`rgba(255,255,255,.65)`), heavy optical refraction (`backdrop-filter: blur(24px) saturate(180%)`), dual specular rim reflections (`border: 1px solid rgba(255,255,255,.85)`, `inset 0 1.5px 2px rgba(255,255,255,.95)`), and subtle ambient shadow (`0 6px 18px rgba(45,30,20,.06)`).
+   - **Floating Actionbar Dock (`.v1-actionbar`):** Seamless floating glass pill dock (`border-radius: 28px`), 24px backdrop blur, specular top reflection, elevating primary navigation above the canvas.
+   - **Payment Screen Porcelain Quiet Zone:** Payment summary floats directly on the ivory canvas; QR panel features translucent glass surround (`rgba(255,255,255,.55)`, `blur(20px)`), with the QR image and quiet zone strictly opaque pure white (`#fff`) with 0px layout shift.
+4. **Preserved All Regression Suites & Verification:**
+   - Backend Gradle: **87 tests (85 passed, 2 skipped, 0 failed)** across 28 test suites (`RealSessionEngineTest`, `SimulatorSessionTest`, `RealSessionEngineDemoModeTest`, etc.).
+   - Frontend Vitest: **59/59 passed** across 8 test suites.
+   - Desktop Journey Runner (`tests/verify-demo-and-real-journey.mjs`): **0 failures across both 1280×800 and 1920×1200 viewports** (evidence captured in `tests/journey-evidence/2026-11-05T02-34-00.652Z/`).
+   - Zero DEMO revenue and zero orphaned process leaks confirmed.
+5. **Strict V1 Isolation:** V1 (`E:\HK1_2026_2027\PhotoboothDesktop`) remained strictly untouched, unread, and write-protected.
+
+---
+
 ## Live View Concentric Shutter Redesign & Centered Smooth Countdown Milestone (2026-11-04 01:30)
 
 **Status: PASS-SIMULATED & PASS-AUTOMATED across 1280×800 and 1920×1200 viewports; physical hardware gates remain unverified without physical Canon DSLR or DNP DS-RX1HS.**

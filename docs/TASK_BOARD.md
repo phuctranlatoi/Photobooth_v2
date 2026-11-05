@@ -1,5 +1,21 @@
 ﻿# TASK_BOARD.md
 
+## Unboxed Atelier & Liquid Glass UI Overhaul Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-05 02:40)
+
+| Task | Status | Evidence / next gate |
+|---|---|---|
+| Unboxed atelier customer shell overhaul | **COMPLETED — PASS-SIMULATED** | Eliminated opaque backing cards across StartScreen, Quantity, Payment, Confirm, and Stage screens (`.v1-panel`, `.v1-start-card`, `.v1-quantity-pricing`, `.v1-summary`, etc.). Canvas and hairline dividers define surfaces. Tested across 1280×800 and 1920×1200. |
+| StartScreen photographic gallery refactor | **COMPLETED — PASS-SIMULATED** | Refactored `StartScreen.tsx` with open dual floating paper prints (rear portrait at −7°, front strip at +6° with z-index 1), warm ambient light halo, and `LE SOUVENIR · PHOTO ATELIER` brand signature. Preserved 5-tap operator gesture and bundle showcase. |
+| Liquid glass primary & secondary controls | **COMPLETED — PASS-SIMULATED** | Terracotta-coral gradient primary pill CTA (`#C27357` to `#8E442D`, specular rim, 68px min-height); refractive frosted glass secondary/back/stepper buttons (`rgba(255,255,255,.65)`, `blur(24px) saturate(180%)`, dual specular rims, 56px/72px hitboxes). |
+| Floating actionbar dock & payment quiet zone | **COMPLETED — PASS-SIMULATED** | Translucent floating pill dock (`border-radius: 28px`, `blur(24px)`); unboxed payment summary on canvas; frosted QR panel with opaque `#fff` VietQR quiet zone and 0px layout shift. |
+| Live journey automated verification | **COMPLETED — PASS-SIMULATED** | `tests/verify-demo-and-real-journey.mjs` executed with **0 failures** across both 1280×800 and 1920×1200. Evidence stored in `tests/journey-evidence/2026-11-05T02-34-00.652Z/`. |
+| Frontend test suite & production build | **COMPLETED — PASS-AUTOMATED** | Vitest: **59/59 passed** across 8 test suites; zero regression in UI and state components. |
+| Backend test suite | **COMPLETED — PASS-AUTOMATED** | Offline Gradle test exit 0: **87 tests (85 passed, 2 skipped, 0 failed)** across 28 test suites. |
+| Strict V1 isolation | **VERIFIED READ-ONLY** | V1 (`E:\HK1_2026_2027\PhotoboothDesktop`) remained strictly untouched; no writes or builds executed against V1. |
+| Physical hardware / release gates | **BLOCKED / GATED** | Physical Canon DSLR, physical DNP DS-RX1HS spooling/cutting, live PayOS credentials, and commercial redistribution review remain unverified without physical hardware. |
+
+---
+
 ## Live View Countdown & Concentric Shutter Redesign Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-04 01:30)
 
 | Task | Status | Evidence / next gate |
