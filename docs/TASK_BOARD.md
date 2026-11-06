@@ -1,5 +1,26 @@
 ﻿# TASK_BOARD.md
 
+## Atelier Canvas UI/UX & 16:10 Geometry Alignment Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-06)
+
+| Task | Status | Evidence / next gate |
+|---|---|---|
+| Full frontend regression suite | **COMPLETED — PASS-AUTOMATED** | Vitest: **61/61 tests passed across 9 suites**. |
+| Production frontend build | **COMPLETED — PASS-AUTOMATED** | Vite: **2,020 modules transformed, 0 errors**. |
+| Live Tauri WebView acceptance | **COMPLETED — PASS-SIMULATED** | `tests/verify-demo-and-real-journey.mjs` exit 0 with **zero failures** at 1280×800 and 1920×1200. This is simulated, not physical-device evidence. |
+| Countdown center geometry | **COMPLETED — PASS-SIMULATED** | CDP: Δx/Δy **0.000008/0.000023 px** at 1280×800 and **0/0.000015 px** at 1920×1200; threshold ≤ 2 px. |
+| Shutter geometry | **COMPLETED — PASS-SIMULATED** | Outer ring **108×108 px**, core **84×84 px**, horizontal offset **0 px**; threshold ≤ 1 px. |
+| Back control geometry | **COMPLETED — PASS-SIMULATED** | **56×56 px** minimum hitbox; icon offset **0.0 px** on both axes at both viewports (threshold ≤ 2.5 px) after flex centering plus `margin: auto` replaced the single-track grid justify fallback. |
+| Carousel navigation geometry | **COMPLETED — PASS-SIMULATED** | Both chevrons expose **56×56 px** touch targets; horizontal alignment delta ≤ 3 px. |
+| Photo/frame touch latency | **COMPLETED — PASS-SIMULATED** | Photo: **4.20 ms / 3.90 ms**; frame: **6.50 ms / 5.60 ms** at 1280×800 / 1920×1200, all < 100 ms. |
+| Press-and-hold zoom | **COMPLETED — PASS-SIMULATED** | A 500 ms hold enlarges the selected photo and release dismisses it cleanly. |
+| VietQR layout stability | **COMPLETED — PASS-SIMULATED** | Exactly **0.00 px** shift in slot width/height and columns x/y/width/height at both target viewports. |
+| DEMO revenue guard | **COMPLETED — PASS-SIMULATED** | SQLite `sales.db` query found **zero DEMO sales records**. No production database write was performed. |
+| V2 process teardown | **COMPLETED — PASS-AUTOMATED** | **Zero orphaned V2 Node/Vite processes** after acceptance-runner teardown. |
+| Strict V1 isolation | **VERIFIED READ-ONLY** | Read-only Git status/diff verification found no V1 modification attributable to this milestone; no V1 write/build/cleanup, secret read, or customer-photo operation. |
+| Physical hardware / production / legal gates | **BLOCKED / GATED** | Canon DSLR, DNP DS-RX1HS physical output/cutting, live PayOS credentials/settlement, and commercial licensing require supervised authorization, real hardware, and signoff. |
+
+---
+
 ## Pricing & Allowed Quantity Matrix Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-05 10:15)
 
 | Task | Status | Evidence / next gate |

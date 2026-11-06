@@ -1,5 +1,31 @@
 ﻿# Test Results â€” Independent Consolidated Review
 
+## 2026-11-06 Atelier Canvas UI/UX overhaul and 16:10 geometry alignment
+
+| Case | Status | Exact evidence / boundary |
+|---|---|---|
+| Frontend Vitest | **PASS-AUTOMATED** | Full suite: **61/61 tests passed across 9 suites**. |
+| Production Vite build | **PASS-AUTOMATED** | **2,020 modules transformed, 0 errors**. |
+| Live Tauri WebView journey | **PASS-SIMULATED** | `tests/verify-demo-and-real-journey.mjs` exited **0** with **zero failures** at 1280×800 and 1920×1200. No physical Canon capture, DNP output, or live settlement was performed. |
+| Countdown geometry via CDP | **PASS-SIMULATED** | 1280×800: Δx **0.000008 px**, Δy **0.000023 px**. 1920×1200: Δx **0 px**, Δy **0.000015 px**. All are within the ≤ 2 px threshold. |
+| Shutter geometry via CDP | **PASS-SIMULATED** | Outer ring **108×108 px**, core **84×84 px**, horizontal center offset **0 px** at both viewports; limit ≤ 1 px. |
+| Back target and icon geometry | **PASS-SIMULATED** | Hitbox is at least **56×56 px**; icon center offset is **0.0 px** on x and y at both viewports (limit ≤ 2.5 px). Verification followed the flex-centering and `margin: auto` fix for the single-track grid justify fallback. |
+| Carousel controls | **PASS-SIMULATED** | Navigation chevrons are **56×56 px** touch targets with horizontal alignment delta ≤ 3 px. |
+| Photo selection latency | **PASS-SIMULATED** | **4.20 ms** at 1280×800 and **3.90 ms** at 1920×1200; target < 100 ms. |
+| Frame selection latency | **PASS-SIMULATED** | **6.50 ms** at 1280×800 and **5.60 ms** at 1920×1200; target < 100 ms. |
+| Hold-zoom gesture | **PASS-SIMULATED** | A **500 ms** press-and-hold enlarged the photo; finger release dismissed the enlargement cleanly. |
+| VietQR layout shift | **PASS-SIMULATED** | Exactly **0.00 px** change in slot width/height and columns x/y/width/height at both viewports. This is geometry evidence, not proof of live settlement or physical QR scanning. |
+| DEMO sales isolation | **PASS-SIMULATED** | SQLite `sales.db` contained **zero DEMO sales records**. No live Neon write was performed. |
+| Process cleanup | **PASS-AUTOMATED** | Acceptance teardown left **zero orphaned V2 Node/Vite processes**. |
+| V1 isolation | **PASS-AUTOMATED (read-only verification)** | Read-only Git status/diff verification found no V1 modification attributable to this milestone. No V1 write/build/cleanup, secret read, or customer-photo modification was performed. |
+| Physical Canon DSLR | **BLOCKED** | Capture, Live View, USB-unplug/reconnect, and repeated real-photo transfer require attached hardware and supervised operator authorization. |
+| Physical DNP DS-RX1HS | **BLOCKED** | Real 5×15/10×15 output, driver settings, cutter behavior, spooler completion, and V1 paper comparison require attached hardware and authorization. |
+| Live PayOS and commercial licensing | **BLOCKED / GATED** | Production credentials/settlement and redistribution rights for Canon SDK, ONNX assets, and dependencies require explicit authorization and legal signoff. |
+
+**Release gate: BLOCK.** The Atelier Canvas UI/UX and target-viewport geometry milestone is software-green (**PASS-AUTOMATED + PASS-SIMULATED**), but it does not satisfy physical camera, printer, production-payment, packaging, or commercial-license release gates.
+
+---
+
 ## 2026-11-03 15:04 Mock capture and print-signal transmission verification
 
 | Case | Status | Evidence / boundary |

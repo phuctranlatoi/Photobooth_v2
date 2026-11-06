@@ -1,5 +1,24 @@
 ﻿# PROGRESS.md
 
+## Atelier Canvas UI/UX Overhaul & 16:10 Geometry Alignment Milestone (2026-11-06)
+
+**Status: PASS-SIMULATED & PASS-AUTOMATED across 1280×800 and 1920×1200 viewports; physical hardware gates remain unverified without a physical Canon DSLR or DNP DS-RX1HS.**
+
+Verified deliverables and evidence:
+1. **Automated regression and build:** The full frontend Vitest suite passed **61/61 tests across 9 suites**. The production Vite build completed with **2,020 modules transformed and 0 errors**.
+2. **Live desktop acceptance:** `tests/verify-demo-and-real-journey.mjs` exited **0** with **zero failures** at both target 16:10 viewports. Classification remains **PASS-SIMULATED** because capture, payment, and printing were not exercised against production hardware/providers.
+3. **CDP geometry alignment:**
+   - Countdown center offset: Δx **0.000008 px**, Δy **0.000023 px** at 1280×800; Δx **0 px**, Δy **0.000015 px** at 1920×1200 (limit ≤ 2 px).
+   - Shutter: outer ring **108×108 px**, core **84×84 px**, horizontal center offset **0 px** (limit ≤ 1 px).
+   - Back control: minimum **56×56 px** hitbox; icon offset **0.0 px** on both axes at both viewports (limit ≤ 2.5 px). The single-track grid `justify` fallback was replaced with flex centering and `margin: auto`.
+   - Carousel chevrons: **56×56 px** touch targets with horizontal alignment delta ≤ 3 px.
+4. **Touch interaction performance:** Photo selection measured **4.20 ms** at 1280×800 and **3.90 ms** at 1920×1200; frame selection measured **6.50 ms** and **5.60 ms**, respectively (all below the 100 ms limit). A **500 ms** press-and-hold enlarged the photo and dismissed cleanly on finger release.
+5. **Payment stability and safety:** VietQR transition produced exactly **0.00 px** shift for slot width/height and payment-column x/y/width/height at both viewports. SQLite `sales.db` contained **zero DEMO sales records**.
+6. **Lifecycle and isolation:** Teardown left **zero orphaned V2 Node/Vite processes**. Read-only V1 Git status/diff verification reported no V1 modifications attributable to this milestone; no V1 write, build, cleanup, secret read, or customer-photo operation was performed.
+7. **Remaining release gates:** Physical Canon DSLR capture/Live View/reconnect, DNP DS-RX1HS printing and cutting, live PayOS credentials/settlement, and commercial redistribution licensing remain **BLOCKED / GATED** pending supervised operator authorization, real hardware, and legal signoff.
+
+---
+
 ## Pricing & Allowed Quantity Rules Update Milestone (2026-11-05 10:15)
 
 **Status: PASS-SIMULATED & PASS-AUTOMATED across 1280×800 and 1920×1200 viewports; physical hardware gates remain unverified without physical Canon DSLR or DNP DS-RX1HS.**
