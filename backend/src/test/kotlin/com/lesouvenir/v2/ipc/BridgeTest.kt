@@ -38,7 +38,7 @@ class BridgeTest {
         val responses = ByteArrayInputStream(output.toByteArray())
         repeat(2) { assertEquals("héalth", decode(responses)["id"].asString) }
         assertEquals(-1, responses.read())
-        for (bytes in listOf(byteArrayOf(0), byteArrayOf(0,0,0,5,123), byteArrayOf(0,16,0,1), byteArrayOf(-1,-1,-1,-1), byteArrayOf(0,0,0,0))) {
+        for (bytes in listOf(byteArrayOf(0), byteArrayOf(0,0,0,5,123), byteArrayOf(1,0,0,1), byteArrayOf(-1,-1,-1,-1), byteArrayOf(0,0,0,0))) {
             val result = ByteArrayOutputStream()
             HealthBridge().serve(ByteArrayInputStream(bytes), result)
             assertEquals(-32600, decode(ByteArrayInputStream(result.toByteArray()))["error"].asJsonObject["code"].asInt)

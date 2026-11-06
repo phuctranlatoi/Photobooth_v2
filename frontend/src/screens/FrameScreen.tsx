@@ -18,7 +18,7 @@ export function formatFrameName(name: string) {
 
 type FrameProps = ScreenProps & {frames?: FrameOption[]; frameId?: string | null};
 
-export function FrameScreen({layout, busy, action, preview, snapshot, frames = [], frameId}: FrameProps) {
+export function FrameScreen({layout, action, preview, snapshot, frames = [], frameId}: FrameProps) {
   const [localFrameId, setLocalFrameId] = useState<string | null>(frameId ?? null);
   const confirming = useRef(false);
   const desiredFrameId = useRef<string | null>(null);

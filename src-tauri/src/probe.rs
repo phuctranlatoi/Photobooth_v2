@@ -1,4 +1,4 @@
-mod bridge;
+use le_souvenir_v2::bridge;
 fn main(){
     let mut host=bridge::Bridge::spawn().expect("spawn installed JVM launcher");
     let health=host.check().expect("private stdio health roundtrip");

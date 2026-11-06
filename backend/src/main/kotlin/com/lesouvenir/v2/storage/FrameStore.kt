@@ -8,12 +8,14 @@ import java.util.Base64
 import java.awt.RenderingHints
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
+import java.util.concurrent.ConcurrentHashMap
 import javax.imageio.ImageIO
 
 data class BundlePack(val id: String, val name: String, val coverDataUrl: String?, val layoutId: String, val frames: List<FramePack>)
 
 /** Only V2-owned frame directories are inspected; invalid images are ignored. */
 class FrameStore(private val workspace: Path, localAppData: String? = System.getenv("LOCALAPPDATA")) {
+    private val thumbCache = ConcurrentHashMap<Path, String>()
     private val roots = listOfNotNull(workspace.resolve("data"), localAppData?.let { Path.of(it).resolve("LeSouvenirDesktop/data") })
     fun loadFrames(layoutId: String? = null, printSize: String? = null): List<FramePack> = roots.flatMap { root ->
         val directory = root.resolve("frames")
@@ -91,9 +93,9 @@ class FrameStore(private val workspace: Path, localAppData: String? = System.get
         }
     }.getOrNull()
 
-    fun thumbDataUrl(path: Path): String? = runCatching {
-        val image = ImageIO.read(path.toFile()) ?: return null
-        val scale = minOf(1.0, 960.0 / maxOf(image.width, image.height))
+    fun thumbDataUrl(path: Path): String? = runCatching { thumbCache.computeIfAbsent(path.toAbsolutePath().normalize()) {
+        val image = ImageIO.read(path.toFile()) ?: error("Corrupt frame image")
+        val scale = minOf(1.0, 800.0 / maxOf(image.width, image.height))
         val width = (image.width * scale).toInt().coerceAtLeast(1)
         val height = (image.height * scale).toInt().coerceAtLeast(1)
         val scaled = BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
@@ -107,7 +109,7 @@ class FrameStore(private val workspace: Path, localAppData: String? = System.get
         val output = ByteArrayOutputStream()
         check(ImageIO.write(scaled, "png", output))
         "data:image/png;base64," + Base64.getEncoder().encodeToString(output.toByteArray())
-    }.getOrNull()
+    } }.getOrNull()
 
     fun frameThumbDataUrl(path: Path): String? {
         val sibling = listOf("thumb_${path.fileName}", "thumb_ui_${path.fileName}")

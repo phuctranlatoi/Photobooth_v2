@@ -8,7 +8,7 @@ import java.lang.management.ManagementFactory
 import java.nio.ByteBuffer
 import java.nio.charset.CodingErrorAction
 
-const val MAX_FRAME = 1_048_576
+const val MAX_FRAME = 16_777_216
 
 /** Health-only bridge. Unrecoverable framing errors emit one error then close;
  * an oversize body is never allocated or mistaken for the next frame header.
@@ -82,7 +82,7 @@ class HealthBridge(private val sessions: SessionEngine? = null) {
                 (first.toLong() shl 24) or (source.readUnsignedByte().toLong() shl 16) or
                     (source.readUnsignedByte().toLong() shl 8) or source.readUnsignedByte().toLong()
             } catch (_: EOFException) { send(error("", -32600, "Truncated header")); return }
-            if (length > MAX_FRAME) { send(error("", -32600, "Frame exceeds 1 MiB")); return }
+            if (length > MAX_FRAME) { send(error("", -32600, "Frame exceeds 16 MiB")); return }
             val bytes = ByteArray(length.toInt())
             try { source.readFully(bytes) } catch (_: EOFException) {
                 send(error("", -32600, "Truncated payload")); return

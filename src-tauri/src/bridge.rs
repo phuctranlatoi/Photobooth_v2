@@ -1,11 +1,11 @@
 use serde_json::{json, Value};
 use std::{io::{Read, Write}, process::{Child, Command, Stdio}, sync::mpsc::{self, Receiver}, time::{Duration, Instant}};
-const MAX: usize = 1_048_576;
+const MAX: usize = 16_777_216;
 pub struct Bridge { child: Child, input: Option<std::process::ChildStdin>, replies: Receiver<Result<Value,String>>, sequence: u64 }
 pub fn read_frame(reader: &mut impl Read) -> Result<Value,String> {
     let mut header=[0;4]; reader.read_exact(&mut header).map_err(|_| "Backend EOF or truncated header".to_string())?;
     let size=u32::from_be_bytes(header) as usize;
-        if size==0 || size>MAX {return Err("Invalid backend frame length (limit 1 MiB)".into())}
+        if size==0 || size>MAX {return Err("Invalid backend frame length (limit 16 MiB)".into())}
     let mut body=vec![0;size];reader.read_exact(&mut body).map_err(|_|"Truncated backend frame".to_string())?;
     let text=std::str::from_utf8(&body).map_err(|_|"Invalid backend UTF-8".to_string())?;
     serde_json::from_str(text).map_err(|_|"Invalid backend JSON".into())
@@ -67,7 +67,7 @@ impl Bridge {
 impl Drop for Bridge{fn drop(&mut self){let _=self.shutdown();}}
 #[cfg(test)] mod tests{
     use super::*;
-    #[test] fn framing_bounds_and_eof(){for bytes in [vec![],vec![0,0,0],vec![0,16,0,1],vec![255;4],vec![0;4],vec![0,0,0,2,b'{']]{assert!(read_frame(&mut &bytes[..]).is_err())}}
+    #[test] fn framing_bounds_and_eof(){for bytes in [vec![],vec![0,0,0],vec![1,0,0,1],vec![255;4],vec![0;4],vec![0,0,0,2,b'{']]{assert!(read_frame(&mut &bytes[..]).is_err())}}
     #[test] fn valid_frame(){let body=br#"{"id":"test"}"#;let mut bytes=(body.len() as u32).to_be_bytes().to_vec();bytes.extend(body);assert_eq!(read_frame(&mut &bytes[..]).unwrap()["id"],"test")}
     #[test] fn fragmented_reads(){struct One(std::io::Cursor<Vec<u8>>);impl Read for One{fn read(&mut self,b:&mut[u8])->std::io::Result<usize>{let n=b.len().min(1);self.0.read(&mut b[..n])}}let body=br#"{"ok":true}"#;let mut bytes=(body.len() as u32).to_be_bytes().to_vec();bytes.extend(body);assert_eq!(read_frame(&mut One(std::io::Cursor::new(bytes))).unwrap()["ok"],true)}
 }

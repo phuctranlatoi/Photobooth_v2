@@ -1,5 +1,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
-mod bridge;
+use le_souvenir_v2::bridge;
 use std::sync::{Arc,Mutex};
 type Shared=Arc<Mutex<Option<bridge::Bridge>>>;
 #[tauri::command]

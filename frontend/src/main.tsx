@@ -7,4 +7,6 @@ import './stages.css';
 import './finishing.css';
 import './preview.css';
 import './kiosk-v1.css';
+import { initLiquidGlassFx } from './liquidGlassFx';
+initLiquidGlassFx();
 ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode><App/></React.StrictMode>);

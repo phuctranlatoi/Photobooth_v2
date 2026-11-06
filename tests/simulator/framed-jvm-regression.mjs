@@ -24,7 +24,7 @@ child.once('error', e => failPending(Error(`backend spawn failed: ${e.message}`)
 child.once('exit', (code, signal) => { if (replies.length) failPending(Error(`backend exited during RPC: code=${code} signal=${signal}; stderr tail=${stderr}`)); });
 function drain() {
   try { while (bytes.length >= 4) {
-      const n = bytes.readUInt32BE(); if (n < 1 || n > 1048576) throw Error(`bad response frame ${n}`);
+      const n = bytes.readUInt32BE(); if (n < 1 || n > 16777216) throw Error(`bad response frame ${n}`);
       if (bytes.length < n + 4) return;
       const body = bytes.subarray(4, n + 4); bytes = bytes.subarray(n + 4);
       const waiter = replies.shift(); if (!waiter) throw Error('unsolicited backend frame');

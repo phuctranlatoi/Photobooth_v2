@@ -25,9 +25,9 @@ class FrameStoreThumbnailTest {
         val store = FrameStore(workspace, null)
         assertEquals(listOf(original), store.loadFrames().map { it.customImagePath })
         fun decoded() = ImageIO.read(ByteArrayInputStream(Base64.getDecoder().decode(store.frameThumbDataUrl(original)!!.substringAfter(','))))
-        assertEquals(960 to 640, decoded().let { it.width to it.height })
+        assertEquals(800 to 533, decoded().let { it.width to it.height })
         Files.delete(thumbnail)
-        assertEquals(960 to 640, decoded().let { it.width to it.height })
+        assertEquals(800 to 533, decoded().let { it.width to it.height })
         assertEquals(1200 to 800, store.imageSize(original))
     }
 
@@ -40,7 +40,7 @@ class FrameStoreThumbnailTest {
         val bundle = FrameStore(workspace, null).loadBundles().single()
         assertEquals(frame, bundle.frames.single().customImagePath)
         val coverImage = ImageIO.read(ByteArrayInputStream(Base64.getDecoder().decode(bundle.coverDataUrl!!.substringAfter(','))))
-        assertEquals(700 to 900, coverImage.width to coverImage.height)
+        assertEquals(622 to 800, coverImage.width to coverImage.height)
     }
 
     @Test fun discoversCanonicalCompactAndDirectFrames() {

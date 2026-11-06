@@ -2,7 +2,7 @@ import {useEffect,useRef,useState} from 'react';
 import {safeImage} from '../shared/connected-simulator';
 import {ActionBar,Heading,KioskPrimaryButton,PrintPreview,type ScreenProps} from './KioskUI';
 
-export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected=[]}:ScreenProps&{shots?:{shotId:string;preview:string}[];selected?:number[]}){
+export function SelectPhotosScreen({layout,action,preview,shots=[],selected=[]}:ScreenProps&{shots?:{shotId:string;preview:string}[];selected?:number[]}){
    const [lightbox,setLightbox]=useState<number|null>(null);
    const confirming=useRef(false);
   const [localSelected,setLocalSelected]=useState<number[]>(selected);
@@ -125,7 +125,7 @@ export function SelectPhotosScreen({layout,busy,action,preview,shots=[],selected
       )}
       <ActionBar>
         <span>Chạm vào ảnh theo thứ tự muốn in · Giữ để xem lớn</span>
-          <KioskPrimaryButton disabled={busy||localSelected.length!==(layout?.selectCount??0)} onClick={()=>{if(confirming.current)return;confirming.current=true;try{void Promise.resolve(action('selection.confirm',{selectedIndices:localSelected})).then(result=>{if(result===false)confirming.current=false}).catch(()=>{confirming.current=false})}catch{confirming.current=false}}}>
+           <KioskPrimaryButton disabled={localSelected.length!==(layout?.selectCount??0)} onClick={()=>{if(confirming.current)return;confirming.current=true;try{void Promise.resolve(action('selection.confirm',{selectedIndices:selectedRef.current})).then(result=>{if(result===false)confirming.current=false}).catch(()=>{confirming.current=false})}catch{confirming.current=false}}}>
           Tiếp tục →
         </KioskPrimaryButton>
       </ActionBar>

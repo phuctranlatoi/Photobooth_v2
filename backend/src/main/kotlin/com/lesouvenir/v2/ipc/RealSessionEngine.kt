@@ -18,6 +18,7 @@ import com.lesouvenir.v2.foundation.PricingCalculator
 import com.lesouvenir.v2.imaging.DesktopImageProcessor
 import com.lesouvenir.v2.imaging.DesktopCompositor
 import com.lesouvenir.v2.imaging.FramePack
+import com.lesouvenir.v2.imaging.RenderResult
 import com.lesouvenir.v2.imaging.beauty.DesktopBeautyService
 import com.lesouvenir.v2.imaging.beauty.BeautyConfig
 import com.lesouvenir.v2.integrations.*
@@ -62,6 +63,7 @@ class RealSessionEngine(
     private val beauty = DesktopBeautyService()
     private val compositor = DesktopCompositor()
     private val frameStore = FrameStore(workspace)
+    private val thumbCache = ConcurrentHashMap<String, String>()
     private val demoCamera = DemoCameraAdapter()
     private val cameraManager: CameraConnectionManager = cameraManager ?: CameraConnectionManager(camera, demoCamera)
     private var captureMode = "REAL"
@@ -101,6 +103,10 @@ class RealSessionEngine(
     private val beautyExecutor = ThreadPoolExecutor(1, 1, 0, TimeUnit.MILLISECONDS,
         ArrayBlockingQueue<Runnable>(12), { r -> Thread(r, "v2-real-beauty").apply { isDaemon = true } },
         ThreadPoolExecutor.AbortPolicy())
+    private val albumExecutor = Executors.newSingleThreadExecutor { r -> Thread(r, "v2-real-album").apply { isDaemon = true } }
+    private var albumJob: Future<*>? = null
+    // The QR URL is part of the rendered print canvas; never reuse a print made before album prefetch completed.
+    private val compositionCache = mutableMapOf<String, Pair<RenderResult, String?>>()
     private var epoch = 0L
     private var job: ScheduledFuture<*>? = null
     private var inactivityJob: ScheduledFuture<*>? = null
@@ -137,6 +143,8 @@ class RealSessionEngine(
     private fun directory() = workspace.resolve("backend/build/real-sessions").resolve(sid)
     private fun obj(vararg fields: Pair<String, Any?>): JsonObject = gson.toJsonTree(mapOf(*fields)).asJsonObject
     private fun thumbData(path: Path, max: Int): String {
+        val key = "${path.toAbsolutePath()}_${runCatching { Files.getLastModifiedTime(path).toMillis() }.getOrDefault(0L)}_$max"
+        return thumbCache.computeIfAbsent(key) {
         val image = ImageIO.read(path.toFile()) ?: error("Corrupt image")
         val scale = minOf(1.0, max.toDouble() / maxOf(image.width, image.height))
         val thumb = BufferedImage(maxOf(1, (image.width * scale).toInt()), maxOf(1, (image.height * scale).toInt()), BufferedImage.TYPE_INT_RGB)
@@ -153,11 +161,12 @@ class RealSessionEngine(
                 writer.output = stream
                 writer.write(null, IIOImage(thumb, null, null), writer.defaultWriteParam.apply {
                     compressionMode = ImageWriteParam.MODE_EXPLICIT
-                    compressionQuality = 0.88f
+                    compressionQuality = 0.82f
                 })
             }
         } finally { writer.dispose() }
-        return "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(out.toByteArray())
+        "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(out.toByteArray())
+        }
     }
     private fun frameDto(f: FramePack): Map<String, Any?> {
         val thumb = f.customImagePath?.let { frameStore.frameThumbDataUrl(it) }
@@ -500,7 +509,7 @@ class RealSessionEngine(
                 shots.add(original)
                 queueBeauty(index, original)
                 if (shots.size == layout.shotCount) {
-                    activeSequence = false; stopPreview(); state = "SELECTING_PHOTOS"; startInactivity("SELECTING_PHOTOS")
+                    activeSequence = false; stopPreview(); state = "SELECTING_PHOTOS"; prefetchAlbum(); startInactivity("SELECTING_PHOTOS")
                 } else { state = "LIVE_VIEW"; schedule(1) { countdown() } }
             }
         }
@@ -527,6 +536,23 @@ class RealSessionEngine(
     private fun composeSafely() {
         try { compose() } catch (_: Exception) { composition = null; printImage = null }
     }
+    private fun prefetchAlbum() {
+        val client = album ?: return
+        if (captureMode != "REAL" || albumUrl != null || albumJob != null) return
+        val token = epoch
+        val session = sid
+        val expectedAssets = layout.selectCount + 2
+        albumJob = albumExecutor.submit {
+            val url = runCatching { client.createAlbum(CreateAlbumRequest(session, expectedAssets, 7)).albumUrl }.getOrNull()
+            synchronized(this@RealSessionEngine) {
+                if (token == epoch && sid == session && url != null && albumUrl == null) {
+                    albumUrl = url
+                    // A preview rendered before the URL arrived cannot be reused as the QR print canvas.
+                    if (state == "EDITING") { composition = null; printImage = null }
+                }
+            }
+        }
+    }
     private fun compose() {
         composition = null; printImage = null
         val chosen = frame ?: fail(-32001, "Frame required")
@@ -534,12 +560,16 @@ class RealSessionEngine(
             runCatching { Files.isRegularFile(it) && ImageIO.read(it.toFile()) != null }.getOrDefault(false)
         } ?: shots[index] }
         check(paths.size == layout.selectCount && paths.all { Files.isRegularFile(it) && ImageIO.read(it.toFile()) != null })
-        val albumClient = album
-        if (captureMode == "REAL" && albumUrl == null && albumClient != null) {
-            val preAlbum = runCatching {
-                albumClient.createAlbum(CreateAlbumRequest(externalSessionId = sid, expectedAssets = selected.size + 2, expiresInDays = 7))
-            }.getOrNull()
-            if (preAlbum != null) albumUrl = preAlbum.albumUrl
+        // Never wait for an HTTP request while holding the synchronized IPC dispatch lock.
+        prefetchAlbum()
+        val key = "${layout.id}_${chosen.id}_${paths.joinToString(",")}"
+        compositionCache[key]?.let { (cached, qrUrl) ->
+            if (qrUrl == albumUrl && Files.isRegularFile(cached.finalImagePath) && Files.isRegularFile(cached.printImagePath) &&
+                runCatching { ImageIO.read(cached.finalImagePath.toFile()) != null && ImageIO.read(cached.printImagePath.toFile()) != null }.getOrDefault(false)) {
+                composition = cached.finalImagePath; printImage = cached.printImagePath
+                return
+            }
+            compositionCache.remove(key)
         }
         // Keep the selected frame identity, but render the default layout border if its graphic is unavailable.
         val renderFrame = if (chosen.isCustom && chosen.customImagePath?.let {
@@ -552,6 +582,7 @@ class RealSessionEngine(
             }
         check(Files.isRegularFile(result.finalImagePath) && Files.isRegularFile(result.printImagePath) &&
             ImageIO.read(result.finalImagePath.toFile()) != null && ImageIO.read(result.printImagePath.toFile()) != null)
+        compositionCache[key] = result to albumUrl
         composition = result.finalImagePath; printImage = result.printImagePath
     }
     private fun confirmPrint(): JsonObject {
@@ -608,12 +639,13 @@ class RealSessionEngine(
         // Remote sync is deliberately deferred until explicit API credentials and reconciliation are configured.
         return snapshot().apply { addProperty("printerName", name) }
     }
-    private fun reset() { epoch++; job?.cancel(false); stopInactivity(); beautyJobs.forEach { it.cancel(true) }; beautyJobs.clear(); readyBeauty.clear()
+    private fun reset() { epoch++; job?.cancel(false); stopInactivity(); albumJob?.cancel(true); albumJob = null
+        compositionCache.clear(); beautyJobs.forEach { it.cancel(true) }; beautyJobs.clear(); readyBeauty.clear()
         activeSequence = false; remaining = 0; failure = null; stopPreview(); state = "IDLE"; paid = false; orderCode = null; qrCode = null
         shots.clear(); selected.clear(); frame = null; printImage = null; composition = null; albumUrl = null
         printAccepted = false; revenueRecorded = false; paymentMethod = "PAYOS" }
-    @Synchronized override fun close() { epoch++; job?.cancel(true); stopInactivity(); beautyJobs.forEach { it.cancel(true) }
-        executor.shutdownNow(); beautyExecutor.shutdownNow(); cameraManager.close(); beauty.close() }
+    @Synchronized override fun close() { epoch++; job?.cancel(true); stopInactivity(); albumJob?.cancel(true); compositionCache.clear(); beautyJobs.forEach { it.cancel(true) }
+        executor.shutdownNow(); albumExecutor.shutdownNow(); beautyExecutor.shutdownNow(); cameraManager.close(); beauty.close() }
     private fun cloudStatus() = boothConfig.status() + mapOf("payOsConfigured" to (payOs?.isConfigured == true),
         "catalogSource" to firebaseCatalog.source.name,
         "payOsStatus" to (payOs?.readiness?.name ?: "CONFIG_MISSING"),

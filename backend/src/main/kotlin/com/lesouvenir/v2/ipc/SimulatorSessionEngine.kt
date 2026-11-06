@@ -50,6 +50,7 @@ class SimulatorSessionEngine(
     private val operatorStore = OperatorLayoutStore(workspace)
     private val settingsStore = OperatorSettingsStore(workspace)
     private val frameStore = FrameStore(workspace, null)
+    private val thumbCache = ConcurrentHashMap<String, String>()
     private fun availableFrames(): List<FramePack> = frameStore.loadFrames(layout.id, layout.printSizeLabel)
     // Simulator fixtures default to their own frame even when V2 contains frames of the same print size.
     private fun defaultFrameId(): String = "synthetic-border"
@@ -319,6 +320,8 @@ class SimulatorSessionEngine(
     }
     private fun complete(manual: Boolean) { compose(); userConfirmed=manual; state="DELIVERY" }
     private fun data(path: Path, max: Int): String {
+        val key = "${path.toAbsolutePath()}_${runCatching { Files.getLastModifiedTime(path).toMillis() }.getOrDefault(0L)}_$max"
+        return thumbCache.computeIfAbsent(key) {
         val image=ImageIO.read(path.toFile()) ?: error("Corrupt image")
         val scale=minOf(1.0,max.toDouble()/maxOf(image.width,image.height))
         val thumb=BufferedImage(maxOf(1,(image.width*scale).toInt()),maxOf(1,(image.height*scale).toInt()),BufferedImage.TYPE_INT_RGB)
@@ -330,11 +333,12 @@ class SimulatorSessionEngine(
                 writer.output=stream
                 writer.write(null,IIOImage(thumb,null,null),writer.defaultWriteParam.apply {
                     compressionMode=ImageWriteParam.MODE_EXPLICIT
-                    compressionQuality=0.88f
+                    compressionQuality=0.82f
                 })
             }
         } finally { writer.dispose() }
-        return "data:image/jpeg;base64,"+Base64.getEncoder().encodeToString(out.toByteArray())
+        "data:image/jpeg;base64,"+Base64.getEncoder().encodeToString(out.toByteArray())
+        }
     }
     @Synchronized override fun close() { epoch++; job?.cancel(true); executor.shutdownNow() }
     companion object {

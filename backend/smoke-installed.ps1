@@ -24,7 +24,7 @@ function Invoke-Frame($method,$params) {
  $head=[BitConverter]::GetBytes([int]$body.Length); [Array]::Reverse($head)
  $p.StandardInput.BaseStream.Write($head,0,4); $p.StandardInput.BaseStream.Write($body,0,$body.Length); $p.StandardInput.BaseStream.Flush()
  $h=Read-Bytes 4; [Array]::Reverse($h); $n=[BitConverter]::ToInt32($h,0)
- if($n -lt 1 -or $n -gt 1048576){throw 'Frame bound'}
+  if($n -lt 1 -or $n -gt 16777216){throw 'Frame bound'}
  $b=Read-Bytes $n
  return ([Text.Encoding]::UTF8.GetString($b)|ConvertFrom-Json)
 }

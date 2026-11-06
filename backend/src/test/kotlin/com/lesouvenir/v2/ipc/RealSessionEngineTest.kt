@@ -214,6 +214,16 @@ class RealSessionEngineTest {
             val files = Files.list(workspace.resolve("backend/build/real-sessions/$sid")).use { it.map { p -> p.fileName.toString() }.toList() }
             assertTrue(files.any { it.startsWith("print_") && it.endsWith(".png") })
             assertEquals(1, camera.captures)
+            val firstPrint = Path.of(confirmedFrame["printImagePath"].asString)
+            call("session.back")
+            call("frame.select", "frameId" to "default")
+            val cached = call("frame.confirm")
+            assertEquals(firstPrint, Path.of(cached["printImagePath"].asString), "unchanged selection should reuse render")
+            Files.delete(firstPrint)
+            call("session.back")
+            call("frame.select", "frameId" to "default")
+            val rerendered = call("frame.confirm")
+            assertTrue(Files.isRegularFile(Path.of(rerendered["printImagePath"].asString)), "deleted cached file must be regenerated")
         }
     }
 
