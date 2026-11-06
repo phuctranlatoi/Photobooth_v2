@@ -1,6 +1,5 @@
 import {useEffect,useRef,useState} from 'react';
 import {invoke} from '@tauri-apps/api/core';
-import './v1-settings.css';
 
 type Settings={enableSystemPrint:boolean;useHotFolder:boolean;hotFolderPath:string;postCaptureTimeoutSeconds:number;photoSelectionTimeoutSeconds:number;frameSelectionTimeoutSeconds:number};
 type Reply={settings:Settings;schemaVersion:1;appliesTo:'NEXT_SESSION';hardwareApply:'PENDING_DISABLED';effectiveTimerSource?:string;effectiveTimeoutSeconds?:{photoSelection:number;frameSelection:number;postCapture:number};saved?:boolean};

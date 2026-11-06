@@ -1,5 +1,27 @@
 ﻿# Test Results â€” Independent Consolidated Review
 
+## 2026-11-06 Phase 12 — Complete UI/UX Reconstruction
+
+| Case | Status | Exact evidence / command / boundary |
+|---|---|---|
+| Frontend Vitest confirmation | **PASS-AUTOMATED** | V2 `frontend`: `npm run test`; exit **0**; **9/9 files, 61/61 tests**, 0 failures; Vitest duration 6.60s. |
+| Production frontend build | **PASS-AUTOMATED** | V2 `frontend`: `npm run build`; exit **0**; `tsc --noEmit && vite build`; **2,010 modules**, zero errors, Vite build 3.59s. |
+| Modular stylesheet architecture | **PASS-AUTOMATED** | Implementation present at `frontend/src/atelier/theme-tokens.css`, `atelier-core.css`, `atelier-customer.css`, and `atelier-operator.css`; preserved import surfaces/selectors keep existing contracts compatible. |
+| Live Tauri WebView acceptance | **PASS-SIMULATED** | `tests/verify-demo-and-real-journey.mjs` exit **0**, both 1280×800 and 1920×1200, 26 screenshots. Ledger: `tests/journey-evidence/2026-11-06T14-58-42.247Z/results.json`. |
+| 1280×800 geometry | **PASS-SIMULATED** | Countdown Δx **0.000007629 px**, Δy **0.000022888 px**; shutter **108×108 px**, core **84×84 px**, Δx **0 px**; Back **56×56 px**, icon Δx/Δy **0/0 px**; QR slot **272×272 px**, payment layout shift **0 px**. |
+| 1920×1200 geometry | **PASS-SIMULATED** | Countdown Δx **0 px**, Δy **0.000015259 px**; shutter **108×108 px**, core **84×84 px**, Δx **0 px**; Back **56×56 px**, icon Δx/Δy **0/0 px**; QR slot **380×380 px**, payment layout shift **0 px**. |
+| Selection latency | **PASS-SIMULATED** | Photo: **4.50 ms / 4.80 ms**; frame: **7.50 ms / 6.00 ms** at 1280×800 / 1920×1200. All <100 ms. |
+| Functional/state/selector retention | **PASS-AUTOMATED + PASS-SIMULATED** | Existing frontend suites and live DEMO/REAL-display journeys pass without changing backend authority, state-machine contracts, IPC behavior, roles, stable test IDs, or preserved selectors. “100% retained” is bounded to these exercised contracts; physical hardware behavior is separately gated. |
+| Changed-file scope | **PASS-AUTOMATED (inspection)** | `git status --short`, `git diff --stat`, and `git diff --name-only` showed no modified `backend/`, `src-tauri/src/`, migrations, PayOS, Canon, DNP, or V1 file. Changes are V2 frontend and documentation only. |
+| V1 isolation | **PASS-AUTOMATED (read-only verification)** | `git -C "E:\HK1_2026_2027\PhotoboothDesktop" status --short` returned no output. No V1 write/build/cleanup, secret read, or customer-photo operation. |
+| Canon DSLR | **BLOCKED / GATED** | No physical capture, Live View, reconnect, USB-unplug, or repeated transfer test. |
+| DNP DS-RX1HS | **BLOCKED / GATED** | No physical spool, 5×15/10×15 output, cutting, completion, or V1 paper comparison. |
+| Live PayOS | **BLOCKED / GATED** | No production payment/settlement. QR rendering in acceptance remains simulated/display-only evidence. |
+
+**Release gate: BLOCK.** The frontend reconstruction milestone is software-green, but it does not clear physical Canon, physical DNP, live PayOS, packaging, performance-on-target-Mini-PC, or redistribution-license gates.
+
+---
+
 ## 2026-11-06 Atelier Canvas UI/UX overhaul and 16:10 geometry alignment
 
 | Case | Status | Exact evidence / boundary |

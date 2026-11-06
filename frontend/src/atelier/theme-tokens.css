@@ -1,0 +1,33 @@
+:root {
+  color-scheme: light;
+  font-family: 'Segoe UI', 'Noto Sans', Arial, sans-serif;
+  font-synthesis: none;
+  --at-canvas: #FAF7F2;
+  --at-canvas-muted: #F6F1EA;
+  --at-ink: #1A1715;
+  --at-body: #514842;
+  --at-muted: #625750;
+  --at-primary: #8E442D;
+  --at-accent: #C27357;
+  --at-champagne: #D8C7B5;
+  --at-rose: #F0DBD4;
+  --at-hairline: rgba(81,72,66,.24);
+  --at-white: #FFFFFF;
+  --at-glass: rgba(255,255,255,.72);
+  --at-glass-filter: blur(14px) saturate(120%);
+  --at-darkroom: #121214;
+  --at-success: #245C42;
+  --at-error: #8F3029;
+  --at-paper-shadow: drop-shadow(0 20px 36px rgba(44,30,23,.22)) drop-shadow(0 4px 10px rgba(44,30,23,.10));
+  --at-press: .18s cubic-bezier(.2,.8,.25,1);
+  --at-card: .28s ease;
+  --at-space-1: 8px;
+  --at-space-2: 12px;
+  --at-space-3: 16px;
+  --at-space-4: 24px;
+  --at-space-5: 32px;
+  --at-space-6: 48px;
+  --at-gutter: clamp(24px,3.75vw,72px);
+  --at-target: 56px;
+  --at-primary-height: 72px;
+}

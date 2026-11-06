@@ -8,7 +8,6 @@ import {LayoutsTab} from './operator/LayoutsTab';
 import {ToolsCalculatorTab} from './operator/ToolsCalculatorTab';
 import {FiltersTab} from './operator/FiltersTab';
 import {RevenueTab} from './operator/RevenueTab';
-import './operator/operator-v1.css';
 type Status={state:string;canEditLayouts:boolean;layouts:LayoutMode[];accessMode:string;productionAdminAcl:false;pricingEditable?:boolean};
 const tabs=['Frames','Layouts','Settings','Tools','Colors','Revenue'] as const;
 type Tab=typeof tabs[number];

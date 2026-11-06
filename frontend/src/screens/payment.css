@@ -3,7 +3,7 @@
 .v1-shell.v1-shell-payment {
   padding: 0 !important;
   gap: 0 !important;
-  background: #FAF6F2 !important;
+  background: #F6F1EA;
 }
 .v1-payment-screen {
   flex: 1;
@@ -20,7 +20,7 @@
   isolation: isolate;
   padding: clamp(20px, 2.5vh, 32px) clamp(24px, 4vw, 64px);
   box-sizing: border-box;
-   background: linear-gradient(135deg,#FAF7F2 0%,#F5EFEB 50%,#EFE8E0 100%);
+    background: #F6F1EA;
   border-radius: 0;
 }
 .v1-payment-screen .v1-heading-title { touch-action: manipulation; user-select: none; }
@@ -92,8 +92,8 @@
 .v1-payment-qr-slot {
   box-sizing: border-box;
   flex: none;
-   width: clamp(280px, 34vh, 380px);
-   height: clamp(280px, 34vh, 380px);
+    width: clamp(240px, 34vh, 380px);
+    height: clamp(240px, 34vh, 380px);
   aspect-ratio: 1;
   padding: clamp(16px, 2vh, 24px);
   background: #FFFFFF;
@@ -130,9 +130,9 @@
   padding-inline: clamp(0px, 2vw, 28px);
 }
 .v1-shell.atelier-customer .v1-payment-columns > .v1-payment-qr-panel {
-  background: rgba(255,255,255,.55) !important;
-  border: 1px solid rgba(255,255,255,.75) !important;
-  -webkit-backdrop-filter: blur(20px) !important; backdrop-filter: blur(20px) !important;
+   background: rgba(255,255,255,.75) !important;
+   border: 1px solid rgba(255,255,255,.92) !important;
+   -webkit-backdrop-filter: blur(12px) !important; backdrop-filter: blur(12px) !important;
   box-shadow: inset 0 1px 2px #fff,0 12px 32px rgba(45,30,20,.07) !important;
 }
 .v1-shell.atelier-customer .v1-payment-qr-slot,
@@ -146,14 +146,14 @@
 .v1-payment-poll { display: inline-flex; align-items: center; gap: 9px; font-size: 15px; font-weight: 600; color: #8A4C05; padding: 6px 16px; border-radius: 999px; background: rgba(255, 243, 224, 0.8); border: 1px solid rgba(235, 180, 120, 0.4); box-shadow: 0 2px 8px rgba(217, 119, 6, 0.08); }
 .v1-payment-poll .v1-payment-dot { width: 8px; height: 8px; border-radius: 50%; background: #D97706; box-shadow: 0 0 0 4px rgba(217, 119, 6, 0.25); animation: atelier-status-pulse 1.6s ease-in-out infinite; }
 .v1-payment-recovery { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; flex: none; }
-.v1-payment-recovery .v1-secondary { min-height: 48px; }
+.v1-payment-recovery .v1-secondary { min-height: 56px; }
 
 .v1-payment-staff { display: flex; justify-content: center; position: absolute; z-index: 2; bottom: 8px; left: 0; right: 0; pointer-events: none; }
 .v1-payment-staff button { pointer-events: auto; }
-.v1-payment-staff .v1-staff-cash-btn { display: inline-flex; align-items: center; gap: 10px; min-height: 56px; border: 1.5px solid rgba(255,255,255,.9); border-radius: 999px; background: linear-gradient(140deg,rgba(255,255,255,.88),rgba(255,241,226,.68)); -webkit-backdrop-filter: blur(20px) saturate(170%); backdrop-filter: blur(20px) saturate(170%); box-shadow: 0 10px 28px rgba(65,42,30,.12), inset 0 1px 2px #fff; color: #694109; padding: 10px 24px; font-size: 16px; font-weight: 700; }
+.v1-payment-staff .v1-staff-cash-btn { display: inline-flex; align-items: center; gap: 10px; min-height: 56px; border: 1.5px solid rgba(255,255,255,.9); border-radius: 999px; background: rgba(255,255,255,.78); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); box-shadow: 0 10px 28px rgba(65,42,30,.12), inset 0 1px 2px #fff; color: #694109; padding: 10px 24px; font-size: 16px; font-weight: 700; }
 .v1-staff-cash-btn .v1-payment-dot { background: #D97706; }
 .v1-payment-staff .v1-staff-cash-btn:focus-visible { outline: 3px solid #9E3F28; outline-offset: 3px; }
-.v1-shell .v1-staff-pin { background: linear-gradient(145deg,rgba(255,255,255,.93),rgba(255,245,235,.78)); border: 1.5px solid rgba(255,255,255,.95); border-radius: 28px; -webkit-backdrop-filter: blur(28px) saturate(190%); backdrop-filter: blur(28px) saturate(190%); box-shadow: 0 28px 80px rgba(15,12,11,.3), inset 0 2px 3px rgba(255,255,255,.9); }
+.v1-shell .v1-staff-pin { background: #FDFBF7; border: 1.5px solid #fff; border-radius: 28px; box-shadow: 0 28px 80px rgba(15,12,11,.3); }
 
 @keyframes v1-payment-spin { to { transform: rotate(360deg); } }
 @keyframes atelier-status-pulse { 50% { opacity: .35; box-shadow: 0 0 0 9px rgba(217,119,6,.12); } }

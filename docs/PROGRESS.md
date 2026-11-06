@@ -1,5 +1,20 @@
 ﻿# PROGRESS.md
 
+## Complete UI/UX Reconstruction Milestone (Phase 12, 2026-11-06)
+
+**Status: COMPLETE for frontend software scope — PASS-AUTOMATED + PASS-SIMULATED; production release remains BLOCKED / GATED.**
+
+- Replaced the accumulated legacy stylesheet implementation with the modular Atelier architecture under `frontend/src/atelier/`: `theme-tokens.css`, `atelier-core.css`, `atelier-customer.css`, and `atelier-operator.css`. Compatibility entrypoints remain only to preserve imports and established selectors.
+- Preserved the existing functional contracts, state-machine command flow, IPC-facing behavior, roles, accessibility hooks, and stable `data-testid`/legacy class selectors. This milestone changes frontend presentation and supporting frontend markup only; it does not change backend authority.
+- Live Tauri WebView acceptance (`tests/verify-demo-and-real-journey.mjs`) exited **0** and produced **PASS-SIMULATED** at **1280×800** and **1920×1200**, with **26 screenshots** in `tests/journey-evidence/2026-11-06T14-58-42.247Z/`.
+- Exact latest acceptance measurements: photo selection **4.50 ms / 4.80 ms** and frame selection **7.50 ms / 6.00 ms** at 1280×800 / 1920×1200; countdown center Δx/Δy **0.000007629/0.000022888 px** and **0/0.000015259 px**; shutter **108×108 px**, core **84×84 px**, center Δx **0 px**; Back target **56×56 px**, icon Δx/Δy **0/0 px**; VietQR slot **272×272 px** and **380×380 px**, with **0 px** shift in slot dimensions and payment-column x/y/width/height.
+- Fresh Phase 12 confirmation from `frontend`: `npm run test` exited **0** (**61/61**, 9 files); `npm run build` exited **0** (**2,010 modules**, zero errors).
+- Change-scope inspection found no modified Kotlin under `backend/`, Rust under `src-tauri/src/`, database migration, PayOS, Canon, DNP, or V1 file. All milestone changes are confined to V2 frontend files and documentation.
+- Read-only command `git -C "E:\HK1_2026_2027\PhotoboothDesktop" status --short` returned no output. No V1 write, build, cleanup, secret read, or customer-photo modification was performed.
+- **Hardware boundary:** Canon DSLR capture/Live View/reconnect, DNP DS-RX1HS physical 5×15/10×15 printing and cutting, and live PayOS settlement remain **BLOCKED / GATED** pending explicit authorization, attached hardware/provider access, and supervised testing. Simulated acceptance is not physical-hardware evidence.
+
+---
+
 ## Atelier Canvas UI/UX Overhaul & 16:10 Geometry Alignment Milestone (2026-11-06)
 
 **Status: PASS-SIMULATED & PASS-AUTOMATED across 1280×800 and 1920×1200 viewports; physical hardware gates remain unverified without a physical Canon DSLR or DNP DS-RX1HS.**

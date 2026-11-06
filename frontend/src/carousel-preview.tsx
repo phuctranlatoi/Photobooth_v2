@@ -1,11 +1,6 @@
 import React from 'react';
 import {createRoot} from 'react-dom/client';
 import './styles.css';
-import './customer.css';
-import './stages.css';
-import './finishing.css';
-import './preview.css';
-import './kiosk-v1.css';
 import {AppShell} from './screens/KioskUI';
 import {StudioModeScreen} from './screens/StudioModeScreen';
 import type {LayoutMode} from './shared/simulator-contract';

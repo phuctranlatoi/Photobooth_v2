@@ -1,5 +1,23 @@
 ﻿# TASK_BOARD.md
 
+## Complete UI/UX Reconstruction Gate — FRONTEND SOFTWARE GREEN, RELEASE BLOCKED (Phase 12, 2026-11-06)
+
+| Task | Status | Evidence / next gate |
+|---|---|---|
+| Modular Atelier stylesheet replacement | **COMPLETED — PASS-AUTOMATED** | New implementation is split into `frontend/src/atelier/theme-tokens.css`, `atelier-core.css`, `atelier-customer.css`, and `atelier-operator.css`; legacy import surfaces/selectors are retained as compatibility contracts. |
+| Functional/state/selector compatibility | **COMPLETED — PASS-AUTOMATED + PASS-SIMULATED** | Existing command/state flow, IPC contracts, roles, test IDs, and preserved class selectors remain green in 61 frontend tests and the live WebView journey. |
+| Live Tauri WebView acceptance | **COMPLETED — PASS-SIMULATED** | `tests/verify-demo-and-real-journey.mjs` exit 0 at 1280×800 and 1920×1200; 26 screenshots: `tests/journey-evidence/2026-11-06T14-58-42.247Z/`. |
+| Geometry | **COMPLETED — PASS-SIMULATED** | Countdown Δx/Δy: 0.000007629/0.000022888 px and 0/0.000015259 px; shutter 108×108, core 84×84, Δx 0; Back 56×56 with icon Δx/Δy 0/0; QR 272×272 and 380×380 with zero measured layout shift. |
+| Interaction latency | **COMPLETED — PASS-SIMULATED** | Photo 4.50/4.80 ms; frame 7.50/6.00 ms at 1280×800 / 1920×1200, all below 100 ms. |
+| Fresh frontend regression | **COMPLETED — PASS-AUTOMATED** | `npm run test`: exit 0, 9/9 files and 61/61 tests. `npm run build`: exit 0, TypeScript/Vite, 2,010 modules, zero errors. |
+| Scope containment | **VERIFIED** | Git change inspection found no Kotlin/backend, Rust/Tauri, migration, PayOS, Canon, DNP, or V1 changes; only V2 frontend and documentation are included. |
+| Strict V1 isolation | **VERIFIED READ-ONLY** | `git -C "E:\HK1_2026_2027\PhotoboothDesktop" status --short` returned empty. No V1 writes/builds/cleanup/secrets/photos. |
+| Canon DSLR | **BLOCKED / GATED** | Real capture, Live View, repeated transfer, unplug and reconnect require authorized physical hardware. |
+| DNP DS-RX1HS | **BLOCKED / GATED** | Real 5×15/10×15 spool, paper output, cutter operation and V1 comparison require authorized physical hardware. |
+| Live PayOS | **BLOCKED / GATED** | No live payment or settlement was authorized; simulated QR display is not settlement evidence. |
+
+---
+
 ## Atelier Canvas UI/UX & 16:10 Geometry Alignment Gate — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-06)
 
 | Task | Status | Evidence / next gate |
