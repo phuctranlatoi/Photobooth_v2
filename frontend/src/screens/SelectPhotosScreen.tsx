@@ -61,7 +61,7 @@ export function SelectPhotosScreen({layout,action,preview,shots=[],selected=[]}:
 
   return (
     <>
-       <Heading step="Bước 3" title="Chọn ảnh để in" subtitle={`Đã chọn ${localSelected.length}/${layout?.selectCount??0} ảnh · Chạm để chọn, giữ để xem lớn`} back={()=>action('session.back')}/>
+       <Heading step="Bước 4" title="Chọn ảnh để in" subtitle={`Đã chọn ${localSelected.length}/${layout?.selectCount??0} ảnh · Chạm để chọn, giữ để xem lớn`} back={()=>action('session.back')}/>
        <div className="v1-selection">
           <section className="v1-selection-photos" aria-label="Ảnh để chọn"><div className={`v1-photo-grid ${layout?.photoAspectRatio !== undefined && layout.photoAspectRatio < 1.1 ? 'v1-photo-grid-portrait' : 'v1-photo-grid-landscape'}`}>
           {shots.map((shot,i)=>{

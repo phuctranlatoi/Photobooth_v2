@@ -8,7 +8,7 @@ export function ConfirmScreen({layout,pricing,busy,action,preview,snapshot,simul
   const composed=safeImage(snapshot?.compositionDataUrl)||safeImage(snapshot?.printImageDataUrl)||safeImage(preview);
   return (
     <div className="v1-confirm-screen">
-      <Heading title="Kiểm tra lần cuối" subtitle="Kiểm tra bản ghép trước khi xác nhận" back={()=>action('session.back')}/>
+      <Heading step="Bước 6" title="Kiểm tra lần cuối" subtitle="Kiểm tra bản ghép trước khi xác nhận" back={()=>action('session.back')}/>
        <div className="v1-split v1-confirm-workspace">
         <PrintPreview src={composed} ratio={layout?.printAspectRatio} layout={layout} label="Bản ghép hoàn thiện"/>
         <section className="v1-panel v1-summary">

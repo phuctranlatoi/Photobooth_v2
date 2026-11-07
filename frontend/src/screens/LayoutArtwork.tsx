@@ -41,8 +41,8 @@ export function LayoutArtwork({layout,compact=false,selectedPhotos,frameOverlayU
      </svg><rect x={x} y={y} width={w} height={h} rx="1" fill="none" stroke="#c8b8a9" strokeWidth=".6"/>
      {!compact&&<text x={x+3} y={y+Math.min(7,h/6)} fontSize={Math.min(5,w/12)} fontFamily="sans-serif" fill="#67594c">{String(i+1).padStart(2,'0')}</text>}</>}
    </g>})}
-     <text x={width/2} y={height-8} textAnchor="middle" fontFamily="Georgia,serif" fontSize={Math.min(8,width/16)} letterSpacing=".6" fill="#8E442D">LE SOUVENIR · ATELIER</text>
-     <text x={width/2} y={height-3} textAnchor="middle" fontFamily="sans-serif" fontSize={Math.min(4,width/32)} letterSpacing=".8" fill="#A8988B">SEOUL × SAIGON · 2026</text>
+      <text x={width/2} y={height-8} textAnchor="middle" fontFamily="Georgia,serif" fontSize={Math.min(8,width/16)} letterSpacing=".1" fill="#8E442D">LE SOUVENIR · ATELIER</text>
+      <text x={width/2} y={height-3} textAnchor="middle" fontFamily="sans-serif" fontSize={Math.min(4,width/32)} letterSpacing=".05" fill="#A8988B">SEOUL × SAIGON · 2026</text>
      {frameOverlayUrl?<image href={frameOverlayUrl} x={0} y={0} width={width} height={height} preserveAspectRatio="xMidYMid meet" style={{pointerEvents:'none'}}/>:selectedPhotos!==undefined&&<g pointerEvents="none">
        <rect x="6" y="6" width={width-12} height={height-12} rx="4" fill="none" stroke="#8E442D" strokeWidth="1.2" strokeOpacity="0.85"/>
        <rect x="8.5" y="8.5" width={width-17} height={height-17} rx="2" fill="none" stroke="#D8C7B5" strokeWidth="0.6"/>

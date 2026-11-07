@@ -56,7 +56,7 @@ export function FrameScreen({layout, action, preview, snapshot, frames = [], fra
   const backendPreviewMatches = snapshot?.frameId === effectiveFrameId && !!safeImage(preview);
 
   return <>
-    <Heading step="Bước 4" title="Chọn khung trang trí"
+    <Heading step="Bước 5" title="Chọn khung trang trí"
       subtitle="Chọn khung phù hợp với khoảnh khắc" back={() => action('session.back')}/>
     <div className="v1-split v1-frame-workspace">
        <div className="v1-frame-preview-panel"><h2 className="v1-frame-preview-heading">Bản in xem trước</h2><PrintPreview src={backendPreviewMatches ? preview : undefined} ratio={layout?.printAspectRatio} layout={layout}
