@@ -24,8 +24,10 @@ sessions/
 # Test journey evidence and screenshots
 /Screenshot*.png
 /Screenshot (*).png
-tests/journey-evidence/20*
+tests/v1-settings-parity/evidence/
+tests/v1-settings-parity/runner-evidence/
+tests/journey-evidence/
+tests/**/evidence/
 backend/gradlew
 backend/gradlew.bat
-
 
