@@ -23,9 +23,14 @@ export function LayoutArtwork({layout,compact=false,selectedPhotos,frameOverlayU
   const slotHeight=slotWidth/(layout?.photoAspectRatio&&layout.photoAspectRatio>0?layout.photoAspectRatio:1.5);
   const slots=layout?.absoluteSlots?.length?layout.absoluteSlots.slice(0,count).map(slot=>({...slot,x:slot.x*width,y:slot.y*height,width:slot.width*width,height:slot.height*height})):Array.from({length:count},(_,index)=>({index,x:left+(slotWidth+gapX)*(index%columns),y:top+(slotHeight+gapY)*Math.floor(index/columns),width:slotWidth,height:slotHeight}));
  return <svg className="v1-layout-artwork" role="img" aria-label={`Minh họa ${layout?formatLayoutTitle(layout):'bố cục ảnh'}`} viewBox={`0 0 ${width} ${height}`} style={{aspectRatio:ratio}}>
-  <rect width={width} height={height} rx="7" fill="#fff"/>
+   <rect width={width} height={height} rx="6" fill="#fff" stroke="#D1C7BD" strokeWidth="1"/>
+   <rect x="3" y="3" width={width-6} height={height-6} rx="4" fill="none" stroke="#EDE6DF" strokeWidth="0.6"/>
     {slots.map((slot,i)=>{const x=slot.x,y=slot.y,w=slot.width,h=slot.height;return <g key={`${slot.index}-${i}`}>
-     {selectedPhotos!==undefined?(selectedPhotos[i]?<image href={selectedPhotos[i]!} x={x} y={y} width={w} height={h} preserveAspectRatio="xMidYMid slice"/>:<><rect x={x} y={y} width={w} height={h} fill="#F7F5F0" stroke="#E5DCD5" strokeDasharray="3 3"/><text x={x+w/2} y={y+h/2} textAnchor="middle" dominantBaseline="middle" fontSize={Math.min(10,w/4)} fill="#9B8A80">Ảnh {i+1}</text></>):<>
+      {selectedPhotos!==undefined?(selectedPhotos[i]?<>
+       <image href={selectedPhotos[i]!} x={x} y={y} width={w} height={h} preserveAspectRatio="xMidYMid slice"/>
+       <rect x={x} y={y} width={w} height={h} fill="none" stroke="#D1C7BD" strokeWidth="0.8"/>
+       <g><rect x={x+2} y={y+2} width={Math.min(w-4,22)} height="9" rx="2.5" fill="#fff" opacity="0.88"/><text x={x+Math.min(w-4,22)/2} y={y+7} textAnchor="middle" fontSize="4.5" fontFamily="sans-serif" fontWeight="700" fill="#705F53">{String(i+1).padStart(2,'0')}</text></g>
+      </>:<><rect x={x} y={y} width={w} height={h} fill="#F9F6F0" stroke="#C8B8A9" strokeWidth="1" strokeDasharray="3 3"/><text x={x+w/2} y={y+h/2} textAnchor="middle" dominantBaseline="middle" fontSize={Math.min(10,w/4)} fill="#9B8A80">Ảnh {i+1}</text></>):<>
      <svg x={x} y={y} width={w} height={h} viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" overflow="hidden">
       <rect width="100" height="100" fill={i%2?'#ded1c5':'#e9e1d8'}/>
       {samplePhotos?.length ? <image href={samplePhotos[i%samplePhotos.length]} width="100" height="100" preserveAspectRatio="xMidYMid slice" style={{filter:'grayscale(1) sepia(.16) contrast(1.07)'}}/> : <><rect x="11" y="11" width="78" height="78" fill={i%2?'#e9ddd0':'#f2ebe2'} stroke="#b7a695" strokeWidth=".6"/><text x="50" y="48" textAnchor="middle" fontSize="6" fontFamily="Georgia,serif" letterSpacing="1" fill="#65584f">MOMENTS</text><text x="50" y="59" textAnchor="middle" fontSize="3.5" fontFamily="sans-serif" letterSpacing=".6" fill="#80746a">SEOUL × SAIGON</text></>}
@@ -36,7 +41,12 @@ export function LayoutArtwork({layout,compact=false,selectedPhotos,frameOverlayU
      </svg><rect x={x} y={y} width={w} height={h} rx="1" fill="none" stroke="#c8b8a9" strokeWidth=".6"/>
      {!compact&&<text x={x+3} y={y+Math.min(7,h/6)} fontSize={Math.min(5,w/12)} fontFamily="sans-serif" fill="#67594c">{String(i+1).padStart(2,'0')}</text>}</>}
    </g>})}
-    {selectedPhotos===undefined&&<text x={width/2} y={height-8} textAnchor="middle" fontFamily="Georgia,serif" fontSize={Math.min(8,width/16)} letterSpacing=".5" fill="#776052">LE SOUVENIR · ATELIER</text>}
-    {selectedPhotos!==undefined&&frameOverlayUrl&&<image href={frameOverlayUrl} x={0} y={0} width={width} height={height} preserveAspectRatio="xMidYMid meet" style={{pointerEvents:'none'}}/>}
+     <text x={width/2} y={height-8} textAnchor="middle" fontFamily="Georgia,serif" fontSize={Math.min(8,width/16)} letterSpacing=".6" fill="#8E442D">LE SOUVENIR · ATELIER</text>
+     <text x={width/2} y={height-3} textAnchor="middle" fontFamily="sans-serif" fontSize={Math.min(4,width/32)} letterSpacing=".8" fill="#A8988B">SEOUL × SAIGON · 2026</text>
+     {frameOverlayUrl?<image href={frameOverlayUrl} x={0} y={0} width={width} height={height} preserveAspectRatio="xMidYMid meet" style={{pointerEvents:'none'}}/>:selectedPhotos!==undefined&&<g pointerEvents="none">
+       <rect x="6" y="6" width={width-12} height={height-12} rx="4" fill="none" stroke="#8E442D" strokeWidth="1.2" strokeOpacity="0.85"/>
+       <rect x="8.5" y="8.5" width={width-17} height={height-17} rx="2" fill="none" stroke="#D8C7B5" strokeWidth="0.6"/>
+       <path d={`M4 14V4H14 M${width-14} 4H${width-4}V14 M4 ${height-14}V${height-4}H14 M${width-14} ${height-4}H${width-4}V${height-14}`} stroke="#8E442D" strokeWidth="0.8" fill="none"/>
+      </g>}
  </svg>;
 }

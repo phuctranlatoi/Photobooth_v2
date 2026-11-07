@@ -23,4 +23,4 @@ it('shows catalog failure without fake choices and retries actual catalog',async
  expect(await screen.findByRole('alert')).toHaveTextContent('offline');expect(screen.getByTestId('welcome-start')).toBeDisabled();
  fireEvent.click(screen.getByRole('button',{name:/Reconcile/}));await waitFor(()=>expect(screen.queryByRole('alert')).not.toBeInTheDocument());expect(api.invoke.mock.calls.filter(c=>c[1].method==='catalog.get').length).toBeGreaterThan(1);
 });
-it('rejects remote, malformed and oversized preview handles',()=>{expect(safeImage('https://example.com/photo')).toBe('');expect(safeImage('data:image/jpeg;base64,AAAA')).toContain('AAAA');expect(safeImage('data:image/png;base64,'+'A'.repeat(1_000_001))).toBe('');});
+it('rejects remote, malformed and oversized preview handles',()=>{expect(safeImage('https://example.com/photo')).toBe('');expect(safeImage('data:image/jpeg;base64,AAAA')).toContain('AAAA');expect(safeImage('data:image/png;base64,'+'A'.repeat(5_000_001))).toBe('');});

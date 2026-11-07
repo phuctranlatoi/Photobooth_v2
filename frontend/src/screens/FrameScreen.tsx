@@ -70,12 +70,13 @@ export function FrameScreen({layout, action, preview, snapshot, frames = [], fra
            return <button type="button" key={frame.id} aria-pressed={selected} onClick={() => handleUserFrameTap(frame.id)}>
              <span className="v1-frame-art" style={{aspectRatio:layout?.printAspectRatio && layout.printAspectRatio>0 ? layout.printAspectRatio : 1/3}}>
              {thumb ? <img src={thumb} alt={formatFrameName(frame.name)}/> :
-              <svg className="v1-frame-silhouette" viewBox="0 0 96 112" fill="none" aria-hidden="true">
-                <rect x="12" y="8" width="72" height="96" rx="5" stroke="currentColor" strokeWidth="4"/>
-                <rect x="20" y="16" width="56" height="80" rx="2" stroke="currentColor" strokeWidth="2"/>
-                <circle cx="48" cy="45" r="10" stroke="currentColor" strokeWidth="2"/>
-                <path d="M28 82c2-15 10-23 20-23s18 8 20 23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-               </svg>}
+               <svg className="v1-frame-silhouette" viewBox="0 0 96 112" fill="none" aria-hidden="true">
+                 <rect x="8" y="4" width="80" height="104" rx="5" fill="#FFFCF7" stroke="#8E442D" strokeWidth="1.5"/>
+                 <rect x="11" y="7" width="74" height="98" rx="3" stroke="#D8C7B5" strokeWidth=".7"/>
+                 <rect x="17" y="14" width="62" height="70" rx="2" fill="#F9F6F0" stroke="#C8B8A9" strokeWidth="1"/>
+                 <rect x="21" y="18" width="54" height="62" rx="1" stroke="#EDE6DF" strokeWidth=".7"/>
+                 <text x="48" y="95" textAnchor="middle" fontFamily="Georgia,serif" fontSize="6" letterSpacing=".5" fill="#8E442D">LE SOUVENIR</text>
+                </svg>}
              </span>
             <strong>{formatFrameName(frame.name)}</strong>
             {selected && <span className="v1-frame-check" aria-hidden="true"><Check size={16} strokeWidth={3}/></span>}

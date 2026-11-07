@@ -34,5 +34,5 @@ export interface Snapshot extends SessionGetStateResult {
   cameraConnected?: boolean;
 }
 export function safeImage(value:unknown):string {
-  return typeof value==='string' && value.length<=1_000_000 && /^data:image\/(jpeg|png);base64,[A-Za-z0-9+/=]+$/.test(value) ? value : '';
+  return typeof value==='string' && value.length<=5_000_000 && /^data:image\/(jpeg|png);base64,[A-Za-z0-9+/=]+$/.test(value) ? value : '';
 }
