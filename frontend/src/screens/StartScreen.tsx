@@ -16,8 +16,8 @@ export function StartScreen({layouts,bundles=[],defaultLayoutId,catalogSource,on
    const strip=layouts.find(l=>l.printAspectRatio<.5);
    return <div className="v1-start atelier-welcome"><section className="atelier-welcome__copy">
     <button type="button" className="v1-brand" aria-label="LE SOUVENIR" onClick={()=>{if(++taps.current>=5){taps.current=0;onAdmin()}}}>LE SOUVENIR</button>
-    <p className="v1-kicker"><span className="v1-kicker-dot" aria-hidden="true"/>PHOTO ATELIER · SEOUL × SAIGON</p>
-     <h1>Chụp ảnh<br/>lấy ngay<span className="v1-editorial-accent">Yours forever.</span></h1><p className="v1-start-desc">Giữ lại những khoảnh khắc đẹp bên người thân và bạn bè.</p>
+     <p className="v1-kicker"><span className="v1-kicker-dot" aria-hidden="true"/>KOREAN PHOTO ATELIER · SEOUL × SAIGON</p>
+      <p className="atelier-welcome__overline">Ghi lại khoảnh khắc thanh xuân</p><h1>Chụp ảnh<br/>lấy ngay<span className="v1-editorial-accent">Yours forever.</span></h1><p className="v1-start-desc">Chụp ảnh lấy ngay · Đậm chất nghệ thuật. Giữ lại những khoảnh khắc đẹp bên người thân và bạn bè.</p>
        <div className="v1-value-pills"><span><Zap size={15} aria-hidden="true"/> Bản in lưu niệm</span><span><QrCode size={15} aria-hidden="true"/> Album ảnh qua QR</span></div>
    {unavailable&&<p role="status">Chưa có bố cục khả dụng. Vui lòng liên hệ nhân viên.</p>}
     <KioskPrimaryButton disabled={busy||!layoutId||unavailable} onClick={()=>layoutId&&start(layoutId)}>CHẠM ĐỂ BẮT ĐẦU →</KioskPrimaryButton>

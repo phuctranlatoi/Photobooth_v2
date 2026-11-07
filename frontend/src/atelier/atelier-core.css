@@ -55,7 +55,7 @@ button:disabled { cursor: not-allowed; }
 .v1-layout-artwork { max-width: 100%; max-height: 100%; object-fit: contain; filter: var(--at-paper-shadow); }
 .glass-touch-ripple { position: absolute; pointer-events: none; left: var(--ripple-x); top: var(--ripple-y); width: var(--ripple-size); height: var(--ripple-size); border-radius: 50%; background: #ffffff38; transform: translate(-50%,-50%) scale(0); animation: at-touch .4s ease-out forwards; }
 @keyframes at-touch { to { transform: translate(-50%,-50%) scale(1); opacity: 0; } }
-.ambient-liquid-glass { display: none; }
+.ambient-liquid-glass { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 @supports not (backdrop-filter: blur(14px)) { .v1-secondary,.v1-back.backButton,.v1-actionbar,.v1-panel { background: #f4eee7; } }
 @media (max-width: 900px) { .v1-shell { overflow-y: auto; height: auto; } .v1-split { grid-template-columns: minmax(0,1fr); overflow: visible; } .v1-actionbar { flex-wrap: wrap; } }

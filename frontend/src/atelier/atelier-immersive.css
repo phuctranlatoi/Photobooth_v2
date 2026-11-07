@@ -1,0 +1,71 @@
+/* Kiosk-wide atmosphere: three compositor-only drifting fields, never a video or camera substitute. */
+body:has(.atelier-customer) { background: radial-gradient(ellipse at 80% 10%,#fffdf9,#f7f0e9 52%,#f0e7df); }
+.ambient-liquid-glass { z-index: 0; contain: strict; visibility:hidden; }
+body:has(.atelier-customer:not(.v1-camera):not(:has(.v1-prepare-screen))) .ambient-liquid-glass { visibility:visible; }
+.ambient-orb { position:absolute; width:clamp(400px,42vw,700px); aspect-ratio:1; border-radius:43% 57% 60% 40%; opacity:.88; filter:blur(14px); will-change:transform; transform:translate3d(0,0,0); }
+.ambient-orb--1 { top:-22%; left:-10%; background:radial-gradient(circle at 40% 40%,rgba(255,255,255,.8),rgba(240,219,212,.5) 42%,transparent 72%); animation:float-liquid-1 24s ease-in-out infinite alternate; }
+.ambient-orb--2 { top:20%; right:-12%; background:radial-gradient(circle at 50% 45%,rgba(216,199,181,.45),rgba(194,115,87,.2) 48%,transparent 74%); animation:float-liquid-2 31s ease-in-out infinite alternate; }
+.ambient-orb--3 { bottom:-45%; left:30%; background:radial-gradient(circle at 45% 40%,rgba(255,255,255,.8),rgba(240,219,212,.5) 42%,transparent 72%); animation:float-liquid-3 28s ease-in-out infinite alternate; }
+@keyframes float-liquid-1 { 0% { transform:translate3d(0,0,0) rotate(0deg) scale(1); } 50% { transform:translate3d(18vw,12vh,0) rotate(28deg) scale(1.13); } 100% { transform:translate3d(35vw,28vh,0) rotate(65deg) scale(.92); } }
+@keyframes float-liquid-2 { 0% { transform:translate3d(0,0,0) rotate(0deg) scale(1); } 50% { transform:translate3d(-18vw,-12vh,0) rotate(-30deg) scale(.88); } 100% { transform:translate3d(-36vw,20vh,0) rotate(-65deg) scale(1.16); } }
+@keyframes float-liquid-3 { 0% { transform:translate3d(0,0,0) rotate(0deg) scale(.9); } 50% { transform:translate3d(-19vw,-28vh,0) rotate(32deg) scale(1.1); } 100% { transform:translate3d(23vw,-42vh,0) rotate(75deg) scale(.96); } }
+
+.v1-shell.atelier-customer { position:relative; z-index:1; width:100%; height:100dvh; min-height:100dvh; padding:clamp(12px,1.6vh,24px) clamp(16px,2.4vw,40px); gap:clamp(10px,1.5vh,20px); background:transparent; }
+.v1-shell.atelier-customer:not(.v1-camera):not(:has(.v1-prepare-screen)) { background:transparent; }
+.v1-shell.atelier-customer:has(.v1-prepare-screen),.v1-shell.atelier-customer.v1-camera { background:#0A090C; }
+.v1-shell.atelier-customer :is(.v1-secondary,.v1-actionbar,.v1-panel,.v1-stepper button,.v1-back.backButton) { border-color:rgba(255,255,255,.7); background:rgba(255,255,255,.55); -webkit-backdrop-filter:blur(24px) saturate(140%); backdrop-filter:blur(24px) saturate(140%); box-shadow:inset 0 1px 0 rgba(255,255,255,.85),0 16px 46px rgba(76,43,29,.09); }
+.v1-shell.atelier-customer .v1-primary:not(:disabled) { position:relative; overflow:hidden; border:1px solid rgba(255,255,255,.7); background:linear-gradient(115deg,#7d3929,#aa6046 54%,#87422d); box-shadow:inset 0 1px 0 rgba(255,255,255,.48),0 12px 32px rgba(142,68,45,.27); -webkit-backdrop-filter:blur(24px) saturate(140%); backdrop-filter:blur(24px) saturate(140%); }
+.v1-shell.atelier-customer :is(.v1-primary,.v1-secondary,.v1-stepper button,.v1-back.backButton) { isolation:isolate; }
+.v1-shell.atelier-customer :is(.v1-primary,.v1-secondary,.v1-stepper button,.v1-back.backButton):active:not(:disabled) { box-shadow:inset 0 2px 12px rgba(58,31,23,.2),0 4px 12px rgba(76,43,29,.12); }
+.v1-shell.atelier-customer .glass-touch-ripple { z-index:2; background:radial-gradient(circle,rgba(255,255,255,.45),rgba(255,255,255,.08) 60%,transparent); }
+
+/* A true edge-to-edge editorial opening, with two independent paper animations. */
+.v1-shell.atelier-customer .v1-start { width:100%; height:100%; grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr); gap:clamp(24px,4vw,76px); }
+.v1-shell.atelier-customer .v1-start section { padding:clamp(8px,1.5vw,26px); gap:clamp(8px,1.7vh,22px); }
+.v1-shell.atelier-customer .v1-brand { flex:none; align-self:flex-start; font-size:clamp(22px,2vw,34px); }
+.v1-shell.atelier-customer .v1-kicker { display:flex; align-items:center; font-size:clamp(12px,.9vw,16px); }
+.v1-shell.atelier-customer .v1-kicker-dot { flex:none; box-shadow:0 0 0 5px rgba(194,115,87,.13),0 0 16px rgba(194,115,87,.55); animation:atelier-dot 3s ease-in-out infinite; }
+@keyframes atelier-dot { 50% { box-shadow:0 0 0 10px rgba(194,115,87,0),0 0 24px rgba(194,115,87,.7); } }
+.v1-shell.atelier-customer .atelier-welcome__overline { font-family:var(--at-font-editorial); font-size:clamp(20px,2vw,32px); color:var(--at-primary); }
+.v1-shell.atelier-customer .v1-start h1 { font-size:clamp(48px,5.1vw,100px); line-height:1.17; }
+.v1-shell.atelier-customer .v1-start-desc { max-width:52ch; }
+.v1-shell.atelier-customer .v1-start .v1-primary { min-width:min(100%,490px); min-height:76px; padding-inline:clamp(24px,3vw,48px); font-size:clamp(17px,1.3vw,22px); animation:pulse-liquid-glow 4s ease-in-out infinite; }
+@keyframes pulse-liquid-glow { 50% { box-shadow:inset 0 1px rgba(255,255,255,.55),0 18px 54px rgba(194,115,87,.4),0 0 0 7px rgba(194,115,87,.06); } }
+.v1-shell.atelier-customer .v1-start-art { width:100%; }
+.v1-shell.atelier-customer .atelier-welcome__gallery { width:100%; }
+.v1-shell.atelier-customer .atelier-welcome__halo { inset:0; border-radius:50%; background:radial-gradient(ellipse,rgba(240,219,212,.8),rgba(216,199,181,.27) 40%,transparent 75%); }
+.v1-shell.atelier-customer .atelier-print { padding:clamp(7px,.9vw,16px); background:linear-gradient(145deg,#fff,#faf6f0); border:1px solid #fff; border-radius:3px; box-shadow:0 38px 65px rgba(44,30,23,.22),0 8px 16px rgba(44,30,23,.15),inset 0 1px rgba(255,255,255,.9); filter:none; overflow:hidden; will-change:transform; }
+.v1-shell.atelier-customer .atelier-print::after { content:''; position:absolute; inset:0; pointer-events:none; background:linear-gradient(135deg,rgba(255,255,255,.32),transparent 36%,rgba(255,255,255,.08) 70%); }
+.v1-shell.atelier-customer .atelier-print--portrait { width:min(49%,330px); top:12%; left:5%; animation:float-drift-1 8s ease-in-out infinite; }
+.v1-shell.atelier-customer .atelier-print--strip { width:min(30%,195px); top:7%; left:56%; animation:float-drift-2 10s ease-in-out infinite; }
+@keyframes float-drift-1 { 0%,100% { transform:translate3d(0,0,0) rotate(-7deg); } 50% { transform:translate3d(12px,-22px,0) rotate(-3deg); } }
+@keyframes float-drift-2 { 0%,100% { transform:translate3d(0,0,0) rotate(7deg); } 50% { transform:translate3d(-12px,20px,0) rotate(3deg); } }
+.v1-shell.atelier-customer .atelier-event-showcase button { -webkit-backdrop-filter:blur(24px) saturate(140%); backdrop-filter:blur(24px) saturate(140%); background:rgba(255,255,255,.6); }
+
+/* Workspaces share every available kiosk pixel; only their own content scrolls. */
+.v1-shell.atelier-customer :is(.v1-split,.v1-layout-stage,.v1-start,.v1-selection,.v1-frame-workspace,.v1-confirm-workspace,.v1-quantity-workspace) { width:100%; flex:1; min-height:0; }
+.v1-shell.atelier-customer .v1-carousel-wrap { width:100%; max-width:none; }
+.v1-shell.atelier-customer .v1-carousel-card[data-distance="0"] { transform:scale(1.1); }
+.v1-shell.atelier-customer .v1-quantity-workspace { grid-template-columns:minmax(0,.94fr) minmax(0,1.06fr); gap:clamp(16px,3vw,48px); }
+.v1-shell.atelier-customer .v1-quantity { padding:clamp(6px,1.2vw,20px); }
+.v1-shell.atelier-customer .v1-quantity .v1-stepper button { width:76px; height:76px; min-width:76px; min-height:76px; flex-basis:76px; }
+.v1-shell.atelier-customer .v1-quantity-pricing.v1-panel { background:rgba(255,255,255,.42); }
+.v1-shell.atelier-customer .v1-quantity-preview { padding:0; }
+.v1-shell.atelier-customer .v1-selection { grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr); }
+.v1-shell.atelier-customer .v1-frame-workspace { grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr); }
+.v1-shell.atelier-customer .v1-confirm-workspace { grid-template-columns:minmax(0,1.4fr) minmax(0,.6fr); }
+.v1-shell.atelier-customer .v1-summary { background:rgba(255,255,255,.5); }
+.v1-shell.atelier-customer .v1-payment-screen { width:100%; height:100%; padding:clamp(12px,1.6vh,24px) clamp(16px,2.4vw,40px); }
+.v1-shell.atelier-customer.v1-shell-payment { padding:0; gap:0; }
+.v1-shell.atelier-customer .v1-payment-columns { width:100%; grid-template-columns:minmax(0,1fr) minmax(0,1fr); }
+.v1-shell.atelier-customer .v1-payment-columns > .v1-payment-summary { background:rgba(255,255,255,.47); border:1px solid rgba(255,255,255,.7); }
+.v1-shell.atelier-customer .v1-payment-qr-slot { width:320px; height:320px; min-width:320px; min-height:320px; flex:0 0 320px; }
+.v1-shell.atelier-customer:has(.v1-prepare-screen) { padding:0; }
+.v1-shell.atelier-customer.v1-camera { padding:0; gap:0; }
+.v1-shell.atelier-customer:has(.v1-prepare-screen) .v1-prepare-screen { padding:clamp(16px,2.4vw,40px); }
+.v1-shell.atelier-customer .v1-print-stage.v1-pipeline { width:100%; max-width:none; padding:clamp(12px,2vw,36px); }
+.v1-shell.atelier-customer .v1-delivery { width:100%; max-width:none; border-color:rgba(255,255,255,.7); background:rgba(255,255,255,.48); }
+
+@media(max-width:900px) { .v1-shell.atelier-customer:not(.v1-camera) { height:100dvh; overflow-y:auto; } .v1-shell.atelier-customer :is(.v1-start,.v1-selection,.v1-frame-workspace,.v1-confirm-workspace,.v1-quantity-workspace) { grid-template-columns:minmax(0,1fr); overflow-y:auto; } .v1-shell.atelier-customer .v1-payment-columns { grid-template-columns:minmax(0,1fr); grid-template-rows:auto auto; } }
+@media(max-height:760px) and (min-width:901px) { .v1-shell.atelier-customer .v1-start section { gap:6px; } .v1-shell.atelier-customer .v1-start h1 { font-size:clamp(42px,4.5vw,78px); } .v1-shell.atelier-customer .v1-payment-instructions { height:100px; min-height:100px; flex-basis:100px; } }
+@media(prefers-reduced-motion:reduce) { .ambient-orb,.v1-shell.atelier-customer :is(.v1-kicker-dot,.v1-start .v1-primary,.atelier-print),.v1-print-stage__pulse { animation:none; will-change:auto; } .v1-shell.atelier-customer .atelier-print--portrait { transform:rotate(-7deg); } .v1-shell.atelier-customer .atelier-print--strip { transform:rotate(7deg); } }
