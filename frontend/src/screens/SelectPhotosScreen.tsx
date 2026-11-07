@@ -74,8 +74,15 @@ export function SelectPhotosScreen({layout,action,preview,shots=[],selected=[]}:
                   aria-label={`Chọn ảnh ${i+1}`}
                   aria-pressed={order>=0}
                    className={order<0&&localSelected.length>=(layout?.selectCount??Infinity)?'v1-photo-dimmed':''}
-                  onPointerDown={event=>{
-                    if(event.pointerType==='mouse'&&event.button!==0)return;
+                   onPointerDown={event=>{
+                     if(event.pointerType==='mouse'&&event.button!==0)return;
+                      try {
+                        if (event.pointerId) {
+                          (event.currentTarget as HTMLElement).setPointerCapture?.(event.pointerId);
+                        }
+                      } catch {
+                        // Synthetic events can have an untracked pointer ID; keep the hold timer working.
+                      }
                      clearHold();
                      clearSuppressionReset();
                      wasHeld.current=false;
@@ -100,7 +107,7 @@ export function SelectPhotosScreen({layout,action,preview,shots=[],selected=[]}:
                        suppressionResetTimer.current=setTimeout(()=>{wasHeld.current=false;suppressionResetTimer.current=null;},200);
                      }
                    }}
-                    onPointerLeave={()=>{clearHold(); if(wasHeld.current)setLightbox(null);}}
+                     onPointerLeave={()=>{if(!wasHeld.current)clearHold();}}
                    onClick={()=>{
                      if(wasHeld.current){
                        clearSuppressionReset();

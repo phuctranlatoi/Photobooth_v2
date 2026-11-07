@@ -153,7 +153,26 @@
 .v1-payment-staff .v1-staff-cash-btn { display: inline-flex; align-items: center; gap: 10px; min-height: 56px; border: 1.5px solid rgba(255,255,255,.9); border-radius: 999px; background: rgba(255,255,255,.78); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); box-shadow: 0 10px 28px rgba(65,42,30,.12), inset 0 1px 2px #fff; color: #694109; padding: 10px 24px; font-size: 16px; font-weight: 700; }
 .v1-staff-cash-btn .v1-payment-dot { background: #D97706; }
 .v1-payment-staff .v1-staff-cash-btn:focus-visible { outline: 3px solid #9E3F28; outline-offset: 3px; }
-.v1-shell .v1-staff-pin { background: #FDFBF7; border: 1.5px solid #fff; border-radius: 28px; box-shadow: 0 28px 80px rgba(15,12,11,.3); }
+.v1-shell .v1-staff-pin { box-sizing:border-box; width:min(360px,100%); max-width:360px; max-height:calc(100dvh - 32px); padding:32px 24px; gap:0; justify-items:center; text-align:center; border:1px solid rgba(255,255,255,.85); border-radius:32px; background:rgba(253,251,247,.92); -webkit-backdrop-filter:blur(24px); backdrop-filter:blur(24px); box-shadow:0 24px 70px rgba(24,18,14,.3); overscroll-behavior:contain; }
+.v1-staff-pin .v1-pin-header { width:100%; }
+.v1-staff-pin .v1-pin-eyebrow { color:#8E442D; font-size:11px; font-weight:800; letter-spacing:.16em; }
+.v1-staff-pin .v1-pin-header h2 { margin:10px 0 4px; font-family:var(--at-font-display); font-size:clamp(25px,3.5vh,32px); line-height:1.25; color:#1A1715; }
+.v1-staff-pin .v1-pin-header p { margin:0; color:#625750; font-size:14px; }
+.v1-shell .v1-staff-pin .v1-pin-dots { display:flex; justify-content:center; align-items:center; gap:20px; margin:24px 0 8px; }
+.v1-shell .v1-staff-pin .v1-pin-dots span { box-sizing:border-box; width:16px; height:16px; border:2px solid rgba(142,68,45,.3); border-radius:50%; background:transparent; transition:background .15s ease,transform .15s ease; }
+.v1-shell .v1-staff-pin .v1-pin-dots span.filled { background:#8E442D; border-color:#8E442D; box-shadow:0 0 12px rgba(142,68,45,.4); transform:scale(1.15); }
+.v1-shell .v1-staff-pin .v1-pin-dots-error { animation:pin-shake .35s ease-in-out; }
+.v1-shell .v1-staff-pin .v1-pin-dots-error span { border-color:#B33B35; box-shadow:0 0 8px rgba(179,59,53,.3); }
+.v1-shell .v1-staff-pin .v1-pin-message { min-height:20px; margin:0 0 12px; color:#B33B35; font-size:12px; line-height:20px; }
+.v1-shell .v1-staff-pin .v1-pin-keypad { display:grid; grid-template-columns:repeat(3,72px); gap:10px 20px; justify-content:center; width:100%; }
+.v1-shell .v1-staff-pin .v1-pin-keypad button { display:flex; flex-direction:column; align-items:center; justify-content:center; box-sizing:border-box; width:72px; height:72px; min-width:72px; min-height:72px; padding:0; border:1px solid rgba(216,199,181,.55); border-radius:50%; background:rgba(255,255,255,.82); box-shadow:0 4px 14px rgba(44,30,23,.06); color:#1A1715; font-size:26px; font-weight:600; line-height:1; touch-action:manipulation; transition:transform .14s ease,background .14s ease,border-color .14s ease; }
+.v1-shell .v1-staff-pin .v1-pin-keypad button small { margin-top:5px; color:#625750; font-size:9px; font-weight:700; letter-spacing:.13em; }
+.v1-shell .v1-staff-pin .v1-pin-keypad button.v1-pin-utility { background:transparent; border-color:transparent; box-shadow:none; font-size:18px; color:#8E442D; }
+.v1-shell .v1-staff-pin .v1-pin-keypad button:active { transform:scale(.92); background:rgba(142,68,45,.15); border-color:#8E442D; }
+.v1-shell .v1-staff-pin .v1-pin-keypad button:focus-visible { outline:3px solid #8E442D; outline-offset:3px; }
+@keyframes pin-shake { 20%,60% { transform:translateX(-6px); } 40%,80% { transform:translateX(6px); } }
+@media (max-height:640px) { .v1-shell .v1-staff-pin { padding:18px 24px; } .v1-shell .v1-staff-pin .v1-pin-dots { margin:12px 0 4px; } .v1-shell .v1-staff-pin .v1-pin-keypad { gap:6px 20px; } }
+@media (prefers-reduced-motion:reduce) { .v1-shell .v1-staff-pin .v1-pin-dots-error { animation:none; } }
 
 @keyframes v1-payment-spin { to { transform: rotate(360deg); } }
 @keyframes atelier-status-pulse { 50% { opacity: .35; box-shadow: 0 0 0 9px rgba(217,119,6,.12); } }

@@ -116,8 +116,8 @@ class RealSessionEngineDemoModeTest {
                 addProperty("commandId", UUID.randomUUID().toString()); configure()
             })
             val layoutId = engine.dispatch("catalog.get", JsonObject())["layouts"].asJsonArray.first().asJsonObject["id"].asString
-            // Do NOT specify captureMode in params - tests that resolveCaptureMode() falls back to DEMO
-            val startState = call("session.start") { addProperty("layoutId", layoutId) }
+            // Offline simulator capture requires an explicit opt-in; omitted mode defaults to REAL.
+            val startState = call("session.start") { addProperty("layoutId", layoutId); addProperty("captureMode", "DEMO") }
             assertEquals("DEMO", startState["captureMode"].asString)
             call("session.confirmSetup")
             call("session.setQuantity") { addProperty("quantity", 2) }

@@ -57,8 +57,16 @@ class CameraConnectionManager(
         }
     }
 
-    fun isHardwareConnected(): Boolean = hardwareController.isHardwareConnected()
-    fun resolveCaptureMode(): String = if (isHardwareConnected()) "REAL" else "DEMO"
+    fun isHardwareConnected(): Boolean {
+        val connected = runCatching { hardwareController.isHardwareConnected() }.getOrDefault(false)
+        if (connected) {
+            lastSeenTimestamp = System.currentTimeMillis()
+            if (connectionState == CameraConnectionState.DISCONNECTED || connectionState == CameraConnectionState.RECONNECTING)
+                connectionState = CameraConnectionState.CONNECTED
+        }
+        return connected
+    }
+    fun resolveCaptureMode(): String = if (hardwareController.isHardwareConnected() || isHardwareConnected()) "REAL" else "DEMO"
 
     fun startLiveView(captureMode: String, onFrame: (String) -> Unit) {
         when (captureMode) {

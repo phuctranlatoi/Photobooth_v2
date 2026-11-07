@@ -38,6 +38,35 @@ class CameraPipelineTest {
         }
     }
 
+    @Test fun managerDiscoversCanonBeforeWebcamWithoutExplicitModeSelection() {
+        val canon = StubCameraDevice(true)
+        var webcamDiscoveries = 0
+        CameraManager(HardwareAuthorization(true)) { mode ->
+            when (mode) {
+                CameraMode.CANON_DSLR -> listOf(canon)
+                CameraMode.WEBCAM -> { webcamDiscoveries++; listOf(StubCameraDevice(true)) }
+                CameraMode.HOT_FOLDER -> emptyList()
+            }
+        }.use { manager ->
+            assertTrue(manager.isHardwareConnected())
+            assertTrue(manager.isHardwareConnected())
+            assertEquals(0, webcamDiscoveries)
+        }
+        assertTrue(canon.closed)
+    }
+
+    @Test fun managerFallsBackToWebcamWhenCanonIsUnavailable() {
+        val webcam = StubCameraDevice(true)
+        CameraManager(HardwareAuthorization(true)) { mode ->
+            when (mode) {
+                CameraMode.CANON_DSLR -> listOf(StubCameraDevice(false))
+                CameraMode.WEBCAM -> listOf(webcam)
+                CameraMode.HOT_FOLDER -> emptyList()
+            }
+        }.use { manager -> assertTrue(manager.isHardwareConnected()) }
+        assertTrue(webcam.closed)
+    }
+
     @Test fun hotFolderDeniesCaptureAndDoesNotGenerateSyntheticFiles() {
         val root = Files.createTempDirectory(workspace, "camera-denied-")
         try {
@@ -97,5 +126,14 @@ class CameraPipelineTest {
         val graphics = image.createGraphics()
         try { graphics.color = Color.RED; graphics.fillRect(0, 0, 12, 12) } finally { graphics.dispose() }
         assertTrue(ImageIO.write(image, "jpg", path.toFile()))
+    }
+
+    private class StubCameraDevice(private val connected: Boolean) : CameraDevice {
+        var closed = false
+        override fun isConnected() = connected
+        override fun startPreview(onFrame: (ByteArray) -> Unit) = Unit
+        override fun stopPreview() = Unit
+        override fun capture(outputDir: Path, shotIndex: Int, aspectRatio: Float): Path = error("Not used")
+        override fun close() { closed = true }
     }
 }

@@ -2,8 +2,8 @@
   color-scheme: light;
   font-family: var(--at-font-sans);
   font-synthesis: none;
-  --at-font-sans: 'Segoe UI', system-ui, -apple-system, 'Be Vietnam Pro', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --at-font-display: 'Segoe UI', system-ui, -apple-system, 'Be Vietnam Pro', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --at-font-sans: 'Plus Jakarta Sans', 'Be Vietnam Pro', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  --at-font-display: 'Playfair Display', 'Plus Jakarta Sans', 'Be Vietnam Pro', serif;
   --at-font-ui: var(--at-font-sans);
   --at-font-editorial: var(--at-font-display);
   --at-canvas: #FAF7F2;

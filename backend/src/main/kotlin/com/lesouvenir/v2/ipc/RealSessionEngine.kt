@@ -23,6 +23,8 @@ import com.lesouvenir.v2.imaging.beauty.DesktopBeautyService
 import com.lesouvenir.v2.imaging.beauty.BeautyConfig
 import com.lesouvenir.v2.integrations.*
 import com.lesouvenir.v2.printing.legacy.*
+import com.lesouvenir.v2.printing.SystemPrinterService
+import kotlinx.coroutines.runBlocking
 import java.awt.Color
 import java.awt.image.BufferedImage
 import java.nio.file.Files
@@ -60,6 +62,10 @@ class RealSessionEngine(
     override val mode = RuntimeMode.REAL
     private val gson = Gson()
     private val processor = DesktopImageProcessor().apply { appDataDir = workspace }
+    private val systemPrinterService = SystemPrinterService()
+    private val webAlbumClient = DesktopWebAlbumClient()
+    private val albumUploader = DesktopAlbumUploader(workspace, boothConfig, DesktopCloudinaryClient(), webAlbumClient, processor)
+    private val neonRevenue = NeonDirectRevenueClient()
     private val beauty = DesktopBeautyService()
     private val compositor = DesktopCompositor()
     private val frameStore = FrameStore(workspace)
@@ -131,6 +137,8 @@ class RealSessionEngine(
     private var printImage: Path? = null
     private var composition: Path? = null
     private var albumUrl: String? = null
+    private var albumId: String? = null
+    private var uploadJob: Future<*>? = null
     /** Test seam for validating composition without making an external album request. */
     @Synchronized internal fun setAlbumUrlForTesting(url: String?) {
         require(state != "IDLE") { "Start a session before setting its album URL" }
@@ -537,16 +545,18 @@ class RealSessionEngine(
         try { compose() } catch (_: Exception) { composition = null; printImage = null }
     }
     private fun prefetchAlbum() {
-        val client = album ?: return
+        if (boothConfig.get("WEB_ALBUM_BASE_URL").isBlank() || boothConfig.get("BOOTH_API_KEY").isBlank()) return
         if (captureMode != "REAL" || albumUrl != null || albumJob != null) return
         val token = epoch
         val session = sid
         val expectedAssets = layout.selectCount + 2
         albumJob = albumExecutor.submit {
-            val url = runCatching { client.createAlbum(CreateAlbumRequest(session, expectedAssets, 7)).albumUrl }.getOrNull()
+            val created = runCatching { webAlbumClient.createAlbum(boothConfig, CreateAlbumRequest(session, expectedAssets,
+                boothConfig.get("ALBUM_EXPIRES_IN_DAYS").toIntOrNull()?.coerceAtLeast(1) ?: 7)) }.getOrNull()
             synchronized(this@RealSessionEngine) {
-                if (token == epoch && sid == session && url != null && albumUrl == null) {
-                    albumUrl = url
+                if (token == epoch && sid == session && created != null && albumUrl == null) {
+                    albumId = created.albumId
+                    albumUrl = created.albumUrl
                     // A preview rendered before the URL arrived cannot be reused as the QR print canvas.
                     if (state == "EDITING") { composition = null; printImage = null }
                 }
@@ -591,58 +601,64 @@ class RealSessionEngine(
         if (captureMode == "DEMO") {
             val image = printImage!!
             if (ImageIO.read(image.toFile()) == null) fail(-32002, "Invalid print canvas")
-            val isSystemPrint = runCatching { settingsStore.settings["enableSystemPrint"]?.asBoolean == true }
-                .getOrDefault(false) || boothConfig.enabled("ENABLE_SYSTEM_PRINT")
-            val available = printer.getAvailablePrinters()
-            if (isSystemPrint && available.isNotEmpty()) {
-                val target = printerName.ifBlank { printer.detectDnpRx1hs() ?: available.firstOrNull() ?: "" }
-                if (target.isNotBlank() && target in available) {
-                    val printLayout = if (layout.printSizeLabel.replace(" ", "").contains("5x15")) PrintLayout.CUT_5X15_2UP else PrintLayout.PHOTO_10X15
-                    val outcome = try { printer.print(ManagedPrintRequest(sid, image, quantity, target, printLayout)) } catch (_: Exception) { null }
-                    printAccepted = true; revenueRecorded = false; state = "DELIVERY"
-                    return snapshot().apply {
-                        addProperty("dryRun", true)
-                        addProperty("printAccepted", true)
-                        addProperty("printSignalTransmitted", outcome?.printAccepted == true)
-                        addProperty("printStatus", "Đã truyền tín hiệu in tới $target")
-                        addProperty("targetPrinter", target)
-                        addProperty("printImagePath", image.toAbsolutePath().toString())
-                    }
-                }
-            }
             printAccepted = true; revenueRecorded = false; state = "DELIVERY"
             return snapshot().apply {
                 addProperty("dryRun", true)
                 addProperty("printAccepted", true)
-                addProperty("printSignalTransmitted", true)
+                addProperty("printSignalTransmitted", false)
                 addProperty("printStatus", "Đã tạo bản in thử nghiệm & phát tín hiệu in (Chế độ mô phỏng)")
                 addProperty("targetPrinter", "Mô phỏng máy in DNP DS-RX1HS")
                 addProperty("printImagePath", image.toAbsolutePath().toString())
             }
         }
         ledger.getSale(sid)?.let { fail(-32004, "Existing sale requires spooler reconciliation") }
-        val name = hardwarePrinter()
+        val name = boothConfig.get("PRINTER_NAME_STRIP").takeIf { it.isNotBlank() }
+            ?: boothConfig.get("PRINTER_NAME_FULL").takeIf { it.isNotBlank() }
+            ?: printerName.takeIf { it.isNotBlank() }
         val image = printImage!!
-        val printLayout = if (layout.printSizeLabel.replace(" ", "").contains("5x15")) PrintLayout.CUT_5X15_2UP else PrintLayout.PHOTO_10X15
-        val outcome = try { printer.print(ManagedPrintRequest(sid, image, quantity, name, printLayout)) }
-            catch (_: Exception) { fail(-32002, "Print spooler failed; reconcile before retry") }
-        if (outcome.result !is PrintResult.Submitted) fail(-32002, "Print not submitted; verify printer before retry")
+        if (ImageIO.read(image.toFile()) == null) fail(-32002, "Invalid print canvas")
+        val enabled = boothConfig.enabled("ENABLE_SYSTEM_PRINT") ||
+            runCatching { settingsStore.settings["enableSystemPrint"]?.asBoolean == true }.getOrDefault(false)
+        val sheets = if (layout.printSizeLabel.replace(" ", "").contains("5x15", ignoreCase = true))
+            (quantity / 2).coerceAtLeast(1) else quantity
+        // A spooler failure can be ambiguous. Never resubmit automatically after an exception.
+        val printed = if (enabled) {
+            systemPrinterService.printImage(image, sheets, name)
+        } else {
+            Result.success("Chế độ mô phỏng in: Đã hoàn tất bản in ảo.")
+        }
+        if (printed.isFailure) { state = "RECOVERY"; fail(-32002, "Print submission uncertain; reconcile spooler before retry") }
         printAccepted = true
         val price = PricingCalculator.calculatePrice(layout.printSizeLabel, quantity)
-        try { ledger.recordSale(SaleTransaction(sessionId = sid, boothId = boothId, layoutId = layout.id,
+        val transaction = SaleTransaction(sessionId = sid, boothId = boothId, layoutId = layout.id,
             layoutTitle = layout.title, printSize = price.printSize, quantity = quantity,
             includedQuantity = price.includedQuantity, extraQuantity = price.extraQuantity,
             basePrice = price.basePrice, extraUnitPrice = price.extraUnitPrice, extraAmount = price.extraAmount,
-            totalAmount = price.totalAmount, paymentMethod = paymentMethod, createdAt = System.currentTimeMillis())) }
+            totalAmount = price.totalAmount, paymentMethod = paymentMethod, createdAt = System.currentTimeMillis())
+        try { ledger.recordSale(transaction) }
         catch (_: Exception) { state = "RECOVERY"; fail(-32603, "Print submitted but ledger failed; reconcile manually before retry") }
         revenueRecorded = true; state = "DELIVERY"
-        // Remote sync is deliberately deferred until explicit API credentials and reconciliation are configured.
-        return snapshot().apply { addProperty("printerName", name) }
+        if (boothConfig.get("NEON_DATABASE_URL").isNotBlank() || boothConfig.get("DATABASE_URL").isNotBlank()) {
+            albumExecutor.submit {
+                if (neonRevenue.recordTransaction(boothConfig, transaction)) ledger.markSaleSynced(transaction.sessionId)
+            }
+        }
+        val session = sid
+        val moments = shots.mapIndexed { index, path -> CapturedMoment(index, readyBeauty[index] ?: path) }
+        val preCreated = albumId
+        val finalPrint = composition ?: image
+        uploadJob = albumExecutor.submit {
+            val result = runBlocking { albumUploader.uploadSessionPhotos(session, preCreated, moments, finalPrint) }
+            synchronized(this@RealSessionEngine) {
+                if (sid == session && result.albumUrl != null) albumUrl = result.albumUrl
+            }
+        }
+        return snapshot().apply { addProperty("printerName", name); addProperty("targetPrinter", name) }
     }
     private fun reset() { epoch++; job?.cancel(false); stopInactivity(); albumJob?.cancel(true); albumJob = null
         compositionCache.clear(); beautyJobs.forEach { it.cancel(true) }; beautyJobs.clear(); readyBeauty.clear()
         activeSequence = false; remaining = 0; failure = null; stopPreview(); state = "IDLE"; paid = false; orderCode = null; qrCode = null
-        shots.clear(); selected.clear(); frame = null; printImage = null; composition = null; albumUrl = null
+        shots.clear(); selected.clear(); frame = null; printImage = null; composition = null; albumUrl = null; albumId = null
         printAccepted = false; revenueRecorded = false; paymentMethod = "PAYOS" }
     @Synchronized override fun close() { epoch++; job?.cancel(true); stopInactivity(); albumJob?.cancel(true); compositionCache.clear(); beautyJobs.forEach { it.cancel(true) }
         executor.shutdownNow(); albumExecutor.shutdownNow(); beautyExecutor.shutdownNow(); cameraManager.close(); beauty.close() }

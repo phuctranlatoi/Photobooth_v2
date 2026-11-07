@@ -297,6 +297,8 @@
 .v1-shell.atelier-customer .v1-summary-total { align-items:center; }
 .v1-shell.atelier-customer .v1-summary-total strong { line-height:1.25; }
 .v1-shell.atelier-customer .v1-hold-lightbox { touch-action:none; }
+.v1-shell.atelier-customer .v1-hold-lightbox { pointer-events:none; }
+.v1-shell.atelier-customer .v1-photo-tile > button { touch-action:none; user-select:none; -webkit-user-select:none; }
 .v1-shell.atelier-customer .v1-button-label { display:inline-flex; align-items:center; justify-content:center; min-height:1.4em; line-height:1.4; text-align:center; }
 .v1-shell.atelier-customer .v1-carousel-card[data-distance="1"] { transform:scale(.92); }
 .v1-shell.atelier-customer .v1-carousel-card[data-distance="0"] { transform:scale(1.08); }

@@ -50,7 +50,23 @@ class CameraManager(
             ?: throw IllegalStateException("No connected ${mode.name} camera; real capture is unavailable")
         this.mode = mode; device = selected
     }
-    override fun isHardwareConnected(): Boolean = device?.isConnected() == true
+    override fun isHardwareConnected(): Boolean {
+        if (device?.isConnected() == true) return true
+        return synchronized(gate) {
+            if (device?.isConnected() == true) return@synchronized true
+            runCatching {
+                val canon = discover(CameraMode.CANON_DSLR).firstOrNull { it.isConnected() }
+                if (canon != null) {
+                    device = canon; mode = CameraMode.CANON_DSLR; true
+                } else {
+                    val webcam = discover(CameraMode.WEBCAM).firstOrNull { it.isConnected() }
+                    if (webcam != null) {
+                        device = webcam; mode = CameraMode.WEBCAM; true
+                    } else false
+                }
+            }.getOrDefault(false)
+        }
+    }
     override fun startLiveView(onFrame: (String) -> Unit) {
         authorization.requireApproval()
         val d = device?.takeIf { it.isConnected() } ?: throw IllegalStateException("Selected camera is disconnected")
@@ -148,7 +164,28 @@ class CanonCameraAdapter(
     init { if (autoReconnect) reconnect.scheduleWithFixedDelay({ if (!closed) runCatching { if (!connected) open() else property("getApertureValue") } }, 0, 2, TimeUnit.SECONDS) }
     @Synchronized private fun open(): Boolean {
         authorization.requireApproval()
-        return try { val base = Path.of(System.getProperty("user.dir"), "EDSDK_64"); System.setProperty("jna.library.path", base.toAbsolutePath().toString() + ";" + System.getProperty("jna.library.path", "")); val cls=Class.forName("edsdk.api.CanonCamera"); val c=cls.getDeclaredConstructor().newInstance(); camera=c; connected=cls.getMethod("openSession").invoke(c) as Boolean; connected } catch (_: Throwable) { connected=false; false }
+        return try {
+            val workingDirectory = Path.of(System.getProperty("user.dir")).toAbsolutePath().normalize()
+            val candidates = listOfNotNull(
+                workingDirectory.resolve("backend/EDSDK_64"),
+                workingDirectory.resolve("EDSDK_64"),
+                workingDirectory.parent?.resolve("backend/EDSDK_64"),
+                workingDirectory.parent?.resolve("EDSDK_64"),
+                workingDirectory.resolve("backend/app-resources/windows/EDSDK_64"),
+                Path.of("E:/HK1_2026_2027/PhotoboothDesktop_v2/backend/EDSDK_64"),
+                Path.of("E:/HK1_2026_2027/PhotoboothDesktop_v2/backend/app-resources/windows/EDSDK_64"),
+            ).filter { Files.isDirectory(it) && Files.isRegularFile(it.resolve("EDSDK.dll")) }
+            val previous = System.getProperty("jna.library.path", "")
+            val paths = (candidates.map { it.toAbsolutePath().toString() } + previous.split(java.io.File.pathSeparator).filter(String::isNotBlank)).distinct()
+            if (candidates.isNotEmpty()) System.setProperty("jna.library.path", paths.joinToString(java.io.File.pathSeparator))
+            val dllDirectory = candidates.firstOrNull()
+            if (dllDirectory != null) {
+                val currentPath = System.getenv("PATH").orEmpty()
+                if (!currentPath.split(java.io.File.pathSeparator).contains(dllDirectory.toAbsolutePath().toString()))
+                    System.setProperty("jna.library.path", (listOf(dllDirectory.toAbsolutePath().toString()) + System.getProperty("jna.library.path", "")).distinct().joinToString(java.io.File.pathSeparator))
+            }
+            val cls=Class.forName("edsdk.api.CanonCamera"); val c=cls.getDeclaredConstructor().newInstance(); camera=c; connected=cls.getMethod("openSession").invoke(c) as Boolean; connected
+        } catch (_: Throwable) { connected=false; false }
     }
     override fun isConnected() = connected
     override fun startPreview(onFrame: (ByteArray) -> Unit) {

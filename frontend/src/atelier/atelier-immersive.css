@@ -1,4 +1,6 @@
 /* Kiosk-wide atmosphere: three compositor-only drifting fields, never a video or camera substitute. */
+.v1-shell.atelier-customer .v1-hold-lightbox { pointer-events:none; }
+.v1-shell.atelier-customer .v1-photo-tile > button { touch-action:none; user-select:none; -webkit-user-select:none; }
 body:has(.atelier-customer) { background:#F8F4EE; }
 .ambient-liquid-glass { display:block; visibility:visible; opacity:1; position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none; contain:paint; }
 .ambient-orb { position:absolute; width:clamp(320px,43vw,780px); aspect-ratio:1; border-radius:46% 54% 63% 37%; opacity:.85; filter:blur(18px); will-change:transform; pointer-events:none; transform:translate3d(0,0,0); }

@@ -8,7 +8,7 @@ export function ConfirmScreen({layout,pricing,busy,action,preview,snapshot,simul
   const composed=safeImage(snapshot?.compositionDataUrl)||safeImage(snapshot?.printImageDataUrl)||safeImage(preview);
   return (
     <div className="v1-confirm-screen">
-      <Heading step="Bước 6" title="Kiểm tra lần cuối" subtitle="Kiểm tra bản ghép trước khi xác nhận" back={()=>action('session.back')}/>
+       <Heading step="Bước 6" title="Kiểm tra lần cuối" subtitle="Kiểm tra bản ghép trước khi in và tạo mã QR tải về điện thoại" back={()=>action('session.back')}/>
        <div className="v1-split v1-confirm-workspace">
         <PrintPreview src={composed} ratio={layout?.printAspectRatio} layout={layout} label="Bản ghép hoàn thiện"/>
         <section className="v1-panel v1-summary">
@@ -20,7 +20,7 @@ export function ConfirmScreen({layout,pricing,busy,action,preview,snapshot,simul
             <p><span>In thêm</span><strong>{pricing?.extraAmount!=null?<Vnd amount={pricing.extraAmount}/>: '—'}</strong></p>
            <hr/>
            <h2 className="v1-summary-total"><span>Tổng cộng</span><strong>{pricing?.totalAmount!=null?<Vnd amount={pricing.totalAmount}/>: '—'}</strong></h2>
-          <small>{real?'Xác nhận để gửi bản in đến máy in':'Chế độ mô phỏng · Không gửi lệnh in thật'}</small>
+           <small>Xác nhận để in ảnh và tạo mã QR tải về điện thoại</small>
         </section>
       </div>
       <ActionBar>
@@ -29,7 +29,7 @@ export function ConfirmScreen({layout,pricing,busy,action,preview,snapshot,simul
            disabled={busy||!composed}
             onClick={()=>{if(sent.current||busy||!composed)return;sent.current=true;try{void Promise.resolve(action(real?'print.confirmReal':'print.confirmDryRun')).catch(()=>{/* Reconcile with the backend; never resend an uncertain print. */})}catch{/* Synchronous transport failure is also an uncertain print. */}}}
         >
-          {real ? 'Xác nhận & in →' : 'Xác nhận bản mô phỏng →'}
+           Xác nhận & in →
         </KioskPrimaryButton>
       </ActionBar>
     </div>
