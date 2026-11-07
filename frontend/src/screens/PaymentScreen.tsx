@@ -60,12 +60,12 @@ export function PaymentScreen({layout,pricing,busy,action,snapshot}:ScreenProps)
      if(next.length===4){if(next==='1234'){setStaffPinModalOpen(false);setStaffPanelVisible(true);setPin('')}else{setPin('');setPinError(true)}}
    };
   return <div className="v1-payment-screen">
-       <Heading step="Bước 3" title="Thanh toán" subtitle="Quét mã QR để tiếp tục phiên chụp." className="v1-payment-heading" back={()=>{if(!busy)action('session.back')}} onTitlePointerDown={event=>{if(event.pointerType==='mouse'&&event.button!==0)return;stopHold();origin.current={x:event.clientX,y:event.clientY};hold.current=setTimeout(()=>{setStaffPinModalOpen(true);setPin('');setPinError(false);hold.current=null;origin.current=null},1000)}} onTitlePointerMove={event=>{if(origin.current&&Math.hypot(event.clientX-origin.current.x,event.clientY-origin.current.y)>12)stopHold()}} onTitlePointerUp={stopHold} onTitlePointerCancel={stopHold} onTitlePointerLeave={stopHold}/>
+        <Heading step="Bước 3" title="Thanh toán" subtitle="Một bước nữa trước khi lưu giữ khoảnh khắc của bạn." className="v1-payment-heading" back={()=>{if(!busy)action('session.back')}} onTitlePointerDown={event=>{if(event.pointerType==='mouse'&&event.button!==0)return;stopHold();origin.current={x:event.clientX,y:event.clientY};hold.current=setTimeout(()=>{setStaffPinModalOpen(true);setPin('');setPinError(false);hold.current=null;origin.current=null},1000)}} onTitlePointerMove={event=>{if(origin.current&&Math.hypot(event.clientX-origin.current.x,event.clientY-origin.current.y)>12)stopHold()}} onTitlePointerUp={stopHold} onTitlePointerCancel={stopHold} onTitlePointerLeave={stopHold}/>
      <div className="v1-payment-columns">
       <section className="v1-payment-summary v1-panel" aria-label="Chi tiết thanh toán">
-         <p className="v1-payment-label">Số tiền thanh toán</p>
+          <p className="v1-payment-label">TỔNG THANH TOÁN</p>
          <strong className="v1-payment-price">{pricing?.totalAmount!=null?<Vnd amount={pricing.totalAmount}/>: '—'}</strong>
-        <dl className="v1-payment-details">
+         <dl className="v1-payment-details">
           <div><dt>Bố cục</dt><dd>{layout?formatLayoutTitle(layout):'—'}</dd></div>
           <div><dt>Khổ in</dt><dd>{size?`${size.startsWith('5')?'Dải':'Khổ'} ${size} cm`:'—'}</dd></div>
            <div><dt>Số lượng</dt><dd>{pricing?.quantity!=null?`${pricing.quantity} bản in`:'—'}</dd></div>

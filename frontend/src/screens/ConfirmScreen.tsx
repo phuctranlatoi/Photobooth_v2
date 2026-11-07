@@ -16,8 +16,8 @@ export function ConfirmScreen({layout,pricing,busy,action,preview,snapshot,simul
            <p><span>Bố cục</span><strong>{layout?formatLayoutTitle(layout):'Bố cục'}</strong></p>
            <p><span>Khổ in</span><strong>{layout?.printSizeLabel??'—'}</strong></p>
            <p><span>Số lượng</span><strong>{pricing?.quantity??'—'}</strong></p>
-           {pricing?.basePrice!=null&&<p><span>Giá gốc</span><strong><Vnd amount={pricing.basePrice}/></strong></p>}
-           {!!pricing?.extraQuantity&&<p><span>In thêm</span><strong><Vnd amount={pricing.extraAmount}/></strong></p>}
+            <p><span>Giá gốc</span><strong>{pricing?.basePrice!=null?<Vnd amount={pricing.basePrice}/>: '—'}</strong></p>
+            <p><span>In thêm</span><strong>{pricing?.extraAmount!=null?<Vnd amount={pricing.extraAmount}/>: '—'}</strong></p>
            <hr/>
            <h2 className="v1-summary-total"><span>Tổng cộng</span><strong>{pricing?.totalAmount!=null?<Vnd amount={pricing.totalAmount}/>: '—'}</strong></h2>
           <small>{real?'Xác nhận để gửi bản in đến máy in':'Chế độ mô phỏng · Không gửi lệnh in thật'}</small>

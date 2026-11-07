@@ -40,7 +40,7 @@ export function CaptureScreen({layout,busy,action,live='',snapshot,count=0,count
   return <div className="v1-capture-screen v1-capture">
     <div className="v1-camera-viewport">
       <div className="v1-live" style={{'--image-ratio':String(imageRatio)} as React.CSSProperties}>
-        {image?<img className="v1-live-mirrored" src={image} alt="Live View máy ảnh" onLoad={event=>{
+         {image?<img className="v1-live-mirrored" src={image} alt="Live View máy ảnh" onLoad={event=>{
           const {naturalWidth,naturalHeight}=event.currentTarget;
           if(naturalWidth>0&&naturalHeight>0){const ratio=naturalWidth/naturalHeight;setImageRatio(current=>current===ratio?current:ratio)}
         }}/>:<p role="status">Đang chờ hình ảnh từ máy ảnh…</p>}
@@ -49,7 +49,7 @@ export function CaptureScreen({layout,busy,action,live='',snapshot,count=0,count
     </div>
     {state==='COUNTDOWN'&&displayCount!==null&&<div className="v1-countdown-layer" role="timer" aria-label={`Còn ${displayCount} giây`}><strong key={displayCount} className="v1-countdown">{displayCount}</strong></div>}
     <div className="v1-capture-top" aria-label={`Ảnh ${count+1} trên ${layout?.shotCount??1}`}>Ảnh {count+1}/{layout?.shotCount??1}</div>
-    {state==='LIVE_VIEW'&&count===0&&<div className="v1-shutter-control"><button type="button" className="v1-shutter" aria-label="Bắt đầu chụp" disabled={busy} onClick={()=>{if(starting.current)return;starting.current=true;try{void Promise.resolve(action('capture.startSequence')).then(result=>{if(result===false)starting.current=false}).catch(()=>{starting.current=false})}catch{starting.current=false}}}><span className="v1-shutter-ring" aria-hidden="true"><span className="v1-shutter-core"/></span></button><span className="v1-shutter-caption">Chạm để chụp</span></div>}
+     {state==='LIVE_VIEW'&&count===0&&<div className="v1-shutter-control"><button type="button" className="v1-shutter" aria-label="Bắt đầu chụp" disabled={busy} onClick={()=>{if(starting.current)return;starting.current=true;try{void Promise.resolve(action('capture.startSequence')).then(result=>{if(result===false)starting.current=false}).catch(()=>{starting.current=false})}catch{starting.current=false}}}><span className="v1-shutter-ring" aria-hidden="true"><span className="v1-shutter-core"/></span></button><span className="v1-shutter-caption">Chạm để chụp</span></div>}
     {state==='CAPTURING'&&<div className="v1-flash v1-shutter-flash" aria-hidden="true"/>}
   </div>;
 }

@@ -86,7 +86,7 @@ export function KioskSimulator(){
  {state==='SELECTING_PHOTOS'&&<SelectPhotosScreen {...common} shots={snapshot?.shots} selected={snapshot?.selectedIndices}/>}
  {state==='EDITING'&&<FrameScreen {...common} frames={frames} frameId={snapshot?.frameId}/>}
  {state==='PRINT_PENDING'&&<ConfirmScreen {...common}/>}
- {state==='PRINTING'&&<PrintingScreen/>}
+  {state==='PRINTING'&&<PrintingScreen snapshot={snapshot}/>}
  {state==='DELIVERY'&&<DeliveryScreen {...common}/>}
  {(state==='CONNECTING'||state==='RECOVERY'||snapshot?.failure)&&<div className="v1-center v1-panel" role="status"><h2>{state==='CONNECTING'?'Đang kết nối…':'Cần nhân viên hỗ trợ'}</h2><p>{snapshot?.failure??'Đang kiểm tra trạng thái với backend'}</p></div>}
  {['SELECTING_PHOTOS','EDITING'].includes(state)&&<><button className="v1-menu" aria-label="Tùy chọn phiên chụp" onClick={()=>setCancel(true)}>⋮</button><DecisionTimerBadge seconds={snapshot?.secondsRemaining}/></>}

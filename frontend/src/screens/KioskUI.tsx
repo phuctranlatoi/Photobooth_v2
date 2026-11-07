@@ -7,8 +7,8 @@ import {LayoutArtwork} from './LayoutArtwork';
 export type Action = (method: import('../shared/simulator-contract').SimulatorMethod, params?:object)=>void | Promise<boolean>;
 export interface ScreenProps { layout?:LayoutMode; layouts:LayoutMode[]; pricing?:PricingSnapshot; busy:boolean; action:Action; preview:string; snapshot?:import('../shared/connected-simulator').Snapshot; simulator?:boolean; children?:ReactNode }
 export function AppShell({children,camera=false,className=''}:{children:ReactNode;camera?:boolean;className?:string}){return <main className={`v1-shell${camera?' v1-camera':''}${className?` ${className}`:''}`}>{children}</main>}
-export function KioskPrimaryButton({children,onClick,disabled=false}:{children:ReactNode;onClick:()=>void;disabled?:boolean}){return <button className="v1-primary" onClick={onClick} disabled={disabled}>{children}</button>}
-export function KioskSecondaryButton({children,onClick,disabled=false}:{children:ReactNode;onClick:()=>void;disabled?:boolean}){return <button className="v1-secondary" onClick={onClick} disabled={disabled}>{children}</button>}
+export function KioskPrimaryButton({children,onClick,disabled=false}:{children:ReactNode;onClick:()=>void;disabled?:boolean}){return <button type="button" className="v1-primary" onClick={onClick} disabled={disabled}>{children}</button>}
+export function KioskSecondaryButton({children,onClick,disabled=false}:{children:ReactNode;onClick:()=>void;disabled?:boolean}){return <button type="button" className="v1-secondary" onClick={onClick} disabled={disabled}>{children}</button>}
 export function KioskBackButton({onClick,disabled=false,ariaLabel='Quay lại'}:{onClick:()=>void;disabled?:boolean;ariaLabel?:string}){return <button type="button" className="v1-back backButton" aria-label={ariaLabel} onClick={onClick} disabled={disabled}><ArrowLeft size={24} strokeWidth={2.4} aria-hidden="true"/></button>}
 export interface AppHeaderProps {
  title:string; subtitle?:string; eyebrow?:string; step?:string; back?:()=>void;
@@ -29,7 +29,7 @@ export function AppHeader({title,subtitle,eyebrow,step,back,right,menu,className
    <div className="appHeader__titleLine"><h1>{title}</h1></div>
    {subtitle&&<p className="appHeader__subtitle">{subtitle}</p>}
   </div>
-  {(right||menu)&&<div className="appHeader__right">{right}{menu}</div>}
+   {(right||menu)&&<div className="appHeader__right">{right}{menu}</div>}
  </header>;
 }
 export function Heading(props:AppHeaderProps){return <AppHeader {...props}/>}

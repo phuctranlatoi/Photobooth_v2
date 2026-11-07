@@ -5,7 +5,7 @@ import {ActionBar,Heading,KioskPrimaryButton,PrintPreview,type ScreenProps} from
 export function SelectPhotosScreen({layout,action,preview,shots=[],selected=[]}:ScreenProps&{shots?:{shotId:string;preview:string}[];selected?:number[]}){
    const [lightbox,setLightbox]=useState<number|null>(null);
    const confirming=useRef(false);
-  const [localSelected,setLocalSelected]=useState<number[]>(selected);
+   const [localSelected,setLocalSelected]=useState<number[]>(selected);
   const selectedRef=useRef(selected);
   const pending=useRef<{index:number;result:number[]}[]>([]);
   const previousSelected=useRef(selected);
@@ -39,7 +39,7 @@ export function SelectPhotosScreen({layout,action,preview,shots=[],selected=[]}:
       return ()=>{clearHold();clearSuppressionReset();window.removeEventListener('pointerup',release);window.removeEventListener('pointercancel',release);window.removeEventListener('keydown',escape)};
     },[]);
 
-  const selectedPhotos=localSelected.map(index=>shots[index]?.preview);
+   const selectedPhotos=localSelected.map(index=>shots[index]?.preview);
   const toggle=(index:number)=>{
      const current=selectedRef.current;
      if(!current.includes(index)&&current.length>=(layout?.selectCount??Infinity))return;
@@ -86,11 +86,13 @@ export function SelectPhotosScreen({layout,action,preview,shots=[],selected=[]}:
                         suppressionResetTimer.current=setTimeout(()=>{wasHeld.current=false;suppressionResetTimer.current=null;},200);
                       }
                    }}
-                  onPointerCancel={()=>{
-                    clearHold();
-                    if(wasHeld.current){
-                      setLightbox(null);
-                    }
+                    onPointerCancel={()=>{
+                     clearHold();
+                     if(wasHeld.current){
+                       setLightbox(null);
+                       clearSuppressionReset();
+                       suppressionResetTimer.current=setTimeout(()=>{wasHeld.current=false;suppressionResetTimer.current=null;},200);
+                     }
                    }}
                    onPointerLeave={()=>{clearHold();}}
                    onClick={()=>{

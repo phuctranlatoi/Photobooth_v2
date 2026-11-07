@@ -58,8 +58,8 @@ export function FrameScreen({layout, action, preview, snapshot, frames = [], fra
       subtitle="Chọn khung phù hợp với khoảnh khắc" back={() => action('session.back')}/>
     <div className="v1-split v1-frame-workspace">
       <div className="v1-frame-preview-panel"><h2 className="v1-frame-preview-heading">Bản in xem trước</h2><PrintPreview src={snapshot?.frameId === effectiveFrameId ? preview : undefined} ratio={layout?.printAspectRatio} layout={layout}
-        selectedPhotos={safeImage(preview) && snapshot?.frameId === effectiveFrameId ? undefined : selectedPhotos}
-         frameOverlayUrl={safeImage(selectedFrame?.thumbDataUrl) || safeImage(selectedFrame?.thumbnailDataUrl) || safeImage(selectedFrame?.previewDataUrl)}
+         selectedPhotos={safeImage(preview) && snapshot?.frameId === effectiveFrameId ? undefined : selectedPhotos}
+          frameOverlayUrl={snapshot?.frameId === effectiveFrameId && safeImage(preview) ? undefined : safeImage(selectedFrame?.thumbDataUrl) || safeImage(selectedFrame?.thumbnailDataUrl) || safeImage(selectedFrame?.previewDataUrl)}
           label={`Bản in xem trước · ${formatFrameName(selectedFrame?.name ?? 'Khung mặc định')} · ${layout?.printSizeLabel ?? ''}`}/></div>
       <div className="v1-frame-grid">
         {frames.length ? frames.map(frame => {
