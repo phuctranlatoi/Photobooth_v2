@@ -39,7 +39,7 @@ export function CaptureScreen({layout,busy,action,live='',snapshot,count=0,count
   const cropHeight=Math.min(1,imageRatio/targetRatio);
   return <div className="v1-capture-screen v1-capture">
     <div className="v1-camera-viewport">
-      <div className="v1-live" style={{'--image-ratio':String(imageRatio)} as React.CSSProperties}>
+      <div className="v1-live" aria-label="Khung ngắm máy ảnh" style={{'--image-ratio':String(imageRatio)} as React.CSSProperties}>
          {image?<img className="v1-live-mirrored" src={image} alt="Live View máy ảnh" onLoad={event=>{
           const {naturalWidth,naturalHeight}=event.currentTarget;
           if(naturalWidth>0&&naturalHeight>0){const ratio=naturalWidth/naturalHeight;setImageRatio(current=>current===ratio?current:ratio)}

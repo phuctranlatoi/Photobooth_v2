@@ -27,7 +27,7 @@ export function ConfirmScreen({layout,pricing,busy,action,preview,snapshot,simul
         <span>Xác nhận một lần, không gửi lại nếu mạng gián đoạn</span>
         <KioskPrimaryButton
            disabled={busy||!composed}
-           onClick={()=>{if(sent.current||busy||!composed)return;sent.current=true;void action(real?'print.confirmReal':'print.confirmDryRun')}}
+            onClick={()=>{if(sent.current||busy||!composed)return;sent.current=true;try{void Promise.resolve(action(real?'print.confirmReal':'print.confirmDryRun')).catch(()=>{/* Reconcile with the backend; never resend an uncertain print. */})}catch{/* Synchronous transport failure is also an uncertain print. */}}}
         >
           {real ? 'Xác nhận & in →' : 'Xác nhận bản mô phỏng →'}
         </KioskPrimaryButton>

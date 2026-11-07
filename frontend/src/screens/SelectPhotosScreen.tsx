@@ -31,7 +31,13 @@ export function SelectPhotosScreen({layout,action,preview,shots=[],selected=[]}:
    };
 
   useEffect(()=>{
-      const release=()=>{clearHold();setLightbox(null)};
+       const release=()=>{
+         clearHold();setLightbox(null);
+         if(wasHeld.current){
+           clearSuppressionReset();
+           suppressionResetTimer.current=setTimeout(()=>{wasHeld.current=false;suppressionResetTimer.current=null},200);
+         }
+       };
       const escape=(event:KeyboardEvent)=>{if(event.key==='Escape')setLightbox(null)};
      window.addEventListener('pointerup',release);
      window.addEventListener('pointercancel',release);
@@ -94,7 +100,7 @@ export function SelectPhotosScreen({layout,action,preview,shots=[],selected=[]}:
                        suppressionResetTimer.current=setTimeout(()=>{wasHeld.current=false;suppressionResetTimer.current=null;},200);
                      }
                    }}
-                   onPointerLeave={()=>{clearHold();}}
+                    onPointerLeave={()=>{clearHold(); if(wasHeld.current)setLightbox(null);}}
                    onClick={()=>{
                      if(wasHeld.current){
                        clearSuppressionReset();
@@ -105,7 +111,7 @@ export function SelectPhotosScreen({layout,action,preview,shots=[],selected=[]}:
                   }}
                 >
                   {safeImage(shot.preview)&&<img src={safeImage(shot.preview)} alt={`Ảnh gốc hoàn chỉnh ${i+1}`} style={{aspectRatio:layout?.photoAspectRatio??1.5}}/>}
-                   {order>=0&&<span className="v1-photo-order" aria-hidden="true">{order+1}</span>}
+                    {order>=0&&<span className="v1-photo-order" aria-hidden="true">{order+1}</span>}
                  </button>
               </div>
             );

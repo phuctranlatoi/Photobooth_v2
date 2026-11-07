@@ -49,8 +49,8 @@ export function PaymentScreen({layout,pricing,busy,action,snapshot}:ScreenProps)
    const qrReady=!!qr&&qr!=='ERROR';
   const qrSrc=qrReady?(qr.startsWith('data:image/')||qr.startsWith('https://')||qr.startsWith('http://')?qr:`data:image/png;base64,${qr}`):'';
    const isError=linkState==='ERROR'||configurationError||qr==='ERROR'||!!snapshot?.lastPaymentError;
-   const warning=unconfigured||isError;
-    const status=warning||isError?'Cần nhân viên hỗ trợ':qrReady?'Đang chờ xác nhận':'Đang tạo mã';
+    const warning=unconfigured||isError;
+    const status=warning?'Cần nhân viên hỗ trợ':qrReady?'Đang chờ xác nhận':'Đang tạo mã';
   const size=layout?.printSizeLabel?.replace(/\s/g,'').match(/5[x×]15|10[x×]15/i)?.[0]?.replace(/[xX]/,'×');
    const retry=()=>{requested.current=sessionId??null;setLinkState('CREATING');action('payment.createLink')};
    const enterDigit=(digit:string)=>{
@@ -72,7 +72,7 @@ export function PaymentScreen({layout,pricing,busy,action,snapshot}:ScreenProps)
            {pricing?.basePrice!=null&&<div><dt>Giá cơ bản</dt><dd><Vnd amount={pricing.basePrice}/></dd></div>}
            {!!pricing?.extraQuantity&&<div><dt>In thêm {pricing.extraQuantity} bản</dt><dd><Vnd amount={pricing.extraAmount}/></dd></div>}
         </dl>
-         <div className="v1-payment-status"><span>Trạng thái</span><span className="v1-payment-chip v1-payment-chip-amber" role="status"><span aria-hidden="true" className="v1-payment-dot"/>{warning?'Cần nhân viên hỗ trợ':'Chờ thanh toán QR'}</span></div>
+          <div className="v1-payment-status"><span>Trạng thái</span><span className="v1-payment-chip v1-payment-chip-amber" role="status"><span aria-hidden="true" className="v1-payment-dot"/>{warning?'Cần nhân viên hỗ trợ':qrReady?'Chờ thanh toán QR':'Đang tạo mã QR'}</span></div>
       </section>
       <section className="v1-payment-qr-panel v1-panel" aria-label="Mã thanh toán">
              <div className="v1-payment-qr-slot" role="status" aria-label={qrReady&&!warning?'Mã thanh toán đã sẵn sàng':warning?'Cần nhân viên hỗ trợ':'Đang tạo mã thanh toán'}>{qrReady&&!warning?<img src={qrSrc} alt="Mã VietQR"/>:unconfigured||isError?<svg className="v1-payment-warning" viewBox="0 0 64 64" fill="none" aria-hidden="true"><circle cx="32" cy="32" r="27" stroke="currentColor" strokeWidth="3"/><path d="M32 17v20m0 9v1" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/></svg>:<span className="v1-payment-spinner" aria-hidden="true"/>}</div>

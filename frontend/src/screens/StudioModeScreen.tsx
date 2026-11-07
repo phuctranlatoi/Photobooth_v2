@@ -62,8 +62,8 @@ export function StudioModeScreen({layout,layouts,busy,action}:ScreenProps){
        <button type="button" className="v1-carousel-arrow v1-carousel-prev" aria-label="Bố cục trước" disabled={busy||layouts.length<=1} onClick={()=>move((center-1+layouts.length)%layouts.length)}><ChevronLeft size={24} strokeWidth={2.4} aria-hidden="true"/></button>
      <div className="v1-layout-carousel" ref={track} onScroll={onScroll} onPointerDown={()=>{pending.current=null}}>
         {layouts.map((l,i)=><button type="button" key={l.id} className="v1-layout-card v1-carousel-card" data-layout-id={l.id} data-distance={Math.abs(i-center)} aria-pressed={center===i} aria-label={`${formatLayoutTitle(l)} · ${formatLayoutSubtitle(l)}`} disabled={busy} onClick={()=>handleCardClick(i)}>
-       <div className="v1-carousel-art"><LayoutArtwork layout={l}/></div>
-        <strong>{formatLayoutTitle(l)}</strong><span className="v1-carousel-subtitle">{formatLayoutSubtitle(l)}</span>{center===i&&<span className="v1-carousel-tap-hint sr-only">Chạm lần nữa để chọn dải ảnh này →</span>}
+        <div className="v1-carousel-art"><LayoutArtwork layout={l}/></div>
+         <strong>{formatLayoutTitle(l)}</strong><span className="v1-carousel-subtitle">{formatLayoutSubtitle(l)}</span>{center===i&&<span className="v1-carousel-tap-hint sr-only">Chạm lần nữa để chọn dải ảnh này →</span>}
      </button>)}
     </div>
        <button type="button" className="v1-carousel-arrow v1-carousel-next" aria-label="Bố cục tiếp theo" disabled={busy||layouts.length<=1} onClick={()=>move((center+1)%layouts.length)}><ChevronRight size={24} strokeWidth={2.4} aria-hidden="true"/></button>

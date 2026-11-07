@@ -12,14 +12,14 @@ export function StartScreen({layouts,bundles=[],defaultLayoutId,catalogSource,on
  const layoutId=selected??(layouts.some(l=>l.id===defaultLayoutId)?defaultLayoutId:layouts[0]?.id);
   const unavailable=catalogSource==='UNAVAILABLE'||!layouts.length;
    const eventBundles=bundles.filter(b=>layouts.some(l=>l.id===b.layoutId)&&safeImage(b.coverDataUrl));
-  const portrait=layouts.find(l=>l.printAspectRatio>=.5);
-  const strip=layouts.find(l=>l.printAspectRatio<.5);
+   const portrait=layouts.find(l=>l.printAspectRatio>=.5);
+   const strip=layouts.find(l=>l.printAspectRatio<.5);
    return <div className="v1-start atelier-welcome"><section className="atelier-welcome__copy">
-   <button type="button" className="v1-brand" aria-label="LE SOUVENIR" onClick={()=>{if(++taps.current>=5){taps.current=0;onAdmin()}}}>LE SOUVENIR</button>
+    <button type="button" className="v1-brand" aria-label="LE SOUVENIR" onClick={()=>{if(++taps.current>=5){taps.current=0;onAdmin()}}}>LE SOUVENIR</button>
     <p className="v1-kicker"><span className="v1-kicker-dot" aria-hidden="true"/>PHOTO ATELIER · SEOUL × SAIGON</p>
-    <h1>Chụp ảnh<br/>lấy ngay<span className="v1-editorial-accent">Yours forever.</span></h1><p className="v1-start-desc">Giữ lại những khoảnh khắc đẹp bên người thân và bạn bè.</p>
+     <h1>Chụp ảnh<br/>lấy ngay<span className="v1-editorial-accent">Yours forever.</span></h1><p className="v1-start-desc">Giữ lại những khoảnh khắc đẹp bên người thân và bạn bè.</p>
        <div className="v1-value-pills"><span><Zap size={15} aria-hidden="true"/> Bản in lưu niệm</span><span><QrCode size={15} aria-hidden="true"/> Album ảnh qua QR</span></div>
    {unavailable&&<p role="status">Chưa có bố cục khả dụng. Vui lòng liên hệ nhân viên.</p>}
     <KioskPrimaryButton disabled={busy||!layoutId||unavailable} onClick={()=>layoutId&&start(layoutId)}>CHẠM ĐỂ BẮT ĐẦU →</KioskPrimaryButton>
-       </section><aside className="v1-start-art" aria-label="Mẫu bản in LE SOUVENIR"><div className="atelier-welcome__gallery"><span className="atelier-welcome__halo" aria-hidden="true"/><figure className="atelier-print atelier-print--portrait" style={{aspectRatio:portrait?.printAspectRatio??2/3}}><LayoutArtwork compact layout={portrait}/></figure><figure className="atelier-print atelier-print--strip" style={{aspectRatio:strip?.printAspectRatio??1/3}}><LayoutArtwork compact layout={strip}/></figure><p className="atelier-art-caption">LE SOUVENIR · PHOTO ATELIER</p></div>{eventBundles.length>0&&<div className="atelier-event-showcase" aria-label="Bộ sưu tập sự kiện">{eventBundles.map(bundle=><button type="button" key={bundle.id} disabled={busy||unavailable} aria-pressed={selected===bundle.layoutId} onClick={()=>{setSelected(bundle.layoutId);start(bundle.layoutId)}}><img src={safeImage(bundle.coverDataUrl)} alt=""/><span>{bundle.name}</span></button>)}</div>}</aside></div>;
+        </section><aside className="v1-start-art" aria-label="Mẫu bản in LE SOUVENIR"><div className="atelier-welcome__gallery"><span className="atelier-welcome__halo" aria-hidden="true"/>{portrait&&<figure className="atelier-print atelier-print--portrait" style={{aspectRatio:portrait.printAspectRatio}}><LayoutArtwork compact layout={portrait}/></figure>}{strip&&<figure className="atelier-print atelier-print--strip" style={{aspectRatio:strip.printAspectRatio}}><LayoutArtwork compact layout={strip}/></figure>}<p className="atelier-art-caption">LE SOUVENIR · PHOTO ATELIER</p></div>{eventBundles.length>0&&<div className="atelier-event-showcase" aria-label="Bộ sưu tập sự kiện">{eventBundles.map(bundle=><button type="button" key={bundle.id} disabled={busy||unavailable} aria-pressed={selected===bundle.layoutId} onClick={()=>{setSelected(bundle.layoutId);start(bundle.layoutId)}}><img src={safeImage(bundle.coverDataUrl)} alt=""/><span>{bundle.name}</span></button>)}</div>}</aside></div>;
 }

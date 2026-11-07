@@ -24,7 +24,7 @@ export function FrameScreen({layout, action, preview, snapshot, frames = [], fra
   const desiredFrameId = useRef<string | null>(null);
   const mounted = useRef(true);
   const firstFrameId = frames[0]?.id;
-  const effectiveFrameId = localFrameId || frameId || firstFrameId;
+  const effectiveFrameId = localFrameId ?? frameId ?? firstFrameId;
 
   useEffect(() => { mounted.current=true; return ()=>{mounted.current=false}; }, []);
   useEffect(() => {
@@ -52,14 +52,16 @@ export function FrameScreen({layout, action, preview, snapshot, frames = [], fra
 
   const selectedFrame = frames.find(frame => frame.id === effectiveFrameId);
   const selectedPhotos = (snapshot?.selectedIndices ?? []).map(index => snapshot?.shots?.[index]?.preview);
+  const frameArtwork = safeImage(selectedFrame?.thumbDataUrl) || safeImage(selectedFrame?.thumbnailDataUrl) || safeImage(selectedFrame?.previewDataUrl);
+  const backendPreviewMatches = snapshot?.frameId === effectiveFrameId && !!safeImage(preview);
 
   return <>
     <Heading step="Bước 4" title="Chọn khung trang trí"
       subtitle="Chọn khung phù hợp với khoảnh khắc" back={() => action('session.back')}/>
     <div className="v1-split v1-frame-workspace">
-      <div className="v1-frame-preview-panel"><h2 className="v1-frame-preview-heading">Bản in xem trước</h2><PrintPreview src={snapshot?.frameId === effectiveFrameId ? preview : undefined} ratio={layout?.printAspectRatio} layout={layout}
-         selectedPhotos={safeImage(preview) && snapshot?.frameId === effectiveFrameId ? undefined : selectedPhotos}
-          frameOverlayUrl={snapshot?.frameId === effectiveFrameId && safeImage(preview) ? undefined : safeImage(selectedFrame?.thumbDataUrl) || safeImage(selectedFrame?.thumbnailDataUrl) || safeImage(selectedFrame?.previewDataUrl)}
+       <div className="v1-frame-preview-panel"><h2 className="v1-frame-preview-heading">Bản in xem trước</h2><PrintPreview src={backendPreviewMatches ? preview : undefined} ratio={layout?.printAspectRatio} layout={layout}
+          selectedPhotos={backendPreviewMatches ? undefined : selectedPhotos}
+           frameOverlayUrl={backendPreviewMatches ? undefined : frameArtwork}
           label={`Bản in xem trước · ${formatFrameName(selectedFrame?.name ?? 'Khung mặc định')} · ${layout?.printSizeLabel ?? ''}`}/></div>
       <div className="v1-frame-grid">
         {frames.length ? frames.map(frame => {

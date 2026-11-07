@@ -25,9 +25,9 @@ export function QuantityScreen({layout,pricing,busy,action,preview,allowed=[]}:S
           </div>
           <p className="v1-quantity-hint">{isStrip?'Bản in dải được chọn theo cặp':'Chọn số bản in phù hợp với bạn'}</p>
         </div>
-        <div className="v1-quantity-pricing">
+        <div className="v1-panel v1-quantity-pricing" aria-label="Chi tiết giá bản in">
           <p><span>Giá cơ bản</span><strong>{pricing?.basePrice!=null?<Vnd amount={pricing.basePrice}/>:'—'}</strong></p>
-          {!!pricing?.extraQuantity&&<p><span>In thêm {pricing.extraQuantity} bản</span><strong><Vnd amount={pricing.extraAmount}/></strong></p>}
+          {verified&&!!pricing?.extraQuantity&&<p><span>In thêm {pricing.extraQuantity} bản</span><strong><Vnd amount={pricing.extraAmount}/></strong></p>}
           <div className="v1-quantity-total" aria-live="polite">{verified&&pricing?.totalAmount!=null?<><span>Tổng cộng</span><strong><Vnd amount={pricing.totalAmount}/></strong></>:<span>Tổng giá được backend xác nhận ở bước tiếp theo</span>}</div>
         </div>
       </section>
