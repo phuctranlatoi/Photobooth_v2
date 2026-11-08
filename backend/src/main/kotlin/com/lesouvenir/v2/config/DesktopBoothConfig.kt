@@ -12,6 +12,8 @@ data class DesktopBoothConfig(private val values: Map<String, String>) {
         "payOsConfigured" to listOf("PAYOS_CLIENT_ID", "PAYOS_API_KEY", "PAYOS_CHECKSUM_KEY").all { get(it).isNotBlank() },
         "cloudinaryConfigured" to listOf("CLOUDINARY_CLOUD_NAME", "CLOUDINARY_UPLOAD_PRESET").all { get(it).isNotBlank() },
         "webAlbumConfigured" to (get("WEB_ALBUM_BASE_URL").isNotBlank() && get("BOOTH_API_KEY").isNotBlank()),
+        "canUploadAlbum" to (get("BOOTH_API_KEY").isNotBlank() && get("CLOUDINARY_CLOUD_NAME").isNotBlank() && get("CLOUDINARY_UPLOAD_PRESET").isNotBlank() && get("WEB_ALBUM_BASE_URL").isNotBlank()),
+        "cloudSyncConfigured" to (get("BOOTH_API_KEY").isNotBlank() || get("NEON_DATABASE_URL").isNotBlank() || get("DATABASE_URL").isNotBlank()),
         "revenueEndpointConfigured" to (get("WEB_ALBUM_BASE_URL").isNotBlank() && get("BOOTH_API_KEY").isNotBlank()),
         "databaseConfigured" to (get("NEON_DATABASE_URL").isNotBlank() || get("DATABASE_URL").isNotBlank()),
         "printerConfigured" to (get("PRINTER_NAME_STRIP").isNotBlank() || get("PRINTER_NAME_FULL").isNotBlank()),
@@ -48,6 +50,12 @@ object DesktopConfigLoader {
         read(workspace.resolve(".env"))
         localAppData?.let { read(it.resolve("LeSouvenirDesktop/.env")) }
         keys.forEach { key -> environment[key]?.let { values[key] = it } }
+        val webAlbumBaseUrl = (values["WEB_ALBUM_BASE_URL"]?.takeIf { it.isNotBlank() }
+            ?: values["ALBUM_BASE_URL"]?.takeIf { it.isNotBlank() }
+            ?: "https://web-photobooth-pink.vercel.app/").trimEnd('/')
+        values["WEB_ALBUM_BASE_URL"] = if (webAlbumBaseUrl.endsWith("/a", ignoreCase = true))
+            webAlbumBaseUrl.dropLast(2) else webAlbumBaseUrl
+        if (values["BOOTH_ID"].isNullOrBlank()) values["BOOTH_ID"] = "booth_1"
         return DesktopBoothConfig(values)
     }
 }

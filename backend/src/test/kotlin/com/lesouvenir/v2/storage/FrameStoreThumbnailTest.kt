@@ -25,9 +25,9 @@ class FrameStoreThumbnailTest {
         val store = FrameStore(workspace, null)
         assertEquals(listOf(original), store.loadFrames().map { it.customImagePath })
         fun decoded() = ImageIO.read(ByteArrayInputStream(Base64.getDecoder().decode(store.frameThumbDataUrl(original)!!.substringAfter(','))))
-        assertEquals(800 to 533, decoded().let { it.width to it.height })
+        assertEquals(380 to 253, decoded().let { it.width to it.height })
         Files.delete(thumbnail)
-        assertEquals(800 to 533, decoded().let { it.width to it.height })
+        assertEquals(380 to 253, decoded().let { it.width to it.height })
         assertEquals(1200 to 800, store.imageSize(original))
     }
 
@@ -40,7 +40,7 @@ class FrameStoreThumbnailTest {
         val bundle = FrameStore(workspace, null).loadBundles().single()
         assertEquals(frame, bundle.frames.single().customImagePath)
         val coverImage = ImageIO.read(ByteArrayInputStream(Base64.getDecoder().decode(bundle.coverDataUrl!!.substringAfter(','))))
-        assertEquals(622 to 800, coverImage.width to coverImage.height)
+        assertEquals(295 to 380, coverImage.width to coverImage.height)
     }
 
     @Test fun discoversCanonicalCompactAndDirectFrames() {
@@ -49,11 +49,12 @@ class FrameStoreThumbnailTest {
             val path=workspace.resolve("data/frames/$relative"); Files.createDirectories(path.parent)
             ImageIO.write(BufferedImage(600,1800,BufferedImage.TYPE_INT_ARGB),"png",path.toFile())
         }
-        assertEquals(2,store.loadFrames("strip-5x15").size)
-        assertEquals(1,store.loadFrames("print-10x15").size)
+        assertEquals(1,store.loadFrames("strip-5x15").size)
+        assertEquals(0,store.loadFrames("print-10x15").size)
+        assertEquals(1,store.loadFrames("5x15").size)
     }
 
-    @Test fun catalogIdsAndSizeLabelsFindCompatibleFramesWithoutMixingPaperSizes() {
+    @Test fun layoutFoldersDoNotMixFramesFromOtherLayoutsWithSamePaperSize() {
         for (relative in listOf(
             "5x15/strip-5x15/Standard/strip.png",
             "10x15/print-10x15/Standard/landscape.png"
@@ -63,12 +64,37 @@ class FrameStoreThumbnailTest {
             ImageIO.write(BufferedImage(8, 8, BufferedImage.TYPE_INT_ARGB), "png", path.toFile())
         }
         val store = FrameStore(workspace, null)
-        assertEquals(listOf("5x15"), store.loadFrames("515_4_anh").map { it.targetPrintSize })
+        assertEquals(emptyList(), store.loadFrames("515_4_anh"))
         for (id in listOf("1015_4_base", "1015_4_ILCL")) {
-            assertEquals(listOf("10x15"), store.loadFrames(id).map { it.targetPrintSize })
+            assertEquals(emptyList(), store.loadFrames(id))
         }
-        assertEquals(listOf("5x15"), store.loadFrames("unknown", "5 x 15 cm").map { it.targetPrintSize })
-        assertEquals(listOf("10x15"), store.loadFrames("unknown", "10 x 15 cm").map { it.targetPrintSize })
+        assertEquals(emptyList(), store.loadFrames("unknown", "5 x 15 cm"))
+        assertEquals(listOf("5x15"), store.loadFrames(printSize = "5 x 15 cm").map { it.targetPrintSize })
+        assertEquals(listOf("10x15"), store.loadFrames(printSize = "10 x 15 cm").map { it.targetPrintSize })
         assertEquals(emptyList(), store.loadFrames("unknown", "unknown"))
+    }
+
+    @Test fun readsLegacyNamedLayoutsAndEventCoversFromPrettyBoothWithoutWritingThere() {
+        val local = workspace.resolve("fake-local-app-data")
+        val legacy = local.resolve("PrettyBoothDesktop/data")
+        val strip = legacy.resolve("frames/5x15_4_anh_wed/5154wed/Standard/strip.png")
+        val event = legacy.resolve("frames/10x15_4_anh_SP_BTS/BTS_1015_4_SP/Special/BTS/event.png")
+        val cover = legacy.resolve("covers/10x15_4_anh_SP_BTS/BTS_1015_4_SP/Special/BTS/cover.png")
+        val alternate = local.resolve("PrettyBoothDesktop/frames/15x10_1_anh_VP/1510_1_VP/Standard/alt.png")
+        val other = local.resolve("LeSouvenirDesktop/data/frames/5x15_4_anh/TNN001/Standard/other.png")
+        val store = FrameStore(workspace, local.toString())
+        for (path in listOf(strip, event, cover, alternate, other)) {
+            Files.createDirectories(path.parent)
+            ImageIO.write(BufferedImage(8, 8, BufferedImage.TYPE_INT_ARGB), "png", path.toFile())
+        }
+        store.invalidate()
+        assertEquals(setOf(strip), store.loadFrames("5154wed").map { it.customImagePath }.toSet())
+        assertEquals(setOf(other), store.loadFrames("TNN001").map { it.customImagePath }.toSet())
+        assertEquals(setOf(event), store.loadFrames("BTS_1015_4_SP").map { it.customImagePath }.toSet())
+        assertEquals(setOf(alternate), store.loadFrames("1510_1_VP").map { it.customImagePath }.toSet())
+        assertEquals(emptyList(), store.loadFrames("strip-5x15"))
+        val bundle = store.loadBundles().single()
+        assertEquals(event, bundle.frames.single().customImagePath)
+        assertNotNull(bundle.coverDataUrl)
     }
 }

@@ -9,7 +9,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import java.nio.file.Path
 
-data class CapturedMoment(val index: Int, val photoPath: Path?)
+data class CapturedMoment(val index: Int, val photoPath: Path?, val videoPath: Path? = null)
 data class AlbumUploadResult(val albumId: String?, val albumUrl: String?, val originalPhotoUrls: List<String>,
     val finalPhotoUrl: String?, val uploadedCount: Int, val finalizedCount: Int, val errorMessage: String? = null)
 

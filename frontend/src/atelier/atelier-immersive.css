@@ -1,12 +1,14 @@
 /* Kiosk-wide atmosphere: three compositor-only drifting fields, never a video or camera substitute. */
 .v1-shell.atelier-customer .v1-hold-lightbox { pointer-events:none; }
 .v1-shell.atelier-customer .v1-photo-tile > button { touch-action:none; user-select:none; -webkit-user-select:none; }
-body:has(.atelier-customer) { background:#F8F4EE; }
+body:has(.atelier-customer) { background:#FAF6F0; }
+body:has(.v1-camera) { background:#0A090C !important; }
+body:has(.v1-camera) .ambient-liquid-glass { display:none !important; }
 .ambient-liquid-glass { display:block; visibility:visible; opacity:1; position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none; contain:paint; }
-.ambient-orb { position:absolute; width:clamp(320px,43vw,780px); aspect-ratio:1; border-radius:46% 54% 63% 37%; opacity:.85; filter:blur(18px); will-change:transform; pointer-events:none; transform:translate3d(0,0,0); }
-.ambient-orb--1 { top:-26%; left:-12%; background:radial-gradient(circle at 45% 38%,#fffdfa 0%,#f2ddd5 38%,#edd9d300 73%); animation:float-liquid-1 26s ease-in-out infinite alternate; }
-.ambient-orb--2 { top:12%; right:-11%; background:radial-gradient(circle at 50% 40%,#fff8e9 0%,#d8b997a8 42%,#e9c4b900 75%); animation:float-liquid-2 32s ease-in-out infinite alternate; }
-.ambient-orb--3 { bottom:-48%; left:20%; background:radial-gradient(circle at 46% 36%,#fffdf9 0%,#efd5d4c9 42%,#ead7c900 75%); animation:float-liquid-3 29s ease-in-out infinite alternate; }
+.ambient-orb { position:absolute; width:clamp(320px,43vw,780px); aspect-ratio:1; border-radius:46% 54% 63% 37%; opacity:.52; filter:blur(64px); will-change:transform; pointer-events:none; transform:translate3d(0,0,0); }
+.ambient-orb--1 { top:-26%; left:-12%; background:radial-gradient(circle at 45% 42%, rgba(255,236,226,.72) 0%, rgba(242,215,202,.42) 46%, rgba(242,215,202,0) 72%); animation:float-liquid-1 26s ease-in-out infinite alternate; }
+.ambient-orb--2 { top:12%; right:-11%; background:radial-gradient(circle at 50% 45%, rgba(255,248,235,.7) 0%, rgba(226,202,178,.38) 48%, rgba(226,202,178,0) 74%); animation:float-liquid-2 32s ease-in-out infinite alternate; }
+.ambient-orb--3 { bottom:-48%; left:20%; background:radial-gradient(circle at 48% 40%, rgba(250,230,226,.68) 0%, rgba(236,208,200,.38) 46%, rgba(236,208,200,0) 72%); animation:float-liquid-3 29s ease-in-out infinite alternate; }
 @keyframes float-liquid-1 { 0% { transform:translate3d(0,0,0) rotate(0deg) scale(1); } 50% { transform:translate3d(18vw,12vh,0) rotate(28deg) scale(1.13); } 100% { transform:translate3d(35vw,28vh,0) rotate(65deg) scale(.92); } }
 @keyframes float-liquid-2 { 0% { transform:translate3d(0,0,0) rotate(0deg) scale(1); } 50% { transform:translate3d(-18vw,-12vh,0) rotate(-30deg) scale(.88); } 100% { transform:translate3d(-36vw,20vh,0) rotate(-65deg) scale(1.16); } }
 @keyframes float-liquid-3 { 0% { transform:translate3d(0,0,0) rotate(0deg) scale(.9); } 50% { transform:translate3d(-19vw,-28vh,0) rotate(32deg) scale(1.1); } 100% { transform:translate3d(23vw,-42vh,0) rotate(75deg) scale(.96); } }
@@ -14,8 +16,8 @@ body:has(.atelier-customer) { background:#F8F4EE; }
 .v1-shell.atelier-customer { position:relative; z-index:1; width:100%; height:100dvh; min-height:100dvh; padding:clamp(12px,1.5vh,24px) clamp(16px,2.2vw,42px); gap:clamp(8px,1.2vh,16px); background:transparent; }
 .v1-shell.atelier-customer:not(.v1-camera):not(:has(.v1-prepare-screen)) { background:transparent; }
 .v1-shell.atelier-customer:has(.v1-prepare-screen),.v1-shell.atelier-customer.v1-camera { background:#0A090C; }
-.v1-shell.atelier-customer :is(.v1-secondary,.v1-actionbar,.v1-panel,.v1-stepper button,.v1-back.backButton) { border:1px solid rgba(255,255,255,.78); background:rgba(255,253,250,.58); -webkit-backdrop-filter:blur(16px) saturate(115%); backdrop-filter:blur(16px) saturate(115%); box-shadow:inset 0 1px 0 rgba(255,255,255,.85),0 16px 46px rgba(76,43,29,.09); }
-.v1-shell.atelier-customer .v1-primary:not(:disabled) { position:relative; overflow:hidden; border:1px solid #191715; background:#191715; color:#FFFDFA; box-shadow:0 12px 25px #19171524; }
+.v1-shell.atelier-customer :is(.v1-secondary,.v1-actionbar,.v1-panel,.v1-stepper button,.v1-back.backButton) { border:1px solid rgba(255,255,255,.72); background:rgba(255,255,255,.52); -webkit-backdrop-filter:blur(24px) saturate(160%); backdrop-filter:blur(24px) saturate(160%); box-shadow:inset 0 1px 1.5px rgba(255,255,255,.95),0 14px 40px rgba(65,42,28,.07); border-radius:20px; }
+.v1-shell.atelier-customer .v1-primary:not(:disabled) { position:relative; overflow:hidden; border:1px solid rgba(255,240,228,.22); background:linear-gradient(145deg,#24201D 0%,#161412 100%); color:#FFFDFA; box-shadow:inset 0 1px 1px rgba(255,255,255,.32),0 10px 30px rgba(30,22,16,.25); }
 .v1-shell.atelier-customer :is(.v1-primary,.v1-secondary,.v1-stepper button,.v1-back.backButton) { isolation:isolate; }
 .v1-shell.atelier-customer :is(.v1-primary,.v1-secondary,.v1-stepper button,.v1-back.backButton):active:not(:disabled) { box-shadow:inset 0 2px 12px rgba(58,31,23,.2),0 4px 12px rgba(76,43,29,.12); }
 .v1-shell.atelier-customer .glass-touch-ripple { z-index:2; background:radial-gradient(circle,rgba(255,255,255,.45),rgba(255,255,255,.08) 60%,transparent); }
@@ -30,8 +32,9 @@ body:has(.atelier-customer) { background:#F8F4EE; }
 .v1-shell.atelier-customer .atelier-welcome__overline { font-family:var(--at-font-editorial); font-size:clamp(20px,2vw,32px); color:var(--at-primary); }
 .v1-shell.atelier-customer .v1-start h1 { font-size:clamp(52px,5.4vw,108px); line-height:1.2; letter-spacing:-.035em; padding-block:.08em; }
 .v1-shell.atelier-customer .v1-start-desc { max-width:52ch; }
-.v1-shell.atelier-customer .v1-start .v1-primary { min-width:min(100%,480px); min-height:80px; padding-inline:clamp(24px,3vw,48px); border-radius:999px; font-size:clamp(17px,1.3vw,22px); animation:pulse-liquid-glow 4s ease-in-out infinite; }
-@keyframes pulse-liquid-glow { 50% { box-shadow:0 18px 54px rgba(112,81,58,.35),0 0 0 7px rgba(199,167,129,.1); } }
+.v1-shell.atelier-customer .v1-start .v1-primary:not(:disabled) { min-width:min(100%,480px); min-height:80px; padding-inline:clamp(24px,3vw,48px); border-radius:999px; font-size:clamp(17px,1.3vw,22px); box-shadow:0 0 22px 4px rgba(199,167,129,.17),0 0 56px 10px rgba(196,126,111,.09); animation:natural-breathing-glow 5.5s ease-in-out infinite; }
+@keyframes natural-breathing-glow { 0%,100% { box-shadow:0 0 22px 4px rgba(199,167,129,.17),0 0 56px 10px rgba(196,126,111,.09); } 50% { box-shadow:0 0 30px 7px rgba(199,167,129,.22),0 0 68px 14px rgba(196,126,111,.13); } }
+@media (prefers-reduced-motion:reduce) { .v1-shell.atelier-customer .v1-start .v1-primary:not(:disabled) { animation:none; } }
 .v1-shell.atelier-customer .v1-start-art { width:100%; }
 .v1-shell.atelier-customer .atelier-welcome__gallery { width:100%; }
 .v1-shell.atelier-customer .atelier-welcome__halo { inset:0; border-radius:50%; background:radial-gradient(ellipse,rgba(240,219,212,.8),rgba(216,199,181,.27) 40%,transparent 75%); }
@@ -43,6 +46,15 @@ body:has(.atelier-customer) { background:#F8F4EE; }
 @keyframes float-drift-2 { 0%,100% { transform:translate3d(0,0,0) rotate(7deg); } 50% { transform:translate3d(-12px,20px,0) rotate(3deg); } }
 .v1-shell.atelier-customer .atelier-event-showcase button { -webkit-backdrop-filter:blur(24px) saturate(140%); backdrop-filter:blur(24px) saturate(140%); background:rgba(255,255,255,.6); }
 
+/* The welcome reads as one editorial thought, not a stack of competing captions. */
+.v1-shell.atelier-customer .v1-start section { gap:clamp(24px,4vh,56px); }
+.v1-shell.atelier-customer .atelier-welcome__message { width:100%; display:grid; gap:clamp(20px,3vh,38px); }
+.v1-shell.atelier-customer .v1-start h1 { font-size:clamp(40px,4.3vw,82px); line-height:1.12; padding:0; text-wrap:balance; }
+.v1-shell.atelier-customer .v1-start .v1-editorial-accent { margin-top:clamp(12px,2vh,24px); }
+.v1-shell.atelier-customer .v1-start-desc { max-width:40ch; line-height:1.5; }
+.v1-shell.atelier-customer .v1-start-art { gap:clamp(16px,3vh,36px); }
+.v1-shell.atelier-customer .atelier-event-showcase { gap:clamp(12px,1.5vw,24px); padding:4px 4px 10px; }
+
 /* Workspaces share every available kiosk pixel; only their own content scrolls. */
 .v1-shell.atelier-customer :is(.v1-split,.v1-layout-stage,.v1-start,.v1-selection,.v1-frame-workspace,.v1-confirm-workspace,.v1-quantity-workspace) { width:100%; max-width:none; flex:1; min-height:0; gap:clamp(12px,1.7vw,30px); }
 .v1-shell.atelier-customer .v1-carousel-wrap { width:100%; max-width:none; }
@@ -53,7 +65,7 @@ body:has(.atelier-customer) { background:#F8F4EE; }
 .v1-shell.atelier-customer .v1-quantity-pricing.v1-panel { background:rgba(255,253,250,.45); border-radius:12px; box-shadow:none; }
 .v1-shell.atelier-customer .v1-quantity-preview { padding:0; }
 .v1-shell.atelier-customer .v1-selection { grid-template-columns:minmax(0,1.65fr) minmax(0,.85fr); }
-.v1-shell.atelier-customer .v1-frame-workspace { grid-template-columns:minmax(0,1.6fr) minmax(0,1fr); }
+.v1-shell.atelier-customer .v1-frame-workspace { grid-template-columns:minmax(0,1fr) minmax(0,1.25fr); }
 .v1-shell.atelier-customer .v1-confirm-workspace {
   display:grid;
   grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);
@@ -130,11 +142,25 @@ body:has(.atelier-customer) { background:#F8F4EE; }
 .v1-shell.atelier-customer.v1-camera .v1-capture-screen { inset:0; background:#0a090c; overflow:hidden; }
 .v1-shell.atelier-customer.v1-camera .v1-camera-viewport { position:absolute; inset:0; display:grid; place-items:center; pointer-events:none; }
 .v1-shell.atelier-customer.v1-camera .v1-live { width:min(100vw,calc(100dvh * var(--image-ratio))); max-height:100dvh; aspect-ratio:var(--image-ratio); }
+.v1-shell.atelier-customer.v1-camera .v1-crop { box-shadow:0 0 0 100vmax rgba(0,0,0,.68) !important; border:2px solid rgba(255,255,255,.95); }
 .v1-shell.atelier-customer.v1-camera .v1-countdown-layer { position:absolute; inset:0; display:grid; place-items:center; pointer-events:none; padding:0; transform:none; }
-.v1-shell.atelier-customer.v1-camera .v1-countdown-layer .v1-countdown { position:static; transform:none; margin:0; display:grid; place-items:center; width:auto; height:auto; min-width:1.3em; min-height:1.3em; padding:0; background:transparent; border:0; box-shadow:none; color:#fff; font:800 clamp(104px,12vw,186px)/1 'Segoe UI',sans-serif; font-variant-numeric:tabular-nums; text-shadow:0 3px 20px #000d,0 0 2px #000; }
+.v1-shell.atelier-customer.v1-camera .v1-countdown-layer .v1-countdown { position:static; display:block; box-sizing:border-box; width:clamp(96px,14vw,200px); height:auto; margin:0; padding:14px 0; transform:none; background:rgba(18,18,20,.88); border:1px solid rgba(255,255,255,.65); border-radius:18px; box-shadow:0 8px 32px rgba(0,0,0,.6); text-align:center; color:#fff; font-size:clamp(80px,11vw,160px); font-weight:800; font-variant-numeric:tabular-nums; line-height:1; text-shadow:0 3px 12px rgba(0,0,0,.8); }
 @media (max-width:900px) and (min-aspect-ratio: 6/5) { .v1-shell.atelier-customer :is(.v1-start,.v1-selection,.v1-frame-workspace,.v1-confirm-workspace,.v1-quantity-workspace) { grid-template-columns:minmax(0,1fr) minmax(0,1fr); } .v1-shell.atelier-customer .v1-start { overflow:hidden; } .v1-shell.atelier-customer .v1-start-art { min-height:0; } .v1-shell.atelier-customer .v1-payment-columns { grid-template-columns:minmax(0,1fr) minmax(320px,1fr); grid-template-rows:minmax(0,1fr); } }
 @media (forced-colors:active) { .v1-shell.atelier-customer :is(.v1-primary,.v1-secondary,.v1-back) { border:2px solid ButtonText; } }
 
 @media(max-width:900px) { .v1-shell.atelier-customer:not(.v1-camera) { height:100dvh; overflow-y:auto; } .v1-shell.atelier-customer :is(.v1-start,.v1-selection,.v1-frame-workspace,.v1-confirm-workspace,.v1-quantity-workspace) { grid-template-columns:minmax(0,1fr); overflow-y:auto; } .v1-shell.atelier-customer .v1-payment-columns { grid-template-columns:minmax(0,1fr); grid-template-rows:auto auto; } }
+@media (min-width:901px) and (max-width:1050px) { .v1-shell.atelier-customer .v1-frame-workspace { grid-template-columns:minmax(0,1fr) minmax(0,1.25fr); } }
 @media(max-height:760px) and (min-width:901px) { .v1-shell.atelier-customer .v1-start section { gap:6px; } .v1-shell.atelier-customer .v1-start h1 { font-size:clamp(42px,4.5vw,78px); } .v1-shell.atelier-customer .v1-payment-instructions { height:100px; min-height:100px; flex-basis:100px; } }
 @media(prefers-reduced-motion:reduce) { .ambient-orb,.v1-shell.atelier-customer :is(.v1-kicker-dot,.v1-start .v1-primary,.atelier-print),.v1-print-stage__pulse { animation:none; will-change:auto; } .v1-shell.atelier-customer .atelier-print--portrait { transform:rotate(-7deg); } .v1-shell.atelier-customer .atelier-print--strip { transform:rotate(7deg); } }
+
+/* Final surface layer is placed after kiosk layout rules so glass is not overwritten. */
+.v1-shell.atelier-customer :is(.v1-actionbar,.v1-summary,.v1-payment-summary,.v1-delivery,.v1-photo-tile > button:first-child,.v1-frame-grid > button) {
+  background:var(--at-glass); border:1px solid var(--at-glass-border); border-radius:20px;
+  -webkit-backdrop-filter:var(--at-glass-filter); backdrop-filter:var(--at-glass-filter);
+  box-shadow:var(--at-glass-shadow);
+}
+.v1-shell.atelier-customer .v1-photo-tile > button:first-child[aria-pressed=true] { border:2px solid #8E442D; }
+.v1-shell.atelier-customer.v1-camera .v1-pills span { background:rgba(16,14,18,.65); border:1px solid rgba(255,255,255,.25); -webkit-backdrop-filter:blur(18px) saturate(130%); backdrop-filter:blur(18px) saturate(130%); }
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) { .v1-shell.atelier-customer :is(.v1-actionbar,.v1-summary,.v1-payment-summary,.v1-delivery,.v1-photo-tile > button:first-child,.v1-frame-grid > button) { background:#F4EEE7; } }
+.v1-shell.atelier-customer .v1-carousel-card.v1-layout-card,
+.v1-shell.atelier-customer .v1-carousel-art { background:none !important; border:0 !important; box-shadow:none !important; }

@@ -44,10 +44,21 @@ export function KioskSimulator(){
      if(next.state==='EDITING')loadFrames(next.sessionId,next.generationId);
      else if(framesRef.current.length){framesRef.current=[];setFrames([])}
    }
-   async function refresh(fromPoll=false){if(!session.current||fromPoll&&(lock.current||queuedCount.current>0))return;const token=epoch.current,sid=session.current,gen=generation.current,requestRevision=revision.current;const next=await rpc<Snapshot>('session.getState',{sessionId:sid,generationId:gen});if(!alive.current||token!==epoch.current||next.sessionId!==sid||next.generationId!==gen||fromPoll&&(lock.current||queuedCount.current>0||requestRevision!==revision.current))return;
-     publishSnapshot(next);
-  }
-   useEffect(()=>{alive.current=true;const token=++epoch.current;let timer:ReturnType<typeof setTimeout>;let deviceChecked=0;async function poll(){if(!lock.current&&queuedCount.current===0&&!polling.current){polling.current=true;const requestRevision=revision.current;try{if(!loaded.current){const c=await rpc<CatalogGetResult>('catalog.get');if(alive.current&&token===epoch.current){setCatalog(c);setError('');loaded.current=true}}if(!session.current&&Date.now()-deviceChecked>3000&&!lock.current){deviceChecked=Date.now();try{const status=await rpc<{camera?:{connected?:boolean}}>('device.getStatus');if(alive.current&&token===epoch.current)setCameraConnected(status.camera?.connected)}catch{/* Device discovery must not block the catalog or session recovery. */}}await refresh(true);if(alive.current&&token===epoch.current&&requestRevision===revision.current&&!lock.current)setError('')}catch(e){if(alive.current&&token===epoch.current&&requestRevision===revision.current&&!lock.current)setError(String(e))}finally{polling.current=false}}if(alive.current&&token===epoch.current)timer=setTimeout(poll,500)}void poll();return()=>{alive.current=false;++epoch.current;clearTimeout(timer)}},[]);
+    async function refresh(fromPoll=false){if(!session.current||fromPoll&&(lock.current||queuedCount.current>0))return;const token=epoch.current,sid=session.current,gen=generation.current,requestRevision=revision.current;
+      try {
+        const next=await rpc<Snapshot>('session.getState',{sessionId:sid,generationId:gen});
+        if(!alive.current||token!==epoch.current||session.current!==sid||generation.current!==gen||next.sessionId!==sid||next.generationId!==gen||fromPoll&&(lock.current||queuedCount.current>0||requestRevision!==revision.current))return;
+        publishSnapshot(next);
+      } catch(e) {
+        if(!alive.current||token!==epoch.current||session.current!==sid||generation.current!==gen||lock.current||requestRevision!==revision.current)return;
+        session.current='';generation.current='';
+        sessionStorage.removeItem('v2-simulator-session');sessionStorage.removeItem('v2-simulator-generation');sessionStorage.removeItem('v2-simulator-uncertain');
+        snapshotRef.current=undefined;setSnapshot(undefined);framesRef.current=[];setFrames([]);
+        // A rejected stale session is recoverable; a transport failure still needs an operator-visible retry.
+        if(!String(e).includes('Backend rejected request:'))throw e;
+      }
+   }
+    useEffect(()=>{alive.current=true;const token=++epoch.current;let timer:ReturnType<typeof setTimeout>;let deviceChecked=0;async function poll(){if(!lock.current&&queuedCount.current===0&&!polling.current){polling.current=true;const requestRevision=revision.current;try{if(!loaded.current){const c=await rpc<CatalogGetResult>('catalog.get');if(alive.current&&token===epoch.current){setCatalog(c);setError('');loaded.current=true}}await refresh(true);if(alive.current&&token===epoch.current&&requestRevision===revision.current&&!lock.current)setError('');if(!session.current&&Date.now()-deviceChecked>3000&&!lock.current){deviceChecked=Date.now();try{const status=await rpc<{camera?:{connected?:boolean}}>('device.getStatus');if(alive.current&&token===epoch.current)setCameraConnected(status.camera?.connected)}catch{/* Device discovery must not block the catalog or session recovery. */}}}catch(e){if(alive.current&&token===epoch.current&&requestRevision===revision.current&&!lock.current)setError(String(e))}finally{polling.current=false}}if(alive.current&&token===epoch.current)timer=setTimeout(poll,750)}void poll();return()=>{alive.current=false;++epoch.current;clearTimeout(timer)}},[]);
   function command(method:SimulatorMethod,extra:object={}):Promise<boolean>{
     // Serialize every mutation, including rapid photo taps followed immediately by Continue.
     // Do not replay queued mutations after an uncertain backend failure.

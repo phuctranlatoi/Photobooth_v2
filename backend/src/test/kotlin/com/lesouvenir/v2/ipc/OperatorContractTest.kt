@@ -3,9 +3,34 @@ package com.lesouvenir.v2.ipc
 import com.google.gson.*
 import java.nio.file.*
 import java.util.UUID
+import java.awt.image.BufferedImage
+import javax.imageio.ImageIO
 import kotlin.test.*
 
 class OperatorContractTest {
+    @Test fun operatorFrameStatusAndExplicitReload() {
+        val root = fixture()
+        SimulatorSessionEngine(root, config(), false, localOperatorEnabled = true).use { engine ->
+            assertEquals(0, engine.dispatch("operator.getStatus", JsonObject())["frames"].asJsonArray.size())
+            val image = root.resolve("data/frames/10x15/layout/Standard/new.png")
+            Files.createDirectories(image.parent)
+            ImageIO.write(BufferedImage(8, 8, BufferedImage.TYPE_INT_ARGB), "png", image.toFile())
+            assertEquals(-32602, assertFailsWith<SimulatorError> {
+                engine.dispatch("operator.reloadFrames", JsonObject().apply { addProperty("unexpected", true) })
+            }.code)
+            val frames = engine.dispatch("operator.reloadFrames", JsonObject())["frames"].asJsonArray
+            assertEquals(1, frames.size())
+            val frame = frames[0].asJsonObject
+            assertEquals("10x15/layout/Standard/new", frame["id"].asString)
+            assertEquals("new", frame["title"].asString)
+            assertEquals("10x15", frame["targetPrintSize"].asString)
+            assertEquals("layout", frame["targetLayoutId"].asString)
+            assertFalse(frame["isSpecial"].asBoolean)
+            assertEquals("", frame["specialEventName"].asString)
+            assertTrue(frame["thumbDataUrl"].asString.startsWith("data:image/png;base64,"))
+            assertEquals(frames, engine.dispatch("operator.getStatus", JsonObject())["frames"].asJsonArray)
+        }
+    }
     private fun config()=JsonParser.parseString(Files.readString(Path.of("config/simulator-layouts.json"))).asJsonObject
     private fun fixture(): Path {
         val parent=Path.of("build/operator-tests/${UUID.randomUUID()}").toAbsolutePath()
@@ -38,6 +63,10 @@ class OperatorContractTest {
             val status=engine.dispatch("operator.getStatus",JsonObject())
             assertFalse(status["productionAdminAcl"].asBoolean)
             assertFalse(status["pricingEditable"].asBoolean)
+            assertTrue(status["cloud"].asJsonObject["cloudSyncReady"].asBoolean)
+            assertTrue(status["cloud"].asJsonObject["simulator"].asBoolean)
+            assertTrue(status["printer"].asJsonObject["detected"].asBoolean)
+            assertFalse(status["camera"].asJsonObject["connected"].asBoolean)
         }
     }
     @Test fun atomicPersistenceRestartValidationAndBusyGuard() {

@@ -11,12 +11,14 @@ import com.lesouvenir.v2.camera.real.*
 import com.lesouvenir.v2.camera.demo.DemoCameraAdapter
 import com.lesouvenir.v2.catalog.FirebaseCatalogService
 import com.lesouvenir.v2.storage.FrameStore
+import com.lesouvenir.v2.storage.FilterStore
 import com.lesouvenir.v2.data.*
 import com.lesouvenir.v2.data.SaleTransaction
 import com.lesouvenir.v2.foundation.LayoutMode
 import com.lesouvenir.v2.foundation.PricingCalculator
 import com.lesouvenir.v2.imaging.DesktopImageProcessor
 import com.lesouvenir.v2.imaging.DesktopCompositor
+import com.lesouvenir.v2.imaging.DesktopVideoCompositor
 import com.lesouvenir.v2.imaging.FramePack
 import com.lesouvenir.v2.imaging.RenderResult
 import com.lesouvenir.v2.imaging.beauty.DesktopBeautyService
@@ -58,6 +60,7 @@ class RealSessionEngine(
     private val boothConfig: DesktopBoothConfig = DesktopConfigLoader.load(workspace),
     private val firebaseCatalog: FirebaseCatalogService = FirebaseCatalogService(workspace),
     cameraManager: CameraConnectionManager? = null,
+    frameStore: FrameStore? = null,
 ) : SessionEngine {
     override val mode = RuntimeMode.REAL
     private val gson = Gson()
@@ -66,9 +69,17 @@ class RealSessionEngine(
     private val webAlbumClient = DesktopWebAlbumClient()
     private val albumUploader = DesktopAlbumUploader(workspace, boothConfig, DesktopCloudinaryClient(), webAlbumClient, processor)
     private val neonRevenue = NeonDirectRevenueClient()
+    private val filterStore = FilterStore(workspace)
     private val beauty = DesktopBeautyService()
     private val compositor = DesktopCompositor()
-    private val frameStore = FrameStore(workspace)
+    private val videoCompositor = DesktopVideoCompositor(workspace)
+    private val frameStore: FrameStore = frameStore ?: FrameStore(
+        workspace,
+        if (workspace.any { it.toString().startsWith("junit") || it.toString().contains("temp") }) null
+        else System.getenv("LOCALAPPDATA"),
+    )
+    private val operatorMedia by lazy { OperatorMediaCommands(this.frameStore, filterStore, processor, ledger, boothConfig, neonRevenue) }
+    init { processor.availableEffects = runCatching { filterStore.loadFilters() }.getOrDefault(processor.availableEffects) }
     private val thumbCache = ConcurrentHashMap<String, String>()
     private val demoCamera = DemoCameraAdapter()
     private val cameraManager: CameraConnectionManager = cameraManager ?: CameraConnectionManager(camera, demoCamera)
@@ -139,6 +150,9 @@ class RealSessionEngine(
     private var albumUrl: String? = null
     private var albumId: String? = null
     private var uploadJob: Future<*>? = null
+    private var videoGenerated = false
+    private var videoUploaded = false
+    private var albumCompleted = false
     /** Test seam for validating composition without making an external album request. */
     @Synchronized internal fun setAlbumUrlForTesting(url: String?) {
         require(state != "IDLE") { "Start a session before setting its album URL" }
@@ -146,9 +160,10 @@ class RealSessionEngine(
     }
     private var printAccepted = false
     private var revenueRecorded = false
+    private var printStatusMessage: String? = null
     private val seen = mutableSetOf<String>()
     private val commands = mutableMapOf<String, Pair<String, JsonObject>>()
-    private fun directory() = workspace.resolve("backend/build/real-sessions").resolve(sid)
+    private fun directory() = workspace.resolve("data").resolve("sessions").resolve(sid)
     private fun obj(vararg fields: Pair<String, Any?>): JsonObject = gson.toJsonTree(mapOf(*fields)).asJsonObject
     private fun thumbData(path: Path, max: Int): String {
         val key = "${path.toAbsolutePath()}_${runCatching { Files.getLastModifiedTime(path).toMillis() }.getOrDefault(0L)}_$max"
@@ -186,7 +201,13 @@ class RealSessionEngine(
         "height" to f.customImagePath?.let { frameStore.imageSize(it)?.second },
         "qrCodeX" to f.qrCodeX, "qrCodeY" to f.qrCodeY, "qrCodeSize" to f.qrCodeSize)
     }
-    private fun availableFrames() = frameStore.loadFrames(layout.id, layout.printSizeLabel).ifEmpty { listOf(FramePack("default", "Default", "", 0L)) }
+    private fun operatorFrames() = frameStore.loadFrames().map { pack -> mapOf(
+        "id" to pack.id, "title" to pack.title,
+        "targetPrintSize" to (pack.targetPrintSize ?: ""),
+        "targetLayoutId" to (pack.targetLayoutId ?: ""),
+        "isSpecial" to pack.isSpecial, "specialEventName" to (pack.specialEventName ?: ""),
+        "thumbDataUrl" to (pack.customImagePath?.let { frameStore.frameThumbDataUrl(it) } ?: "")) }
+    private fun availableFrames() = frameStore.loadFrames(layout.id, layout.printSizeLabel).ifEmpty { listOf(FramePack("default", "Khung mặc định", "", 0L)) }
     private fun bundleDto() = frameStore.loadBundles().map { mapOf("id" to it.id, "name" to it.name,
         "coverDataUrl" to it.coverDataUrl, "layoutId" to it.layoutId, "frameCount" to it.frames.size) }
     private fun catalogDto() = obj(
@@ -229,14 +250,17 @@ class RealSessionEngine(
         "failure" to failure,
         "selectedCount" to selected.size, "selectedIndices" to selected.toList(), "frameId" to frame?.id,
         "printAccepted" to printAccepted, "revenueRecorded" to revenueRecorded,
-        "printStatus" to (if (printAccepted) "Đã truyền tín hiệu in thành công" else null),
+        "printStatus" to printStatusMessage,
         "printImagePath" to printImage?.toAbsolutePath()?.toString(),
+        "finalImagePath" to composition?.toAbsolutePath()?.toString(),
         "payOsConfigured" to (payOs?.isConfigured == true),
         "catalogSource" to firebaseCatalog.source.name,
         "payOsStatus" to (payOs?.readiness?.name ?: "CONFIG_MISSING"),
         "lastPaymentError" to payOs?.lastError,
         "orderCode" to orderCode, "paymentQr" to qrCode, "paymentMethod" to paymentMethod,
-        "userConfirmed" to printAccepted, "albumUrl" to albumUrl, "simulator" to false,
+        "userConfirmed" to printAccepted, "albumUrl" to albumUrl, "masterUrl" to albumUrl,
+        "qrCodeUrl" to albumUrl?.let { runCatching { qrPng(it) }.getOrNull() }, "simulator" to false,
+        "videoGenerated" to videoGenerated, "videoUploaded" to videoUploaded, "albumCompleted" to albumCompleted,
         "captureMode" to captureMode, "bundles" to bundleDto(),
         "livePreviewDataUrl" to liveFrameDataUrl,
         "cameraConnected" to cameraManager.isHardwareConnected(),
@@ -279,17 +303,30 @@ class RealSessionEngine(
 
     @Synchronized override fun dispatch(method: String, p: JsonObject): JsonObject {
         if (method.startsWith("operator.")) return when (method) {
+            in OperatorMediaCommands.methods -> {
+                if (!operatorAuthorized()) fail(-32001, "Operator authorization required")
+                operatorMedia.dispatch(method, p)
+            }
             "operator.getStatus" -> {
                 if (p.size() != 0) fail(-32602, "Invalid params")
                 obj("accessMode" to "LOCAL_DEVELOPMENT_ONLY", "productionAdminAcl" to false,
                     "state" to state, "canEditLayouts" to (state == "IDLE"), "simulator" to false,
                     "layouts" to layouts, "pricingEditable" to false, "cloud" to cloudStatus(),
+                    "frames" to operatorFrames(),
                     "camera" to cameraManager.getStatus(),
+                    "printer" to mapOf("name" to printerName, "detected" to (printerName.isNotBlank() && printerName in runCatching { printer.getAvailablePrinters() }.getOrDefault(emptyList())),
+                        "systemPrintEnabled" to (boothConfig.enabled("ENABLE_SYSTEM_PRINT") ||
+                            runCatching { settingsStore.settings["enableSystemPrint"]?.asBoolean == true }.getOrDefault(false))),
                     "capabilities" to mapOf(
                         "simulatorStudio" to false, "simulatorLayoutSettings" to true,
                         "nativeCamera" to camera.isHardwareConnected(), "nativePrint" to printerName.isNotBlank(),
                         "beauty" to true, "effects" to true, "cloudAlbumQr" to (album != null),
                         "revenue" to true, "paymentSettings" to (payOs != null), "productionAdminAcl" to false))
+            }
+            "operator.reloadFrames" -> {
+                if (p.size() != 0) fail(-32602, "Invalid params")
+                frameStore.invalidate()
+                obj("frames" to operatorFrames())
             }
             "operator.getSettings" -> {
                 if (p.size() != 0) fail(-32602, "Invalid params")
@@ -333,7 +370,7 @@ class RealSessionEngine(
         val gen = p["generationId"]?.asString ?: ""
         if (method != "session.start" && (requested != sid || (gen.isNotEmpty() && generation.isNotEmpty() && gen != generation))) fail(-32004, "Stale session or generation")
         if (method == "session.getState") return snapshot()
-        if (method == "frame.list") { requireState("EDITING"); return obj("frames" to availableFrames().map(::frameDto), "bundles" to bundleDto()) }
+        if (method == "frame.list") { requireState("EDITING"); return obj("frames" to availableFrames().parallelStream().map(::frameDto).toList(), "bundles" to bundleDto()) }
         if (method == "payment.checkStatus") {
             requireState("PAYMENT_PENDING")
             val code = orderCode
@@ -363,7 +400,8 @@ class RealSessionEngine(
                 layout = layouts.find { it.id == string(p, "layoutId") } ?: fail(-32602, "Unknown layout")
                 captureMode = p["captureMode"]?.asString ?: cameraManager.resolveCaptureMode()
                 if (captureMode !in setOf("REAL", "DEMO")) fail(-32602, "Invalid captureMode")
-                sid = requested; generation = gen; state = "SELECTING"; Files.createDirectories(directory()); snapshot()
+                sid = requested; generation = gen; state = "SELECTING"; Files.createDirectories(directory())
+                Files.createDirectories(workspace.resolve("data/output")); snapshot()
             }
             "session.confirmSetup" -> { requireState("SELECTING"); state = "SELECTING_QUANTITY"; snapshot() }
             "session.setLayout" -> { requireState("SELECTING"); layout = layouts.find { it.id == string(p, "layoutId") } ?: fail(-32602, "Unknown layout"); snapshot() }
@@ -546,7 +584,7 @@ class RealSessionEngine(
     }
     private fun prefetchAlbum() {
         if (boothConfig.get("WEB_ALBUM_BASE_URL").isBlank() || boothConfig.get("BOOTH_API_KEY").isBlank()) return
-        if (captureMode != "REAL" || albumUrl != null || albumJob != null) return
+        if (albumUrl != null || albumJob != null) return
         val token = epoch
         val session = sid
         val expectedAssets = layout.selectCount + 2
@@ -577,6 +615,7 @@ class RealSessionEngine(
             if (qrUrl == albumUrl && Files.isRegularFile(cached.finalImagePath) && Files.isRegularFile(cached.printImagePath) &&
                 runCatching { ImageIO.read(cached.finalImagePath.toFile()) != null && ImageIO.read(cached.printImagePath.toFile()) != null }.getOrDefault(false)) {
                 composition = cached.finalImagePath; printImage = cached.printImagePath
+                saveMaster(cached.finalImagePath)
                 return
             }
             compositionCache.remove(key)
@@ -594,24 +633,29 @@ class RealSessionEngine(
             ImageIO.read(result.finalImagePath.toFile()) != null && ImageIO.read(result.printImagePath.toFile()) != null)
         compositionCache[key] = result to albumUrl
         composition = result.finalImagePath; printImage = result.printImagePath
+        saveMaster(result.finalImagePath)
+    }
+    private fun saveMaster(source: Path) {
+        // A delivery JPEG is best-effort; the original PNG print canvas remains authoritative.
+        runCatching {
+            val output = workspace.resolve("data/output")
+            Files.createDirectories(output)
+            val image = ImageIO.read(source.toFile()) ?: return@runCatching
+            val rgb = BufferedImage(image.width, image.height, BufferedImage.TYPE_INT_RGB)
+            val graphics = rgb.createGraphics()
+            try {
+                graphics.color = java.awt.Color.WHITE
+                graphics.fillRect(0, 0, image.width, image.height)
+                graphics.drawImage(image, 0, 0, null)
+            } finally { graphics.dispose() }
+            ImageIO.write(rgb, "jpg", output.resolve("master_$sid.jpg").toFile())
+        }
     }
     private fun confirmPrint(): JsonObject {
         requireState("PRINT_PENDING")
         if (!paid || printImage == null || composition == null) fail(-32001, "Paid session and complete composition required")
-        if (captureMode == "DEMO") {
-            val image = printImage!!
-            if (ImageIO.read(image.toFile()) == null) fail(-32002, "Invalid print canvas")
-            printAccepted = true; revenueRecorded = false; state = "DELIVERY"
-            return snapshot().apply {
-                addProperty("dryRun", true)
-                addProperty("printAccepted", true)
-                addProperty("printSignalTransmitted", false)
-                addProperty("printStatus", "Đã tạo bản in thử nghiệm & phát tín hiệu in (Chế độ mô phỏng)")
-                addProperty("targetPrinter", "Mô phỏng máy in DNP DS-RX1HS")
-                addProperty("printImagePath", image.toAbsolutePath().toString())
-            }
-        }
-        ledger.getSale(sid)?.let { fail(-32004, "Existing sale requires spooler reconciliation") }
+        val dryRun = captureMode == "DEMO"
+        if (!dryRun) ledger.getSale(sid)?.let { fail(-32004, "Existing sale requires spooler reconciliation") }
         val name = boothConfig.get("PRINTER_NAME_STRIP").takeIf { it.isNotBlank() }
             ?: boothConfig.get("PRINTER_NAME_FULL").takeIf { it.isNotBlank() }
             ?: printerName.takeIf { it.isNotBlank() }
@@ -622,51 +666,92 @@ class RealSessionEngine(
         val sheets = if (layout.printSizeLabel.replace(" ", "").contains("5x15", ignoreCase = true))
             (quantity / 2).coerceAtLeast(1) else quantity
         // A spooler failure can be ambiguous. Never resubmit automatically after an exception.
-        val printed = if (enabled) {
+        val printed = if (dryRun) {
+            Result.success("Demo capture: no physical print submitted")
+        } else if (enabled) {
             systemPrinterService.printImage(image, sheets, name)
         } else {
             Result.success("Chế độ mô phỏng in: Đã hoàn tất bản in ảo.")
         }
-        if (printed.isFailure) { state = "RECOVERY"; fail(-32002, "Print submission uncertain; reconcile spooler before retry") }
-        printAccepted = true
-        val price = PricingCalculator.calculatePrice(layout.printSizeLabel, quantity)
-        val transaction = SaleTransaction(sessionId = sid, boothId = boothId, layoutId = layout.id,
-            layoutTitle = layout.title, printSize = price.printSize, quantity = quantity,
-            includedQuantity = price.includedQuantity, extraQuantity = price.extraQuantity,
-            basePrice = price.basePrice, extraUnitPrice = price.extraUnitPrice, extraAmount = price.extraAmount,
-            totalAmount = price.totalAmount, paymentMethod = paymentMethod, createdAt = System.currentTimeMillis())
-        try { ledger.recordSale(transaction) }
-        catch (_: Exception) { state = "RECOVERY"; fail(-32603, "Print submitted but ledger failed; reconcile manually before retry") }
-        revenueRecorded = true; state = "DELIVERY"
-        if (boothConfig.get("NEON_DATABASE_URL").isNotBlank() || boothConfig.get("DATABASE_URL").isNotBlank()) {
-            albumExecutor.submit {
-                if (neonRevenue.recordTransaction(boothConfig, transaction)) ledger.markSaleSynced(transaction.sessionId)
+        // Keep delivery available on spooler errors, but never treat an uncertain submission
+        // as a successful print or record revenue. A retry requires operator reconciliation.
+        printAccepted = printed.isSuccess && (dryRun || enabled)
+        printStatusMessage = printed.fold({ it }, { "Không gửi được sang Windows Print (${it.javaClass.simpleName}); cần kiểm tra hàng đợi in." })
+        if (!dryRun && printAccepted) {
+            val price = PricingCalculator.calculatePrice(layout.printSizeLabel, quantity)
+            val transaction = SaleTransaction(sessionId = sid, boothId = boothId, layoutId = layout.id,
+                layoutTitle = layout.title, printSize = price.printSize, quantity = quantity,
+                includedQuantity = price.includedQuantity, extraQuantity = price.extraQuantity,
+                basePrice = price.basePrice, extraUnitPrice = price.extraUnitPrice, extraAmount = price.extraAmount,
+                totalAmount = price.totalAmount, paymentMethod = paymentMethod, createdAt = System.currentTimeMillis())
+            try { ledger.recordSale(transaction) }
+            catch (_: Exception) { state = "RECOVERY"; fail(-32603, "Print submitted but ledger failed; reconcile manually before retry") }
+            revenueRecorded = true
+            if (boothConfig.get("NEON_DATABASE_URL").isNotBlank() || boothConfig.get("DATABASE_URL").isNotBlank()) {
+                albumExecutor.submit {
+                    if (neonRevenue.recordTransaction(boothConfig, transaction)) ledger.markSaleSynced(transaction.sessionId)
+                }
             }
         }
+        state = "DELIVERY"
         val session = sid
         val moments = shots.mapIndexed { index, path -> CapturedMoment(index, readyBeauty[index] ?: path) }
+        val selectedMoments = selected.map { moments[it] }
         val preCreated = albumId
         val finalPrint = composition ?: image
+        val layoutForUpload = layout
+        val frameForUpload = frame ?: availableFrames().firstOrNull() ?: FramePack("default", "Khung mặc định", "", 0L)
+        val outputForUpload = directory()
+        val tokenForUpload = epoch
         uploadJob = albumExecutor.submit {
             val result = runBlocking { albumUploader.uploadSessionPhotos(session, preCreated, moments, finalPrint) }
-            synchronized(this@RealSessionEngine) {
-                if (sid == session && result.albumUrl != null) albumUrl = result.albumUrl
+            val id = result.albumId ?: preCreated
+            try {
+                val video = videoCompositor.createCompositeVideo(layoutForUpload, frameForUpload, selectedMoments, outputForUpload, session)
+                synchronized(this@RealSessionEngine) { if (sid == session && tokenForUpload == epoch) videoGenerated = video != null }
+                if (video != null && id != null) {
+                    val uploaded = albumUploader.uploadSessionVideo(session, id, video, moments.size + 2)
+                    synchronized(this@RealSessionEngine) { if (sid == session && tokenForUpload == epoch) videoUploaded = uploaded }
+                }
+            } finally {
+                if (id != null) {
+                    val completed = albumUploader.completeSessionAlbum(id)
+                    synchronized(this@RealSessionEngine) { if (sid == session && tokenForUpload == epoch) albumCompleted = completed }
+                }
+                synchronized(this@RealSessionEngine) {
+                    if (sid == session && tokenForUpload == epoch && result.albumUrl != null) albumUrl = result.albumUrl
+                }
             }
         }
-        return snapshot().apply { addProperty("printerName", name); addProperty("targetPrinter", name) }
+        return snapshot().apply {
+            addProperty("dryRun", dryRun)
+            addProperty("printSignalTransmitted", !dryRun && enabled && printAccepted)
+            addProperty("printerName", if (dryRun) "" else name)
+            addProperty("targetPrinter", if (dryRun) "" else name)
+            if (dryRun) addProperty("printStatus", "Đã tạo bản in; không gửi lệnh in vật lý (chế độ DEMO)")
+        }
     }
-    private fun reset() { epoch++; job?.cancel(false); stopInactivity(); albumJob?.cancel(true); albumJob = null
+    private fun reset() { epoch++; job?.cancel(false); stopInactivity(); albumJob?.cancel(true); albumJob = null; uploadJob?.cancel(true); uploadJob = null
         compositionCache.clear(); beautyJobs.forEach { it.cancel(true) }; beautyJobs.clear(); readyBeauty.clear()
         activeSequence = false; remaining = 0; failure = null; stopPreview(); state = "IDLE"; paid = false; orderCode = null; qrCode = null
         shots.clear(); selected.clear(); frame = null; printImage = null; composition = null; albumUrl = null; albumId = null
-        printAccepted = false; revenueRecorded = false; paymentMethod = "PAYOS" }
-    @Synchronized override fun close() { epoch++; job?.cancel(true); stopInactivity(); albumJob?.cancel(true); compositionCache.clear(); beautyJobs.forEach { it.cancel(true) }
-        executor.shutdownNow(); albumExecutor.shutdownNow(); beautyExecutor.shutdownNow(); cameraManager.close(); beauty.close() }
-    private fun cloudStatus() = boothConfig.status() + mapOf("payOsConfigured" to (payOs?.isConfigured == true),
+        printAccepted = false; revenueRecorded = false; printStatusMessage = null; videoGenerated = false; videoUploaded = false; albumCompleted = false; paymentMethod = "PAYOS" }
+    @Synchronized override fun close() { epoch++; job?.cancel(true); stopInactivity(); albumJob?.cancel(true); uploadJob?.cancel(true); compositionCache.clear(); beautyJobs.forEach { it.cancel(true) }
+        executor.shutdownNow(); albumExecutor.shutdownNow(); beautyExecutor.shutdownNow(); cameraManager.close(); beauty.close()
+        listOf(executor, albumExecutor, beautyExecutor).forEach { runCatching { it.awaitTermination(5, TimeUnit.SECONDS) } }
+    }
+    private fun cloudStatus(): Map<String, Any> {
+        val configured = boothConfig.status()
+        return configured + mapOf("payOsConfigured" to (payOs?.isConfigured == true),
         "catalogSource" to firebaseCatalog.source.name,
         "payOsStatus" to (payOs?.readiness?.name ?: "CONFIG_MISSING"),
-        "cloudinaryConfigured" to (cloudinary != null), "webAlbumConfigured" to (album != null),
-        "revenueEndpointConfigured" to (revenue != null))
+        "cloudinaryConfigured" to (cloudinary != null || configured["cloudinaryConfigured"] == true),
+        "webAlbumConfigured" to (album != null || configured["webAlbumConfigured"] == true),
+        "revenueEndpointConfigured" to (revenue != null || configured["revenueEndpointConfigured"] == true),
+        "canUploadAlbum" to (configured["canUploadAlbum"] == true),
+        "databaseConfigured" to (configured["databaseConfigured"] == true),
+        "cloudSyncReady" to (configured["canUploadAlbum"] == true || configured["databaseConfigured"] == true))
+    }
 
     private fun qrPng(raw: String): String {
         if (raw.startsWith("data:image/png;base64,")) return raw
@@ -706,7 +791,7 @@ class RealSessionEngine(
             return RealSessionEngine(workspace, camera, PrinterManager(LegacyPrinter(PrintAuthorization { true }), dryRun = !systemPrintEnabled),
                 SqliteSalesRepository(workspace), payOs = payOs, revenue = revenue,
                 album = album, cloudinary = cloudinary, printerName = config.get("PRINTER_NAME_STRIP"),
-                boothId = config.get("BOOTH_ID"), boothConfig = config)
+                boothId = config.get("BOOTH_ID"), boothConfig = config, operatorAuthorized = { true })
         }
     }
 }

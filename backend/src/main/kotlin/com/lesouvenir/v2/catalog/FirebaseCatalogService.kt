@@ -36,6 +36,15 @@ class FirebaseCatalogService(
 
     @Synchronized fun sync(forceRemote: Boolean = false): List<LayoutMode> {
         if (!forceRemote) current?.let { return it }
+        // Make the first kiosk catalog read independent of Firestore availability.
+        val disk = readFile(cache)
+        val static = if (disk == null) readFile(production) else null
+        val local = disk ?: static
+        if (!forceRemote && local != null) {
+            current = local
+            source = if (disk != null) CatalogSource.DISK_CACHE else CatalogSource.STATIC_FALLBACK
+            return local
+        }
         val attempt = runCatching { remote?.invoke() ?: fetchRemote() }
         val fetched = attempt.getOrNull()?.takeIf { it.isNotEmpty() }
         if (fetched != null) {
@@ -55,8 +64,6 @@ class FirebaseCatalogService(
         }
         lastSyncError = attempt.exceptionOrNull()?.let { "Remote fetch failed: ${it.javaClass.simpleName}" }
             ?: "Remote catalog unavailable or empty"
-        val disk = readFile(cache)
-        val static = if (disk == null) readFile(production) else null
         val fallback = disk ?: static ?: current ?: emptyList()
         source = when {
             disk != null -> CatalogSource.DISK_CACHE
@@ -129,7 +136,7 @@ class FirebaseCatalogService(
                 FirebaseApp.initializeApp(FirebaseOptions.builder().setCredentials(GoogleCredentials.fromStream(input)).build())
             }
         }
-        val documents = FirestoreClient.getFirestore(app).collection("layouts").get().get(5, TimeUnit.SECONDS).documents
+        val documents = FirestoreClient.getFirestore(app).collection("layouts").get().get(2, TimeUnit.SECONDS).documents
         return mapLayouts(documents.map { doc ->
             gson.toJsonTree(doc.data.orEmpty() + mapOf("id" to doc.id)).asJsonObject
         }, requireSlots = true)

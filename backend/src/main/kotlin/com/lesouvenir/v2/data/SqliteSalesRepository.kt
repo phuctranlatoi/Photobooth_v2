@@ -1,5 +1,7 @@
 package com.lesouvenir.v2.data
 
+import com.lesouvenir.v2.config.DesktopBoothConfig
+import com.lesouvenir.v2.integrations.*
 import java.nio.file.Files
 import java.nio.file.Path
 import java.sql.DriverManager
@@ -78,6 +80,59 @@ class SqliteSalesRepository(workspace: Path) {
         db.prepareStatement("SELECT * FROM sales WHERE session_id=?").use { stmt ->
             stmt.setString(1, sessionId)
             stmt.executeQuery().use { rows -> if (rows.next()) read(rows) else null }
+        }
+    }
+    fun getSummary(startTime: Long, endTime: Long): SalesSummary = connection().use { db ->
+        db.prepareStatement("""SELECT COALESCE(SUM(total_amount),0), COUNT(*), COALESCE(SUM(quantity),0),
+            COALESCE(SUM(extra_amount),0), COALESCE(SUM(extra_quantity),0) FROM sales
+            WHERE status='completed' AND created_at >= ? AND created_at < ?""").use { stmt ->
+            stmt.setLong(1, startTime); stmt.setLong(2, endTime)
+            stmt.executeQuery().use { r -> r.next(); SalesSummary(r.getLong(1), r.getLong(2), r.getLong(3), r.getLong(4), r.getLong(5)) }
+        }
+    }
+    fun getDailyPoints(startTime: Long, endTime: Long): List<DailyRevenuePoint> = connection().use { db ->
+        db.prepareStatement("""SELECT date(created_at / 1000, 'unixepoch', 'localtime'), SUM(total_amount), COUNT(*)
+            FROM sales WHERE status='completed' AND created_at >= ? AND created_at < ? GROUP BY 1 ORDER BY 1""").use { stmt ->
+            stmt.setLong(1, startTime); stmt.setLong(2, endTime)
+            stmt.executeQuery().use { r -> buildList { while (r.next()) add(DailyRevenuePoint(r.getString(1), r.getLong(2), r.getLong(3))) } }
+        }
+    }
+    fun getSizeBreakdowns(startTime: Long, endTime: Long): List<SizeBreakdown> = connection().use { db ->
+        db.prepareStatement("""SELECT print_size, COUNT(*), SUM(quantity), SUM(total_amount), SUM(extra_amount)
+            FROM sales WHERE status='completed' AND created_at >= ? AND created_at < ? GROUP BY print_size ORDER BY print_size""").use { stmt ->
+            stmt.setLong(1, startTime); stmt.setLong(2, endTime)
+            stmt.executeQuery().use { r -> buildList { while (r.next()) add(SizeBreakdown(r.getString(1), r.getLong(2), r.getLong(3), r.getLong(4), r.getLong(5))) } }
+        }
+    }
+    fun getRecentTransactions(startTime: Long, endTime: Long, limit: Int = 50): List<SaleTransaction> = connection().use { db ->
+        db.prepareStatement("""SELECT * FROM sales WHERE status IN ('completed','VOIDED','voided')
+            AND created_at >= ? AND created_at < ? ORDER BY created_at DESC, id DESC LIMIT ?""").use { stmt ->
+            stmt.setLong(1, startTime); stmt.setLong(2, endTime); stmt.setInt(3, limit.coerceIn(1, 100))
+            stmt.executeQuery().use { r -> buildList { while (r.next()) add(read(r)) } }
+        }
+    }
+    fun getRecentTransactions(limit: Int = 50): List<SaleTransaction> = connection().use { db ->
+        db.prepareStatement("SELECT * FROM sales WHERE status IN ('completed','VOIDED','voided') ORDER BY created_at DESC, id DESC LIMIT ?").use { stmt ->
+            stmt.setInt(1, limit.coerceIn(1, 100))
+            stmt.executeQuery().use { r -> buildList { while (r.next()) add(read(r)) } }
+        }
+    }
+    /** A void is an UPDATE, never a second revenue INSERT. Failed remote updates stay pending. */
+    fun syncPendingSales(client: NeonDirectRevenueClient, config: DesktopBoothConfig) {
+        getPendingSales().forEach { sale ->
+            val synced = when (sale.status) {
+                "completed" -> client.recordTransaction(config, sale)
+                "VOIDED", "voided" -> client.voidTransaction(config, sale.sessionId, sale.adjustReason)
+                else -> false
+            }
+            if (synced) markSaleSynced(sale.sessionId)
+        }
+    }
+    fun voidTransaction(sessionId: String, reason: String?): Boolean = connection().use { db ->
+        db.prepareStatement("""UPDATE sales SET status='VOIDED', sync_status='PENDING', adjust_reason=?, adjusted_at=?
+            WHERE session_id=? AND status='completed'""").use { stmt ->
+            stmt.setString(1, reason); stmt.setLong(2, System.currentTimeMillis()); stmt.setString(3, sessionId)
+            stmt.executeUpdate() > 0
         }
     }
 }

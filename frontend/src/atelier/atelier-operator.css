@@ -95,3 +95,71 @@
 .operator-workspace .v1-settings .v1-save button{background:var(--op-accent);color:#161518;border-color:var(--op-accent)}
 .operator-workspace .v1-settings [role=alert],.operator-workspace .op-tab [role=alert]{background:#56312c;color:#fff0e9;border-radius:12px;padding:14px}
 @media(max-width:700px){.operator-workspace>nav{overflow-x:auto}.operator-workspace>nav button{flex:0 0 112px}.operator-workspace .v1-status-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Opaque operator darkroom: no ambient orbs or frosted white surfaces can shine through. */
+.operator-workspace{background:#181619;position:relative;z-index:10;--op-surface:#222025;--op-line:#3E3842;--op-text:#FFFDF9;--op-muted:#DCD4CD;--op-accent:#D8C7B5}
+.operator-workspace>header,.operator-workspace>nav,.operator-workspace :is(.op-panel,.op-card,.op-dialog){background:#222025;border-color:#3E3842;color:#FFFDF9;backdrop-filter:none;-webkit-backdrop-filter:none}
+.operator-workspace :is(h1,h2,h3,h4),.operator-workspace .v1-settings :is(h1,h2,h3,h4){color:#FFFDF9}
+.operator-workspace :is(.op-heading p,.op-panel p,.op-card p),.operator-workspace .v1-settings p{color:#DCD4CD}
+.operator-workspace .v1-settings{color:#FFFDF9}
+.operator-workspace .v1-settings>section,.operator-workspace .v1-canon-card{background:#222025;border-color:#3E3842;color:#FFFDF9;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+.operator-workspace .v1-status-cards>div{background:#27242B;border-color:#3E3842;color:#FFFDF9;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+.operator-workspace .v1-status-cards small,.operator-workspace .v1-settings :is(.v1-setting-note,.v1-folder-tip,.v1-camera-options span),.operator-workspace .op-layout-dialog small{color:#A4988F}
+.operator-workspace .v1-status-cards strong{color:#FFFDF9}
+.operator-workspace .v1-settings :is(.v1-timer-banner,.v1-info-chip,.v1-settings>header span){background:#27242B;border-color:#3E3842;color:#EADFD6}
+.operator-workspace .v1-settings .v1-setting-row input[role=switch]{background:#302B35;border:1px solid #5C5263;box-shadow:none}
+.operator-workspace .v1-settings .v1-setting-row input[role=switch]:checked{background:#C87A5E;border-color:#C87A5E;box-shadow:none}
+.operator-workspace .v1-settings .v1-setting-row input[role=switch]::after{background:#FFFDF9}
+.operator-workspace .v1-settings .v1-timeout button{background:#2D2833;border-color:#4D4454;color:#FFFDF9}
+.operator-workspace .v1-settings .v1-camera-options button{background:#28252D;border-color:#4D4454;color:#EADFD6}
+.operator-workspace .v1-settings .v1-camera-options button[aria-pressed=true]{background:#4A352D;border-color:#C87A5E;color:#FFFDF9}
+.operator-workspace .v1-settings .v1-folder input{background:#1B191E;border-color:#4A4150;color:#FFFDF9}
+.operator-workspace .v1-settings .v1-save{background:#27242B;border-color:#3E3842}
+.operator-workspace .v1-settings .v1-save button{background:#D8C7B5;border-color:#D8C7B5;color:#181619}
+.operator-workspace .op-tab button{background:#2D2833;color:#FFFDF9;border-color:#4D4454}
+.operator-workspace .op-tab button:hover:not(:disabled){background:#39313d}
+.operator-workspace .op-dialog :is(input,select){background:#1B191E;color:#FFFDF9;border-color:#4A4150}
+.operator-workspace .op-folder-hint{padding:14px 18px;border:1px solid #3E3842;border-radius:14px;background:#27242B;color:#A4988F;overflow-wrap:anywhere}
+.operator-workspace .op-folder-hint code{color:#EADFD6;white-space:normal}
+.operator-workspace .op-tags{display:flex;gap:7px;flex-wrap:wrap}.operator-workspace .op-tags span{padding:5px 9px;border:1px solid #5C5263;border-radius:999px;background:#302B35;color:#EADFD6;font-size:12px;overflow-wrap:anywhere}
+.operator-workspace .op-frame-image{min-height:200px;display:grid;place-items:center;background:#181619;border-radius:12px;color:#A4988F;text-align:center;overflow:hidden}
+.operator-workspace .op-frame-image img{width:100%;height:clamp(200px,26vh,320px);object-fit:contain;background:transparent}
+.operator-workspace .op-layout-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr))}
+.operator-workspace .op-layout-card{grid-template-columns:100px minmax(0,1fr);gap:16px;padding:18px}
+.operator-workspace .op-layout-preview{width:100px;height:136px;box-sizing:border-box;display:grid;place-items:center;padding:8px;border-radius:14px;background:#181619;border:1px solid #3E3842}
+.operator-workspace .op-layout-preview svg{display:block;width:auto;max-width:100%;height:auto;max-height:120px;filter:drop-shadow(0 6px 10px #0008)}
+.operator-workspace .op-layout-details{min-width:0;display:grid;align-content:start;gap:14px}.operator-workspace .op-layout-details h3{font-family:var(--at-font-display);font-size:clamp(21px,2vw,28px)}
+.operator-workspace .op-layout-specs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0}
+.operator-workspace .op-layout-specs>div{min-width:0;padding:10px;background:#27242B;border:1px solid #3E3842;border-radius:10px}
+.operator-workspace .op-layout-specs dt{font-size:12px;color:#A4988F}.operator-workspace .op-layout-specs dd{margin:4px 0 0;color:#FFFDF9;font-weight:650}
+.operator-workspace .op-layout-dialog{background:#222025;border:1px solid #5C5263;box-shadow:0 24px 90px #0009}
+.operator-workspace .op-layout-dialog label{color:#EADFD6}.operator-workspace .op-layout-dialog label small{font-weight:400}
+@media(max-width:480px){.operator-workspace .op-layout-card{grid-template-columns:84px minmax(0,1fr);gap:12px;padding:12px}.operator-workspace .op-layout-preview{width:84px;height:124px}.operator-workspace .op-layout-preview svg{max-height:108px}.operator-workspace .op-layout-specs{grid-template-columns:1fr}}
+
+/* Revenue and filter tabs live in the imported Atelier stylesheet, not the legacy operator CSS. */
+.operator-workspace .op-revenue .op-kpis{grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr))}
+.operator-workspace .op-revenue .op-kpis .op-card p{font-size:clamp(1.3rem,2.3vw,2rem);font-weight:700;font-variant-numeric:tabular-nums;color:var(--op-text);overflow-wrap:anywhere}
+.operator-workspace .op-kpi-primary{border-color:#c3946a;background:#302823}
+.operator-workspace .op-cloud-on{color:#a9edc0}.operator-workspace .op-cloud-off{color:#f3c279}
+.operator-workspace .op-chart-scroll{max-width:100%;min-width:0;overflow-x:auto;overscroll-behavior-inline:contain}
+.operator-workspace .op-revenue-chart{display:block;width:100%;min-width:540px;height:240px}
+.operator-workspace .op-status-ok,.operator-workspace .op-status-void{display:inline-block;padding:.35rem .7rem;border-radius:999px;font-weight:700;white-space:nowrap}
+.operator-workspace .op-status-ok{color:#a9edc0;background:#224333}.operator-workspace .op-status-void{color:#ffc4b9;background:#572d30}
+.operator-workspace .op-filter-row{display:flex;align-items:center;gap:.5rem;min-width:0}
+.operator-workspace .op-filter-row .op-filter-choice{flex:1;min-width:0;width:auto}
+.operator-workspace .op-filter-row>button:last-child{flex:none}
+.operator-workspace .op-filter-preview{position:relative;overflow:hidden;width:min(100%,280px);height:260px;border-radius:14px;background:linear-gradient(165deg,#41597a 0%,#e9ac74 56%,#3e5d61 57%,#122d37 100%)}
+.operator-workspace .op-filter-preview-sun{position:absolute;top:55px;right:55px;width:80px;height:80px;border-radius:50%;background:#ffe2ad;box-shadow:0 0 50px #f5c283}
+.operator-workspace .op-filter-preview-hill{position:absolute;bottom:-45px;left:-20%;width:145%;height:120px;border-radius:50% 50% 0 0;background:#253c40}
+
+/* Obsidian glass: opaque enough to read controls over any desktop background. */
+.operator-workspace { background:rgba(20,18,22,.92); -webkit-backdrop-filter:blur(28px) saturate(140%); backdrop-filter:blur(28px) saturate(140%); --op-text:#FFFDF9; --op-muted:#DCD4CD; color:var(--op-text); }
+.operator-workspace :is(.op-panel,.op-card,.op-dialog,.op-layout-card,.v1-status-cards > div,.v1-settings section,.v1-admin-banner,.v1-settings .v1-save),.operator-workspace > nav { background:rgba(32,29,36,.72); border:1px solid rgba(255,255,255,.08); box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 12px 32px rgba(0,0,0,.35); border-radius:18px; -webkit-backdrop-filter:blur(24px) saturate(130%); backdrop-filter:blur(24px) saturate(130%); }
+.operator-workspace :is(h1,h2,h3,h4,.v1-status-cards strong) { color:#FFFDF9; }
+.operator-workspace :is(p,.op-heading p,.op-card p,.op-panel p) { color:#DCD4CD; }
+.operator-workspace :is(input:not([type=checkbox]):not([type=range]):not([type=color]),select,textarea) { background:#18161A; color:#FFFDF9; border-color:rgba(255,255,255,.2); }
+.operator-workspace .v1-admin-pills .v1-pill-ok { color:#34D399; border-color:rgba(52,211,153,.3); }
+.operator-workspace .v1-admin-pills .v1-pill-off { color:#FBBF24; border-color:rgba(251,191,36,.3); }
+.operator-workspace .v1-admin-pills .v1-pill-ok .v1-dot { background:#34D399; box-shadow:0 0 10px #34D399aa; }
+.operator-workspace .v1-admin-pills .v1-pill-off .v1-dot { background:#FBBF24; box-shadow:0 0 10px #FBBF24aa; }
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) { .operator-workspace { background:#141216; } .operator-workspace :is(.op-panel,.op-card,.op-dialog,.op-layout-card,.v1-status-cards > div,.v1-settings section,.v1-admin-banner),.operator-workspace > nav { background:#201d24; } }

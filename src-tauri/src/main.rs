@@ -9,8 +9,8 @@ async fn health_check(state:tauri::State<'_,Shared>)->Result<serde_json::Value,S
         let mut guard=shared.lock().map_err(|_|"Bridge lock unavailable")?;
         if guard.is_none(){*guard=Some(bridge::Bridge::spawn()?)}
         let result=guard.as_mut().unwrap().check();
-        if result.is_err(){guard.take();} // No automatic retry of an uncertain request.
-        result
+        if matches!(result,Err(bridge::RequestError::Transport(_))){guard.take();} // Never replay an uncertain request.
+        result.map_err(|error|error.to_string())
     }).await.map_err(|_|"Bridge worker failed".to_string())?
 }
 fn main(){
@@ -21,7 +21,7 @@ fn main(){
 }
 #[tauri::command]
 async fn simulator_request(state:tauri::State<'_,Shared>,method:String,params:serde_json::Value)->Result<serde_json::Value,String>{
-    if !matches!(method.as_str(),"operator.getSettings"|"operator.updateSettings"|"operator.getStatus"|"operator.updateLayout"|"catalog.get"|"device.getStatus"|"session.start"|"session.confirmSetup"|"session.getState"|"session.cancel"|"session.finish"|"session.setLayout"|"session.setQuantity"|"session.back"|"payment.mockComplete"|"payment.createLink"|"payment.checkStatus"|"capture.startSequence"|"selection.toggle"|"selection.confirm"|"frame.list"|"frame.select"|"frame.confirm"|"print.confirmDryRun"|"print.confirmReal"){return Err("Method not permitted by simulator host".into())}
+    if !matches!(method.as_str(),"operator.getSettings"|"operator.updateSettings"|"operator.getStatus"|"operator.updateLayout"|"operator.reloadFrames"|"operator.addFrame"|"operator.getFilters"|"operator.saveFilter"|"operator.importLut"|"operator.deleteFilter"|"operator.getRevenue"|"catalog.get"|"device.getStatus"|"session.start"|"session.confirmSetup"|"session.getState"|"session.cancel"|"session.finish"|"session.setLayout"|"session.setQuantity"|"session.back"|"payment.mockComplete"|"payment.createLink"|"payment.checkStatus"|"capture.startSequence"|"selection.toggle"|"selection.confirm"|"frame.list"|"frame.select"|"frame.confirm"|"print.confirmDryRun"|"print.confirmReal"){return Err("Method not permitted by simulator host".into())}
     if !params.is_object(){return Err("Simulator params must be an object".into())}
     let shared=state.inner().clone();
     tauri::async_runtime::spawn_blocking(move||{
@@ -30,7 +30,7 @@ async fn simulator_request(state:tauri::State<'_,Shared>,method:String,params:se
         // A domain rejection does not destroy an active session. Transport failures
         // are surfaced without replay; explicit reconnect is health-only.
         let result=guard.as_mut().unwrap().request(&method,params);
-        if result.is_err(){guard.take();}
-        result
+        if matches!(result,Err(bridge::RequestError::Transport(_))){guard.take();}
+        result.map_err(|error|error.to_string())
     }).await.map_err(|_|"Bridge worker failed".to_string())?
 }

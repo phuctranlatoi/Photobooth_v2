@@ -20,6 +20,27 @@ class RealSessionEngineTest {
     @TempDir lateinit var workspace: Path
     private fun offlineCatalog(root: Path) = FirebaseCatalogService(root,
         remote = { emptyList() }, localAppData = null, credentialOverride = null)
+    @Test fun realOperatorFrameStatusAndReload() {
+        val root = workspace.resolve("PhotoboothDesktop_v2")
+        val config = root.resolve("backend/config")
+        Files.createDirectories(config)
+        Files.copy(Path.of("config/production-layouts.json"), config.resolve("production-layouts.json"))
+        RealSessionEngine(root, OfflineCamera(), PrinterManager(discovery = PrinterDiscovery { emptyList() }),
+            SqliteSalesRepository(root), firebaseCatalog = offlineCatalog(root)).use { engine ->
+            assertEquals(0, engine.dispatch("operator.getStatus", JsonObject())["frames"].asJsonArray.size())
+            val image = root.resolve("data/frames/5x15/layout/Standard/new.png")
+            Files.createDirectories(image.parent)
+            ImageIO.write(BufferedImage(8, 8, BufferedImage.TYPE_INT_ARGB), "png", image.toFile())
+            val frames = engine.dispatch("operator.reloadFrames", JsonObject())["frames"].asJsonArray
+            assertEquals(1, frames.size())
+            assertEquals("5x15", frames[0].asJsonObject["targetPrintSize"].asString)
+            assertTrue(frames[0].asJsonObject["thumbDataUrl"].asString.startsWith("data:image/png;base64,"))
+            assertEquals(frames, engine.dispatch("operator.getStatus", JsonObject())["frames"].asJsonArray)
+            assertEquals(-32602, assertFailsWith<SimulatorError> {
+                engine.dispatch("operator.reloadFrames", JsonObject().apply { addProperty("unexpected", true) })
+            }.code)
+        }
+    }
     @Test fun malformedLocalLayoutOverridesDoNotPreventOfflineIpcBootstrap() {
         val root = workspace.resolve("PhotoboothDesktop_v2")
         val config = root.resolve("backend/config")
@@ -196,7 +217,7 @@ class RealSessionEngineTest {
             assertEquals("SELECTING_PHOTOS", snapshot["state"].asString)
             assertEquals(1, camera.captures)
             assertTrue(camera.stopped)
-            assertTrue(Files.isRegularFile(workspace.resolve("backend/build/real-sessions/$sid/original-shot-0.jpg")))
+            assertTrue(Files.isRegularFile(workspace.resolve("data/sessions/$sid/original-shot-0.jpg")))
             assertEquals(-32001, assertFailsWith<SimulatorError> { call("selection.confirm") }.code)
             engine.dispatch("selection.toggle", JsonObject().apply {
                 addProperty("sessionId", sid); addProperty("commandId", UUID.randomUUID().toString()); addProperty("shotIndex", 0)
@@ -211,7 +232,7 @@ class RealSessionEngineTest {
             assertEquals("PRINT_PENDING", confirmedFrame["state"].asString)
             assertFalse(confirmedFrame["compositionDataUrl"].isJsonNull)
             assertFalse(confirmedFrame["printImagePath"].isJsonNull)
-            val files = Files.list(workspace.resolve("backend/build/real-sessions/$sid")).use { it.map { p -> p.fileName.toString() }.toList() }
+            val files = Files.list(workspace.resolve("data/sessions/$sid")).use { it.map { p -> p.fileName.toString() }.toList() }
             assertTrue(files.any { it.startsWith("print_") && it.endsWith(".png") })
             assertEquals(1, camera.captures)
             val firstPrint = Path.of(confirmedFrame["printImagePath"].asString)

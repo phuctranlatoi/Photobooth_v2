@@ -9,6 +9,33 @@ import kotlin.test.*
 class DesktopBoothConfigTest {
     @TempDir lateinit var workspace: Path
 
+    @Test fun cloudSyncFlagsDescribeConfigurationWithoutExposingCredentials() {
+        val empty = DesktopBoothConfig(emptyMap()).status()
+        assertEquals(false, empty["canUploadAlbum"])
+        assertEquals(false, empty["cloudSyncConfigured"])
+        val album = DesktopBoothConfig(mapOf("BOOTH_API_KEY" to "secret-test", "WEB_ALBUM_BASE_URL" to "https://example.test",
+            "CLOUDINARY_CLOUD_NAME" to "cloud-test", "CLOUDINARY_UPLOAD_PRESET" to "preset-test")).status()
+        assertEquals(true, album["canUploadAlbum"])
+        assertEquals(true, album["cloudSyncConfigured"])
+        assertEquals(false, album["databaseConfigured"])
+        assertFalse(album.toString().contains("secret-test"))
+        val db = DesktopBoothConfig(mapOf("DATABASE_URL" to "jdbc:postgresql://example.test/db")).status()
+        assertEquals(true, db["databaseConfigured"])
+        assertEquals(true, db["cloudSyncConfigured"])
+        assertEquals(false, db["canUploadAlbum"])
+    }
+
+    @Test fun albumUrlFallbackAndBoothIdentity() {
+        val defaults = DesktopConfigLoader.load(workspace, emptyMap(), null)
+        assertEquals("https://web-photobooth-pink.vercel.app", defaults.get("WEB_ALBUM_BASE_URL"))
+        assertEquals("booth_1", defaults.get("BOOTH_ID"))
+        val legacy = DesktopConfigLoader.load(workspace, mapOf("ALBUM_BASE_URL" to "https://example.test/a/"), null)
+        assertEquals("https://example.test", legacy.get("WEB_ALBUM_BASE_URL"))
+        val explicit = DesktopConfigLoader.load(workspace, mapOf("WEB_ALBUM_BASE_URL" to "https://another.test/", "BOOTH_ID" to "kiosk"), null)
+        assertEquals("https://another.test", explicit.get("WEB_ALBUM_BASE_URL"))
+        assertEquals("kiosk", explicit.get("BOOTH_ID"))
+    }
+
     @Test fun configurationPrecedenceAndMaskedDiagnostics() {
         val local = workspace.resolve("local")
         Files.createDirectories(local.resolve("LeSouvenirDesktop"))

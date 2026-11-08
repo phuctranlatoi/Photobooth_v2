@@ -1,5 +1,5 @@
 /** Customer-only, delegated glass feedback. No camera frames or session state are handled here. */
-const SURFACE = '.v1-primary, .v1-secondary, .v1-back, .backButton, .v1-carousel-arrow, .v1-stepper button, .v1-layout-card, .v1-frame-grid button, .v1-photo-grid button, .v1-bundles button, .atelier-event-showcase button';
+const SURFACE = '.v1-primary, .v1-secondary, .v1-back, .backButton, .v1-carousel-arrow, .v1-stepper button, .v1-frame-grid button, .v1-photo-grid button, .v1-bundles button, .atelier-event-showcase button';
 let disposeActive: (() => void) | undefined;
 
 export function initLiquidGlassFx(): () => void {

@@ -54,6 +54,7 @@ export function FrameScreen({layout, action, preview, snapshot, frames = [], fra
   const selectedPhotos = (snapshot?.selectedIndices ?? []).map(index => snapshot?.shots?.[index]?.preview);
   const frameArtwork = safeImage(selectedFrame?.thumbDataUrl) || safeImage(selectedFrame?.thumbnailDataUrl) || safeImage(selectedFrame?.previewDataUrl);
   const backendPreviewMatches = snapshot?.frameId === effectiveFrameId && !!safeImage(preview);
+  const isStrip = (layout?.printAspectRatio ?? 0) < 0.5;
 
   return <>
     <Heading step="Bước 5" title="Chọn khung trang trí"
@@ -63,7 +64,7 @@ export function FrameScreen({layout, action, preview, snapshot, frames = [], fra
           selectedPhotos={backendPreviewMatches ? undefined : selectedPhotos}
            frameOverlayUrl={backendPreviewMatches ? undefined : frameArtwork}
           label={`Bản in xem trước · ${formatFrameName(selectedFrame?.name ?? 'Khung mặc định')} · ${layout?.printSizeLabel ?? ''}`}/></div>
-      <div className="v1-frame-grid">
+      <div className={`v1-frame-grid ${isStrip ? 'v1-frame-grid-strip' : 'v1-frame-grid-standard'}`}>
         {frames.length ? frames.map(frame => {
           const thumb = safeImage(frame.thumbDataUrl) || safeImage(frame.thumbnailDataUrl) || safeImage(frame.previewDataUrl);
           const selected = effectiveFrameId === frame.id;

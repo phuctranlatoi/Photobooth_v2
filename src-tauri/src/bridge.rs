@@ -1,6 +1,13 @@
 use serde_json::{json, Value};
 use std::{io::{Read, Write}, process::{Child, Command, Stdio}, sync::mpsc::{self, Receiver}, time::{Duration, Instant}};
 const MAX: usize = 16_777_216;
+#[derive(Debug)]
+pub enum RequestError { Transport(String), Rejected(String) }
+impl std::fmt::Display for RequestError {
+    fn fmt(&self, f:&mut std::fmt::Formatter<'_>)->std::fmt::Result {
+        match self { Self::Transport(message)|Self::Rejected(message)=>f.write_str(message) }
+    }
+}
 pub struct Bridge { child: Child, input: Option<std::process::ChildStdin>, replies: Receiver<Result<Value,String>>, sequence: u64 }
 pub fn read_frame(reader: &mut impl Read) -> Result<Value,String> {
     let mut header=[0;4]; reader.read_exact(&mut header).map_err(|_| "Backend EOF or truncated header".to_string())?;
@@ -35,24 +42,24 @@ impl Bridge {
         std::thread::spawn(move||loop{let reply=read_frame(&mut output);let fatal=reply.is_err();if tx.send(reply).is_err()||fatal{break}});
         Ok(Self{child,input,replies,sequence:0})
     }
-    pub fn check(&mut self)->Result<Value,String>{
+    pub fn check(&mut self)->Result<Value,RequestError>{
         let result=self.request("health.check",json!({}))?;
-        if result["status"]!="ok" || result["protocolVersion"]!=1 || !result["simulator"].is_boolean() || !result["availableMethods"].as_array().is_some_and(|a|a.iter().any(|v|v=="health.check")) || result["backendPid"].as_u64().filter(|p|*p>0).is_none() || result["uptimeMs"].as_u64().is_none() || result["jvmVersion"].as_str().is_none(){return Err("Backend health response failed validation".into())}
+        if result["status"]!="ok" || result["protocolVersion"]!=1 || !result["simulator"].is_boolean() || !result["availableMethods"].as_array().is_some_and(|a|a.iter().any(|v|v=="health.check")) || result["backendPid"].as_u64().filter(|p|*p>0).is_none() || result["uptimeMs"].as_u64().is_none() || result["jvmVersion"].as_str().is_none(){return Err(RequestError::Transport("Backend health response failed validation".into()))}
         Ok(result)
     }
-    pub fn request(&mut self,method:&str,params:Value)->Result<Value,String>{
-        if self.child.try_wait().map_err(|e|e.to_string())?.is_some(){return Err("Backend launcher exited".into())}
+    pub fn request(&mut self,method:&str,params:Value)->Result<Value,RequestError>{
+        if self.child.try_wait().map_err(|e|RequestError::Transport(e.to_string()))?.is_some(){return Err(RequestError::Transport("Backend launcher exited".into()))}
         self.sequence+=1;let id=format!("shell-{}",self.sequence);
         let envelope=json!({"jsonrpc":"2.0","id":id,"method":method,"params":params,"protocolVersion":1});
         let request=serde_json::to_vec(&envelope).unwrap();
-        if request.len()>MAX{return Err("Request exceeds frame limit".into())}
-        let input=self.input.as_mut().ok_or("Backend stdin closed")?;
-        input.write_all(&(request.len() as u32).to_be_bytes()).and_then(|_|input.write_all(&request)).and_then(|_|input.flush()).map_err(|_|"Backend stdin write failed".to_string())?;
-        let reply=self.replies.recv_timeout(Duration::from_secs(25)).map_err(|_|"Backend timeout or reader disconnected".to_string())??;
-        if reply["id"]!=id || reply["jsonrpc"]!="2.0" || reply["protocolVersion"]!=1 {return Err("Backend response correlation/protocol mismatch".into())}
+        if request.len()>MAX{return Err(RequestError::Rejected("Request exceeds frame limit".into()))}
+        let input=self.input.as_mut().ok_or_else(||RequestError::Transport("Backend stdin closed".into()))?;
+        input.write_all(&(request.len() as u32).to_be_bytes()).and_then(|_|input.write_all(&request)).and_then(|_|input.flush()).map_err(|_|RequestError::Transport("Backend stdin write failed".into()))?;
+        let reply=self.replies.recv_timeout(Duration::from_secs(25)).map_err(|_|RequestError::Transport("Backend timeout or reader disconnected".into()))?.map_err(RequestError::Transport)?;
+        if reply["id"]!=id || reply["jsonrpc"]!="2.0" || reply["protocolVersion"]!=1 {return Err(RequestError::Transport("Backend response correlation/protocol mismatch".into()))}
         let result=&reply["result"];
-        if let Some(error)=reply.get("error"){return Err(format!("Backend rejected request: {}",error))}
-        if result.is_null(){return Err("Missing backend result".into())}
+        if let Some(error)=reply.get("error"){return Err(RequestError::Rejected(format!("Backend rejected request: {}",error)))}
+        if result.is_null(){return Err(RequestError::Transport("Missing backend result".into()))}
         Ok(result.clone())
     }
     pub fn shutdown(&mut self)->bool{

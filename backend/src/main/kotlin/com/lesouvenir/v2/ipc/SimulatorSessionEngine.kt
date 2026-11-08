@@ -1,10 +1,16 @@
 package com.lesouvenir.v2.ipc
 
 import com.google.gson.*
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.EncodeHintType
+import com.google.zxing.MultiFormatWriter
+import com.google.zxing.client.j2se.MatrixToImageWriter
 import com.lesouvenir.v2.foundation.*
 import com.lesouvenir.v2.camera.simulator.SimulatorCamera
 import com.lesouvenir.v2.printing.SimulatorCompositor
 import com.lesouvenir.v2.storage.FrameStore
+import com.lesouvenir.v2.storage.FilterStore
+import com.lesouvenir.v2.data.SqliteSalesRepository
 import com.lesouvenir.v2.imaging.FramePack
 import java.awt.Color
 import java.awt.BasicStroke
@@ -50,6 +56,13 @@ class SimulatorSessionEngine(
     private val operatorStore = OperatorLayoutStore(workspace)
     private val settingsStore = OperatorSettingsStore(workspace)
     private val frameStore = FrameStore(workspace, null)
+    private val operatorMedia by lazy { OperatorMediaCommands(frameStore, FilterStore(workspace), sales = SqliteSalesRepository(workspace)) }
+    private fun operatorFrames() = frameStore.loadFrames().map { pack -> mapOf(
+        "id" to pack.id, "title" to pack.title,
+        "targetPrintSize" to (pack.targetPrintSize ?: ""),
+        "targetLayoutId" to (pack.targetLayoutId ?: ""),
+        "isSpecial" to pack.isSpecial, "specialEventName" to (pack.specialEventName ?: ""),
+        "thumbDataUrl" to (pack.customImagePath?.let { frameStore.frameThumbDataUrl(it) } ?: "")) }
     private val thumbCache = ConcurrentHashMap<String, String>()
     private fun availableFrames(): List<FramePack> = frameStore.loadFrames(layout.id, layout.printSizeLabel)
     // Simulator fixtures default to their own frame even when V2 contains frames of the same print size.
@@ -128,7 +141,15 @@ class SimulatorSessionEngine(
     private fun text(p: JsonObject, key: String): String = p[key]?.takeIf { it.isJsonPrimitive && it.asJsonPrimitive.isString }?.asString ?: bad(-32602,"String parameter required")
     private fun number(p: JsonObject, key: String): Int { val v=p[key] ?: bad(-32602,"Integer required"); if(!v.toString().matches(Regex("-?[0-9]{1,8}"))) bad(-32602,"Integer required"); return v.asInt }
     private fun directory() = outputRoot.resolve(sid)
+    private fun generateQrPng(text: String): String {
+        val hints = mapOf(EncodeHintType.MARGIN to 2, EncodeHintType.CHARACTER_SET to "UTF-8")
+        val matrix = MultiFormatWriter().encode(text, BarcodeFormat.QR_CODE, 600, 600, hints)
+        val out = ByteArrayOutputStream()
+        MatrixToImageWriter.writeToStream(matrix, "PNG", out)
+        return "data:image/png;base64," + Base64.getEncoder().encodeToString(out.toByteArray())
+    }
     private fun snapshot(): JsonObject {
+        val simAlbumUrl = if (state == "DELIVERY") "https://web-photobooth-pink.vercel.app/album/$sid" else null
         val live = if(enabled && state in setOf("LIVE_VIEW","COUNTDOWN")) {
             camera.publishPreview(shots.size % config["sourceCount"].asInt)
             camera.latestPreview()?.jpeg?.let { "data:image/jpeg;base64,"+Base64.getEncoder().encodeToString(it) }
@@ -141,6 +162,7 @@ class SimulatorSessionEngine(
         "previewDataUrl" to printImage?.let { data(it,960) }, "compositionDataUrl" to composition?.let { data(it,960) },
         "printImageDataUrl" to printImage?.let { data(it,600) }, "frameId" to frameId,"userConfirmed" to userConfirmed,
         "printAccepted" to false,"revenueRecorded" to false,"paymentMethod" to paymentMethod,
+        "albumUrl" to simAlbumUrl,"qrCodeUrl" to simAlbumUrl?.let { generateQrPng(it) },
         "simulator" to true,"failure" to failure,"livePreviewDataUrl" to live)
     }
 
@@ -148,6 +170,7 @@ class SimulatorSessionEngine(
         if(method.startsWith("operator.")) {
             if(!localOperatorEnabled) bad(-32010,"Local development operator mode disabled; production ACL unavailable")
             return when(method) {
+                in OperatorMediaCommands.methods -> operatorMedia.dispatch(method, p)
                 "operator.getSettings" -> {
                     if(p.size()!=0) bad(-32602,"Invalid parameters")
                     settingsStore.response().apply {
@@ -166,9 +189,20 @@ class SimulatorSessionEngine(
                     obj("accessMode" to "LOCAL_DEVELOPMENT_ONLY", "productionAdminAcl" to false,
                         "state" to state, "canEditLayouts" to (state=="IDLE"), "simulator" to true,
                         "layouts" to layouts, "pricingEditable" to false,
+                        "frames" to operatorFrames(),
+                        "cloud" to mapOf("canUploadAlbum" to false, "webAlbumConfigured" to false,
+                            "cloudinaryConfigured" to false, "databaseConfigured" to false,
+                            "cloudSyncReady" to true, "catalogSource" to "SIMULATOR", "simulator" to true),
+                        "camera" to mapOf("connected" to enabled, "name" to "Simulator Camera", "liveViewActive" to (state == "LIVE_VIEW")),
+                        "printer" to mapOf("name" to "Simulator Printer", "detected" to true, "systemPrintEnabled" to false),
                         "capabilities" to mapOf("simulatorStudio" to true,"simulatorLayoutSettings" to true,
                             "nativeCamera" to false,"nativePrint" to false,"beauty" to false,"effects" to false,
                             "cloudAlbumQr" to false,"revenue" to false,"paymentSettings" to false,"productionAdminAcl" to false))
+                }
+                "operator.reloadFrames" -> {
+                    if(p.size()!=0) bad(-32602,"Invalid parameters")
+                    frameStore.invalidate()
+                    obj("frames" to operatorFrames())
                 }
                 "operator.updateLayout" -> {
                     guard("IDLE")

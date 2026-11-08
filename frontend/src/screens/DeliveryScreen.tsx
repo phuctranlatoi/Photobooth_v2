@@ -7,8 +7,8 @@ import {formatLayoutTitle} from './LayoutArtwork';
 export function DeliveryScreen({busy,action,snapshot,layout,pricing}:ScreenProps){
  const sent=useRef(false);
  const demo=snapshot?.captureMode==='DEMO'||snapshot?.runtimeMode==='SIMULATOR';
- const qr=demo ? null : safeImage(snapshot?.qrCodeUrl);
- const albumUrl=!demo && snapshot?.albumUrl?.startsWith('https://') ? snapshot.albumUrl : null;
+  const qr=safeImage(snapshot?.qrCodeUrl);
+  const albumUrl=snapshot?.albumUrl?.startsWith('http') ? snapshot.albumUrl : null;
   return <div className="v1-delivery-screen">
   <Heading title="Hoàn tất" subtitle="Cảm ơn bạn đã chụp ảnh cùng LE SOUVENIR"/>
   <section className="v1-center v1-panel v1-delivery" aria-label="Khoảnh khắc của bạn">
@@ -23,8 +23,10 @@ export function DeliveryScreen({busy,action,snapshot,layout,pricing}:ScreenProps
     </div>
    </div>
    <div className="v1-delivery__album">
-     {qr?<><img src={qr} alt="Mã QR tải ảnh" className="v1-delivery-qr"/><p>Quét mã QR để tải ảnh của bạn.</p>{albumUrl&&<a href={albumUrl} target="_blank" rel="noopener noreferrer">Mở album ảnh</a>}</>:
-     <><div className="v1-qr-placeholder"><span>Không có QR album</span><small>{demo?'Chế độ mô phỏng · Không có mã QR tải ảnh thật':'Album chưa có mã QR. Vui lòng liên hệ nhân viên.'}</small></div></>}
+      {qr?<><img src={qr} alt="Mã QR tải ảnh & video" className="v1-delivery-qr"/><p>Quét mã QR bằng điện thoại để tải ảnh và video kỷ niệm của bạn</p></>:
+      <div className="v1-qr-placeholder"><span>Không có QR album</span><small>Album chưa có mã QR. Vui lòng liên hệ nhân viên.</small></div>}
+      {snapshot?.videoUploaded&&<span className="v1-video-uploaded-badge">✓ Đã tải video kỷ niệm</span>}
+      {albumUrl&&<a href={albumUrl} target="_blank" rel="noopener noreferrer" className="v1-open-album-btn">Mở album ảnh trên web →</a>}
    </div>
   </section>
   <ActionBar><span>Hẹn gặp lại bạn!</span><KioskPrimaryButton disabled={busy||sent.current} onClick={()=>{if(sent.current||busy)return;sent.current=true;action('session.finish');}}>Hoàn thành · Về trang đầu</KioskPrimaryButton></ActionBar>
