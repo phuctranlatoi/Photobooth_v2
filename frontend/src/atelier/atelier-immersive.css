@@ -5,10 +5,10 @@ body:has(.atelier-customer) { background:#FAF6F0; }
 body:has(.v1-camera) { background:#0A090C !important; }
 body:has(.v1-camera) .ambient-liquid-glass { display:none !important; }
 .ambient-liquid-glass { display:block; visibility:visible; opacity:1; position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none; contain:paint; }
-.ambient-orb { position:absolute; width:clamp(320px,43vw,780px); aspect-ratio:1; border-radius:46% 54% 63% 37%; opacity:.52; filter:blur(64px); will-change:transform; pointer-events:none; transform:translate3d(0,0,0); }
-.ambient-orb--1 { top:-26%; left:-12%; background:radial-gradient(circle at 45% 42%, rgba(255,236,226,.72) 0%, rgba(242,215,202,.42) 46%, rgba(242,215,202,0) 72%); animation:float-liquid-1 26s ease-in-out infinite alternate; }
-.ambient-orb--2 { top:12%; right:-11%; background:radial-gradient(circle at 50% 45%, rgba(255,248,235,.7) 0%, rgba(226,202,178,.38) 48%, rgba(226,202,178,0) 74%); animation:float-liquid-2 32s ease-in-out infinite alternate; }
-.ambient-orb--3 { bottom:-48%; left:20%; background:radial-gradient(circle at 48% 40%, rgba(250,230,226,.68) 0%, rgba(236,208,200,.38) 46%, rgba(236,208,200,0) 72%); animation:float-liquid-3 29s ease-in-out infinite alternate; }
+.ambient-orb { position:absolute; width:clamp(320px,43vw,780px); aspect-ratio:1; border-radius:46% 54% 63% 37%; opacity:.55; filter:blur(76px); will-change:transform; pointer-events:none; transform:translate3d(0,0,0); }
+.ambient-orb--1 { top:-26%; left:-12%; background:radial-gradient(circle at 45% 42%, rgba(255,238,228,.75) 0%, rgba(242,218,206,.42) 46%, rgba(242,218,206,0) 72%); animation:float-liquid-1 26s ease-in-out infinite alternate; }
+.ambient-orb--2 { top:12%; right:-11%; background:radial-gradient(circle at 50% 45%, rgba(255,248,236,.72) 0%, rgba(228,208,185,.38) 48%, rgba(228,208,185,0) 74%); animation:float-liquid-2 32s ease-in-out infinite alternate; }
+.ambient-orb--3 { bottom:-48%; left:20%; background:radial-gradient(circle at 48% 40%, rgba(252,232,228,.7) 0%, rgba(238,212,204,.38) 46%, rgba(238,212,204,0) 72%); animation:float-liquid-3 29s ease-in-out infinite alternate; }
 @keyframes float-liquid-1 { 0% { transform:translate3d(0,0,0) rotate(0deg) scale(1); } 50% { transform:translate3d(18vw,12vh,0) rotate(28deg) scale(1.13); } 100% { transform:translate3d(35vw,28vh,0) rotate(65deg) scale(.92); } }
 @keyframes float-liquid-2 { 0% { transform:translate3d(0,0,0) rotate(0deg) scale(1); } 50% { transform:translate3d(-18vw,-12vh,0) rotate(-30deg) scale(.88); } 100% { transform:translate3d(-36vw,20vh,0) rotate(-65deg) scale(1.16); } }
 @keyframes float-liquid-3 { 0% { transform:translate3d(0,0,0) rotate(0deg) scale(.9); } 50% { transform:translate3d(-19vw,-28vh,0) rotate(32deg) scale(1.1); } 100% { transform:translate3d(23vw,-42vh,0) rotate(75deg) scale(.96); } }
@@ -162,5 +162,47 @@ body:has(.v1-camera) .ambient-liquid-glass { display:none !important; }
 .v1-shell.atelier-customer .v1-photo-tile > button:first-child[aria-pressed=true] { border:2px solid #8E442D; }
 .v1-shell.atelier-customer.v1-camera .v1-pills span { background:rgba(16,14,18,.65); border:1px solid rgba(255,255,255,.25); -webkit-backdrop-filter:blur(18px) saturate(130%); backdrop-filter:blur(18px) saturate(130%); }
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) { .v1-shell.atelier-customer :is(.v1-actionbar,.v1-summary,.v1-payment-summary,.v1-delivery,.v1-photo-tile > button:first-child,.v1-frame-grid > button) { background:#F4EEE7; } }
+/* Final customer surface: preserve the floating layout artwork and the camera darkroom. */
+.v1-shell.atelier-customer:not(.v1-camera) .v1-primary:not(:disabled) {
+  background:linear-gradient(145deg,#26211D 0%,#161412 100%); border:1px solid rgba(255,240,228,.28); border-radius:999px; color:#FFFDFA;
+  box-shadow:inset 0 1px 1.5px rgba(255,255,255,.45),inset 0 -1px 1px rgba(0,0,0,.35),0 12px 36px rgba(45,28,18,.22),0 2px 6px rgba(45,28,18,.1);
+  transition:transform .18s ease,box-shadow .18s ease;
+}
+.v1-shell.atelier-customer:not(.v1-camera) .v1-primary:active:not(:disabled) { transform:scale(.975); box-shadow:inset 0 2px 8px rgba(0,0,0,.4),0 4px 12px rgba(45,28,18,.15); }
+.v1-shell.atelier-customer:not(.v1-camera) .v1-start .v1-primary:not(:disabled) { animation:liquid-start-glow 5.5s ease-in-out infinite; }
+@keyframes liquid-start-glow { 0%,100% { box-shadow:inset 0 1px 1.5px rgba(255,255,255,.45),0 12px 36px rgba(45,28,18,.22),0 0 0 0 rgba(194,115,87,0); } 50% { box-shadow:inset 0 1px 1.5px rgba(255,255,255,.6),0 16px 44px rgba(45,28,18,.28),0 0 32px 4px rgba(194,115,87,.22); } }
+.v1-shell.atelier-customer:not(.v1-camera) :is(.v1-secondary,.v1-back,.backButton,.v1-carousel-arrow,.v1-stepper button) {
+  background:rgba(255,255,255,.62); border:1px solid rgba(255,255,255,.82); border-radius:999px;
+  -webkit-backdrop-filter:blur(24px) saturate(160%); backdrop-filter:blur(24px) saturate(160%);
+  box-shadow:inset 0 1px 1.5px rgba(255,255,255,.95),0 10px 28px rgba(65,42,28,.08);
+  transition:transform .18s ease,background .18s ease,box-shadow .18s ease;
+}
+.v1-shell.atelier-customer:not(.v1-camera) :is(.v1-secondary,.v1-back,.backButton,.v1-stepper button):active:not(:disabled) { transform:scale(.96); background:rgba(255,255,255,.78); }
+.v1-shell.atelier-customer:not(.v1-camera) .v1-carousel-arrow:active:not(:disabled) { background:rgba(255,255,255,.78); }
+.v1-shell.atelier-customer:not(.v1-camera) .v1-stepper button { font-weight:750; font-variant-numeric:tabular-nums; }
+.v1-shell.atelier-customer:not(.v1-camera) .v1-actionbar {
+  background:rgba(255,255,255,.65); border:1px solid rgba(255,255,255,.85); border-radius:24px;
+  -webkit-backdrop-filter:blur(28px) saturate(165%); backdrop-filter:blur(28px) saturate(165%);
+  box-shadow:inset 0 1.5px 2px rgba(255,255,255,.95),0 18px 48px rgba(65,42,28,.09);
+}
+.v1-shell.atelier-customer:not(.v1-camera) :is(.v1-summary,.v1-payment-summary,.v1-quantity-pricing,.v1-quantity-picker) {
+  background:rgba(255,255,255,.56); border:1px solid rgba(255,255,255,.8); border-radius:24px;
+  -webkit-backdrop-filter:blur(26px) saturate(155%); backdrop-filter:blur(26px) saturate(155%);
+  box-shadow:inset 0 1.5px 2px rgba(255,255,255,.92),0 14px 40px rgba(65,42,28,.07);
+}
+.v1-shell.atelier-customer:not(.v1-camera) :is(.v1-photo-tile > button:first-child,.v1-frame-grid > button) {
+  background:rgba(255,255,255,.58); border:1px solid rgba(255,255,255,.78); border-radius:20px;
+  -webkit-backdrop-filter:blur(20px) saturate(150%); backdrop-filter:blur(20px) saturate(150%);
+  box-shadow:inset 0 1px 2px rgba(255,255,255,.9),0 10px 28px rgba(65,42,28,.08);
+}
+.v1-shell.atelier-customer:not(.v1-camera) .v1-photo-tile > button:first-child[aria-pressed=true] { border:2.5px solid #8E442D; box-shadow:inset 0 1px 2px rgba(255,255,255,.9),0 12px 32px rgba(142,68,45,.2); }
+.v1-shell.atelier-customer:not(.v1-camera) .v1-frame-grid > button[aria-pressed=true] { border:2px solid #B58A68; background:rgba(255,255,255,.76); box-shadow:inset 0 1px 2px #fff,0 12px 32px rgba(142,68,45,.15); }
+.v1-shell.atelier-customer:not(.v1-camera) .v1-payment-qr-slot { background:#fff; border-radius:22px; box-shadow:0 12px 36px rgba(65,42,28,.12),inset 0 0 0 1px rgba(216,199,181,.45); }
+.v1-shell.atelier-customer:not(.v1-camera) .v1-delivery { background:rgba(255,255,255,.56); border:1px solid rgba(255,255,255,.8); border-radius:26px; -webkit-backdrop-filter:blur(26px) saturate(155%); backdrop-filter:blur(26px) saturate(155%); box-shadow:inset 0 1.5px 2px rgba(255,255,255,.92),0 14px 40px rgba(65,42,28,.07); }
+.v1-shell.atelier-customer:not(.v1-camera) :is(.v1-delivery__details,.v1-delivery__album) { min-width:0; }
+.v1-shell.atelier-customer .v1-overlay { background:rgba(20,18,16,.42); -webkit-backdrop-filter:blur(20px); backdrop-filter:blur(20px); }
+.v1-shell.atelier-customer .v1-modal { background:rgba(255,255,255,.9); border:1px solid rgba(255,255,255,.95); border-radius:26px; -webkit-backdrop-filter:blur(32px) saturate(160%); backdrop-filter:blur(32px) saturate(160%); box-shadow:0 24px 64px rgba(45,28,18,.18); }
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) { .v1-shell.atelier-customer:not(.v1-camera) :is(.v1-actionbar,.v1-summary,.v1-payment-summary,.v1-quantity-pricing,.v1-quantity-picker,.v1-delivery,.v1-photo-tile > button:first-child,.v1-frame-grid > button,.v1-secondary,.v1-back,.v1-stepper button) { background:#F4EEE7; } .v1-shell.atelier-customer .v1-modal { background:#fff; } }
+@media(prefers-reduced-motion:reduce) { .v1-shell.atelier-customer:not(.v1-camera) .v1-start .v1-primary:not(:disabled) { animation:none; } .v1-shell.atelier-customer:not(.v1-camera) :is(.v1-primary,.v1-secondary,.v1-back,.v1-stepper button) { transition:none; } }
 .v1-shell.atelier-customer .v1-carousel-card.v1-layout-card,
 .v1-shell.atelier-customer .v1-carousel-art { background:none !important; border:0 !important; box-shadow:none !important; }
