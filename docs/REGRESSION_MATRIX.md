@@ -1,5 +1,21 @@
 # Regression Matrix — Source-Derived Gate Baseline
 
+## Verification delta — 2026-11-08
+
+| Case | Result | Evidence / boundary |
+|---|---|---|
+| Backend unit/integration suite | PASS-AUTOMATED | 90 total: 88 passed, 0 failed, 2 skipped; Gradle test task was UP-TO-DATE. |
+| Frontend unit/component suite | PASS-AUTOMATED | 9 files, 70/70 tests passed. |
+| TypeScript/Vite production build | PASS-AUTOMATED | Build exit 0; 2,010 modules transformed. |
+| DEMO end-to-end journey, two 16:10 viewports | PASS-SIMULATED | Full simulated journey and composed/delivery screens; CDP evidence only. |
+| REAL journey | PASS-SIMULATED | Payment screen and real VietQR display only; no settlement or post-payment journey. |
+| Session/output creation | PASS-SIMULATED | 4 UUID session folders; 2 output `master_*.jpg` files, 97,609 bytes each. |
+| Canon/DNP/physical touchscreen/Mini-PC | BLOCKED | No authorization/safe hardware setup; no CPU/GPU/memory or live-view/countdown impact measurement. |
+| Print comparison to V1 | NOT-RUN | No physical paper output was permitted. |
+| PayOS settlement, Neon write, Cloudinary upload | BLOCKED | Production side effects prohibited; not attempted. |
+| Installer, clean install, crash/power recovery | NOT-RUN | Outside this verification run. |
+
+
 This is a required future-test matrix, not a record of passing implementation. Statuses reflect the current static review.
 
 | Area / invariant | V1 evidence | Required V2 regression | Current status |

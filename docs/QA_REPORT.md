@@ -1,5 +1,24 @@
 # QA_REPORT.md
 
+## Independent verification — 2026-11-08 14:32–14:35 +07:00
+
+| Case | Status | Exact evidence |
+|---|---|---|
+| Backend regression | PASS-AUTOMATED | `backend\\gradlew.bat test --offline`: build successful in 18s. XML aggregation from `backend/build/test-results/test/TEST-*.xml`: 28 suites, 90 tests, **88 passed, 0 failed/errors, 2 skipped**. Gradle reported `:test UP-TO-DATE`, so this verifies existing result artifacts rather than a forced fresh execution. |
+| Frontend regression | PASS-AUTOMATED | `frontend\\npm test`: 9 files passed; **70 passed, 0 failed, 0 skipped**, Vitest duration 7.54s. |
+| Frontend production build | PASS-AUTOMATED | `frontend\\npm run build`: TypeScript check and Vite build passed; **2,010 modules transformed**; built in 3.72s. |
+| Desktop customer journey | PASS-SIMULATED | `node tests/verify-demo-and-real-journey.mjs`: exit 0, no failed checks. DEMO journey completed at 1280×800 and 1920×1200; REAL scope stopped at payment display/VietQR rendering. Evidence: `tests/journey-evidence/2026-11-08T07-32-48.117Z`. This is not payment settlement, camera, printer, or physical-touch evidence. |
+| Frame/session disk artifacts | PASS-SIMULATED | `data/sessions` contained 4 top-level UUID session folders and 2 `exports` subfolders. `data/output` contained 2 non-empty framed files: `master_3faff436-7e22-4020-a938-4ebf89e43dac.jpg` and `master_777e20dd-f391-4c8c-825f-26b592ad4661.jpg`, each 97,609 bytes. No `master_*.jpg` existed inside `data/sessions`; masters are stored in the output directory. |
+| V1 working-tree status | PASS-AUTOMATED (limited) | `git -C "E:\\HK1_2026_2027\\PhotoboothDesktop" status --short` returned no output. This proves a clean Git worktree at check time, not forensic proof that no ignored/runtime file or metadata was touched. No V1 build or write was performed by this review. |
+
+### Findings
+
+- **HIGH — release evidence remains simulated.** No authorized Canon capture/Live View/unplug test, DNP spool or physical print, physical touchscreen/Mini-PC performance, or provider settlement/write was executed.
+- **MEDIUM — backend task was up-to-date.** A clean/forced rerun was not performed because cleanup was neither requested nor necessary for this bounded check. Preserve the 90-test XML evidence, but require a fresh clean CI run for release provenance.
+- **LOW — generated output is untracked.** `git status --short` reports `data/output/` untracked. Ensure generated/customer output is excluded from source and release packaging and governed by retention/privacy policy.
+
+**Independent verdict:** software checks pass within their automated/simulated scope; **production release remains BLOCKED**.
+
 ## Summary of QA Findings (Phase 1 Legacy Audit)
 
 | Issue | Affected Documentation | Details | Impact |

@@ -1,5 +1,20 @@
 # Release Readiness Checklist — V2
 
+## Independent gate update — 2026-11-08
+
+| Area | Status | Evidence |
+|---|---|---|
+| Backend | PASS-AUTOMATED | 28 suites / 90 tests: 88 passed, 0 failed, 2 skipped. Test task was UP-TO-DATE. |
+| Frontend tests | PASS-AUTOMATED | 9 files / 70 tests passed, none failed or skipped. |
+| Frontend build | PASS-AUTOMATED | TypeScript + Vite passed; 2,010 modules transformed. |
+| Desktop journey | PASS-SIMULATED | DEMO journey completed at 1280×800 and 1920×1200; REAL verification covered payment display/VietQR only. |
+| Disk composition artifacts | PASS-SIMULATED | Four session folders and two 97,609-byte `data/output/master_*.jpg` files observed. |
+| V1 isolation check | PASS-AUTOMATED (limited) | V1 `git status --short` empty; no forensic/ignored-file proof. |
+| Production release | **BLOCKED** | Canon, DNP, physical kiosk/Mini-PC performance, provider settlement/writes, clean installer/recovery, security acceptance, and redistribution licenses remain unresolved. |
+
+**Gate decision: NO-GO for production.** The current evidence supports continued controlled software/hardware-lab testing only. Unit tests and simulated desktop flows must not be represented as real Canon, DNP, payment-settlement, upload, revenue, or physical-touch certification. Canon SDK/ONNX/JRE and other redistribution rights require written signoff. Architectural changes to IPC/session authority, payment verification, print/revenue semantics, camera lifecycle, or LAN delivery require architect and independent reviewer signoff.
+
+
 ## Latest readiness matrix — Real External Integrations Recovery (2026-11-01)
 
 | Release area | Readiness | Evidence / boundary |

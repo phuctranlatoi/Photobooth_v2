@@ -1,7 +1,7 @@
 ﻿---
 description: Designs premium Korean-style photobooth touchscreen UI and polished component system for 16:10 Windows kiosk.
 mode: subagent
-model: 9router/cx/gpt-6-sol
+model: 9router/ag/claude-opus-4-6-thinking
 ---
 
 # Role

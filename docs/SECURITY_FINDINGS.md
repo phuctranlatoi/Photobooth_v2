@@ -1,5 +1,20 @@
 # Security Findings — Initial V1 Audit Review
 
+## 2026-11-08 verification note
+
+No secrets were read and no payment, database, upload, camera, or print side effect was performed. V1 `git status --short` was empty after the run. This is limited working-tree evidence, not a filesystem forensic guarantee.
+
+### LOW — SEC-07 — Generated framed outputs are untracked in the repository workspace
+
+**Evidence:** V2 `git status --short` reported untracked `data/output/`; two `master_<session-id>.jpg` files were present there.
+
+**Impact:** Accidental staging, source archive inclusion, or over-retention could expose customer imagery in a real deployment.
+
+**Mitigation:** Ignore generated output, exclude it from installer/source archives, enforce V2-local restrictive ACLs and documented automatic retention/deletion. Never use real customer photos in automated tests.
+
+**Regression:** Generate synthetic output, verify Git/package manifests exclude it, verify retention removes expired assets without crossing session or V1 boundaries.
+
+
 No secrets were read. No network or production operation was performed.
 
 ## CRITICAL
