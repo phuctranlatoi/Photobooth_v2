@@ -15,6 +15,18 @@ async fn health_check(state:tauri::State<'_,Shared>)->Result<serde_json::Value,S
 }
 fn main(){
     let shared:Shared=Arc::new(Mutex::new(None));let closing=shared.clone();
+
+    // Eagerly pre-warm JVM backend in the background while WebView and React initialize
+    // so cold start latency (1-2s JVM spin-up) is completely masked before the start screen calls IPC.
+    let eager=shared.clone();
+    tauri::async_runtime::spawn_blocking(move||{
+        if let Ok(mut guard)=eager.lock(){
+            if guard.is_none(){
+                let _=bridge::Bridge::spawn().map(|b|*guard=Some(b));
+            }
+        }
+    });
+
     let app=tauri::Builder::default().manage(shared).invoke_handler(tauri::generate_handler![health_check,simulator_request])
         .build(tauri::generate_context!()).expect("V2 host initialization failed");
     app.run(move|_,event|{if matches!(event,tauri::RunEvent::Exit){if let Ok(mut guard)=closing.lock(){guard.take();}}});

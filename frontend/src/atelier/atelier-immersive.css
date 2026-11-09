@@ -5,7 +5,7 @@ body:has(.atelier-customer) { background:#FAF6F0; }
 body:has(.v1-camera) { background:#0A090C !important; }
 body:has(.v1-camera) .ambient-liquid-glass { display:none !important; }
 .ambient-liquid-glass { display:block; visibility:visible; opacity:1; position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none; contain:paint; }
-.ambient-orb { position:absolute; width:clamp(320px,43vw,780px); aspect-ratio:1; border-radius:46% 54% 63% 37%; opacity:.55; filter:blur(76px); will-change:transform; pointer-events:none; transform:translate3d(0,0,0); }
+.ambient-orb { position:absolute; width:clamp(320px,43vw,780px); aspect-ratio:1; border-radius:46% 54% 63% 37%; opacity:.56; filter:blur(80px); will-change:transform; pointer-events:none; transform:translate3d(0,0,0); }
 .ambient-orb--1 { top:-26%; left:-12%; background:radial-gradient(circle at 45% 42%, rgba(255,238,228,.75) 0%, rgba(242,218,206,.42) 46%, rgba(242,218,206,0) 72%); animation:float-liquid-1 26s ease-in-out infinite alternate; }
 .ambient-orb--2 { top:12%; right:-11%; background:radial-gradient(circle at 50% 45%, rgba(255,248,236,.72) 0%, rgba(228,208,185,.38) 48%, rgba(228,208,185,0) 74%); animation:float-liquid-2 32s ease-in-out infinite alternate; }
 .ambient-orb--3 { bottom:-48%; left:20%; background:radial-gradient(circle at 48% 40%, rgba(252,232,228,.7) 0%, rgba(238,212,204,.38) 46%, rgba(238,212,204,0) 72%); animation:float-liquid-3 29s ease-in-out infinite alternate; }
@@ -165,25 +165,25 @@ body:has(.v1-camera) .ambient-liquid-glass { display:none !important; }
 /* Final customer surface: preserve the floating layout artwork and the camera darkroom. */
 .v1-shell.atelier-customer:not(.v1-camera) .v1-primary:not(:disabled) {
   background:linear-gradient(145deg,#26211D 0%,#161412 100%); border:1px solid rgba(255,240,228,.28); border-radius:999px; color:#FFFDFA;
-  box-shadow:inset 0 1px 1.5px rgba(255,255,255,.45),inset 0 -1px 1px rgba(0,0,0,.35),0 12px 36px rgba(45,28,18,.22),0 2px 6px rgba(45,28,18,.1);
+  box-shadow:inset 0 1.5px 2px rgba(255,255,255,.55),inset 0 -1.5px 1px rgba(0,0,0,.4),0 12px 36px rgba(45,28,18,.22),0 2px 6px rgba(45,28,18,.1);
   transition:transform .18s ease,box-shadow .18s ease;
 }
 .v1-shell.atelier-customer:not(.v1-camera) .v1-primary:active:not(:disabled) { transform:scale(.975); box-shadow:inset 0 2px 8px rgba(0,0,0,.4),0 4px 12px rgba(45,28,18,.15); }
 .v1-shell.atelier-customer:not(.v1-camera) .v1-start .v1-primary:not(:disabled) { animation:liquid-start-glow 5.5s ease-in-out infinite; }
-@keyframes liquid-start-glow { 0%,100% { box-shadow:inset 0 1px 1.5px rgba(255,255,255,.45),0 12px 36px rgba(45,28,18,.22),0 0 0 0 rgba(194,115,87,0); } 50% { box-shadow:inset 0 1px 1.5px rgba(255,255,255,.6),0 16px 44px rgba(45,28,18,.28),0 0 32px 4px rgba(194,115,87,.22); } }
+@keyframes liquid-start-glow { 0%,100% { box-shadow:inset 0 1.5px 2px rgba(255,255,255,.55),inset 0 -1.5px 1px rgba(0,0,0,.4),0 12px 36px rgba(45,28,18,.22),0 0 16px 0 rgba(205,170,116,.12); } 48% { box-shadow:inset 0 1.5px 2px rgba(255,255,255,.65),inset 0 -1.5px 1px rgba(0,0,0,.4),0 16px 44px rgba(45,28,18,.26),0 0 38px 7px rgba(205,170,116,.25); } }
 .v1-shell.atelier-customer:not(.v1-camera) :is(.v1-secondary,.v1-back,.backButton,.v1-carousel-arrow,.v1-stepper button) {
-  background:rgba(255,255,255,.62); border:1px solid rgba(255,255,255,.82); border-radius:999px;
+   background:rgba(255,255,255,.64); border:1px solid rgba(255,255,255,.82); border-radius:999px;
   -webkit-backdrop-filter:blur(24px) saturate(160%); backdrop-filter:blur(24px) saturate(160%);
   box-shadow:inset 0 1px 1.5px rgba(255,255,255,.95),0 10px 28px rgba(65,42,28,.08);
   transition:transform .18s ease,background .18s ease,box-shadow .18s ease;
 }
-.v1-shell.atelier-customer:not(.v1-camera) :is(.v1-secondary,.v1-back,.backButton,.v1-stepper button):active:not(:disabled) { transform:scale(.96); background:rgba(255,255,255,.78); }
+.v1-shell.atelier-customer:not(.v1-camera) :is(.v1-secondary,.v1-back,.backButton,.v1-stepper button):active:not(:disabled) { transform:scale(.96); background:rgba(255,255,255,.78); box-shadow:inset 0 3px 12px rgba(73,48,34,.18),0 3px 10px rgba(65,42,28,.06); }
 .v1-shell.atelier-customer:not(.v1-camera) .v1-carousel-arrow:active:not(:disabled) { background:rgba(255,255,255,.78); }
 .v1-shell.atelier-customer:not(.v1-camera) .v1-stepper button { font-weight:750; font-variant-numeric:tabular-nums; }
 .v1-shell.atelier-customer:not(.v1-camera) .v1-actionbar {
   background:rgba(255,255,255,.65); border:1px solid rgba(255,255,255,.85); border-radius:24px;
   -webkit-backdrop-filter:blur(28px) saturate(165%); backdrop-filter:blur(28px) saturate(165%);
-  box-shadow:inset 0 1.5px 2px rgba(255,255,255,.95),0 18px 48px rgba(65,42,28,.09);
+   box-shadow:inset 0 1.5px 2px rgba(255,255,255,.95),inset 0 0 0 1px rgba(255,255,255,.28),0 18px 48px rgba(65,42,28,.09);
 }
 .v1-shell.atelier-customer:not(.v1-camera) :is(.v1-summary,.v1-payment-summary,.v1-quantity-pricing,.v1-quantity-picker) {
   background:rgba(255,255,255,.56); border:1px solid rgba(255,255,255,.8); border-radius:24px;
