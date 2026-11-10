@@ -1,4 +1,4 @@
-import {useRef,useState} from 'react';
+import {useEffect,useRef,useState} from 'react';
 import {safeImage} from '../shared/connected-simulator';
 import type {CatalogGetResult} from '../shared/simulator-contract';
 import {KioskPrimaryButton} from './KioskUI';
@@ -8,6 +8,7 @@ import {SAMPLE_PORTRAIT_PHOTOS,SAMPLE_STRIP_PHOTOS} from './samplePhotoboothPhot
 export function StartScreen({layouts,bundles=[],defaultLayoutId,catalogSource,catalogReady=true,onStart,onAdmin,busy}:{layouts:CatalogGetResult['layouts'];bundles?:NonNullable<CatalogGetResult['bundles']>;defaultLayoutId?:string;catalogSource?:string;catalogReady?:boolean;lastSyncError?:string|null;onStart:(layoutId:string)=>void;onAdmin:()=>void;busy:boolean}){
  const taps=useRef(0),pressed=useRef(false);
  const [selected,setSelected]=useState<string|null>(null);
+ useEffect(()=>{if(!busy)pressed.current=false;},[busy]);
   const start=(id:string)=>{if(pressed.current||busy||!catalogReady)return;pressed.current=true;onStart(id)};
  const layoutId=selected??(layouts.some(l=>l.id===defaultLayoutId)?defaultLayoutId:layouts[0]?.id);
    const unavailable=catalogReady&&(catalogSource==='UNAVAILABLE'||!layouts.length);
@@ -21,5 +22,5 @@ export function StartScreen({layouts,bundles=[],defaultLayoutId,catalogSource,ca
      <div className="atelier-welcome__action">
        <KioskPrimaryButton disabled={busy||!catalogReady||!layoutId||unavailable} onClick={()=>layoutId&&start(layoutId)}>CHẠM ĐỂ BẮT ĐẦU →</KioskPrimaryButton>
      </div>
-         </section><aside className="v1-start-art" aria-label="Mẫu bản in LE SOUVENIR"><div className="atelier-welcome__gallery"><span className="atelier-welcome__halo" aria-hidden="true"/>{portrait&&<figure className="atelier-print atelier-print--portrait" style={{aspectRatio:portrait.printAspectRatio}}><LayoutArtwork compact layout={portrait} samplePhotos={SAMPLE_PORTRAIT_PHOTOS}/></figure>}{strip&&<figure className="atelier-print atelier-print--strip" style={{aspectRatio:strip.printAspectRatio}}><LayoutArtwork compact layout={strip} samplePhotos={SAMPLE_STRIP_PHOTOS}/></figure>}{!portrait&&<p className="atelier-welcome__empty">LE SOUVENIR<br/>ATELIER</p>}<p className="atelier-art-caption">LE SOUVENIR · PHOTO ATELIER {portrait&&<span>· MẪU MINH HỌA</span>}</p></div>{eventBundles.length>0&&<div className="atelier-event-showcase" aria-label="Bộ sưu tập sự kiện">{eventBundles.map(bundle=><button type="button" key={bundle.id} disabled={busy||unavailable} aria-pressed={selected===bundle.layoutId} onClick={()=>{setSelected(bundle.layoutId);start(bundle.layoutId)}}><img src={safeImage(bundle.coverDataUrl)} alt=""/><span>{bundle.name}</span></button>)}</div>}</aside></div>;
+         </section><aside className="v1-start-art" aria-label="Mẫu bản in LE SOUVENIR"><div className="atelier-welcome__gallery"><span className="atelier-welcome__halo" aria-hidden="true"/>{portrait&&<figure className="atelier-print atelier-print--portrait" style={{aspectRatio:portrait.printAspectRatio}}><LayoutArtwork compact layout={portrait} samplePhotos={SAMPLE_PORTRAIT_PHOTOS}/></figure>}{strip&&<figure className="atelier-print atelier-print--strip" style={{aspectRatio:strip.printAspectRatio}}><LayoutArtwork compact layout={strip} samplePhotos={SAMPLE_STRIP_PHOTOS}/></figure>}{!portrait&&<p className="atelier-welcome__empty">LE SOUVENIR<br/>ATELIER</p>}<p className="atelier-art-caption">LE SOUVENIR · PHOTO ATELIER {portrait&&<span>· MẪU MINH HỌA</span>}</p></div>{eventBundles.length>0&&<div className="atelier-event-showcase" aria-label="Bộ sưu tập sự kiện">{eventBundles.map(bundle=><button type="button" key={bundle.id} disabled={busy||!catalogReady||unavailable} aria-pressed={selected===bundle.layoutId} onClick={()=>{setSelected(bundle.layoutId);start(bundle.layoutId)}}><img src={safeImage(bundle.coverDataUrl)} alt=""/><span>{bundle.name}</span></button>)}</div>}</aside></div>;
 }

@@ -97,6 +97,13 @@ fun main(args: Array<String>) {
         System.err.println("Bridge requires --simulator or --real")
         kotlin.system.exitProcess(2)
     }
-    val engine: SessionEngine = if (args.single() == "--real") RealSessionEngine.production() else SimulatorSessionEngine.production()
+    // Startup diagnostics go to stderr only: stdout is reserved exclusively for framed JSON-RPC.
+    val engine: SessionEngine = try {
+        if (args.single() == "--real") RealSessionEngine.production() else SimulatorSessionEngine.production()
+    } catch (t: Throwable) {
+        System.err.println("V2 backend startup failed: ${t.stackTraceToString()}")
+        kotlin.system.exitProcess(3)
+    }
+    System.err.println("V2 backend ready: mode=${args.single()}")
     engine.use { HealthBridge(it).serve(System.`in`, System.out) }
 }

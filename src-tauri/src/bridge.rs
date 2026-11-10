@@ -138,6 +138,42 @@ pub fn read_frame(reader: &mut impl Read) -> Result<Value,String> {
     let text=std::str::from_utf8(&body).map_err(|_|"Invalid backend UTF-8".to_string())?;
     serde_json::from_str(text).map_err(|_|"Invalid backend JSON".into())
 }
+/// Maximum number of stderr bytes persisted to the backend diagnostic log.
+const STDERR_LOG_CAP: usize = 262_144;
+
+/// Drains `reader` to EOF, persisting at most `STDERR_LOG_CAP` bytes into `log_path`.
+/// Reading always continues past the cap so the child process pipe never blocks.
+/// I/O failures are swallowed (never panic) and simply stop further logging.
+/// Returns the number of bytes written to the log.
+pub fn drain_stderr(reader: &mut impl Read, log_path: &std::path::Path) -> usize {
+    let mut buffer = [0u8; 4096];
+    let mut file: Option<std::fs::File> = None;
+    let mut written = 0usize;
+    loop {
+        let n = match reader.read(&mut buffer) {
+            Ok(0) => break,
+            Ok(n) => n,
+            Err(ref error) if error.kind() == std::io::ErrorKind::Interrupted => continue,
+            Err(_) => break,
+        };
+        if file.is_none() && written < STDERR_LOG_CAP {
+            file = std::fs::File::create(log_path).ok();
+        }
+        if let Some(handle) = file.as_mut() {
+            let chunk = &buffer[..n.min(STDERR_LOG_CAP - written)];
+            if handle.write_all(chunk).is_ok() {
+                written += chunk.len();
+                let _ = handle.flush();
+            } else {
+                file = None; // Logging failed; keep draining without further writes.
+            }
+            if written >= STDERR_LOG_CAP {
+                file = None; // Cap reached; keep draining without further writes.
+            }
+        }
+    }
+    written
+}
 impl Bridge {
     pub fn spawn() -> Result<Self,String> {
         let root=std::path::Path::new(env!("CARGO_MANIFEST_DIR")).parent().unwrap();
@@ -154,8 +190,11 @@ impl Bridge {
         #[cfg(windows)] {use std::os::windows::process::CommandExt;command.creation_flags(0x08000000);}
         let mut child=command.spawn().map_err(|e|format!("Launcher spawn failed: {e}"))?;
         let input=child.stdin.take();let mut output=child.stdout.take().unwrap();let mut errors=child.stderr.take().unwrap();
-        // Discard diagnostics rather than accumulating unbounded stderr or leaking environment details.
-        std::thread::spawn(move||{let mut buffer=[0;4096];while let Ok(n)=errors.read(&mut buffer){if n==0{break}}});
+        // Diagnostics are kept in a bounded log file (256 KiB) so launcher/JVM startup failures are debuggable.
+        // stdout framing is untouched; stderr is always drained to EOF so the child pipe can never block.
+        let stderr_log=temp.join("backend-stderr.log");
+        let _=std::fs::remove_file(&stderr_log); // Ensure each spawn starts from a clean diagnostic log.
+        std::thread::spawn(move||{drain_stderr(&mut errors,&stderr_log);});
         let (tx,replies)=mpsc::sync_channel(1);
         std::thread::spawn(move||loop{let reply=read_frame(&mut output);let fatal=reply.is_err();if tx.send(reply).is_err()||fatal{break}});
         Ok(Self{child,input,replies,sequence:0})
@@ -204,6 +243,19 @@ impl Drop for Bridge{fn drop(&mut self){let _=self.shutdown();}}
         std::fs::write(&release, "JAVA_VERSION=\"11.0.30\"\nJAVA_RUNTIME_VERSION=\"11.0.30+7\"\n").unwrap();
         assert!(!is_java_21(&temp));
         let _ = std::fs::remove_dir_all(&temp);
+    }
+    #[test] fn stderr_log_is_capped_but_fully_drained() {
+        let dir = std::env::temp_dir().join("test_stderr_log_cap");
+        let _ = std::fs::remove_dir_all(&dir);
+        std::fs::create_dir_all(&dir).unwrap();
+        let log = dir.join("backend-stderr.log");
+        let total = STDERR_LOG_CAP + 100_000;
+        let mut reader = std::io::Cursor::new(vec![b'x'; total]);
+        let written = drain_stderr(&mut reader, &log);
+        assert_eq!(written, STDERR_LOG_CAP);
+        assert_eq!(std::fs::metadata(&log).unwrap().len() as usize, STDERR_LOG_CAP);
+        assert_eq!(reader.position() as usize, total, "stderr must be drained to EOF past the cap");
+        let _ = std::fs::remove_dir_all(&dir);
     }
     #[test] fn test_resolve_java_home_real_system() {
         let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).parent().unwrap();

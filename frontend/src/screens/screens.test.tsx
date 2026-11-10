@@ -66,3 +66,32 @@ it('renders a ready PayOS VietQR and friendly missing-configuration status',()=>
 it('opens staff PIN only on a stationary 1000ms title hold and authorizes cash once',()=>{action.mockClear();vi.useFakeTimers();try{const view=render(<PaymentScreen {...props} snapshot={realSnapshot} simulator={false}/>);const title=screen.getByRole('heading',{name:'Thanh toán'});fireEvent.pointerDown(title,{clientX:0,clientY:0});act(()=>vi.advanceTimersByTime(999));expect(screen.queryByRole('dialog',{name:'Mã PIN nhân viên'})).not.toBeInTheDocument();fireEvent.pointerUp(title);act(()=>vi.advanceTimersByTime(1));expect(screen.queryByRole('dialog')).not.toBeInTheDocument();fireEvent.pointerDown(title,{clientX:0,clientY:0});fireEvent.pointerMove(title,{clientX:13,clientY:0});act(()=>vi.advanceTimersByTime(1000));expect(screen.queryByRole('dialog')).not.toBeInTheDocument();fireEvent.pointerDown(title);act(()=>vi.advanceTimersByTime(1000));expect(screen.getByRole('dialog',{name:'Mã PIN nhân viên'})).toBeInTheDocument();expect(screen.queryByRole('button',{name:'Nhân viên xác nhận tiền mặt'})).not.toBeInTheDocument();for(const digit of '0000')fireEvent.click(screen.getByRole('button',{name:digit}));expect(screen.getByRole('alert')).toHaveTextContent('Mã PIN không đúng');for(const digit of '1234')fireEvent.click(screen.getByRole('button',{name:digit}));const cash=screen.getByRole('button',{name:'Nhân viên xác nhận tiền mặt'});fireEvent.click(cash);fireEvent.click(cash);expect(action.mock.calls.filter(([method])=>method==='payment.mockComplete')).toEqual([['payment.mockComplete',{staffOverride:true,method:'TIEN_MAT'}]]);view.unmount()}finally{vi.useRealTimers()}});
 it('polls with empty params when QR exists without order code and pauses for busy or QR failure',()=>{action.mockClear();vi.useFakeTimers();try{const view=render(<PaymentScreen {...props} snapshot={{...realSnapshot,paymentQr:'AAAA'}} simulator={false}/>);act(()=>vi.advanceTimersByTime(3000));expect(action).toHaveBeenCalledWith('payment.checkStatus',{});view.rerender(<PaymentScreen {...props} busy snapshot={{...realSnapshot,paymentQr:'AAAA'}} simulator={false}/>);const count=action.mock.calls.length;act(()=>vi.advanceTimersByTime(3000));expect(action.mock.calls).toHaveLength(count);view.rerender(<PaymentScreen {...props} snapshot={{...realSnapshot,paymentQr:'ERROR'}} simulator={false}/>);act(()=>vi.advanceTimersByTime(3000));expect(action.mock.calls).toHaveLength(count);view.unmount()}finally{vi.useRealTimers()}});
 it('routes real print confirmation and displays a real delivery QR without simulator claims',()=>{action.mockClear();vi.useFakeTimers();try{const view=render(<ConfirmScreen {...props} preview="data:image/png;base64,AAAA" snapshot={realSnapshot} simulator={false}/>);act(()=>vi.advanceTimersByTime(500));fireEvent.click(screen.getByRole('button',{name:'Xác nhận & in →'}));expect(action).toHaveBeenCalledWith('print.confirmReal');view.rerender(<DeliveryScreen {...props} snapshot={{...realSnapshot,qrCodeUrl:'data:image/png;base64,AAAA',albumUrl:'https://example.invalid/album'}}/>);expect(screen.getByAltText('Mã QR tải ảnh & video')).toHaveAttribute('src','data:image/png;base64,AAAA');expect(screen.getByRole('link',{name:'Mở album ảnh trên web →'})).toHaveAttribute('href','https://example.invalid/album');expect(screen.queryByText(/Dryrun hoàn thành/)).not.toBeInTheDocument()}finally{vi.useRealTimers()}});
+
+it('keeps event showcase buttons disabled when catalogReady is false and enables them once ready',()=>{
+  const start=vi.fn();
+  const bundles=[{id:'event',name:'Wedding',layoutId:'one',frameCount:2,coverDataUrl:'data:image/png;base64,AAAA'}];
+  const view=render(<StartScreen layouts={[layout]} bundles={bundles} catalogReady={false} busy={false} onStart={start} onAdmin={vi.fn()}/>);
+  const showcase=screen.getByRole('button',{name:'Wedding'});
+  expect(showcase).toBeDisabled();
+  fireEvent.click(showcase);
+  expect(start).not.toHaveBeenCalled();
+  view.rerender(<StartScreen layouts={[layout]} bundles={bundles} catalogReady={true} busy={false} onStart={start} onAdmin={vi.fn()}/>);
+  expect(showcase).toBeEnabled();
+  fireEvent.click(showcase);
+  expect(start).toHaveBeenCalledExactlyOnceWith('one');
+});
+
+it('resets the double-tap latch after busy cycles false -> true -> false',()=>{
+  const start=vi.fn();
+  const view=render(<StartScreen layouts={[layout]} busy={false} onStart={start} onAdmin={vi.fn()}/>);
+  const button=screen.getByRole('button',{name:'CHẠM ĐỂ BẮT ĐẦU →'});
+  fireEvent.click(button);
+  fireEvent.click(button);
+  expect(start).toHaveBeenCalledTimes(1);
+  view.rerender(<StartScreen layouts={[layout]} busy={true} onStart={start} onAdmin={vi.fn()}/>);
+  expect(button).toBeDisabled();
+  view.rerender(<StartScreen layouts={[layout]} busy={false} onStart={start} onAdmin={vi.fn()}/>);
+  expect(button).toBeEnabled();
+  fireEvent.click(button);
+  expect(start).toHaveBeenCalledTimes(2);
+});

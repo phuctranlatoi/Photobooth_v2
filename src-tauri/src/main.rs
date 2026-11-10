@@ -22,7 +22,7 @@ fn main(){
     tauri::async_runtime::spawn_blocking(move||{
         if let Ok(mut guard)=eager.lock(){
             if guard.is_none(){
-                let _=bridge::Bridge::spawn().map(|b|*guard=Some(b));
+                if let Err(e) = bridge::Bridge::spawn().map(|b| *guard = Some(b)) { eprintln!("[v2] eager backend spawn failed: {e}"); }
             }
         }
     });
