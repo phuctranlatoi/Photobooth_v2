@@ -1,7 +1,7 @@
 :root {
   color-scheme: light;
-  --at-font-ui: system-ui, 'Segoe UI', Arial, sans-serif;
-  --at-font-editorial: Georgia, Cambria, serif;
+  --at-font-ui: 'Be Vietnam Pro', system-ui, 'Segoe UI', sans-serif;
+  --at-font-editorial: 'Playfair Display', 'Be Vietnam Pro', serif;
   --at-font-sans: var(--at-font-ui);
   --at-font-display: var(--at-font-editorial);
   font-family: var(--at-font-ui);
@@ -21,10 +21,10 @@
   --at-hairline: rgba(81, 72, 66, 0.24);
   --at-white: #FFFFFF;
 
-  --at-glass: rgba(255, 253, 250, 0.82);
-  --at-glass-border: #D8C7B5;
-  --at-glass-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 12px 32px rgba(44, 30, 23, 0.08);
-  --at-glass-filter: blur(10px);
+  --at-glass: linear-gradient(148deg, rgba(255, 255, 255, 0.58) 0%, rgba(255, 250, 245, 0.34) 55%, rgba(246, 233, 224, 0.28) 100%);
+  --at-glass-border: rgba(255, 255, 255, 0.78);
+  --at-glass-shadow: inset 0 1.5px 1px rgba(255, 255, 255, 0.92), inset 0 -1px 2px rgba(142, 68, 45, 0.08), 0 16px 38px rgba(74, 42, 28, 0.1), 0 2px 10px rgba(194, 115, 87, 0.06);
+  --at-glass-filter: blur(20px) saturate(165%);
 
   --at-darkroom: #0A090C;
   --at-darkroom-raised: #131115;

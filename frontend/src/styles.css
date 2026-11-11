@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import './atelier/fonts.css';
 @import './atelier/theme-tokens.css';
 @import './atelier/atelier-core.css';
 @import './atelier/atelier-customer.css';

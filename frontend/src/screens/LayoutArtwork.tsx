@@ -39,11 +39,11 @@ export function LayoutArtwork({layout,compact=false,selectedPhotos,frameOverlayU
          <rect x={x} y={y} width={w} height={h} fill="none" stroke="#D1C7BD" strokeWidth="0.8"/>
          <g>
            <rect x={x+2} y={y+2} width={badgeW} height="9" rx="2.5" fill="#fff" opacity="0.88"/>
-           <text x={x+2+badgeW/2} y={y+6.5} textAnchor="middle" dominantBaseline="central" fontSize="4.5" fontFamily="sans-serif" fontWeight="700" fill="#705F53">{String(i+1).padStart(2,'0')}</text>
+           <text x={x+2+badgeW/2} y={y+6.5} textAnchor="middle" dominantBaseline="central" fontSize="4.5" fontFamily="var(--at-font-ui)" fontWeight="700" fill="#705F53">{String(i+1).padStart(2,'0')}</text>
          </g>
        </>:<>
          <rect x={x} y={y} width={w} height={h} fill="#F9F6F0" stroke="#C8B8A9" strokeWidth="1" strokeDasharray="3 3"/>
-         <text x={x+w/2} y={y+h/2} textAnchor="middle" dominantBaseline="middle" fontSize={Math.min(10,w/4)} fill="#9B8A80">Ảnh {i+1}</text>
+         <text x={x+w/2} y={y+h/2} textAnchor="middle" dominantBaseline="middle" fontSize={Math.min(10,w/4)} fontFamily="var(--at-font-ui)" fill="#9B8A80">Ảnh {i+1}</text>
        </>):<>
          <svg x={x} y={y} width={w} height={h} viewBox={`0 0 ${sw} ${sh}`} preserveAspectRatio="xMidYMid meet" overflow="hidden">
            <rect width={sw} height={sh} fill={i%2?'#ded1c5':'#e9e1d8'}/>
@@ -51,8 +51,8 @@ export function LayoutArtwork({layout,compact=false,selectedPhotos,frameOverlayU
              ? <image href={samplePhotos![i%samplePhotos!.length]} x={0} y={0} width={sw} height={sh} preserveAspectRatio="xMidYMid slice"/>
              : <>
                  <rect x={mat} y={mat} width={Math.max(1,sw-mat*2)} height={Math.max(1,sh-mat*2)} fill={i%2?'#e9ddd0':'#f2ebe2'} stroke="#b7a695" strokeWidth={Math.max(0.4,minDim*0.006)}/>
-                 <text x={sw/2} y={sh*0.48} textAnchor="middle" fontSize={Math.max(3,minDim*0.06)} fontFamily="Georgia,serif" letterSpacing={Math.max(0.3,minDim*0.01)} fill="#65584f">MOMENTS</text>
-                 <text x={sw/2} y={sh*0.59} textAnchor="middle" fontSize={Math.max(2.2,minDim*0.035)} fontFamily="sans-serif" letterSpacing={Math.max(0.2,minDim*0.006)} fill="#80746a">SEOUL × SAIGON</text>
+                 <text x={sw/2} y={sh*0.48} textAnchor="middle" fontSize={Math.max(3,minDim*0.06)} fontFamily="var(--at-font-editorial)" letterSpacing="0.03em" fill="#65584f">MOMENTS</text>
+                 <text x={sw/2} y={sh*0.59} textAnchor="middle" fontSize={Math.max(2.2,minDim*0.035)} fontFamily="var(--at-font-ui)" letterSpacing="0.03em" fill="#80746a">SEOUL × SAIGON</text>
                </>}
            <path
              d={`M${pad} ${pad+tick}V${pad}H${pad+tick} M${sw-pad-tick} ${pad}H${sw-pad}V${pad+tick} M${pad} ${sh-pad-tick}V${sh-pad}H${pad+tick} M${sw-pad-tick} ${sh-pad}H${sw-pad}V${sh-pad-tick}`}
@@ -61,17 +61,17 @@ export function LayoutArtwork({layout,compact=false,selectedPhotos,frameOverlayU
              fill="none"
            />
            {!hasSample&&<>
-             <text x={pad*1.75} y={sh-pad*1.75} fontSize={Math.max(2.2,minDim*0.035)} fontFamily="sans-serif" fill="#67594c">{String(i+1).padStart(2,'0')}</text>
-             <text x={sw-pad*1.75} y={sh-pad*1.75} textAnchor="end" fontSize={Math.max(2,minDim*0.03)} fontFamily="sans-serif" fill="#67594c">ATELIER 400 · 35mm</text>
+             <text x={pad*1.75} y={sh-pad*1.75} fontSize={Math.max(2.2,minDim*0.035)} fontFamily="var(--at-font-ui)" fill="#67594c">{String(i+1).padStart(2,'0')}</text>
+             <text x={sw-pad*1.75} y={sh-pad*1.75} textAnchor="end" fontSize={Math.max(2,minDim*0.03)} fontFamily="var(--at-font-ui)" fill="#67594c">ATELIER 400 · 35mm</text>
            </>}
          </svg>
          <rect x={x} y={y} width={w} height={h} rx="1" fill="none" stroke="#c8b8a9" strokeWidth=".6"/>
-         {!compact&&!hasSample&&<text x={x+3} y={y+Math.min(7,h/6)} fontSize={Math.min(5,w/12)} fontFamily="sans-serif" fill="#67594c">{String(i+1).padStart(2,'0')}</text>}
+         {!compact&&!hasSample&&<text x={x+3} y={y+Math.min(7,h/6)} fontSize={Math.min(5,w/12)} fontFamily="var(--at-font-ui)" fill="#67594c">{String(i+1).padStart(2,'0')}</text>}
        </>}
      </g>;
    })}
-   <text x={width/2} y={height-8} textAnchor="middle" fontFamily="Georgia,serif" fontSize={Math.min(8,width/16)} letterSpacing=".1" fill="#8E442D">LE SOUVENIR · ATELIER</text>
-   <text x={width/2} y={height-3} textAnchor="middle" fontFamily="sans-serif" fontSize={Math.min(4,width/32)} letterSpacing=".05" fill="#A8988B">SEOUL × SAIGON · 2026</text>
+   <text x={width/2} y={height-8} textAnchor="middle" fontFamily="var(--at-font-editorial)" fontSize={Math.min(8,width/16)} letterSpacing="0.03em" fill="#8E442D">LE SOUVENIR · ATELIER</text>
+   <text x={width/2} y={height-3} textAnchor="middle" fontFamily="var(--at-font-ui)" fontSize={Math.min(4,width/32)} letterSpacing="0.03em" fill="#A8988B">SEOUL × SAIGON · 2026</text>
    {frameOverlayUrl?<image href={frameOverlayUrl} x={0} y={0} width={width} height={height} preserveAspectRatio="xMidYMid meet" style={{pointerEvents:'none'}}/>:selectedPhotos!==undefined&&<g pointerEvents="none">
      <rect x="6" y="6" width={Math.max(0,width-12)} height={Math.max(0,height-12)} rx="4" fill="none" stroke="#8E442D" strokeWidth="1.2" strokeOpacity="0.85"/>
      <rect x="8.5" y="8.5" width={Math.max(0,width-17)} height={Math.max(0,height-17)} rx="2" fill="none" stroke="#D8C7B5" strokeWidth="0.6"/>

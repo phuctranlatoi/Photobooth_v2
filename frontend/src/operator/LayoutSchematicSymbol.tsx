@@ -32,7 +32,7 @@ export function LayoutSchematicSymbol({layout}:{layout:LayoutMode}){
     <rect x=".5" y=".5" width={width-1} height={height-1} rx="4" fill="#FFFDF9" stroke="#D8C7B5"/>
     {slots.map((slot,index)=><g key={index}>
       <rect x={slot.x} y={slot.y} width={slot.width} height={slot.height} rx="2" fill="#EAE4DC" stroke="#C4B4A4" strokeWidth=".8"/>
-      <text x={slot.x+slot.width/2} y={slot.y+slot.height/2} textAnchor="middle" dominantBaseline="central" fontFamily="sans-serif" fontSize={Math.min(11,slot.height*.4,slot.width*.45)} fontWeight="bold" fill="#7A6B60">{index+1}</text>
+      <text x={slot.x+slot.width/2} y={slot.y+slot.height/2} textAnchor="middle" dominantBaseline="central" fontFamily="var(--at-font-ui)" fontSize={Math.min(11,slot.height*.4,slot.width*.45)} fontWeight="bold" fill="#7A6B60">{index+1}</text>
     </g>)}
     <line x1={width*.28} y1="142" x2={width*.72} y2="142" stroke="#C4B4A4" strokeWidth="1" strokeLinecap="round"/>
   </svg>;

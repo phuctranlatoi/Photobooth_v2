@@ -17,6 +17,8 @@ body {
   background: var(--at-canvas-muted);
   color: var(--at-ink);
   font-family: var(--at-font-ui);
+  font-kerning: normal;
+  font-variant-ligatures: normal;
   letter-spacing: normal;
   word-spacing: normal;
 }
@@ -41,6 +43,8 @@ button,
 input,
 select {
   font: inherit;
+  font-kerning: normal;
+  font-variant-ligatures: normal;
   letter-spacing: normal;
   word-spacing: normal;
 }
@@ -71,28 +75,29 @@ button:disabled {
 
 .ambient-orb {
   position: absolute;
-  width: clamp(320px, 38vw, 680px);
+  width: clamp(380px, 44vw, 760px);
   aspect-ratio: 1;
   border-radius: 50%;
+  filter: blur(24px);
   pointer-events: none;
 }
 
 .ambient-orb--1 {
-  top: -22%;
-  left: -10%;
-  background: radial-gradient(circle, rgba(216, 199, 181, 0.16) 0%, rgba(216, 199, 181, 0) 70%);
+  top: -18%;
+  left: -8%;
+  background: radial-gradient(circle, rgba(235, 198, 174, 0.34) 0%, rgba(235, 198, 174, 0) 70%);
 }
 
 .ambient-orb--2 {
-  top: 14%;
-  right: -10%;
-  background: radial-gradient(circle, rgba(240, 219, 212, 0.14) 0%, rgba(240, 219, 212, 0) 72%);
+  top: 10%;
+  right: -8%;
+  background: radial-gradient(circle, rgba(244, 196, 184, 0.32) 0%, rgba(244, 196, 184, 0) 72%);
 }
 
 .ambient-orb--3 {
-  bottom: -30%;
-  left: 22%;
-  background: radial-gradient(circle, rgba(216, 199, 181, 0.12) 0%, rgba(216, 199, 181, 0) 70%);
+  bottom: -24%;
+  left: 24%;
+  background: radial-gradient(circle, rgba(222, 188, 160, 0.26) 0%, rgba(222, 188, 160, 0) 70%);
 }
 
 /* Customer shell */
@@ -110,10 +115,16 @@ button:disabled {
   gap: clamp(12px, 1.8dvh, 24px);
   background: radial-gradient(ellipse at 78% 42%, rgba(216, 199, 181, 0.16), transparent 56%), var(--at-canvas);
   color: var(--at-ink);
-  font: clamp(16px, 1.15vw, 20px)/1.45 var(--at-font-ui);
+  font: clamp(16px, 1.15vw, 20px)/1.5 var(--at-font-ui);
+  font-kerning: normal;
+  font-variant-ligatures: normal;
   letter-spacing: normal;
   word-spacing: normal;
   overflow: hidden;
+}
+
+body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(.v1-prepare-screen)) {
+  background: radial-gradient(ellipse at 78% 42%, rgba(224, 194, 174, 0.18), transparent 58%);
 }
 
 .v1-shell > * {
@@ -134,7 +145,8 @@ button:disabled {
 
 .v1-shell h1 {
   font-size: clamp(30px, 3vw, 52px);
-  letter-spacing: -0.015em;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
 }
 
 .v1-shell p {
@@ -170,6 +182,8 @@ button:disabled {
 }
 
 .v1-button-label {
+  position: relative;
+  z-index: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -179,10 +193,10 @@ button:disabled {
 
 .v1-primary {
   min-height: var(--at-primary-height);
-  background: var(--at-primary);
-  border: 1px solid var(--at-primary);
+  background: linear-gradient(165deg, rgba(162, 82, 55, 0.96) 0%, var(--at-primary) 58%, #73331F 100%);
+  border: 1px solid rgba(255, 255, 255, 0.32);
   color: var(--at-white);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 8px 20px rgba(114, 56, 37, 0.18);
+  box-shadow: inset 0 10px 18px rgba(255, 255, 255, 0.16), 0 10px 26px rgba(142, 68, 45, 0.22);
 }
 
 .v1-primary:disabled {
@@ -244,8 +258,8 @@ button:disabled {
 
 @media (hover: hover) {
   .v1-primary:hover:not(:disabled) {
-    background: var(--at-primary-hover);
-    border-color: var(--at-primary-hover);
+    background: linear-gradient(165deg, #8F452E 0%, var(--at-primary-hover) 60%, #5D2717 100%);
+    border-color: rgba(255, 255, 255, 0.42);
   }
   .v1-secondary:hover:not(:disabled),
   .v1-back.backButton:hover:not(:disabled) {
@@ -257,6 +271,9 @@ button:disabled {
 /* Shared AppHeader */
 .appHeader.v1-heading {
   flex: none;
+  width: 100%;
+  max-width: min(1420px, 100%);
+  margin-inline: auto;
   display: grid;
   grid-template-columns: 56px minmax(0, 1fr) auto;
   align-items: start;
@@ -297,20 +314,20 @@ button:disabled {
   color: var(--at-primary);
   font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
 }
 
 .appHeader__copy h1 {
   font-family: var(--at-font-editorial);
   font-weight: 400;
   line-height: 1.25;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.01em;
 }
 
 .appHeader__subtitle {
   margin-top: 4px;
   font-size: clamp(16px, 1.15vw, 19px);
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
 .appHeader__right {
@@ -326,11 +343,14 @@ button:disabled {
 /* Shared split, panel, preview, actionbar */
 .v1-split {
   flex: 1;
+  width: 100%;
+  max-width: min(1420px, 100%);
+  margin-inline: auto;
   min-height: 0;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
   grid-template-rows: minmax(0, 1fr);
-  gap: clamp(16px, 2.5vw, 40px);
+  gap: clamp(16px, 2vw, 32px);
   overflow: hidden;
 }
 
@@ -347,7 +367,7 @@ button:disabled {
   box-shadow: var(--at-glass-shadow);
   -webkit-backdrop-filter: var(--at-glass-filter);
   backdrop-filter: var(--at-glass-filter);
-  padding: clamp(20px, 2.5vw, 36px);
+  padding: clamp(18px, 2vw, 28px);
 }
 
 .v1-preview {
@@ -417,12 +437,15 @@ button:disabled {
   position: relative;
   z-index: 2;
   flex: none;
+  width: 100%;
+  max-width: min(1420px, 100%);
+  margin-inline: auto;
   min-height: 88px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 12px clamp(20px, 2.5vw, 36px);
+  padding: 12px clamp(18px, 2vw, 28px);
   border: 1px solid var(--at-glass-border);
   border-radius: 24px;
   background: var(--at-glass);

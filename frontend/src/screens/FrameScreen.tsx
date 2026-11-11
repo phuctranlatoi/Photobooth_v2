@@ -76,7 +76,7 @@ export function FrameScreen({layout, action, preview, snapshot, frames = [], fra
                  <rect x="11" y="7" width="74" height="98" rx="3" stroke="#D8C7B5" strokeWidth=".7"/>
                  <rect x="17" y="14" width="62" height="70" rx="2" fill="#F9F6F0" stroke="#C8B8A9" strokeWidth="1"/>
                  <rect x="21" y="18" width="54" height="62" rx="1" stroke="#EDE6DF" strokeWidth=".7"/>
-                 <text x="48" y="95" textAnchor="middle" fontFamily="Georgia,serif" fontSize="6" letterSpacing=".5" fill="#8E442D">LE SOUVENIR</text>
+                 <text x="48" y="95" textAnchor="middle" fontFamily="var(--at-font-editorial)" fontSize="6" letterSpacing="0.03em" fill="#8E442D">LE SOUVENIR</text>
                 </svg>}
              </span>
             <strong>{formatFrameName(frame.name)}</strong>
