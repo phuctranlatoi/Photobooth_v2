@@ -3,7 +3,11 @@
 .v1-shell.v1-shell-payment {
   padding: 0;
   gap: 0;
-  background: var(--at-canvas);
+  background: radial-gradient(ellipse at 78% 42%, rgba(224, 194, 174, 0.18), transparent 58%), var(--at-canvas);
+}
+
+body:has(.atelier-customer) .v1-shell.v1-shell-payment {
+  background: radial-gradient(ellipse at 78% 42%, rgba(224, 194, 174, 0.18), transparent 58%);
 }
 
 .v1-payment-screen {
@@ -42,7 +46,7 @@
   justify-content: center;
   gap: clamp(12px, 1.8dvh, 20px);
   min-width: 0;
-  background: var(--at-paper);
+  background: var(--at-glass-strong);
 }
 
 .v1-payment-label {
@@ -105,16 +109,18 @@
   gap: 8px;
   padding: 8px 16px;
   border-radius: 999px;
-  border: 1px solid var(--at-champagne);
-  background: var(--at-canvas-muted);
+  border: 1px solid var(--at-glass-border);
+  border-top-color: rgba(255, 255, 255, 0.94);
+  background: var(--at-glass-strong);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.9), 0 4px 12px rgba(74, 42, 28, 0.06);
   color: var(--at-ink);
   font-weight: 700;
   font-size: 15px;
 }
 
 .v1-payment-chip-amber {
-  border-color: rgba(142, 68, 45, 0.35);
-  background: #FAF1EA;
+  border-color: rgba(194, 115, 87, 0.42);
+  background: linear-gradient(150deg, rgba(255, 249, 244, 0.92) 0%, rgba(246, 229, 218, 0.78) 100%);
   color: var(--at-primary);
 }
 
@@ -134,7 +140,7 @@
   gap: clamp(14px, 2dvh, 22px);
   min-width: 0;
   text-align: center;
-  background: var(--at-paper);
+  background: var(--at-glass-strong);
 }
 
 .v1-payment-qr-slot {
@@ -142,11 +148,14 @@
   height: clamp(190px, 28dvh, 280px);
   display: grid;
   place-items: center;
-  padding: 14px;
-  border-radius: 20px;
-  border: 1px solid var(--at-champagne);
+  padding: 16px;
+  border-radius: 22px;
+  border: 1px solid rgba(216, 199, 181, 0.72);
   background: var(--at-white);
-  box-shadow: 0 10px 26px rgba(44, 30, 23, 0.08);
+  box-shadow:
+    0 0 0 8px rgba(255, 255, 255, 0.62),
+    0 16px 36px rgba(74, 42, 28, 0.12),
+    0 4px 12px rgba(194, 115, 87, 0.08);
   color: var(--at-primary);
 }
 
@@ -155,6 +164,9 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+  filter: none;
+  opacity: 1;
+  mix-blend-mode: normal;
 }
 
 .v1-payment-spinner {
@@ -205,13 +217,32 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 14px;
+  padding: 7px 16px;
   border-radius: 999px;
-  border: 1px solid var(--at-champagne);
-  background: var(--at-canvas);
+  border: 1px solid var(--at-glass-border);
+  border-top-color: rgba(255, 255, 255, 0.94);
+  background: var(--at-glass-strong);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.9), 0 4px 12px rgba(74, 42, 28, 0.06);
   color: var(--at-primary);
   font-weight: 600;
   font-size: 14px;
+}
+
+.v1-payment-poll .v1-payment-dot {
+  box-shadow: 0 0 0 4px rgba(194, 115, 87, 0.18);
+  animation: at-pay-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes at-pay-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.8);
+  }
 }
 
 .v1-payment-recovery {
@@ -237,11 +268,26 @@
   gap: 10px;
   padding: 12px 24px;
   border-radius: 999px;
-  border: 1px solid var(--at-primary);
-  background: var(--at-paper);
+  border: 1px solid rgba(90, 74, 64, 0.75);
+  background: var(--at-glass-strong);
+  -webkit-backdrop-filter: var(--at-glass-filter);
+  backdrop-filter: var(--at-glass-filter);
   color: var(--at-primary);
   font-weight: 700;
-  box-shadow: 0 8px 20px rgba(44, 30, 23, 0.1);
+  box-shadow: var(--at-glass-shadow);
+  transition: transform var(--at-press), background-color var(--at-press), border-color var(--at-press), box-shadow var(--at-press);
+}
+
+@media (hover: hover) {
+  .v1-staff-cash-btn:hover:not(:disabled) {
+    background: var(--at-paper);
+    border-color: var(--at-primary);
+    box-shadow: var(--at-glow-warm), var(--at-glass-shadow);
+  }
+}
+
+.v1-staff-cash-btn:active:not(:disabled) {
+  transform: scale(0.975);
 }
 
 .v1-staff-cash-btn:disabled {
@@ -299,6 +345,7 @@
 
 .v1-pin-dots span.filled {
   background: var(--at-primary);
+  box-shadow: 0 0 0 4px rgba(194, 115, 87, 0.22);
   transform: scale(1.1);
 }
 
@@ -341,11 +388,20 @@
   justify-content: center;
   gap: 2px;
   border-radius: 18px;
-  border: 1px solid var(--at-champagne);
-  background: var(--at-canvas);
+  border: 1px solid rgba(90, 74, 64, 0.75);
+  background: var(--at-glass-strong);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.92), 0 8px 18px rgba(74, 42, 28, 0.08);
   color: var(--at-ink);
   font-weight: 700;
-  transition: transform var(--at-press), background-color var(--at-press);
+  transition: transform var(--at-press), background-color var(--at-press), border-color var(--at-press), box-shadow var(--at-press);
+}
+
+@media (hover: hover) {
+  .v1-pin-keypad button:hover:not(:disabled) {
+    background: var(--at-paper);
+    border-color: rgba(194, 115, 87, 0.55);
+    box-shadow: var(--at-glow-warm);
+  }
 }
 
 .v1-pin-keypad button:active:not(:disabled) {
@@ -366,12 +422,30 @@
 }
 
 .v1-pin-keypad button.v1-pin-utility {
-  background: var(--at-canvas-muted);
+  background: linear-gradient(155deg, rgba(245, 240, 232, 0.94) 0%, rgba(235, 224, 214, 0.86) 100%);
+  border: 1px solid rgba(90, 74, 64, 0.75);
   color: var(--at-primary);
 }
 
 .v1-pin-keypad button.v1-pin-utility span {
   font-size: 16px;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .v1-payment-summary.v1-panel,
+  .v1-payment-qr-panel.v1-panel,
+  .v1-payment-chip,
+  .v1-payment-poll,
+  .v1-staff-cash-btn:not(:disabled),
+  .v1-pin-keypad button {
+    background: var(--at-paper);
+  }
+  .v1-payment-chip-amber {
+    background: #FAF1EA;
+  }
+  .v1-pin-keypad button.v1-pin-utility {
+    background: var(--at-canvas-muted);
+  }
 }
 
 @media (max-width: 1099px), (max-height: 759px) {
@@ -394,13 +468,24 @@
   }
 }
 
+@media (forced-colors: active) {
+  .v1-payment-qr-slot,
+  .v1-staff-cash-btn,
+  .v1-pin-keypad button {
+    border: 2px solid ButtonText;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .v1-payment-spinner,
-  .v1-pin-dots-error {
+  .v1-pin-dots-error,
+  .v1-payment-poll .v1-payment-dot,
+  .v1-payment-dot {
     animation: none;
   }
   .v1-pin-dots span,
-  .v1-pin-keypad button {
+  .v1-pin-keypad button,
+  .v1-staff-cash-btn {
     transition: none;
   }
 }

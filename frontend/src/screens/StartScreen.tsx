@@ -179,6 +179,25 @@ export function StartScreen({
               transition={reduce ? {duration: 0} : {duration: 7.2, repeat: Infinity, ease: 'easeInOut', delay: 2.0}}
             />
 
+            <motion.span
+              className="atelier-prism-glint atelier-prism-glint--1"
+              aria-hidden="true"
+              animate={reduce ? {opacity: 0, scale: 1} : {opacity: [0.35, 0.95, 0.35], scale: [0.85, 1.15, 0.85]}}
+              transition={reduce ? {duration: 0} : {duration: 3.6, repeat: Infinity, ease: 'easeInOut', delay: 0.4}}
+            />
+            <motion.span
+              className="atelier-prism-glint atelier-prism-glint--2"
+              aria-hidden="true"
+              animate={reduce ? {opacity: 0, scale: 1} : {opacity: [0.28, 0.9, 0.28], scale: [0.82, 1.12, 0.82]}}
+              transition={reduce ? {duration: 0} : {duration: 4.2, repeat: Infinity, ease: 'easeInOut', delay: 1.5}}
+            />
+            <motion.span
+              className="atelier-prism-glint atelier-prism-glint--3"
+              aria-hidden="true"
+              animate={reduce ? {opacity: 0, scale: 1} : {opacity: [0.32, 0.92, 0.32], scale: [0.86, 1.14, 0.86]}}
+              transition={reduce ? {duration: 0} : {duration: 3.9, repeat: Infinity, ease: 'easeInOut', delay: 2.3}}
+            />
+
             <span className="atelier-gallery-ticket" aria-hidden="true">
               ATELIER 400 · 35MM
             </span>

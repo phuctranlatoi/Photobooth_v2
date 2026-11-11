@@ -1,7 +1,7 @@
 ---
 description: Writes and runs V2 regression tests, reviews implementation and guards parity/security before each milestone.
 mode: subagent
-
+model: 9router/cx/gpt-5.6-luna-review
 permissions:
   - action: edit
     resource: "tests/verify-real-payment.mjs"
