@@ -1,4 +1,4 @@
-import {useEffect,useLayoutEffect,useRef,useState} from 'react';
+import {type CSSProperties,useEffect,useLayoutEffect,useRef,useState} from 'react';
 import {ChevronLeft,ChevronRight} from 'lucide-react';
 import {Heading,type ScreenProps} from './KioskUI';
 import {formatLayoutSubtitle,formatLayoutTitle,LayoutArtwork} from './LayoutArtwork';
@@ -47,7 +47,12 @@ export function StudioModeScreen({layout,layouts,busy,action}:ScreenProps){
    const middle=el.getBoundingClientRect().left+el.clientWidth/2;
    const cards=[...el.querySelectorAll<HTMLElement>('.v1-carousel-card')];
     if(!cards.length)return;
-    const index=cards.reduce((best,card,i)=>Math.abs(card.getBoundingClientRect().left+card.offsetWidth/2-middle)<Math.abs(cards[best].getBoundingClientRect().left+cards[best].offsetWidth/2-middle)?i:best,0);
+    const centers=cards.map(card=>{
+     const rect=card.getBoundingClientRect();
+     const cardCenter=rect.left+(rect.width||card.offsetWidth)/2;
+     return cardCenter;
+    });
+    const index=centers.reduce((best,cardCenter,i)=>Math.abs(cardCenter-middle)<Math.abs(centers[best]-middle)?i:best,0);
     const next=layouts[index];if(!next)return;
     // Intermediate cards passed by a smooth arrow scroll are not guest selections.
     if(pending.current&&pending.current!==next.id)return;
@@ -61,8 +66,8 @@ export function StudioModeScreen({layout,layouts,busy,action}:ScreenProps){
    {layouts.length?<><div className="v1-carousel-wrap">
        <button type="button" className="v1-carousel-arrow v1-carousel-prev" aria-label="Bố cục trước" disabled={busy||layouts.length<=1} onClick={()=>move((center-1+layouts.length)%layouts.length)}><ChevronLeft size={24} strokeWidth={2.4} aria-hidden="true"/></button>
      <div className="v1-layout-carousel" ref={track} onScroll={onScroll} onPointerDown={()=>{pending.current=null}}>
-        {layouts.map((l,i)=><button type="button" key={l.id} className="v1-layout-card v1-carousel-card" data-layout-id={l.id} data-distance={Math.abs(i-center)} aria-pressed={center===i} aria-label={`${formatLayoutTitle(l)} · ${formatLayoutSubtitle(l)}`} disabled={busy} onClick={()=>handleCardClick(i)}>
-        <div className="v1-carousel-art"><LayoutArtwork layout={l}/></div>
+        {layouts.map((l,i)=><button type="button" key={l.id} className="v1-layout-card v1-carousel-card" data-layout-id={l.id} data-distance={Math.abs(i-center)} data-side={i<center?'left':i>center?'right':'center'} aria-pressed={center===i} aria-label={`${formatLayoutTitle(l)} · ${formatLayoutSubtitle(l)}`} disabled={busy} onClick={()=>handleCardClick(i)}>
+        <div className="v1-carousel-art" style={{'--print-ratio':l.printAspectRatio>0?l.printAspectRatio:2/3} as CSSProperties}><LayoutArtwork layout={l}/></div>
          <strong>{formatLayoutTitle(l)}</strong><span className="v1-carousel-subtitle">{formatLayoutSubtitle(l)}</span>{center===i&&<span className="v1-carousel-tap-hint sr-only">Chạm lần nữa để chọn dải ảnh này →</span>}
      </button>)}
     </div>

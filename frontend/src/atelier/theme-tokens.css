@@ -1,41 +1,51 @@
 :root {
   color-scheme: light;
-  font-family: var(--at-font-sans);
+  --at-font-ui: system-ui, 'Segoe UI', Arial, sans-serif;
+  --at-font-editorial: Georgia, Cambria, serif;
+  --at-font-sans: var(--at-font-ui);
+  --at-font-display: var(--at-font-editorial);
+  font-family: var(--at-font-ui);
   font-synthesis: none;
-  --at-font-sans: 'Plus Jakarta Sans', 'Be Vietnam Pro', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-  --at-font-display: 'Playfair Display', 'Plus Jakarta Sans', 'Be Vietnam Pro', serif;
-  --at-font-ui: var(--at-font-sans);
-  --at-font-editorial: var(--at-font-display);
+
   --at-canvas: #FAF6F0;
   --at-canvas-muted: #F5F0E8;
+  --at-paper: #FFFCF7;
   --at-ink: #1A1715;
   --at-body: #514842;
   --at-muted: #625750;
   --at-primary: #8E442D;
-  --at-primary-hover: #A35238;
+  --at-primary-hover: #713721;
   --at-accent: #C27357;
   --at-champagne: #D8C7B5;
   --at-rose: #F0DBD4;
-  --at-hairline: rgba(81,72,66,.24);
+  --at-hairline: rgba(81, 72, 66, 0.24);
   --at-white: #FFFFFF;
-  --at-glass: rgba(255,255,255,.52);
-  --at-glass-border: rgba(255,255,255,.72);
-  --at-glass-shadow: inset 0 1px 1.5px rgba(255,255,255,.95), 0 14px 40px rgba(65,42,28,.07);
-  --at-glass-filter: blur(24px) saturate(160%);
+
+  --at-glass: rgba(255, 253, 250, 0.82);
+  --at-glass-border: #D8C7B5;
+  --at-glass-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 12px 32px rgba(44, 30, 23, 0.08);
+  --at-glass-filter: blur(10px);
+
   --at-darkroom: #0A090C;
+  --at-darkroom-raised: #131115;
   --at-success: #245C42;
   --at-error: #8F3029;
-  --at-paper-shadow: drop-shadow(0 22px 34px rgba(44,30,23,.19)) drop-shadow(0 5px 9px rgba(44,30,23,.10));
-  --at-press: .18s cubic-bezier(.2,.8,.25,1);
-  --at-card: .28s ease;
-  --at-space-1: 8px;
-  --at-space-2: 12px;
-  --at-space-3: 16px;
-  --at-space-4: 24px;
-  --at-space-5: 32px;
-  --at-space-6: 48px;
-  --at-gutter: clamp(24px,3.75vw,72px);
+  --at-paper-shadow: drop-shadow(0 18px 28px rgba(44, 30, 23, 0.16)) drop-shadow(0 4px 8px rgba(44, 30, 23, 0.09));
+
+  --at-press: 0.16s cubic-bezier(0.2, 0.8, 0.25, 1);
+  --at-card: 0.24s ease;
+
+  --at-space-1: 4px;
+  --at-space-2: 8px;
+  --at-space-3: 12px;
+  --at-space-4: 16px;
+  --at-space-5: 24px;
+  --at-space-6: 32px;
+  --at-space-7: 48px;
+  --at-space-8: 64px;
+
+  --at-gutter: clamp(24px, 3.33vw, 64px);
+  --at-kiosk-gutter-y: clamp(16px, 2.5dvh, 32px);
   --at-target: 56px;
   --at-primary-height: 72px;
-  --at-kiosk-gutter-y: clamp(16px,2.6dvh,36px);
 }
