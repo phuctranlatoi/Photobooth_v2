@@ -556,7 +556,7 @@ class RealSessionEngine(
                 queueBeauty(index, original)
                 if (shots.size == layout.shotCount) {
                     activeSequence = false; stopPreview(); state = "SELECTING_PHOTOS"; prefetchAlbum(); startInactivity("SELECTING_PHOTOS")
-                } else { state = "LIVE_VIEW"; schedule(1) { countdown() } }
+                } else { state = "LIVE_VIEW"; schedule(if (layout.countdownSeconds == 0) 1L else 750L) { countdown() } }
             }
         }
     }

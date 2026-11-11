@@ -1,7 +1,7 @@
 ---
 description: Leads LE SOUVENIR Photobooth V2 development by coordinating eight specialist agents while keeping the legacy V1 project immutable.
 mode: primary
-model: 9router/ag/gemini-3.8-flash-high
+model: 9router/cx/gpt-6.1-sol
 permissions:
   - action: edit
     resource: "*"

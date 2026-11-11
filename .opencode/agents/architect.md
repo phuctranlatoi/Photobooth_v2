@@ -1,7 +1,7 @@
 ---
 description: Designs independent React + Tauri or Electron frontend and Kotlin sidecar with reliable Windows IPC.
 mode: subagent
-model: 9router/cx/gpt-6.1-sol
+model: omniroute/agentrouter/gpt-5.6-sol
 ---
 
 # Role

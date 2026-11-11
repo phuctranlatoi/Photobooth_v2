@@ -1,7 +1,7 @@
 ﻿---
 description: Builds the production React + TypeScript touchscreen UI and typed hardware-service integration.
 mode: subagent
-model: 9router/ag/gemini-3.8-flash-high
+model: 9router/oc/deepseek-v4.1-flash-free
 ---
 
 # Role

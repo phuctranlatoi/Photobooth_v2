@@ -137,7 +137,7 @@ await js(`(() => {
   const p1 = document.querySelector('[aria-label="Chọn ảnh 1"]');
   if (p1) p1.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, clientX: 150, clientY: 150 }));
 })()`);
-await delay(600);
+await wait("Boolean(document.querySelector('.v1-hold-lightbox, .v1-lightbox'))", 'press-and-hold zoom', 3000).catch(() => {});
 const zoomOpen = await js("Boolean(document.querySelector('.v1-hold-lightbox, .v1-lightbox'))");
 check(zoomOpen, `${view} press-and-hold enlarges photo`);
 // Release finger

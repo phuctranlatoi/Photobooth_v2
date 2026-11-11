@@ -3,7 +3,7 @@ description: Audits the old photobooth source code exhaustively without altering
 mode: subagent
 permission:
   bash: deny
-model: 9router/ag/gemini-3.8-flash-high
+model: omniroute/agnescn/agnes-3.0-flash
 ---
 
 # Role

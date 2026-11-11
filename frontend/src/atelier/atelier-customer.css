@@ -1378,12 +1378,14 @@
   white-space: nowrap;
 }
 
-.v1-shell.v1-camera .v1-countdown-layer {
+.v1-shell.v1-camera .v1-countdown-layer,
+.v1-capture-screen .v1-countdown-layer {
   position: absolute;
   inset: 0;
   z-index: 11;
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 0;
   margin: 0;
   pointer-events: none;
@@ -1401,27 +1403,27 @@
   gap: 10px;
 }
 
-.v1-shell.v1-camera .v1-countdown {
+.v1-shell.v1-camera .v1-countdown,
+.v1-capture-screen .v1-countdown {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: clamp(132px, 18dvh, 224px);
-  min-height: clamp(132px, 18dvh, 224px);
-  padding: 12px 20px;
-  border-radius: 999px;
-  border: 2px solid rgba(216, 199, 181, 0.68);
-  background: radial-gradient(circle, rgba(216, 199, 181, 0.22) 0%, rgba(19, 17, 21, 0.94) 72%);
-  box-shadow:
-    inset 0 2px 8px rgba(255, 255, 255, 0.16),
-    0 0 0 8px rgba(216, 199, 181, 0.09),
-    0 16px 36px rgba(0, 0, 0, 0.48);
-  color: #FFFCF7;
-  font-family: var(--at-font-editorial);
-  font-size: clamp(72px, 14dvh, 180px);
-  font-weight: 400;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.52);
+  filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.45));
+  font-family: var(--at-font-ui), system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(140px, 24dvh, 260px);
+  font-weight: 800;
   line-height: 1;
   font-variant-numeric: tabular-nums;
   text-align: center;
+  user-select: none;
+  pointer-events: none;
 }
 
 .v1-shell.v1-camera .v1-shutter {
@@ -1476,20 +1478,24 @@
   text-align: center;
 }
 
-.v1-shell.v1-camera .v1-flash.v1-shutter-flash {
+.v1-shell.v1-camera .v1-flash.v1-shutter-flash,
+.v1-capture-screen .v1-flash.v1-shutter-flash {
   position: absolute;
   inset: 0;
-  z-index: 20;
-  background: rgba(255, 252, 247, 0.85);
+  z-index: 25;
+  background: #FFFFFF;
   pointer-events: none;
-  animation: at-flash 0.28s ease-out forwards;
+  animation: at-flash 0.45s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
 }
 
 @keyframes at-flash {
-  from {
+  0% {
     opacity: 1;
   }
-  to {
+  20% {
+    opacity: 0.95;
+  }
+  100% {
     opacity: 0;
   }
 }
@@ -2412,6 +2418,7 @@
   }
   .v1-shell .v1-print-stage__pulse,
   .v1-shell.v1-camera .v1-flash.v1-shutter-flash,
+  .v1-capture-screen .v1-flash.v1-shutter-flash,
   .v1-shell .atelier-cta-glow {
     animation: none;
   }

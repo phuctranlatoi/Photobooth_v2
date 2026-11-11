@@ -1,7 +1,16 @@
 {
     "$schema": "https://opencode.ai/config.json",
+    "plugins": [
+        {
+            "package": "@omniroute/opencode-plugin-v2",
+            "options": {
+                "providerId": "omniroute",
+                "baseURL": "http://127.0.0.1:20129"
+            }
+        }
+    ],
     "default_agent": "orchestrator",
-    "model": "9router/cx/gpt-6.1-sol",
+    "model": "9router/cf/@cf/zai-org/glm-4.7-flash",
     "permissions": [
         {
             "action": "read",
@@ -82,7 +91,7 @@
     "agents": {
         "orchestrator": {
             "mode": "primary",
-            "model": "9router/cx/gpt-6.1-sol",
+            "model": "9router/cf/@cf/zai-org/glm-4.7-flash",
             "permissions": [
                 {
                     "action": "external_directory",
@@ -198,7 +207,7 @@
         },
         "legacy-auditor": {
             "mode": "subagent",
-            "model": "9router/ollama/gpt-oss:120b",
+            "model": "9router/cx/gpt-5.6-sol-review",
             "permissions": [
                 {
                     "action": "external_directory",

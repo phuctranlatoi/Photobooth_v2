@@ -37,6 +37,49 @@ export function CaptureScreen({layout,busy,action,live='',snapshot,count=0,count
   const targetRatio=layout?.photoAspectRatio && layout.photoAspectRatio>0 ? layout.photoAspectRatio : 3/2;
   const cropWidth=Math.min(1,targetRatio/imageRatio);
   const cropHeight=Math.min(1,imageRatio/targetRatio);
+  const [flashActive,setFlashActive]=useState(false);
+  const flashTimerRef=useRef<ReturnType<typeof setTimeout>|null>(null);
+  const lastFlashedShotRef=useRef<number>(-1);
+  const prevCountRef=useRef<number>(count);
+
+  useEffect(()=>{
+    const triggerFlash=(shotIndex:number)=>{
+      if(lastFlashedShotRef.current===shotIndex)return;
+      lastFlashedShotRef.current=shotIndex;
+      setFlashActive(true);
+      if(flashTimerRef.current){
+        clearTimeout(flashTimerRef.current);
+      }
+      flashTimerRef.current=setTimeout(()=>{
+        setFlashActive(false);
+        flashTimerRef.current=null;
+      },450);
+    };
+
+    if(state==='CAPTURING'){
+      triggerFlash(count);
+    }else if(count>prevCountRef.current){
+      triggerFlash(count-1);
+    }else if(state==='LIVE_VIEW'&&count===0){
+      lastFlashedShotRef.current=-1;
+      if(flashTimerRef.current){
+        clearTimeout(flashTimerRef.current);
+        flashTimerRef.current=null;
+        setFlashActive(false);
+      }
+    }
+    prevCountRef.current=count;
+  },[state,count]);
+
+  useEffect(()=>{
+    return ()=>{
+      if(flashTimerRef.current){
+        clearTimeout(flashTimerRef.current);
+        flashTimerRef.current=null;
+      }
+    };
+  },[]);
+
   return <div className="v1-capture-screen v1-capture">
     <div className="v1-camera-viewport">
       <div className="v1-live" aria-label="Khung ngắm máy ảnh" style={{'--image-ratio':String(imageRatio)} as React.CSSProperties}>
@@ -50,6 +93,6 @@ export function CaptureScreen({layout,busy,action,live='',snapshot,count=0,count
     {state==='COUNTDOWN'&&displayCount!==null&&<div className="v1-countdown-layer" role="timer" aria-label={`Còn ${displayCount} giây`}><strong key={displayCount} className="v1-countdown">{displayCount}</strong></div>}
     <div className="v1-capture-top" aria-label={`Ảnh ${count+1} trên ${layout?.shotCount??1}`}>Ảnh {count+1}/{layout?.shotCount??1}</div>
      {state==='LIVE_VIEW'&&count===0&&<div className="v1-shutter-control"><button type="button" className="v1-shutter" aria-label="Bắt đầu chụp" disabled={busy} onClick={()=>{if(starting.current)return;starting.current=true;try{void Promise.resolve(action('capture.startSequence')).then(result=>{if(result===false)starting.current=false}).catch(()=>{starting.current=false})}catch{starting.current=false}}}><span className="v1-shutter-ring" aria-hidden="true"><span className="v1-shutter-core"/></span></button><span className="v1-shutter-caption">Chạm để chụp</span></div>}
-    {state==='CAPTURING'&&<div className="v1-flash v1-shutter-flash" aria-hidden="true"/>}
+    {(state==='CAPTURING'||flashActive)&&<div className="v1-flash v1-shutter-flash" aria-hidden="true"/>}
   </div>;
 }

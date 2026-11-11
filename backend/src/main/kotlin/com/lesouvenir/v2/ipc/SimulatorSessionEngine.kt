@@ -319,7 +319,7 @@ class SimulatorSessionEngine(
                 val shot=camera.capture(shots.size % config["sourceCount"].asInt,directory(),"shot-${UUID.randomUUID()}")
                 shots.add(shot.original)
                 if(shots.size==layout.shotCount) { val previous=state; state="SELECTING_PHOTOS"; activeSequence=false; synchronizeTimer(previous,false) }
-                else { state="LIVE_VIEW"; schedule(1) { countdown() } }
+                else { state="LIVE_VIEW"; schedule(if (layout.countdownSeconds == 0 || tickMillis <= 10L) 1L else 750L) { countdown() } }
             }
         }
     }
