@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
+import {type CSSProperties, useEffect, useRef, useState} from 'react';
 import {Check} from 'lucide-react';
 import {safeImage} from '../shared/connected-simulator';
 import type {FrameOption} from '../shared/simulator-contract';
@@ -55,6 +55,12 @@ export function FrameScreen({layout, action, preview, snapshot, frames = [], fra
   const frameArtwork = safeImage(selectedFrame?.thumbDataUrl) || safeImage(selectedFrame?.thumbnailDataUrl) || safeImage(selectedFrame?.previewDataUrl);
   const backendPreviewMatches = snapshot?.frameId === effectiveFrameId && !!safeImage(preview);
   const isStrip = (layout?.printAspectRatio ?? 0) < 0.5;
+  const frameRatio = layout?.printAspectRatio && layout.printAspectRatio > 0 ? layout.printAspectRatio : 1 / 3;
+  const silhouette = frameRatio < 0.5
+    ? {viewBox: '0 0 48 144', outer: {x: 4, y: 4, width: 40, height: 136, rx: 4}, border: {x: 6.5, y: 6.5, width: 35, height: 131, rx: 2.5}, mat: {x: 10, y: 12, width: 28, height: 106, rx: 2}, inner: {x: 13, y: 15, width: 22, height: 100, rx: 1}, textX: 24, textY: 130, fontSize: 4.2}
+    : frameRatio <= 1.05
+      ? {viewBox: '0 0 96 144', outer: {x: 6, y: 4, width: 84, height: 136, rx: 5}, border: {x: 9.5, y: 7.5, width: 77, height: 129, rx: 3}, mat: {x: 15, y: 14, width: 66, height: 102, rx: 2}, inner: {x: 19, y: 18, width: 58, height: 94, rx: 1}, textX: 48, textY: 129, fontSize: 6}
+      : {viewBox: '0 0 144 96', outer: {x: 4, y: 6, width: 136, height: 84, rx: 5}, border: {x: 7.5, y: 9.5, width: 129, height: 77, rx: 3}, mat: {x: 14, y: 14, width: 116, height: 58, rx: 2}, inner: {x: 18, y: 18, width: 108, height: 50, rx: 1}, textX: 72, textY: 81, fontSize: 6};
 
   return <>
     <Heading step="Bước 5" title="Chọn khung trang trí"
@@ -68,17 +74,19 @@ export function FrameScreen({layout, action, preview, snapshot, frames = [], fra
         {frames.length ? frames.map(frame => {
           const thumb = safeImage(frame.thumbDataUrl) || safeImage(frame.thumbnailDataUrl) || safeImage(frame.previewDataUrl);
           const selected = effectiveFrameId === frame.id;
-           return <button type="button" key={frame.id} aria-pressed={selected} onClick={() => handleUserFrameTap(frame.id)}>
-             <span className="v1-frame-art" style={{aspectRatio:layout?.printAspectRatio && layout.printAspectRatio>0 ? layout.printAspectRatio : 1/3}}>
-             {thumb ? <img src={thumb} alt={formatFrameName(frame.name)}/> :
-               <svg className="v1-frame-silhouette" viewBox="0 0 96 112" fill="none" aria-hidden="true">
-                 <rect x="8" y="4" width="80" height="104" rx="5" fill="#FFFCF7" stroke="#8E442D" strokeWidth="1.5"/>
-                 <rect x="11" y="7" width="74" height="98" rx="3" stroke="#D8C7B5" strokeWidth=".7"/>
-                 <rect x="17" y="14" width="62" height="70" rx="2" fill="#F9F6F0" stroke="#C8B8A9" strokeWidth="1"/>
-                 <rect x="21" y="18" width="54" height="62" rx="1" stroke="#EDE6DF" strokeWidth=".7"/>
-                 <text x="48" y="95" textAnchor="middle" fontFamily="var(--at-font-editorial)" fontSize="6" letterSpacing="0.03em" fill="#8E442D">LE SOUVENIR</text>
+          return <button type="button" key={frame.id} aria-pressed={selected} onClick={() => handleUserFrameTap(frame.id)}>
+            <span className="v1-frame-art-slot">
+              <span className="v1-frame-art" style={{aspectRatio: frameRatio, '--frame-ratio': String(frameRatio)} as CSSProperties}>
+              {thumb ? <img src={thumb} alt={formatFrameName(frame.name)}/> :
+                <svg className="v1-frame-silhouette" viewBox={silhouette.viewBox} fill="none" aria-hidden="true">
+                  <rect {...silhouette.outer} fill="#FFFCF7" stroke="#8E442D" strokeWidth="1.5"/>
+                  <rect {...silhouette.border} stroke="#D8C7B5" strokeWidth=".7"/>
+                  <rect {...silhouette.mat} fill="#F9F6F0" stroke="#C8B8A9" strokeWidth="1"/>
+                  <rect {...silhouette.inner} stroke="#EDE6DF" strokeWidth=".7"/>
+                  <text x={silhouette.textX} y={silhouette.textY} textAnchor="middle" fontFamily="var(--at-font-editorial)" fontSize={silhouette.fontSize} letterSpacing="0.03em" fill="#8E442D">LE SOUVENIR</text>
                 </svg>}
-             </span>
+              </span>
+            </span>
             <strong>{formatFrameName(frame.name)}</strong>
             {selected && <span className="v1-frame-check" aria-hidden="true"><Check size={16} strokeWidth={3}/></span>}
           </button>;

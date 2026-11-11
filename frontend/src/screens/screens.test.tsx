@@ -95,3 +95,31 @@ it('resets the double-tap latch after busy cycles false -> true -> false',()=>{
   fireEvent.click(button);
   expect(start).toHaveBeenCalledTimes(2);
 });
+
+it('renders proportional frame silhouettes for strip, portrait, and landscape print ratios',()=>{
+  const frames=[{id:'empty',name:'Khung trống'}];
+  const view=render(<FrameScreen {...props} layout={{...layout,printAspectRatio:0.33}} frames={frames}/>);
+  expect(view.container.querySelector('.v1-frame-silhouette')).toHaveAttribute('viewBox','0 0 48 144');
+  view.rerender(<FrameScreen {...props} layout={{...layout,printAspectRatio:0.66}} frames={frames}/>);
+  expect(view.container.querySelector('.v1-frame-silhouette')).toHaveAttribute('viewBox','0 0 96 144');
+  view.rerender(<FrameScreen {...props} layout={{...layout,printAspectRatio:1.05}} frames={frames}/>);
+  expect(view.container.querySelector('.v1-frame-silhouette')).toHaveAttribute('viewBox','0 0 96 144');
+  view.rerender(<FrameScreen {...props} layout={{...layout,printAspectRatio:1.5}} frames={frames}/>);
+  expect(view.container.querySelector('.v1-frame-silhouette')).toHaveAttribute('viewBox','0 0 144 96');
+});
+
+it('wraps frame artwork inside .v1-frame-art-slot and exposes --frame-ratio',()=>{
+  const frames=[{id:'a',name:'Khung mùa xuân',thumbDataUrl:'data:image/png;base64,AAAA'}];
+  const view=render(<FrameScreen {...props} layout={{...layout,printAspectRatio:0.66}} frames={frames}/>);
+  const slot=view.container.querySelector('.v1-frame-grid button > .v1-frame-art-slot');
+  expect(slot).toBeInTheDocument();
+  const art=slot?.querySelector(':scope > .v1-frame-art') as HTMLElement | null;
+  expect(art).not.toBeNull();
+  expect(art?.style.aspectRatio).toBe('0.66');
+  expect(art?.style.getPropertyValue('--frame-ratio')).toBe('0.66');
+  view.rerender(<FrameScreen {...props} layout={{...layout,printAspectRatio:1.5}} frames={frames}/>);
+  expect(art?.style.aspectRatio).toBe('1.5');
+  expect(art?.style.getPropertyValue('--frame-ratio')).toBe('1.5');
+  view.rerender(<FrameScreen {...props} layout={{...layout,printAspectRatio:0}} frames={frames}/>);
+  expect(art?.style.getPropertyValue('--frame-ratio')).toBe(String(1/3));
+});

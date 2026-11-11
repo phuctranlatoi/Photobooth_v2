@@ -71,8 +71,13 @@ if (navGeo?.chevrons) {
   check(navGeo.chevrons.prevWidth >= 55 && navGeo.chevrons.nextWidth >= 55, `${view} Carousel chevrons 56x56 touch target`);
   check(navGeo.chevrons.yDelta <= 3, `${view} Carousel chevrons aligned on same horizontal axis`);
 }
- await js("void (document.querySelector('[data-layout-id=\"515_4_anh\"], .v1-layout-card')?.click())");await delay(400); // Wait for carousel smooth-scroll animation to finish before snapping screenshot!
-  await shot(view, `${modeTag}-layout`);await js("if (document.querySelector('.v1-layout-stage')) document.querySelector('.v1-layout-card[aria-pressed=\"true\"], .v1-layout-card')?.click()");await wait("Boolean(document.querySelector('.v1-stepper'))",'quantity screen');let q=await js("document.querySelector('.v1-stepper strong')?.textContent.trim()");for(let i=0;q!==undefined&&q!=='2'&&i<10;i++){await js("void (document.querySelector('.v1-stepper button:last-child')?.click())");await delay(200);q=await js("document.querySelector('.v1-stepper strong')?.textContent.trim()")}check(q==='2',`${view} quantity set to 2`);await shot(view, `${modeTag}-quantity-2`);if(!demo)await js(`(() => {window.__v2QrBefore=null;const observer=new MutationObserver(()=>{const slot=document.querySelector('.v1-payment-qr-slot');if(slot&&!slot.querySelector('img')&&!window.__v2QrBefore){window.__v2QrBefore=${qrRects};observer.disconnect()}});observer.observe(document.body,{childList:true,subtree:true});setTimeout(()=>observer.disconnect(),30000)})()`);await click(/Tiếp tục/i);await wait("Boolean(document.querySelector('.v1-payment-screen') || document.body.innerText.includes('Thanh toán'))",'payment screen')}
+ const layoutChoice=await js(`(() => {const ids=['515_4_anh','515_4_base','strip-5x15'];const cards=[...document.querySelectorAll('[data-layout-id]')];const card=ids.map(id=>cards.find(c=>c.dataset.layoutId===id)).find(Boolean)||cards[0];if(!card)return null;card.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});return card.dataset.layoutId})()`);
+ check(Boolean(layoutChoice),`${view} deterministic layout card available`,String(layoutChoice));
+ await wait(`Boolean(document.querySelector('[data-layout-id="${layoutChoice}"][aria-pressed="true"]'))`,'layout selection settled',10000);
+ await js(`new Promise(resolve=>{const el=document.querySelector('[data-layout-id="${layoutChoice}"]');let last=el?.getBoundingClientRect().left, stable=0;const tick=()=>{const now=el?.getBoundingClientRect().left;if(Math.abs((now??0)-(last??0))<.25)stable++;else stable=0;last=now;if(stable>=3)resolve();else requestAnimationFrame(tick)};requestAnimationFrame(tick)})`);
+ await shot(view, `${modeTag}-layout`);
+ await js(`void (document.querySelector('[data-layout-id="${layoutChoice}"][aria-pressed="true"]')?.click())`);await delay(150);
+ await wait("Boolean(document.querySelector('.v1-stepper'))",'quantity screen');let q=await js("document.querySelector('.v1-stepper strong')?.textContent.trim()");for(let i=0;q!==undefined&&q!=='2'&&i<10;i++){await js("void (document.querySelector('.v1-stepper button:last-child')?.click())");await delay(200);q=await js("document.querySelector('.v1-stepper strong')?.textContent.trim()")}check(q==='2',`${view} quantity set to 2`);await shot(view, `${modeTag}-quantity-2`);if(!demo)await js(`(() => {window.__v2QrBefore=null;const observer=new MutationObserver(()=>{const slot=document.querySelector('.v1-payment-qr-slot');if(slot&&!slot.querySelector('img')&&!window.__v2QrBefore){window.__v2QrBefore=${qrRects};observer.disconnect()}});observer.observe(document.body,{childList:true,subtree:true});setTimeout(()=>observer.disconnect(),30000)})()`);await click(/Tiếp tục/i);await wait("Boolean(document.querySelector('.v1-payment-screen') || document.body.innerText.includes('Thanh toán'))",'payment screen')}
 async function demoJourney(view){await setupToPayment(view,true);const t=await js('document.body.innerText');check(!/[⚡📱✨🎉🖨️]/.test(t), `${view} zero emoji in UI`);check(/70\.000|90\.000|110\.000/.test(t),`${view} real calculated price displayed`);check(!t.includes('TRẢI NGHIỆM CHỤP ẢNH MIỄN PHÍ') && !t.includes('Không cần thanh toán'),`${view} no customer free photo bypass`);check(/bước\s*3/i.test(t) && t.includes('Thanh toán'),`${view} payment step header`);await shot(view,'demo-payment');
 // Hold the payment heading long enough to open the staff PIN modal.
 const staffTouch = await js(`(() => {
@@ -99,6 +104,10 @@ if (await js("Boolean(document.querySelector('.v1-staff-pin'))")) {
 }
 await wait("Boolean(document.querySelector('.v1-staff-cash-btn'))", 'staff cash confirmation button', 10000);
 await click(/Nhân viên xác nhận tiền mặt/i);await wait("Boolean(document.querySelector('.v1-capture-screen') || document.body.innerText.includes('Bắt đầu chụp'))",'live demo');await shot(view,'demo-live');
+const captureChrome=await js(`(()=>{const t=document.querySelector('.v1-capture-top'),s=document.querySelector('.v1-capture-screen');if(!t||!s)return null;const r=t.getBoundingClientRect(),sr=s.getBoundingClientRect(),cs=getComputedStyle(s,'::before');return {centerDx:Math.abs(r.left+r.width/2-innerWidth/2),top:r.top,screenTop:sr.top,railWidth:parseFloat(cs.width)||0,grid:getComputedStyle(s).gridTemplateColumns}})()`);
+check(captureChrome&&captureChrome.centerDx<=2&&captureChrome.top<=captureChrome.screenTop+80,`${view} capture top centered near top`,JSON.stringify(captureChrome));
+check(captureChrome&&captureChrome.railWidth<=0&&(!captureChrome.grid||!captureChrome.grid.includes(' ')),`${view} capture has no right rail`,JSON.stringify(captureChrome));
+const shutterBottom=await js("(()=>{const r=document.querySelector('.v1-shutter')?.getBoundingClientRect();return r?{bottom:r.bottom,viewport:innerHeight}:null})()");check(shutterBottom&&shutterBottom.bottom>shutterBottom.viewport*.65,`${view} shutter in bottom portion`,JSON.stringify(shutterBottom));
 const shutterGeometry = await js(`(() => {
   const button = document.querySelector('.v1-capture-screen .v1-shutter');
   const core = button?.querySelector('.v1-shutter-core');
@@ -169,6 +178,21 @@ check(hasPreviewImage, `${view} live frame preview renders chosen photos in real
 await delay(300);
 }
   await click(/Tiếp tục/i);await wait("Boolean(document.querySelector('.v1-frame-grid button'))",'frame buttons loaded');await measureSelection('.v1-frame-grid button:not([aria-pressed="true"])',`button=>button.getAttribute('aria-pressed')==='true'||!!button.querySelector('.v1-frame-check')`,`${view} frame`);await wait("Boolean(!document.querySelector('button[aria-label*=\"Tiếp tục\"]')?.disabled || Array.from(document.querySelectorAll('button')).some(b => (b.textContent?.trim().startsWith('Tiếp tục') || b.textContent?.trim().includes('Xem bản in')) && !b.disabled))",'frame preview ready',60000);await shot(view,'demo-frame');await click(/Xem bản in|Tiếp tục/i);await wait("Boolean(document.querySelector('.v1-confirm-screen') || document.body.innerText.includes('Kiểm tra lần cuối'))",'confirm');await wait("Boolean(document.querySelector('.v1-preview img, img[alt*=\"Bản ghép\"], img[alt*=\"600 DPI\"]')?.naturalWidth)", 'composed preview loaded', 35000);check(Boolean(await js("Boolean(document.querySelector('.v1-preview img, img[alt*=\"Bản ghép\"], img[alt*=\"600 DPI\"]')?.naturalWidth)")), `${view} composed preview`);
+const frameGridGeo = await js(`(() => {
+  const grid = document.querySelector('.v1-frame-grid');
+  const actionbar = document.querySelector('.v1-frame-workspace ~ .v1-actionbar, .v1-actionbar');
+  const cards = [...document.querySelectorAll('.v1-frame-grid button')];
+  if (!grid || !actionbar || !cards.length) return null;
+  const gr = grid.getBoundingClientRect(), ar = actionbar.getBoundingClientRect();
+  const arts = [...document.querySelectorAll('.v1-frame-art')];
+  const cardOverflows = cards.some(c => { const cr = c.getBoundingClientRect(); const media = c.querySelector('.v1-frame-art img, .v1-frame-art svg'); const mr = media?.getBoundingClientRect(); return mr && (mr.bottom > cr.bottom + 2 || mr.top < cr.top - 2); });
+  return { gridBottom: Math.round(gr.bottom), actionbarTop: Math.round(ar.top), cardCount: cards.length, cardOverflows, overflowY: getComputedStyle(grid).overflowY, firstCardHeight: Math.round(cards[0].getBoundingClientRect().height), firstArtRatio: arts[0] ? (arts[0].getBoundingClientRect().width / (arts[0].getBoundingClientRect().height || 1)).toFixed(2) : null };
+})()`);
+if (frameGridGeo) {
+  check(frameGridGeo.gridBottom <= frameGridGeo.actionbarTop + 2, `${view} frame grid stays strictly above actionbar (bottom: ${frameGridGeo.gridBottom}px, actionbar: ${frameGridGeo.actionbarTop}px)`);
+  check(!frameGridGeo.cardOverflows, `${view} frame cards have no overflowing media`);
+  check(['auto', 'scroll'].includes(frameGridGeo.overflowY), `${view} frame grid has bounded scroll (${frameGridGeo.overflowY})`);
+}
 const confirmGeo = await js(`(() => {
   const img = document.querySelector('.v1-confirm-workspace .v1-preview img, .v1-confirm-workspace .v1-preview svg, .v1-confirm-workspace .v1-layout-artwork');
   const summary = document.querySelector('.v1-confirm-workspace .v1-summary');
