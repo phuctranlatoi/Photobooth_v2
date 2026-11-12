@@ -1,294 +1,491 @@
-# LE SOUVENIR V2 — Korean Photo Atelier Design Specification
+# LE SOUVENIR V2 — Premium Korean Editorial Design System
 
-**Status:** Unboxed Atelier & Liquid Glass visual system fully mounted and verified across customer screens; **simulated desktop journey accepted** across 1280×800 and 1920×1200 viewports (`tests/journey-evidence/2026-11-05T02-34-00.652Z/results.json`, 0 failures, 26 screenshots). Sub-10ms touch response, unboxed photographic canvas, genuine liquid glass controls, deferred composition, concentric shutter button, and zero QR layout shift verified. Physical Canon DSLR and DNP printer hardware gates remain gated.
+**Deliverable type:** design specification and Tailwind utility proposal only; this is not implementation or proof of a working UI.  
+**Target:** public 16:10 Windows touch kiosk at 1920×1200 and 1280×800, with compact fallbacks for effective CSS viewports produced by 125% and 150% Windows scaling.  
+**Authority boundary:** this document changes presentation only. Backend session phase, permitted Back/cancel behavior, layout-driven `shotCount`, `selectCount`, `countdownSeconds`, pricing, payment acceptance, print acceptance, revenue recognition, and delivery data remain authoritative. Never substitute design constants for backend values.
 
 ---
 
-## 1. Unboxed Atelier & Liquid Glass Foundations
+## 1. Visual identity
 
-The LE SOUVENIR V2 visual system is inspired by upscale modern Korean photo studios (Seoul Seongsu/Hannam atelier aesthetic). The **Unboxed Atelier** design philosophy strips away heavy, opaque white card containers (`.v1-panel`, `.v1-start-card`, `.v1-summary`, `.v1-quantity-pricing`, `.v1-prepare-stage`, `.v1-print-stage`, `.v1-delivery`, `.v1-frame-preview-panel`) across all customer-facing stages. Photographs and print layouts float as authentic physical paper directly over a warm ambient ivory canvas, while UI chrome recedes into genuine liquid glass controls with heavy optical refraction.
+### 1.1 Direction: **Ivory Editorial Atelier**
 
-### 1.1 Unboxed Customer Shell Tokens (`.v1-shell.atelier-customer`)
+LE SOUVENIR V2 should feel like a quiet Seoul portrait studio rather than a desktop dashboard: warm paper, matte ink, restrained champagne metal, one optional rose note, generous negative space, and photographs treated as artwork. Customer screens are composed as editorial spreads. The camera stage deliberately shifts to matte black so reflected kiosk light does not compete with faces.
 
-| Design Token | CSS / Hex Value | Role & Applied Context | Contrast / Accessibility |
+Liquid glass is a **supporting material**, not the identity. Use it for controls, floating rails, modal/sheet surfaces, and selected cards over meaningful content. Do not stack translucent cards inside translucent cards; do not place glass behind QR modules, critical small text, or large areas with uncontrolled photographic contrast.
+
+### 1.2 Principles
+
+1. **Photography first:** live view and final compositions receive the largest visual area.
+2. **One dominant decision:** each customer screen exposes only actions legal in the current backend phase.
+3. **Editorial, not decorative:** serif display type and champagne details are sparse; body copy remains highly legible sans serif.
+4. **Material honesty:** a print preview is contained at its real declared aspect ratio. A QR is opaque white. A glass surface is visibly bounded and has a solid fallback.
+5. **Distance clarity:** countdown, failure, payment amount, and capture progress remain understandable from across the booth.
+6. **Touch certainty:** every touch responds immediately, while side-effecting commands lock synchronously until an authoritative result.
+7. **Truthful states:** rendering a QR is not payment; submitting a print is not physical completion; a mock preview is not camera proof.
+
+### 1.3 Explicit exclusions
+
+- No generic neon/AI gradients, glass dashboard grids, glowing data widgets, or parallax.
+- No pure-white body text on pale champagne/rose accents without verified contrast.
+- No fabricated customer portraits, fake PayOS QR, fake Cloudinary URL, fake device-ready state, or fake print percentage.
+- No mouse-hover-only disclosure or action in customer flow.
+- No fixed customer-flow numbers for capture total, selection quota, countdown, quantity, price, or timeout.
+- No bundled font files assumed or shared by this design deliverable.
+
+---
+
+## 2. Color system
+
+### 2.1 Brand primitives
+
+| Token | Value | Intended use |
+|---|---:|---|
+| `ivory-50` | `#FFFDFC` | QR surround contrast edge, lightest highlight |
+| `ivory-100` | **`#FAF7F2`** | canonical customer canvas |
+| `ivory-200` | `#F2ECE4` | solid glass fallback, secondary surface |
+| `ivory-300` | `#E7DED2` | warm divider on light surfaces |
+| `ink-950` | **`#1A1A1A`** | canonical matte-black primary text and dark stage |
+| `ink-800` | `#34312F` | secondary dark surface |
+| `ink-700` | `#4A4541` | body/supporting text on ivory |
+| `ink-600` | `#625B56` | muted text where AA is retained |
+| `champagne-400` | **`#D4C4A8`** | brand accent, focus ring, selection detail |
+| `champagne-600` | `#8A7350` | large accent/icon on ivory; use `champagne-700` for normal text |
+| `champagne-700` | `#6B583D` | pressed accent / high-contrast accent ink |
+| `rose-200` | **`#E8C5B8`** | optional soft-rose wash or decorative chip |
+| `rose-700` | `#854D40` | accessible rose text and status detail |
+| `white` | `#FFFFFF` | QR quiet zone, photographic paper only |
+
+The four required signature values are fixed: warm ivory `#FAF7F2`, matte black `#1A1A1A`, champagne `#D4C4A8`, and soft rose `#E8C5B8`. Darker companions exist because pale champagne and rose do not meet WCAG AA for normal text on ivory.
+
+### 2.2 Semantic light-theme tokens
+
+| Semantic token | Value | Rule |
+|---|---:|---|
+| `color.canvas` | `#FAF7F2` | default viewport |
+| `color.surface` | `#FFFDFC` | opaque raised surface / form field |
+| `color.surface.subtle` | `#F2ECE4` | secondary region / no-blur fallback |
+| `color.surface.glass` | `rgba(255,255,255,0.12)` | use only over controlled light backdrops |
+| `color.surface.glassStrong` | `rgba(255,255,255,0.15)` | modal/sheet light glass layer |
+| `color.text.primary` | `#1A1A1A` | headings, key instructions |
+| `color.text.secondary` | `#4A4541` | body copy |
+| `color.text.muted` | `#625B56` | metadata; never essential information alone |
+| `color.text.inverse` | `#FAF7F2` | text on matte black |
+| `color.border` | `rgba(26,26,26,0.16)` | default hairline |
+| `color.border.strong` | `rgba(26,26,26,0.34)` | fields, selected/disabled boundary |
+| `color.accent` | `#D4C4A8` | fill/detail, not normal text |
+| `color.accent.ink` | `#6B583D` | accessible accent text/icon |
+| `color.accent.soft` | `#E8C5B8` | optional decorative wash |
+| `color.focus` | `#D4C4A8` | 3px focus ring; add dark/ivory offset by context |
+| `color.error` | `#A43D36` | error text/icon on light surface |
+| `color.error.surface` | `#F7E7E4` | error wash |
+| `color.success` | `#2F7358` | success text/icon on light surface |
+| `color.success.surface` | `#E4F0E9` | success wash |
+| `color.warning` | `#7A571A` | warning text/icon |
+| `color.warning.surface` | `#F5EBD6` | warning wash |
+| `color.disabled.text` | `#6E6964` | disabled label, with additional icon/copy |
+| `color.disabled.surface` | `#E6E0D9` | disabled control background |
+| `color.scrim` | `rgba(10,9,8,0.58)` | modal scrim |
+
+### 2.3 Camera-stage tokens
+
+| Semantic token | Value | Rule |
+|---|---:|---|
+| `camera.canvas` | `#0D0D0D` | outer capture stage |
+| `camera.surface` | `rgba(26,26,26,0.88)` | opaque-enough control rail fallback |
+| `camera.glass` | `rgba(255,255,255,0.10)` | camera glass control, blur 16px |
+| `camera.text` | `#FAF7F2` | primary inverse copy |
+| `camera.textMuted` | `#D8D1C8` | secondary inverse copy |
+| `camera.guide` | `rgba(250,247,242,0.84)` | crop guide; never encode status alone |
+| `camera.focus` | `#D4C4A8` | focus ring with matte-black offset |
+
+### 2.4 QR exception
+
+Payment and delivery QR pixels sit on an **opaque `#FFFFFF` quiet zone** with no `backdrop-filter`, transparency, texture, tint, blend mode, or shadow across the encoded area. The outer shell may be glass; reserve a stable square before QR load so loading → QR causes zero layout shift.
+
+### 2.5 High-contrast mode
+
+The operator-accessible high-contrast toggle sets a root preference such as `data-contrast="high"`. It must persist through the approved settings mechanism and affect customer UI on the next safe render/session according to architecture policy.
+
+| Token | High-contrast value |
+|---|---:|
+| canvas / light surface | `#FFFFFF` |
+| primary and secondary text | `#000000` |
+| borders | `#3A3A3A` at 2px |
+| dark stage | `#000000` |
+| inverse text | `#FFFFFF` |
+| focus | `#8A5A00` on light, `#FFE4A3` on dark |
+| glass | replace blur/transparency with opaque white or black |
+| selected | 3px border + check/ordinal + label; never color alone |
+
+Do not infer Windows forced-colors behavior from this preference. Also provide `@media (forced-colors: active)` proposals using system colors (`Canvas`, `CanvasText`, `ButtonFace`, `ButtonText`, `Highlight`) and allow the OS to override shadows and gradients.
+
+---
+
+## 3. Liquid glass material
+
+### 3.1 Material recipe
+
+Liquid glass should combine five layers:
+
+1. **Backdrop diffusion:** `backdrop-filter: blur(12px–20px) saturate(112%–125%)`.
+2. **Low-opacity fill:** white or matte-black alpha **0.08–0.15**.
+3. **Specular highlight:** restrained linear highlight along the upper edge, never a full-page gradient.
+4. **1px inner glow:** inset white or champagne line that remains visible on touch displays.
+5. **Depth separation:** one ambient shadow and a z-layer; no excessive glow.
+
+Use at most two glass elevations on one customer screen. If the content behind the glass is visually busy, increase the **solid fallback tint**, not the blur indefinitely.
+
+### 3.2 Glass tokens
+
+| Token | Compact | Wide | Use |
+|---|---:|---:|---|
+| `glass.blur.soft` | 12px | 14px | small button/chip |
+| `glass.blur.base` | 16px | 16px | card/control rail |
+| `glass.blur.strong` | 18px | 20px | modal/sheet only |
+| `glass.fill.light` | `rgba(255,255,255,.12)` | same | ivory-stage card |
+| `glass.fill.lightStrong` | `rgba(255,255,255,.15)` | same | sheet/modal |
+| `glass.fill.dark` | `rgba(18,18,18,.12)` | same | dark-stage rail |
+| `glass.rim` | `rgba(255,255,255,.52)` | same | 1px top/rim line |
+| `glass.inner` | `inset 0 1px 0 rgba(255,255,255,.50)` | same | inner glow |
+| `glass.shadow.1` | `0 8px 24px rgba(26,26,26,.08)` | `0 10px 30px rgba(26,26,26,.09)` | card |
+| `glass.shadow.2` | `0 18px 48px rgba(26,26,26,.14)` | `0 24px 64px rgba(26,26,26,.16)` | modal/sheet |
+
+### 3.3 Proposed Tailwind utilities
+
+These are utility proposals for a future Tailwind layer; they are not implementation code. Names intentionally describe material semantics instead of encoding a screen name.
+
+| Utility proposal | Declaration intent |
+|---|---|
+| `glass-surface` | `relative isolate overflow-hidden bg-white/[.12] backdrop-blur-[16px] backdrop-saturate-[1.18] border border-white/50 shadow-[0_8px_24px_rgba(26,26,26,.08),inset_0_1px_0_rgba(255,255,255,.50)]` |
+| `glass-surface-strong` | `bg-white/[.15] backdrop-blur-[20px] backdrop-saturate-[1.22] border-white/60 shadow-[0_24px_64px_rgba(26,26,26,.16),inset_0_1px_0_rgba(255,255,255,.58)]` |
+| `glass-surface-dark` | `bg-black/[.12] backdrop-blur-[16px] backdrop-saturate-[1.12] border-white/20 shadow-[0_12px_32px_rgba(0,0,0,.28),inset_0_1px_0_rgba(255,255,255,.18)]` |
+| `glass-specular` | add a non-interactive `before:` upper-edge highlight: `before:absolute before:inset-x-[8%] before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-white/70 before:to-transparent` |
+| `glass-card` | `glass-surface rounded-[24px]` compact; `rounded-[28px]` wide |
+| `glass-button` | `glass-surface glass-specular min-h-touch rounded-full` with pressed/focus/disabled states |
+| `glass-sheet` | `glass-surface-strong rounded-t-[32px]` or side-sheet `rounded-l-[32px]` |
+| `glass-modal` | `glass-surface-strong rounded-[28px]` on `bg-black/60` scrim |
+| `glass-fallback` | under `@supports not (backdrop-filter: blur(1px))`: opaque `#F2ECE4` on light, `#1A1A1A` on dark |
+
+**Fallback requirement:** every proposed glass utility must have an opaque base color before the `@supports` enhancement. Text contrast is assessed against that opaque base and the worst allowed backdrop, not against an ideal screenshot.
+
+### 3.4 Depth and z-index
+
+| Token | Value | Content |
+|---|---:|---|
+| `z.base` | 0 | canvas and photography |
+| `z.cropGuide` | 10 | noninteractive guides |
+| `z.chrome` | 20 | header, progress, action dock |
+| `z.sheet` | 40 | customer sheet / lightbox |
+| `z.modalScrim` | 60 | modal scrim |
+| `z.modal` | 70 | modal / PIN entry |
+| `z.toast` | 80 | operator/customer status announcement |
+| `z.system` | 100 | backend disconnect/out-of-service lock |
+
+Never place an actionable layer below a noninteractive overlay that can intercept touches. Decorative pseudo-elements use `pointer-events:none`.
+
+---
+
+## 4. Typography
+
+### 4.1 Font families and fallback policy
+
+| Role | Preferred family | Fallback stack | Rules |
 |---|---|---|---|
-| `--at-canvas` | `#F6F1EA` | Base ivory studio canvas | Soft non-glare warm ivory surface |
-| `--at-canvas-light` | `#FBF8F3` | Elevated light tone for paper accents | Pure photographic baseline |
-| `--at-ink` | `#24201D` | Primary headings, titles, price totals, action labels | High contrast (≥ 11:1 on ivory canvas) |
-| `--at-secondary` | `#514842` | Subtitles, step descriptions, receipt item labels | Contrast ≥ 5.2:1 on canvas |
-| `--at-muted` | `#645950` | Metadata labels, unit prices, captions | Subdued secondary information |
-| `--at-hairline` | `rgba(89, 65, 49, 0.19)` | Delicate dividers for unboxed receipt/summary rows | Subtle structural separation without boxing |
-| `--at-coral-1` | `#C27357` | Primary CTA gradient start, active badges | Brand salon terracotta accent |
-| `--at-coral-2` | `#A85A40` | Primary CTA gradient midpoint, border accents | Deep terracotta-coral body |
-| `--at-coral-3` | `#8E442D` | Primary CTA gradient bottom edge, active depth | Rich terracotta anchor |
-| `--at-glass` | `rgba(255, 255, 255, 0.65)` | Translucent refractive glass fill (secondary, back, stepper, dock) | Requires `backdrop-filter: blur(24px) saturate(180%)` |
-| `--at-glass-rim` | `rgba(255, 255, 255, 0.85)` | Specular edge reflection around glass elements | Creates tangible physical boundary |
-| `--at-glass-shadow` | `0 6px 18px rgba(45, 30, 20, 0.06)` | Soft ambient shadow beneath glass buttons | Grounded without darkening the canvas |
-| `--at-paper-shadow` | `0 22px 38px -13px rgba(44,30,23,.26), 0 5px 11px rgba(44,30,23,.13)` | Deep photorealistic dual drop shadow for floating prints | Distinct paper elevation in open space |
-| Ambient Light Gradient | `radial-gradient(ellipse 48% 63% at 77% 46%, rgba(214,178,150,.19), transparent 86%), #F6F1EA` | Background applied to customer shell (`.atelier-customer`) | Creates a shallow, warm atmospheric glow behind artwork |
-| Darkroom Obsidian | `#121214` (matte obsidian) | Live View capture screen (`.v1-capture-screen`, `.v1-camera`) | Eliminates screen flare in camera lens |
+| Korean/Vietnamese/UI sans | **Pretendard** or **Noto Sans KR** | `"Noto Sans KR", "Segoe UI", Arial, sans-serif` | Primary interface; use only fonts available under approved app/deployment licensing. No font files are supplied here. |
+| Editorial Latin display | **Playfair Display** or **Cormorant Garamond** | Georgia, `"Times New Roman"`, serif | Wordmark, short Latin accent, large marketing title only. Never use for dense instructions, money, countdown, or status. |
+| Numeric | UI sans | same as sans | enable `font-variant-numeric: tabular-nums lining-nums` for countdown, price, progress, timers. |
+
+If the preferred web fonts are unavailable offline, fall back immediately to installed/system fonts; layout must not depend on a late font swap. Validate Vietnamese diacritics and Hangul in the actual packaged WebView. Never synthesize thin weights below 400 on kiosk screens.
+
+### 4.2 Fluid type tokens
+
+The middle term uses viewport width but values are constrained so both target displays remain legible. Height-compaction is handled by responsive layout, not by shrinking critical text below its minimum.
+
+| Token | Proposed CSS value | Weight / line height | Use |
+|---|---|---|---|
+| `type.display-xl` | `clamp(52px, 4.2vw, 80px)` | sans 650–750 / 1.02 | Welcome headline |
+| `type.display-serif` | `clamp(32px, 2.6vw, 50px)` | serif 500 / 1.05 | short editorial Latin accent |
+| `type.screen-title` | `clamp(30px, 2.3vw, 44px)` | sans 650 / 1.12 | screen title |
+| `type.section` | `clamp(22px, 1.55vw, 30px)` | sans 650 / 1.2 | panel/section heading |
+| `type.body-lg` | `clamp(18px, 1.15vw, 22px)` | sans 450 / 1.5 | primary instruction |
+| `type.body` | `clamp(16px, 1vw, 20px)` | sans 400 / 1.5 | body text |
+| `type.label` | `clamp(14px, .84vw, 17px)` | sans 600 / 1.25 | button/field labels |
+| `type.meta` | `clamp(13px, .73vw, 15px)` | sans 500 / 1.35 | noncritical metadata |
+| `type.price` | `clamp(40px, 3.2vw, 64px)` | sans 700 / 1.0 | canonical payment total |
+| `type.countdown` | `clamp(144px, 17vw, 300px)` | sans 800 / .88 | cross-booth countdown |
+| `type.progress` | `clamp(18px, 1.25vw, 24px)` | sans 650 / 1.1 | capture and selection progress |
+| `type.button-primary` | `clamp(18px, 1.15vw, 22px)` | sans 650 / 1 | main action |
+
+### 4.3 Copy and overflow rules
+
+- Customer headings: maximum two lines; preserve natural sentence case in Vietnamese/Korean.
+- Buttons: one line at target viewports; if localized text grows, expand width or use approved shorter copy—never reduce below 16px.
+- Descriptions: maximum three lines on compact customer screens; operator detail can scroll within a bounded region.
+- Names from backend: wrap safely with `overflow-wrap:anywhere`; do not expose raw IDs as fallback customer labels.
+- Prices, timers, and fractions: no wrapping; use tabular figures.
+- Avoid all-caps paragraphs and wide letter spacing on Hangul.
+- Screen reader names describe outcome, e.g. “Chọn bố cục [name]” or “Ảnh [label], đã chọn ở vị trí [order]”; visible shorthand must not be the only accessible label.
 
 ---
 
-## 2. Genuine Liquid Glass Controls
+## 5. Spacing, geometry, radii, and elevation
 
-Interactive controls are engineered with genuine optical glass characteristics rather than generic translucent boxes:
+### 5.1 Spacing scale
 
-### 2.1 Primary Pill CTA (`.v1-primary`)
-- **Dimensions & Shape:** Minimum height **68px** (up to 72px), full pill border-radius (`9999px`), ample horizontal padding.
-- **Core Gradient:** `linear-gradient(135deg, #C27357 0%, #A85A40 50%, #8E442D 100%)`.
-- **Specular Rim:** Deep terracotta border `1px solid #793924` with top-edge specular light catch `inset 0 1.5px 2px rgba(255, 255, 255, 0.45)`.
-- **Radiant Shadow:** `0 8px 24px rgba(168, 90, 64, 0.35)`.
-- **Active Press:** Compresses to `transform: scale(0.96); filter: brightness(0.96)` over 190ms `cubic-bezier(0.2, 1.3, 0.3, 1)`.
+The base unit is **4 CSS px**. Structural layout aligns to an **8px grid**; 4px increments are reserved for optical adjustment and compact label gaps.
 
-### 2.2 Refractive Glass Secondary & Back Buttons (`.v1-secondary`, `.v1-back`, Stepper)
-- **Dimensions:** Back button **56×56px** circle; Quantity stepper buttons **72×72px** tactile touch targets; secondary buttons **56px** minimum height.
-- **Refraction Body:** Translucent fill `rgba(255, 255, 255, 0.65)` with heavy optical diffusion `-webkit-backdrop-filter: blur(24px) saturate(180%)` and `backdrop-filter: blur(24px) saturate(180%)`.
-- **Dual Specular Rims:** Outer crisp reflection `1px solid rgba(255, 255, 255, 0.85)` + inner light catch `inset 0 1.5px 2px rgba(255, 255, 255, 0.95)`.
-- **Shadow:** Grounded with `0 6px 18px rgba(45, 30, 20, 0.06)`.
-- **Active Touch:** Compresses to `transform: scale(0.94)` on finger contact.
-- **Fall-Back:** Gracefully degrades to `#F2EBE4` on browsers/environments lacking backdrop-filter support.
+| Token | px | Typical use |
+|---|---:|---|
+| `space-0` | 0 | reset |
+| `space-1` | 4 | optical/icon gap only |
+| `space-2` | 8 | grid unit, tight gap |
+| `space-3` | 12 | minimum separation between adjacent touch targets |
+| `space-4` | 16 | control internal gap |
+| `space-5` | 20 | compact padding |
+| `space-6` | 24 | card padding compact |
+| `space-8` | 32 | section gap compact |
+| `space-10` | 40 | wide card padding |
+| `space-12` | 48 | shell inset compact / section gap wide |
+| `space-16` | 64 | shell inset wide |
+| `space-20` | 80 | hero rhythm |
+| `space-24` | 96 | major separation |
 
-### 2.3 Floating Actionbar Dock (`.v1-actionbar`)
-- Floating frosted glass dock (`border-radius: 28px`), `backdrop-filter: blur(24px) saturate(180%)`, border `1px solid rgba(255, 255, 255, 0.85)`, inner highlight `inset 0 1.5px 2px rgba(255, 255, 255, 0.95)`, and soft elevated drop shadow `0 10px 26px rgba(45, 30, 20, 0.08)`.
-- Pinned at the bottom of the viewport with a fluid gap, housing primary and secondary actions without visual clutter.
+### 5.2 Touch target tokens
 
----
+| Token | Size | Requirement |
+|---|---:|---|
+| `touch.minimum` | **48×48px** | absolute minimum for any enabled control |
+| `touch.comfort` | **56×56px** | default secondary/back/icon control |
+| `touch.primary` | 64–72px high | customer primary action |
+| `touch.shutter` | 104–120px diameter | capture initiation |
+| `touch.spacing` | ≥12px | active bounds between adjacent actions |
 
-## 3. Unboxed Typography & Clean Spatial Hierarchy
+Icon artwork may be 20–28px while its hit area remains the target size. Cards are wholly tappable; never make only text or a checkmark active.
 
-Typography is built on the native Windows/Chromium system font stack (`system-ui, "Segoe UI", -apple-system, BlinkMacSystemFont, "Noto Sans", sans-serif`) with Georgia serif accents, ensuring zero latency, zero FOUT/FOIT, and pristine rendering of all Vietnamese diacritics.
+### 5.3 Radii
 
-### 3.1 Unboxed Type Hierarchy
+| Token | Value | Use |
+|---|---:|---|
+| `radius.sm` | 10px | QR paper edge / small image |
+| `radius.md` | 16px | field, thumbnail |
+| `radius.lg` | 24px | glass card |
+| `radius.xl` | 32px | sheet/modal |
+| `radius.pill` | 9999px | buttons, progress chips |
 
-| Hierarchy Level | Font Size (Fluid / Responsive) | Weight / Style | Line Height | Letter Spacing | Applied Elements |
-|---|---|---|---|---|---|
-| Atelier Brand Trigger | `clamp(18px, 1.8vw, 24px)` | 700 / Georgia Serif | 1.0 | `+0.06em` | Hidden 5-tap operator wordmark |
-| Welcome Hero Headline | `clamp(42px, 4.7vw, 82px)` | 800 / Segoe UI | 1.08 | `-0.045em` | Welcome greeting ("Chụp ảnh lấy ngay") |
-| Editorial Italic Accent | `clamp(26px, 2.7vw, 48px)` | Italic 400 / Georgia Serif | 1.0 | `-0.02em` | Decorative flourish ("Yours forever.") |
-| Screen Title | `clamp(24px, 2.2vw, 32px)` | 700 / Segoe UI | 1.20 | `-0.02em` | Main screen header title (`Heading`) |
-| Section Header | `clamp(20px, 1.8vw, 26px)` | 600 / Segoe UI | 1.25 | `-0.01em` | Panel headings ("Đơn hàng", "Số lượng") |
-| Step Eyebrow | `12px` / `clamp(11px, 1vw, 13px)` | 600 / Segoe UI | 1.0 | `+0.08em` | Subdued step badge ("BƯỚC 1", "BƯỚC 2") |
-| Unboxed Receipt Rows | `clamp(15px, 1.2vw, 18px)` | 400 / 600 | 1.40 | `0` | Quantity and confirm detail lines |
-| Tabular Numbers | `18px` – `34px` (`tabular-nums`) | 700 / Segoe UI | 1.0 | `-0.01em` | Stepper quantity (34px), timers, prices |
-| Big Countdown | `clamp(140px, 20vw, 240px)` | 900 / Segoe UI | 1.0 | `-0.03em` | Live camera shutter countdown (centered) |
+Photo/print corners follow source artwork. Do not round a print preview so aggressively that it changes the perceived print boundary.
 
-### 3.2 Unboxed Receipts & Order Summaries
-- `.v1-quantity-pricing` and `.v1-summary` render with `background: transparent; border: 0; box-shadow: none`.
-- Summary rows are separated solely by delicate hairline dividers (`border-bottom: 1px solid var(--at-hairline)`).
-- Final totals are highlighted by an upper hairline divider (`border-top: 1px solid var(--at-hairline); padding-top: 16px`) and bold tabular figures, eliminating the need for opaque receipt cards.
-
----
-
-## 4. Floating Paper Elevation & Photographic Canvas
-
-Unlike legacy UI patterns that encase photos in heavy plastic white cards, the Unboxed Atelier aesthetic presents prints as physical photo paper floating gracefully over the studio canvas:
-
-1. **Photorealistic Drop Shadows:**
-   - Floating print previews and layout artwork utilize deep organic paper drop shadows:
-     ```css
-     box-shadow: var(--at-paper-shadow);
-     /* 0 22px 38px -13px rgba(44,30,23,.26), 0 5px 11px rgba(44,30,23,.13) */
-     ```
-   - Layout artwork SVG filters apply matching organic drops:
-     ```css
-     filter: drop-shadow(0 16px 28px rgba(45,30,20,.14))
-            drop-shadow(0 3px 6px rgba(45,30,20,.06));
-     ```
-2. **StartScreen Layered Open Gallery:**
-   - Left copy column (`minmax(0, 1.08fr)`): Editorial greeting, bilingual accent, description, small borderless glass value pills (`Bản in lưu niệm`, `Album ảnh qua QR`), and 68px primary CTA.
-   - Right gallery column (`minmax(0, 0.92fr)`):
-     - An open spatial gallery `.atelier-welcome__gallery` with zero outer card frame.
-     - Central ambient halo `.atelier-welcome__halo` (`radial-gradient(ellipse, rgba(203,159,127,.21), transparent 69%)`).
-     - Rear portrait print `.atelier-print--portrait` rotated −7° with native layout aspect ratio (`layout.printAspectRatio`).
-     - Front 4-cut strip print `.atelier-print--strip` rotated +6° with z-index 1.
-     - Brand signature `LE SOUVENIR · PHOTO ATELIER` in italic Georgia serif.
-3. **Cardless Presentation Across Stages:**
-   - Live print previews on Selection, Frame, and Confirm screens float directly on the canvas without outer container wrappers.
-   - Frame selection grid buttons use borderless layout artwork buttons with a subtle terracotta accent rim (`border: 2px solid #a85a40`) strictly on the selected item.
-4. **Maximized Visual Stage (82vh):**
-   - The print preview occupies up to 82% of the viewport height (`max-height: 82vh`), giving customers an expansive, high-fidelity view of their composition before confirming.
-
----
-
-## 5. Touchscreen Ergonomics & 56px Touch Standards
-
-All customer interactions are optimized for 16:10 landscape touchscreens (1280×800 and 1920×1200) without requiring a mouse or keyboard.
-
-1. **56px Minimum Touch Target Rule:**
-   - Header Back button: **56×56px** (Lucide `ArrowLeft` centered with dx: 0.5, dy: 0.0).
-   - Carousel navigation chevrons: **56×56px** floating circles with horizontal axis alignment.
-   - Action Bar primary CTA buttons: **58px – 68px** fluid height across resolutions.
-   - Quantity Stepper buttons (`+`, `−`): **72×72px** square touch targets with 34px glyphs.
-   - Photo selection tiles: Full card click surface (`clamp(140px, 22vh, 260px)`).
-   - Touch targets are spaced with a minimum of 12px buffer to prevent accidental adjacent taps.
-2. **Zero-Scroll Window Policy:**
-   - The root kiosk window (`.v1-shell`) maintains `overflow: hidden; height: 100vh`. No customer flow triggers full-window scrolling.
-   - Dynamic lists (captured photo gallery, frame grid, order summary) scroll independently with `overscroll-behavior: contain` and compact scrollbars.
-3. **No-Hover / Immediate Press State:**
-   - All interactive controls use `:active` scale (`transform: scale(0.96)`) for immediate physical feedback on finger contact.
-   - Touch triggers employ `touch-action: manipulation` to eliminate browser tap delays.
-
----
-
-## 6. Payment & QR Surface Architecture
-
-1. **Zero Layout Shift (0 px):**
-   - The QR code container (`.v1-payment-qr-slot`) enforces fixed responsive dimensions (`clamp(280px, 34vh, 380px)`) with an exact `1:1` aspect ratio.
-   - Layout measurements verified via CDP prove 0.00 px shift when transitioning from spinner placeholder to high-resolution VietQR PNG.
-2. **Porcelain White QR Quiet Zone:**
-   - To guarantee rapid camera recognition by banking apps, the QR code and its container enforce an opaque porcelain white quiet zone (`background: #fff !important; opacity: 1; filter: none`).
-   - The payment summary sits unboxed directly on the ivory canvas. Only the QR panel features a translucent frosted glass surround (`rgba(255,255,255,.55)`, `blur(20px)`), ensuring maximum contrast for the QR payload while maintaining atelier ambiance.
-3. **Concealed Staff Access:**
-   - Operator cash override is completely concealed behind a 1-second dwell gesture on the "Thanh toán" title, requiring staff PIN `1234` to prevent customer tampering.
-
----
-
-## 7. Operator Workspace Styling
-
-The Operator and Diagnostics workspace (`operator-v1.css`) adopts the same sophisticated Liquid Glass aesthetic:
-- Warm ivory backdrop (`#FAF7F2` to `#EFE8E0`) replaces legacy harsh black/graphite styling.
-- Frosted glass cards and navigation tabs with subtle white borders.
-- Honest, unambiguous hardware health indicators (Canon DSLR disconnected, DNP printer simulated/ready).
-- 56px touch-friendly navigation tabs with horizontal scroll affordance.
-2. **Snapping & Scrolling:**
-   - `scroll-snap-type: x mandatory` on `.v1-layout-carousel`.
-   - `scroll-snap-align: center` on `.v1-carousel-card`.
-   - Smooth transform animations: `transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.25, 1)`.
-3. **Touch & Navigation Interaction:**
-   - Non-centered card tap: scrolls that card to center and updates selection.
-   - Centered card tap: triggers immediate selection confirmation and advances to the next step.
-   - Chevrons: 56×56px floating circular controls pinned symmetrically on the horizontal center axis.
-   - Reduced motion: disables smooth scroll and scale transitions under `prefers-reduced-motion: reduce`.
-
----
-
-## 6. Payment & QR Surface Architecture
-
-1. **Zero Layout Shift (0 px):**
-   - The QR code container (`.v1-payment-qr-slot`) enforces fixed responsive dimensions (`clamp(280px, 34vh, 380px)`) with an exact `1:1` aspect ratio.
-   - Layout measurements verified via CDP prove 0.00 px shift when transitioning from spinner placeholder to high-resolution VietQR PNG.
-2. **Porcelain White QR Target:**
-   - To guarantee rapid camera recognition by banking apps, the QR code is rendered on a pure white, unblurred, non-translucent card (`#FFFFFF`) with 16px quiet zone padding.
-3. **Concealed Staff Access:**
-   - Operator cash override is completely concealed behind a 1-second dwell gesture on the "Thanh toán" title, requiring staff PIN `1234` to prevent customer tampering.
-
----
-
-## 7. Operator Workspace Styling
-
-The Operator and Diagnostics workspace (`operator-v1.css`) adopts the same sophisticated Liquid Glass aesthetic:
-- Warm ivory backdrop (`#FAF7F2` to `#EFE8E0`) replaces legacy harsh black/graphite styling.
-- Frosted glass cards and navigation tabs with subtle white borders.
-- Honest, unambiguous hardware health indicators (Canon DSLR disconnected, DNP printer simulated/ready).
-- 56px touch-friendly navigation tabs with horizontal scroll affordance.
-
-### Current mounted-token and payment contract (2026-11-01)
-
-| CSS token | Value | Meaning |
-|---|---|---|
-| `--v-bg` | `#FAF6F0` | warm ivory canvas |
-| `--v-surface` | `#FFFFFF` | order and guidance card surface |
-| `--v-coral` | `#E07A5F` | selected state / CTA |
-| `--v-peach` | `#F4A261` | secondary accent, not body copy |
-| `--v-charcoal` | `#232120` | body/heading ink |
-| `--v-border` | `#E9DED7` | dividers / outlines |
-
-These mounted `--v-*` names are the frontend reference; older `--atelier-*` names in §2 are semantic design aliases, **not a claim of mounted variable names**. Typography: letter-spaced LE SOUVENIR wordmark, compact uppercase atelier kicker, large editorial bilingual hero, system-font Vietnamese body with diacritic support and tabular price/count numerals; no bundled font files. Navigation uses Lucide `ArrowLeft` in compact **52px** back target and `ChevronLeft`/`ChevronRight` in **56px** carousel targets; quantity stepper **72px**, prominent primary CTA **68–72px**. Verify accessible focus/contrast and real touch geometry separately; no hover is required.
-
-**Payment layout:** left summary card presents backend `pricing.totalAmount` formatted VND, layout/format/quantity/base price and QR-wait status (capture example 70.000 đ, Dải 5×15 cm, 2 bản in). Right guidance card presents a **real backend-provided** VietQR with polling or an honest QR-creation/loading state. On missing PayOS configuration or QR error, explain cash at counter and offer staff cash confirmation via existing authorized backend event; header double-click / 700ms hold exposes the staff action but never authenticates staff. No guest `0 đ`, free-trial banner, free badge or bypass. Captured REAL Payment was QR-loading, **not** proof of QR render, staff approval or payment settlement. Only backend-authoritative payment permits capture; only existing Confirm & Print gate permits printing/revenue. Check 1280×800 fit and compact Windows scaling separately.
-
-## 1. Visual direction and two evaluated options
-
-**Option A — Atelier gallery (chosen).** Ivory canvas, centered print-artwork carousel, substantial charcoal text, coral action, blush caption, matte-black camera stage. Adjacent prints remain visible at 40% opacity and have explicit 64px arrow targets. Its large central illustration and isolated live countdown remain readable from several metres away.
-
-**Option B — Darkroom editorial (not chosen).** Black welcome and capture, narrow champagne type and small lateral thumbnail rail. Attractive on a monitor but reduces readable contrast for printed strip silhouettes and titles at 1280×800; peripheral navigation becomes less discoverable. Reserve dark background for capture only.
-
-No AI-gradient/glass panels, faux customer photos, fake QR, or simulated hardware-success imagery. Use genuine licensed event/frame art when supplied; otherwise use authored vector illustrations explicitly labeled as illustrations.
-
-## 2. Tokens (CSS custom properties; proposed names, not claims about existing CSS)
+### 5.4 Elevation
 
 | Token | Value | Use |
 |---|---|---|
-| `--atelier-bg` | `#FAF6F0` | warm ivory viewport |
-| `--atelier-surface` | `#FFFFFF` | print mounts and panels |
-| `--atelier-blush` | `#F7EBE8` | caption/secondary zone |
-| `--atelier-coral` | `#E07A5F` | primary action and selection |
-| `--atelier-coral-text` | `#A3442D` | coral text on light surface (not pale coral) |
-| `--atelier-peach` | `#F4A261` | decorative accents; NOT body text on white |
-| `--atelier-ink` | `#232120` | titles, instructions |
-| `--atelier-secondary` | `#544E4B` | secondary copy |
-| `--atelier-border` | `#E9DED7` | cashmere separators |
-| `--atelier-sage` | `#81B29A` | decorative completion mark; status text uses dark ink |
-| `--atelier-camera` | `#090909` | actual capture stage |
-| `--atelier-focus` | `#232120` | 3px visible keyboard/focus ring + 3px ivory offset |
+| `shadow.hairline` | `0 0 0 1px rgba(26,26,26,.12)` | opaque surface boundary |
+| `shadow.control` | `0 6px 18px rgba(26,26,26,.08)` | button/chip |
+| `shadow.card` | `0 12px 34px rgba(26,26,26,.10)` | card |
+| `shadow.paper` | `0 22px 50px -18px rgba(26,26,26,.30), 0 5px 14px rgba(26,26,26,.14)` | physical print preview |
+| `shadow.modal` | `0 28px 80px rgba(26,26,26,.24)` | modal/sheet |
 
-Coral-filled buttons use charcoal ink (`#232120`) rather than white: white on `#E07A5F` does not reliably meet normal-text contrast. Verify all combinations with a contrast checker: body text ≥4.5:1, large text ≥3:1, nontext controls ≥3:1. Disabled is conveyed by icon + label + disabled semantics, not opacity alone. Shadow is not the sole active cue.
+---
 
-Typography: system font stack `"Segoe UI", "Noto Sans", Arial, sans-serif`; editorial titles may use Georgia with immediate system serif fallback **only** for wordmark/large headings; no bundled font files assumed. 16px minimum body at compact CSS viewport, 18–22px primary instructions, 28–44px titles; live countdown `clamp(120px, 17vw, 240px)` subject to available viewfinder height, tabular numerals, high contrast. Vietnamese diacritics and long names must be tested with available fonts. No uppercased long Vietnamese explanatory copy. Use `font-variant-numeric: tabular-nums` for progress, money and countdown.
+## 6. Layout architecture
 
-Spacing scale 4/8/12/16/24/32/48/64 CSS px. Radii 8 (print), 16 (panel), 24 (feature card), full pill (badges). Primary actions ≥64px high (72 at wide viewport), arrows/stepper/back ≥56×56px with ≥8px separation; no hover-only cues. Outline/pressed state on pointer-down; action request locked synchronously until authoritative response. `touch-action: pan-x` only on carousel track; buttons `manipulation`. Avoid global `touch-action: none` on the entire app.
+### 6.1 Kiosk shell
 
-Motion: snap 220–320ms ease-out, press 90–130ms, caption crossfade 140ms; no perpetual pulsing over a live face. Only animate transform/opacity of UI layers, never a live video/image source or IPC stream. Flash must not delay shutter and may be disabled for reduced motion. `prefers-reduced-motion: reduce` eliminates travel and flashing while preserving state changes and text. Haptics only where available and nonblocking; never required feedback.
+- Root: `width:100%; height:100dvh; overflow:hidden; box-sizing:border-box`.
+- Customer shell uses a stable three-zone budget: header, content (`min-height:0`), action/footer.
+- No whole-page customer scroll. Dynamic grids/carousels may scroll inside bounded regions with visible edge fades, explicit arrow/page controls, `overscroll-behavior:contain`, and no scroll chaining.
+- Use CSS viewport/container dimensions, not physical-pixel or DPI guesses. Windows scaling can turn a 1920×1200 display into an effective 1536×960 or 1280×800 CSS viewport; a 1280×800 display can become approximately 1024×640 or 853×533.
+- At effective heights below 600px, compress decorative imagery and spacing first. Keep touch targets and payment/print gates visible. If safe layout cannot fit at approximately 853×533, show a truthful operator-facing unsupported-display notice rather than clipping actions.
 
-## 3. Viewport geometry and Windows scaling
+### 6.2 Customer composition patterns
 
-Use **CSS viewport measurements, not physical pixels**. At 100% scaling, reference layouts below assume browser viewport equals display pixels; at 125/150% scaling, actual CSS viewport may shrink (1920×1200 → approximately 1536×960 / 1280×800; 1280×800 → approximately 1024×640 / 853×533). WebView zoom/devicePixelRatio/window chrome can alter this: measure `innerWidth`, `innerHeight`, DPR, safe area in the packaged kiosk before sign-off. Implement with container + height queries, not DPI detection.
+1. **Editorial split:** 54/46 or 58/42; photography/preview receives the larger column.
+2. **Centered gallery:** carousel centered with visible side peeks and explicit arrows.
+3. **Camera stage:** live view occupies at least 70% of available width at reference sizes; progress/control rail sits outside the facial safe area.
+4. **Decision grid:** preview plus bounded thumbnail/control region; action dock is stable and does not cover content.
+5. **System state:** calm centered notice, one recovery action only if the backend exposes a legal action.
 
-Shell `width:100%; height:100dvh; overflow:hidden; box-sizing:border-box;` with 24–48px horizontal and 16–32px vertical insets (compact 12–20px). Reserve header 72–104px, bottom controls 88–112px, then allocate remaining height to content. No whole-page vertical or horizontal scroll; narrow panels scroll within fixed bounds (`min-height:0; overflow:auto; overscroll-behavior:contain`) with visible scroll affordance/edge fade and accessible buttons. If viewport is shorter than ~600 CSS px, compress artwork/caption before shrinking controls; never clip payment confirmation or progress. 853×533 requires explicit compact fallback test; if impossible to keep content and 56px targets, show a truthful resolution/configuration warning rather than silently clipping a gate.
+### 6.3 Media aspect rules
 
-### Layout-selection carousel sizing (reference CSS pixel coordinates)
+- Live View: fit source without stretching; mirror/rotate only from authoritative camera metadata or established parity rule. Keep crop guide separate from source image.
+- Thumbnail: `cover` is allowed when a full-image preview is available and crop is nonauthoritative.
+- Captured-photo lightbox: `contain`.
+- Frame PNG and final composition: `contain`, preserve alpha and declared aspect.
+- Print preview: use backend-generated preview when available; do not reconstruct print geometry in CSS.
+- QR: square 1:1, opaque white quiet zone.
+- Missing asset: neutral illustrated placeholder labeled as unavailable; never substitute stock customer imagery.
 
-| CSS viewport | Header | Carousel area | Center slide *slot* | Neighbour slot/visual | Caption + actions |
-|---|---:|---:|---:|---:|---:|
-| 1920×1200 | 104 high | x=48–1872, y=140–955 | width ≈547 (30% of 1824), height ≤780; centred x≈686–1233 | slots each ≈547 wide; transform 0.82 makes visible print mounts ≈449; alpha .4 | y≈980–1168 |
-| 1280×800 | 80 high | x=24–1256, y=96–622 | width ≈370 (30% of 1232), height ≤500; centred x≈455–825 | scaled visible width ≈303 | y≈640–780 |
+---
 
-The 30% width is a **pager slot**, not an instruction to stretch the print. Print art fits within the slot and carousel height with `object-fit: contain` / SVG `preserveAspectRatio="xMidYMid meet"`; 5×15 art is narrow. On CSS viewport <1100px use `clamp(240px, 32vw, 370px)` slot width (limited so both sides peek ≥64px); on short windows reduce illustration height, not button targets. Central artwork should occupy no more than ~70% of card width for narrow strips; the card may include matte surround/title. Arrow hit areas ≥64px, fixed within side peeks (x≈100 and 1756 at 1920; x≈32 and 1184 at 1280), no overlap with back/footer. For one layout, hide arrows and swiping; for two, clamp at ends rather than fake infinite copies. Dynamic catalogs: no synthetic item, no modulo on empty, preserve ordering/filter supplied by backend.
+## 7. Motion and feedback
 
-Carousel transform per normalized offset `d = min(abs(index - activeFraction),1)`: `scale = 1 - .18*d`, `opacity = 1 - .6*d`; translate along track using fixed-width slots then snap selected centre to viewport centre. Apply drop shadow `0 18px 48px rgba(65,43,31,.18), 0 0 0 6px rgba(224,122,95,.10)` and 2px crisp coral/ink border only to centered item; adjacent items still have visible edges. During swipe center/caption follow snapped index, **never commit a layout merely on snap**. Arrows move one valid item and announce it. Noncenter tap only centers; centered tap commits selection once and proceeds **only through the existing authoritative event/step**. In V1 Step1 this advanced to effect; in V2 simulator, retain its existing `session.setLayout`/`session.confirmSetup` contract; do not invent an effect IPC, automatic continue, or backend action. Explicit large `Chọn bố cục` button may mirror the centered-card action where the backend supports it; it cannot skip an effect or confirmation gate.
+### 7.1 Motion tokens
 
-#### Accurate print artwork data contract
+| Token | Duration | Easing | Use |
+|---|---:|---|---|
+| `motion.instant` | 80ms | `cubic-bezier(.2,.8,.2,1)` | press compression |
+| `motion.fast` | 150ms | `cubic-bezier(.2,.8,.2,1)` | check/ring/color feedback |
+| `motion.base` | 200ms | `cubic-bezier(.16,1,.3,1)` | card/sheet state |
+| `motion.slow` | 250ms | `cubic-bezier(.16,1,.3,1)` | screen handoff/modal |
+| `spring.touch` | stiffness 500, damping 34, mass .7 | Motion One / Framer Motion conceptual token | release recovery only |
 
-Use print **width/height in millimetres** from canonical layout metadata; 5×15 → `1/3 ≈ .333`, 10×15 → `2/3 ≈ .667` when portrait. Rotate only when backend declares orientation. Separate **print aspect** from **photo-slot aspect** (`layout.photoAspectRatio`); never use a strip print ratio as camera crop ratio. SVG `viewBox` proportional to print (e.g. 100×300 or 200×300), draw mount and the actual slot rectangles normalized from backend geometry (`x,y,width,height`, orientation, slot count). Transparent/ivory placeholders display `Ảnh 1`, `Ảnh 2` … from slot order, fine 1–2px lines; licensed sample portrait art may be shown as clearly illustrative fallback, never a captured result. If slot coordinates are unavailable, render a labeled **non-geometry sample illustration**, not a misleading exact template; ask architect for slot data. Real frame PNG is fitted/contained, never reconstructed with fake decoration. If dimensions disagree, display safe placeholder and diagnostic only in operator view.
+Allowed ranges are **150–250ms** for state transitions and 80–120ms for physical press feedback. Avoid a long animated exit before dispatching an action; command dispatch and lock happen immediately, animation follows.
 
-Card UI: format pill `5×15 cm` / `10×15 cm` derived from dimensions; readable catalog title (examples only: “Dải 4 ảnh cổ điển”, “Khổ 10×15 4 ảnh”), photo-count badge from configured `shotCount` / `selectCount` with clear distinct labels; lowercase canonical ID in small subdued diagnostics node `.v1-layout-tag` with `data-layout-id` for tests (do not expose raw JSON, contract or developer/error copy to guests). Bottom caption repeats **active** title and short catalog description; clamp to two lines with accessible full text or internal expansion; do not derive marketing text from raw IDs. Missing names use neutral localized fallback. Count and timing **always** use backend-provided values, never examples above.
+### 7.2 Motion behaviors
 
-## 4. Screen component specifications (presentation only; no added workflow stage)
+- Screen entrance: opacity 0→1 and translateY 8px→0 over 200–250ms.
+- Screen exit: 150ms fade only after phase change is authoritative.
+- Touch press: scale to .97 (`.94` only for large circular shutter), darken/rim change in the same frame; spring back on release.
+- Selection: border/check/ordinal appears within 150ms; selected content does not bounce around the grid.
+- Carousel: horizontal snap 220–250ms; drag itself tracks finger 1:1. Explicit arrows duplicate swipe behavior.
+- Countdown: numeral crossfade/scale ≤200ms; backend numeral is source of truth. Poll gaps do not synthesize missing numbers.
+- Capture flash: optional 80–160ms visual layer, nonblocking and not claimed as shutter synchronization.
+- No parallax, autoplay card drift, perpetual pulsing over faces, or animation of the live video element.
 
-Common contract: entrances/exits follow `docs/UI_SCREEN_INVENTORY.md:17–33`; backend phase/events are authoritative, stale responses ignored by session ID. All screens provide pending/disabled/offline states, readable retry only if existing event is idempotent/authorized, back/cancel only where phase permits, inactivity timeout/recovery per backend. If no event exists, show truthful unavailable state, not faux success. Gallery images crop thumbnails; print/frame previews contain; aspect and mirror for live preview require camera metadata. Accessibility: headings, descriptive button names, focus-visible, status announcements throttled, no color-only selection.
+### 7.3 Reduced motion
 
-| Screen | Visual hierarchy and actual interaction boundary | Loading / empty / error and safety |
-|---|---|---|
-| Welcome `StartScreen` | Wordmark + five-tap gesture (existing behavior, not production ACL), editorial two-column greeting/photostrip illustration; real event bundle horizontal row with explicit chevrons; start via existing session action. | No catalog → supported default entry; missing cover → illustration not customer photo. Do not expose diagnostic strings or visible mock payment. |
-| Layout `StudioModeScreen` | **Centered snapping carousel** above; caption, format/count, arrow and optional explicit selection. Preserve V1's layout → effect interaction if effect stage/contract exists. | Empty catalog → no selection, operator-facing fix; pending selection disables duplicate; invalid SVG geometry → illustrative placeholder. |
-| Quantity `QuantityScreen` | Large 72px tactile − / + around quantity; layout print preview; price summary using backend options/total. | Disabled at allowed-option edges; no assumed pricing/multiples. Existing V2 submit-on-selection behavior must not be secretly changed into an extra confirmation or auto-priced client calculation. |
-| Payment `PaymentScreen` | Left amount/order, right **actual** PayOS QR when returned; complimentary trial only when backend session says trial. 700ms staff header hold merely reveals authorized confirmation panel. | Await verification from backend, not QR scan detection. Error/unconfigured QR gets honest help; no guest mock-approval or staff bypass via gesture alone. |
-| Prepare `PrepareScreen` | Pose guidance and configured shot/select/timer summary, illustration. | Automatic phase transition if backend does so; no new start gate. Camera unavailable gets honest reason. |
-| Capture `CaptureScreen` | Matte-black large aspect-correct live source; crop guide from source/slot geometry, progress `Ảnh X/Y`; huge legible countdown on dark scrim positioned to avoid face when possible; brief shutter feedback. | Device/stream missing → explicit stalled state, not looping stock footage. Do not alter countdown/shutter timing or replace capture with CSS animation. |
-| Select `SelectPhotosScreen` | Spacious captured-photo grid, selection-order badges `✓ 1`, `✓ 2` from actual order, optional dock only if real composite is supplied; explicit enlarge/lightbox button (hold optional). | Exact backend select quota required for continue, empty/error/recovery and existing cancellation confirmation. |
-| Frame `FrameScreen` | Contained real PNG artwork cards with checkmarks; authoritative composition preview left, frame choices right. | Missing PNG/unavailable composition → placeholder, never claim frame applied; custom file import only with reviewed contract. |
-| Confirm `ConfirmScreen` | Large **print-resolution source** preview (do not call 600 DPI unless metadata verifies 600 DPI), order summary and one high-salience Confirm & Print CTA. | Disable synchronously on tap; only backend success advances. Back/cancel as authorized; no revenue before successful confirmed print. |
-| Printing `PrintingScreen` | Linear four visual positions matching V1 compose/print/album QR/video **only if backend reports their actual states**; otherwise neutral indeterminate status, not invented completed milestones. | Physical print status ≠ queued job; failure/recovery from backend, no repeated spool. |
-| Delivery `DeliveryScreen` | High-contrast **real** QR when valid URL exists; thank-you; finish via existing `session.finish`. | No URL → honest absent-delivery/help state; trial must not claim real QR/print. |
-| Operator `AdminScreen` | Separate staff context, six tabs Frames, Layouts, Settings, Tools, Colors, Revenue; refined editorial density with explicit device/printer/camera states and conditional real controls. | Hidden entry is not auth. Mutation/delete/payment/revenue/Canon/printer tools require architect ACL + event; otherwise disabled with reason. Retain confirmations, reason dialogs and next-session settings behavior. |
-| Startup / recovery / out-of-service | Calm full-stage notice with state-specific reason, accessible operator path only where authorized. | Never imply successful payment/print/capture from generic status; do not introduce V1's force-ready path without contract. |
+Under `prefers-reduced-motion: reduce`:
 
-## 5. Acceptance checklist for frontend/architect
+- Set travel and spring transitions to 0–80ms fades.
+- Disable carousel smooth scrolling, ripple expansion, countdown scaling, decorative flash, and attract-loop cross-pan.
+- Preserve immediate pressed outline, state labels, progress changes, and modal visibility.
+- Never remove an essential timeout/countdown number; only remove its animation.
 
-1. Architect confirms layout catalog fields (ID/title/description/print mm, print orientation, slot rectangles, shot/select counts, allowed quantities, pricing, effect and backend selection event), camera orientation + crop, authoritative payment/print/delivery events, staff ACL/cancellation. Missing fields remain visibly unsupported instead of inferred.
-2. Frontend implements `LayoutCarousel`, `PrintArtwork`, `KioskAction`, `StatusPanel` with controlled active index, stable IDs, pointer drag threshold (≈12px), pointercancel cleanup, snap-to-center, noncenter tap recenter and centered tap guarded submission. Arrow, touch, keyboard and accessibility activation must all lead to same state transition. Drag must not accidentally select; no state changes after unmount/session change.
-3. Visually inspect 1920×1200 and 1280×800 at 100%, 125%, 150% Windows scaling, including approximately 853×533 CSS viewport; capture actual `innerWidth/innerHeight/DPR`. Check no viewport overflow, peeks/targets/caption, Vietnamese long-name wrapping, narrow/wide print geometry, 0/1/2/many layouts, reduced motion, touch hold and repeated taps.
-4. Exercise real bridge mock-state UI separately from hardware; assert no transition across payment or Confirm & Print without backend authorization, no raw contract diagnostics on guest screens, countdown/counts from config, print preview contains and gallery covers, printer/QR states truthfully labeled. Physical camera, PayOS and printer require separate evidence and approvals.
+### 7.4 Haptics and sound
 
-**Related:** `docs/UI_REDESIGN_PROGRESS.md` tracks evidence and gaps; `docs/UI_SCREEN_INVENTORY.md` is the screen/action baseline. This document specifies presentation; it does not certify implementation.
+- Haptics may be requested only if an approved host capability exists; use a brief nonblocking pulse for accepted selection/shutter press.
+- No flow depends on vibration. Do not emulate haptics by blocking timers.
+- Audio cues follow backend/capture timing contracts. Visual animation must not delay or trigger capture.
 
-## 6. November 2026 payment and navigation correction (supersedes conflicting text above)
+---
 
-The current user directive **removes all complimentary/free payment presentation**. In particular §4 Payment's “complimentary trial” and any older `UI_REDESIGN_PROGRESS.md` free-trial descriptions are historical, **not** design authority. DEMO remains a backend mode, but the kiosk payment screen must not offer a guest bypass, show `0 đ`, “Miễn phí”, or expose `payment.mockComplete({method:'DEMO'})`. Architect must verify how DEMO payment should be handled without inserting a new guest gate or implying a real bank transaction; the current UI shows amount only when backend pricing exists, otherwise an em dash, and waits for staff confirmation or backend phase change. A missing/invalid PayOS configuration or QR error reveals the **existing staff cash action** automatically; a 700ms header hold reveals the same action. This gesture is discoverability, **not authentication**: architect must verify staff authorization server-side before commercial deployment. The only cash event is `payment.mockComplete({staffOverride:true})`; success must be backend-authoritative. Never fake PAID from QR render or timer.
+## 8. Touch optimization and input safety
 
-**Header/navigation mounted contract:** `KioskBackButton` renders Lucide ArrowLeft 22px/2.2 inside a 52×52 ivory square, 15px corner, #E9DED7 border, 0 2px 8px warm shadow, focus/hover coral, press scale .94; retains `session.back` and existing disabled semantics. `Heading` accepts an optional uppercase eyebrow (12px, muted coral), title clamp(26px,2.4vw,36px), subtitle 15–16px #756F6A. Carousel has explicit Lucide 24px chevrons in 56px floating circles; cards remain snap-centered with active 3px coral border, shadow `0 20px 50px rgba(224,122,95,.22)`, adjacent scale .84 / opacity .45. **Exception to general ≥56px targets:** back is 52px per requested compact header; preserve ≥56px on carousel and primary actions. Avoid arrows over cards; ensure peeks on both sides at 1280×800.
+### 8.1 Immediate feedback
 
-**Welcome mounted composition:** left wordmark (five taps reserved for operator entry), `PHOTO ATELIER · SEOUL × SAIGON`, headline `Chụp ảnh lấy ngay` / `Yours forever.`, natural Vietnamese subtitle, two value pills and a 68–72px coral CTA. Right is decorative layered paper photostrips **using illustration placeholders, not genuine sample portraits**: production photography requires supplied licensed/consented assets; do not call these illustrations genuine photographs. Event bundle showcase appears only for a backend-provided valid cover and layout, with curated backend name; do not expose raw layout IDs or Firebase diagnostic labels on Welcome. The `In lấy ngay 15s` pill is user-requested marketing copy, **not a guarantee of physical print latency**; commercial team must approve it against real device metrics. Backstage catalog errors appear only as a simple unavailable notice.
+The visible press response starts on `pointerdown` and targets **<16ms** (next frame). It is visual only until activation conditions succeed.
 
-**Payment mounted data mapping:** left order summary uses `pricing.totalAmount`, `basePrice`, `extraAmount`, `quantity`, customer-friendly `formatLayoutTitle(layout)`, print format derived from declared `printSizeLabel` (otherwise em dash). Right displays actual QR from backend and backend-polling status, or a truthful unavailable/loading message. QR does not establish payment. `lastPaymentError`, missing config, SDK failure and QR `ERROR` expose staff support. Use 260–280px QR within a white card at full viewport; at shorter CSS heights, fit QR by available height and keep staff button visible. Backend pricing values are never replaced with client assumptions. Inspect at 1920×1200 and 1280×800 and simulated 125/150% CSS viewport sizes, long Vietnamese names, no QR, QR error, repeated staff clicks, pointer drift >12px and pointercancel. No hardware, scaling or real charge acceptance is claimed without evidence.
+Proposed state recipe:
+
+- Rest: clear border, stable label.
+- Pressed: scale .97 + 1px darker rim + localized radial highlight/ripple clipped to control.
+- Activated: persistent check/ordinal/progress text.
+- Pending: retain label, add inline spinner/status, disable duplicate activation.
+- Disabled: opaque disabled fill, lock/unavailable icon, explanatory text when not obvious; opacity alone is insufficient.
+
+Ripple duration is 180–240ms, alpha ≤.12, and is disabled under reduced motion. It must never obscure QR pixels or live faces.
+
+### 8.2 Gesture rules
+
+- Buttons/cards: `touch-action: manipulation`.
+- Horizontal photo/layout carousel track: `touch-action: pan-x`; vertical page movement remains disabled in the shell.
+- Crop surface only: controlled `touch-action:none` while the crop editor is active; do not apply globally.
+- Swipe is optional enhancement, never sole navigation. Provide 56px arrows, visible page/position, and direct thumbnails where appropriate.
+- Drag threshold: about 12px before a tap becomes a swipe/pan. `pointercancel` always clears pressed/hold state.
+- Long press: reserved for hidden admin/staff discovery only; recommended hold 1000ms, movement tolerance <12px. It reveals an authentication surface, never grants access or confirms cash by itself.
+- Touch-and-hold on ordinary buttons must not repeatedly fire, select text, open a browser context menu, or repeat steppers unless a separately approved repeat behavior exists. Quantity controls default to one change per completed tap.
+
+### 8.3 Double-tap and ghost-touch defense
+
+- Side-effecting customer actions lock synchronously on accepted activation: payment staff confirmation, capture sequence start, selection confirm, frame confirm/advance, Confirm & Print, Finish.
+- A second pointer event while command pending is ignored and receives a visible “Đang xử lý” state.
+- Never debounce by delaying the first command; send the first command once and reconcile its result.
+- On direct-advance selection, arm destructive controls on the destination only after the incoming pointer sequence has ended and a short input-safe window has elapsed, per approved architecture. Do not allow a second tap to pass through into Confirm & Print.
+- Stale responses are ignored by session/generation identity; no UI animation may replay an uncertain payment/print/capture action.
+
+### 8.4 Back, cancel, and timeout
+
+- Render Back only on phases where the authoritative session contract permits it. Do not turn Back into an unrestricted cancellation.
+- Customer cancellation is exposed only where the current V1 business rules allow it and retains destructive confirmation.
+- Timeout display uses backend remaining time. Frontend does not restart or reinterpret timers without an approved event.
+- Selection/frame timeout follows the existing backend auto-selection/auto-print behavior and must not be relabeled “returning home.” The distinction between manual confirm and timeout remains visible to backend revenue logic.
+- Delivery auto-return may be shown only when an authoritative configured timer/event exists; do not invent a fixed timeout.
+
+---
+
+## 9. Accessibility
+
+### 9.1 Contrast
+
+- Normal text: WCAG AA **≥4.5:1**.
+- Large text: ≥3:1, though key instructions target 4.5:1.
+- Control boundaries, focus indicators, selected states, and icons: ≥3:1 against adjacent colors.
+- Pale champagne `#D4C4A8` and soft rose `#E8C5B8` are decorative fills on ivory, not normal-text colors. Use `champagne-700` / `rose-700` for text.
+- Glass text is tested against the worst permitted fallback/backdrop. If contrast is unstable, add an opaque underlay or switch to a solid surface.
+
+### 9.2 Focus
+
+- Every interactive element has a **3px champagne focus ring**.
+- Light surface recipe: 3px `#D4C4A8` ring plus 2px `#1A1A1A` outer/offset boundary when needed for ≥3:1 contrast.
+- Dark surface recipe: 3px `#D4C4A8` plus 2px matte-black offset.
+- `:focus-visible` is required; do not suppress programmatic/operator keyboard focus. Touch pressed state remains separate.
+- Modal focus is trapped; closing returns focus to the invoking control where it still exists.
+
+### 9.3 Semantics and announcements
+
+- One top-level heading per screen and ordered section headings.
+- Icon-only controls receive localized accessible names.
+- Selection cards expose role, selected state, disabled state, and ordinal if order matters.
+- Loading status uses `role=status` / polite announcements; irreversible errors use an alert. Throttle capture progress announcements so screen readers do not announce live frames or every poll.
+- Decorative images have empty alternative text; captured images use customer-safe labels, never filesystem paths.
+- Live View has a concise label (“Xem trước trực tiếp từ camera”) but is not announced on every frame.
+- Countdown numeral uses a controlled live region no more than once per authoritative change.
+- QR receives purpose text and, only if safe, an accessible destination description—not secret payload or access token.
+
+### 9.4 Nonvisual and color-independent state
+
+- Selected: border + check/ordinal + text.
+- Error/success: icon + title + detail, not red/green alone.
+- Disabled: disabled semantics + reason where necessary.
+- Progress: text fraction/status in addition to ring/bar.
+- Swipe/carousel: explicit previous/next controls and current position.
+
+---
+
+## 10. Proposed Tailwind token map
+
+This table is a naming handoff, not a configuration file.
+
+| Tailwind namespace proposal | Values / aliases |
+|---|---|
+| `colors.ivory` | `50 #FFFDFC`, `100 #FAF7F2`, `200 #F2ECE4`, `300 #E7DED2` |
+| `colors.ink` | `950 #1A1A1A`, `800 #34312F`, `700 #4A4541`, `600 #625B56` |
+| `colors.champagne` | `400 #D4C4A8`, `600 #8A7350`, `700 #6B583D` |
+| `colors.rose` | `200 #E8C5B8`, `700 #854D40` |
+| `colors.semantic` | error `#A43D36`, success `#2F7358`, warning `#7A571A` |
+| `spacing.touch` | `48px` |
+| `spacing.touch-comfort` | `56px` |
+| `spacing.touch-primary` | `64px` |
+| `spacing.shutter` | `112px` |
+| `borderRadius.glass` | `24px` |
+| `borderRadius.sheet` | `32px` |
+| `boxShadow.paper` | paper token in §5.4 |
+| `fontFamily.sans` | Pretendard / Noto Sans KR / Segoe UI fallback stack |
+| `fontFamily.editorial` | Playfair Display / Cormorant Garamond / Georgia fallback stack |
+| `transitionDuration.kiosk-fast/base/slow` | `150ms / 200ms / 250ms` |
+| `transitionTimingFunction.editorial` | `cubic-bezier(.16,1,.3,1)` |
+
+Suggested semantic utility names: `bg-canvas`, `bg-surface`, `text-primary`, `text-secondary`, `text-accent-ink`, `border-subtle`, `ring-focus`, `min-h-touch`, `min-h-touch-comfort`, `min-h-touch-primary`, `font-editorial`, `tabular-nums`, `shadow-paper`, `motion-safe:kiosk-enter`, `motion-reduce:transition-none`.
+
+---
+
+## 11. Design-system acceptance checklist
+
+- [ ] Warm ivory, matte black, champagne, and optional rose are applied through semantic tokens, not scattered hex values.
+- [ ] Every text/color pair meets AA; pale accents are not used as small text.
+- [ ] Glass uses 12–20px blur, .08–.15 fill, specular edge, 1px inner glow, bounded depth, and an opaque fallback.
+- [ ] QR encoded areas are fully opaque white and stable in size.
+- [ ] Customer controls are ≥48px, default to 56px, and primary actions are 64–72px high with ≥12px separation.
+- [ ] Press feedback appears in the next frame; command locking prevents repeated side effects.
+- [ ] No hover-only action, swipe-only navigation, parallax, or animated live-video transform exists.
+- [ ] Typography survives no-font/offline fallback, Hangul, Vietnamese diacritics, and long localized copy.
+- [ ] Countdown remains cross-booth legible and all count/timing labels come from authoritative data.
+- [ ] `prefers-reduced-motion`, high-contrast preference, forced colors, visible focus, and screen-reader labels are specified.
+- [ ] Layout is tested at 1920×1200 and 1280×800 plus effective compact CSS viewports caused by 125/150% scaling.
+- [ ] This document is treated as a proposal/specification—not as hardware, payment, printer, or working-UI evidence.
+
+---
+
+## 12. Source-grounding note
+
+Screen flow and safety boundaries were cross-checked against V2 audit documents derived from read-only V1 inspection, notably `V1_EXACT_UI_FLOW_MAP.md`, `V1_ACTION_BEHAVIOR_MATRIX.md`, `04_SESSION_STATE_MACHINE.md`, `08_PAYMENT_REVENUE_QR_CLOUD_AUDIT.md`, `UI_SCREEN_INVENTORY.md`, `UI_SCREEN_CONTRACTS.md`, `UI_CAMERA_CONSTRAINTS.md`, and `UI_PRINT_CONSTRAINTS.md`. V1 was not modified. Any conflict about backend behavior is resolved in favor of the architect-approved state/event contract, not this visual document.

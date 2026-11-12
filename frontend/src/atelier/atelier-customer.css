@@ -1550,7 +1550,7 @@
   border-radius: 16px;
   background: var(--at-paper);
   box-shadow: 0 8px 22px rgba(44, 30, 23, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.42);
-  touch-action: none;
+  touch-action: pan-y;
   user-select: none;
   -webkit-user-select: none;
   transition: transform var(--at-press), border-color var(--at-press), box-shadow var(--at-press);

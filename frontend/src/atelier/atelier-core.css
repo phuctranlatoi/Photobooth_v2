@@ -766,26 +766,6 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
   color: var(--at-ink);
 }
 
-.glass-touch-ripple {
-  position: absolute;
-  pointer-events: none;
-  left: var(--ripple-x);
-  top: var(--ripple-y);
-  width: var(--ripple-size);
-  height: var(--ripple-size);
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.56) 0%, rgba(255, 244, 236, 0.34) 48%, rgba(255, 255, 255, 0) 74%);
-  transform: translate(-50%, -50%) scale(0);
-  animation: at-touch 0.4s ease-out forwards;
-}
-
-@keyframes at-touch {
-  to {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 0;
-  }
-}
-
 .sr-only {
   position: absolute;
   width: 1px;
@@ -916,4 +896,618 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
     animation: none;
     display: none;
   }
+}
+
+/* ============================================================================
+   ENHANCED LIQUID GLASS UTILITIES AND ANIMATIONS
+   ============================================================================ */
+
+/* Keyframes */
+@keyframes lg-ripple-spring {
+  0% {
+    transform: translate3d(-50%, -50%, 0) scale(0.06);
+    opacity: 0;
+  }
+  12% {
+    opacity: var(--lg-ripple-opacity, 0.48);
+  }
+  56% {
+    transform: translate3d(-50%, -50%, 0) scale(1.04);
+    opacity: var(--lg-ripple-mid-opacity, 0.23);
+  }
+  78% {
+    transform: translate3d(-50%, -50%, 0) scale(0.985);
+    opacity: var(--lg-ripple-end-opacity, 0.12);
+  }
+  100% {
+    transform: translate3d(-50%, -50%, 0) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes lg-surface-enter {
+  0% { transform: translate3d(0, 8px, 0) scale(0.992); opacity: 0; }
+  100% { transform: translate3d(0, 0, 0) scale(1); opacity: 1; }
+}
+
+@keyframes lg-sheet-in {
+  0% { transform: translate3d(0, 18px, 0) scale(0.985); opacity: 0; }
+  100% { transform: translate3d(0, 0, 0) scale(1); opacity: 1; }
+}
+
+@keyframes lg-sheet-out {
+  0% { transform: translate3d(0, 0, 0) scale(1); opacity: 1; }
+  100% { transform: translate3d(0, 10px, 0) scale(0.992); opacity: 0; }
+}
+
+@keyframes lg-selection-set {
+  0% { transform: scale(0.94); opacity: 0.36; }
+  62% { transform: scale(1.06); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes lg-shutter-fire {
+  0% { transform: scale(1); }
+  35% { transform: scale(0.92); }
+  100% { transform: scale(1); }
+}
+
+@keyframes lg-capture-flash {
+  0% { opacity: 0.92; }
+  16% { opacity: 0.80; }
+  100% { opacity: 0; }
+}
+
+@keyframes lg-countdown-pop {
+  0% { transform: scale(0.86); opacity: 0.18; }
+  52% { transform: scale(1.04); opacity: 0.78; }
+  100% { transform: scale(1); opacity: 0.64; }
+}
+
+@keyframes lg-busy-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Glass touch ripple */
+.glass-touch-ripple {
+  position: absolute;
+  z-index: 1;
+  left: var(--ripple-x);
+  top: var(--ripple-y);
+  width: var(--ripple-size);
+  height: var(--ripple-size);
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.58) 0%,
+    rgba(255, 244, 236, 0.30) 44%,
+    rgba(240, 219, 212, 0.12) 62%,
+    transparent 74%
+  );
+  transform: translate3d(-50%, -50%, 0) scale(0.06);
+  animation: lg-ripple-spring var(--lg-duration-ripple) linear both;
+  will-change: transform, opacity;
+}
+
+/* Shared layer contract for all glass components */
+:is(.glass-card, .glass-button, .glass-sheet, .glass-shutter) {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  color: var(--lg-matte-black);
+}
+
+:is(.glass-card, .glass-button, .glass-sheet, .glass-shutter)::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--lg-layer-specular);
+  opacity: 0.26;
+  pointer-events: none;
+}
+
+:is(.glass-button, .glass-card[data-interactive="true"], .glass-shutter)::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--lg-layer-press-glow);
+  opacity: 0;
+  transform: scale(0.82);
+  transition:
+    opacity var(--lg-duration-instant) linear,
+    transform var(--lg-duration-fast) var(--lg-ease-out);
+  pointer-events: none;
+}
+
+:is(.glass-button, .glass-card[data-interactive="true"], .glass-shutter)[data-pressed="true"]::after,
+:is(.glass-button, .glass-card[data-interactive="true"], .glass-shutter):active:not(:disabled)::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.glass-content,
+.glass-button__label,
+.glass-button__spinner,
+.glass-shutter__ring,
+.glass-shutter__core {
+  position: relative;
+  z-index: 2;
+}
+
+/* Glass Card */
+.glass-card {
+  --lg-ripple-opacity: 0.42;
+  border: var(--lg-border-width) solid var(--lg-border);
+  border-top-color: rgba(255, 255, 255, 0.82);
+  border-radius: var(--lg-radius-card);
+  padding: var(--lg-card-padding);
+  background-color: rgba(255, 252, 247, 0.70);
+  background-image: var(--lg-layer-card-depth), var(--lg-layer-card-base);
+  box-shadow: var(--lg-shadow-2);
+  -webkit-backdrop-filter: var(--lg-filter-card);
+  backdrop-filter: var(--lg-filter-card);
+}
+
+.glass-card[data-elevation="1"] { box-shadow: var(--lg-shadow-1); }
+.glass-card[data-elevation="2"] { box-shadow: var(--lg-shadow-2); }
+.glass-card[data-elevation="3"] { box-shadow: var(--lg-shadow-3); }
+
+.glass-card[data-tone="rose"] {
+  background-color: rgba(250, 246, 240, 0.76);
+  background-image:
+    radial-gradient(110% 90% at 100% 100%, rgba(240, 219, 212, 0.36), transparent 68%),
+    var(--lg-layer-card-base);
+}
+
+.glass-card[data-tone="dark"] {
+  color: var(--lg-paper);
+  border-color: var(--lg-border-dark);
+  background: var(--lg-layer-dark-base);
+  box-shadow: var(--lg-shadow-dark);
+}
+.glass-card[data-tone="dark"]::before { background: var(--lg-layer-specular-dark); }
+
+.glass-card[data-interactive="true"] {
+  min-block-size: var(--lg-target-comfort);
+  touch-action: manipulation;
+  transition: transform var(--lg-duration-release) var(--lg-ease-out);
+}
+.glass-card[data-interactive="true"][data-pressed="true"] {
+  transform: scale(0.975);
+  transition-duration: var(--lg-duration-instant);
+}
+
+/* Photo tile variant */
+.glass-card--photo {
+  --lg-ripple-opacity: 0.18;
+  width: 100%;
+  min-height: var(--lg-target-min);
+  padding: 0;
+  border: 2px solid rgba(255, 255, 255, 0.76);
+  border-radius: 18px;
+  background: var(--lg-paper);
+  box-shadow: var(--lg-shadow-1);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+.glass-card--photo::before { opacity: 0.26; }
+.glass-card--photo[aria-pressed="true"] {
+  border: 3px solid var(--lg-primary);
+  box-shadow: var(--lg-shadow-selected);
+}
+.glass-card--photo[data-unavailable="true"] {
+  opacity: 0.54;
+  filter: saturate(0.72);
+}
+
+.glass-photo-order {
+  position: absolute;
+  z-index: 3;
+  top: 10px;
+  right: 10px;
+  min-width: 40px;
+  height: 40px;
+  padding-inline: 10px;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--lg-paper);
+  border-radius: var(--lg-radius-pill);
+  background: var(--lg-layer-primary);
+  color: #FFFFFF;
+  box-shadow: 0 6px 16px rgba(74, 42, 28, 0.34);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  animation: lg-selection-set var(--lg-duration-standard) var(--lg-ease-spring) both;
+}
+
+/* Glass Button */
+.glass-button {
+  --lg-ripple-opacity: 0.48;
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-width: var(--lg-target-comfort);
+  min-height: var(--lg-target-comfort);
+  padding: 12px 28px;
+  border: 1px solid var(--lg-border-control);
+  border-radius: var(--lg-radius-pill);
+  background-color: rgba(255, 252, 247, 0.84);
+  background-image: var(--lg-layer-control-depth), var(--lg-layer-control-base);
+  box-shadow: var(--lg-shadow-1);
+  -webkit-backdrop-filter: var(--lg-filter-control);
+  backdrop-filter: var(--lg-filter-control);
+  color: var(--lg-matte-black);
+  font: inherit;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: center;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform var(--lg-duration-release) var(--lg-ease-out),
+    border-color var(--lg-duration-fast) var(--lg-ease-standard);
+}
+
+.glass-button[data-size="minimum"] {
+  min-width: var(--lg-target-min);
+  min-height: var(--lg-target-min);
+  padding: 8px 18px;
+}
+.glass-button[data-size="icon"] {
+  width: var(--lg-target-comfort);
+  min-width: var(--lg-target-comfort);
+  height: var(--lg-target-comfort);
+  min-height: var(--lg-target-comfort);
+  padding: 0;
+}
+.glass-button[data-size="primary"] {
+  min-height: var(--lg-target-primary);
+  padding-inline: 36px;
+}
+
+.glass-button[data-tone="primary"] {
+  border-color: rgba(255, 255, 255, 0.40);
+  background: var(--lg-layer-primary);
+  box-shadow:
+    inset 0 1.5px 1px rgba(255, 255, 255, 0.36),
+    inset 0 -2px 4px rgba(54, 20, 10, 0.26),
+    0 8px 18px rgba(142, 68, 45, 0.18),
+    0 18px 38px rgba(142, 68, 45, 0.18);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  color: #FFFFFF;
+}
+.glass-button[data-tone="primary"]::after {
+  background: var(--lg-layer-press-glow-primary);
+}
+
+.glass-button[data-pressed="true"],
+.glass-button:active:not(:disabled) {
+  transform: scale(0.975);
+  transition-duration: var(--lg-duration-instant);
+}
+
+.glass-button[aria-pressed="true"] {
+  border: 2px solid var(--lg-primary);
+  box-shadow: var(--lg-shadow-selected), var(--lg-shadow-1);
+}
+
+.glass-button:disabled,
+.glass-button[aria-disabled="true"],
+.glass-button[data-loading="true"] {
+  border-color: #B8A89D;
+  background: #E8DED5;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.46);
+  color: #514842;
+  cursor: not-allowed;
+  transform: none;
+}
+.glass-button:disabled::after,
+.glass-button[aria-disabled="true"]::after,
+.glass-button[data-loading="true"]::after { display: none; }
+
+.glass-button[data-loading="true"] .glass-button__label { visibility: hidden; }
+.glass-button__spinner {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border: 3px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: lg-busy-spin 760ms linear infinite;
+}
+
+/* Glass Sheet */
+.glass-sheet-backdrop {
+  position: fixed;
+  z-index: 40;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: max(24px, var(--lg-edge-y)) max(24px, var(--lg-edge-x));
+  background: rgba(26, 23, 21, 0.58);
+  -webkit-backdrop-filter: blur(10px) saturate(112%);
+  backdrop-filter: blur(10px) saturate(112%);
+}
+
+.glass-sheet {
+  --lg-ripple-opacity: 0.38;
+  width: min(720px, calc(100vw - 2 * var(--lg-edge-x)));
+  max-height: calc(100dvh - 2 * max(24px, var(--lg-edge-y)));
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: clamp(24px, 2.5vw, 40px);
+  border: 1px solid var(--lg-border);
+  border-top-color: rgba(255, 255, 255, 0.92);
+  border-radius: var(--lg-radius-sheet);
+  background-color: rgba(255, 252, 247, 0.90);
+  background-image: var(--lg-layer-sheet-depth), var(--lg-layer-sheet-base);
+  box-shadow: var(--lg-shadow-4);
+  -webkit-backdrop-filter: var(--lg-filter-sheet);
+  backdrop-filter: var(--lg-filter-sheet);
+  color: var(--lg-matte-black);
+}
+.glass-sheet[data-state="open"] {
+  animation: lg-sheet-in 320ms var(--lg-ease-out) both;
+}
+.glass-sheet[data-state="closing"] {
+  animation: lg-sheet-out 180ms var(--lg-ease-standard) both;
+}
+.glass-sheet[data-placement="side"] {
+  justify-self: end;
+  width: min(560px, calc(100vw - 2 * var(--lg-edge-x)));
+  height: calc(100dvh - 2 * max(24px, var(--lg-edge-y)));
+}
+.glass-sheet[data-placement="bottom"] {
+  align-self: end;
+  width: min(920px, calc(100vw - 2 * var(--lg-edge-x)));
+  max-height: min(72dvh, 720px);
+}
+
+/* A nested control must not create a second live backdrop-filter layer. */
+.glass-sheet .glass-button {
+  background-color: rgba(255, 252, 247, 0.94);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.glass-sheet .glass-button[data-tone="primary"] { background: var(--lg-layer-primary); }
+
+/* Glass Shutter */
+.glass-shutter {
+  --lg-ripple-opacity: 0.52;
+  width: var(--lg-shutter-size);
+  min-width: var(--lg-shutter-size);
+  height: var(--lg-shutter-size);
+  min-height: var(--lg-shutter-size);
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 2px solid rgba(229, 214, 197, 0.94);
+  border-radius: 50%;
+  background: var(--lg-layer-dark-base);
+  box-shadow: var(--lg-shadow-dark);
+  color: var(--lg-paper);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform var(--lg-duration-release) var(--lg-ease-out);
+}
+.glass-shutter::before { background: var(--lg-layer-specular-dark); opacity: 0.26; }
+.glass-shutter::after { background: var(--lg-layer-press-glow-primary); }
+
+.glass-shutter__ring {
+  width: calc(100% - 12px);
+  height: calc(100% - 12px);
+  display: grid;
+  place-items: center;
+  border: 2px solid rgba(255, 252, 247, 0.58);
+  border-radius: 50%;
+  transition: transform var(--lg-duration-release) var(--lg-ease-out);
+}
+.glass-shutter__core {
+  width: calc(100% - 14px);
+  height: calc(100% - 14px);
+  border: 2px solid var(--lg-paper);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 28%,
+    #B96043 0%,
+    #8E442D 56%,
+    #642A19 100%
+  );
+  box-shadow:
+    inset 0 3px 7px rgba(255, 255, 255, 0.30),
+    inset 0 -4px 8px rgba(54, 20, 10, 0.24),
+    0 5px 14px rgba(0, 0, 0, 0.38);
+  transition: transform var(--lg-duration-release) var(--lg-ease-out);
+}
+
+.glass-shutter[data-pressed="true"] .glass-shutter__ring,
+.glass-shutter:active:not(:disabled) .glass-shutter__ring {
+  transform: scale(0.97);
+  transition-duration: var(--lg-duration-instant);
+}
+.glass-shutter[data-pressed="true"] .glass-shutter__core,
+.glass-shutter:active:not(:disabled) .glass-shutter__core {
+  transform: scale(0.90);
+  transition-duration: var(--lg-duration-instant);
+}
+.glass-shutter[data-state="capturing"] {
+  animation: lg-shutter-fire 220ms var(--lg-ease-out) both;
+}
+.glass-shutter:disabled,
+.glass-shutter[data-state="disabled"],
+.glass-shutter[data-state="starting"] {
+  border-color: #8E8278;
+  box-shadow: var(--lg-inner-glow-dark), 0 10px 24px rgba(0, 0, 0, 0.34);
+  cursor: not-allowed;
+}
+.glass-shutter:disabled .glass-shutter__core,
+.glass-shutter[data-state="disabled"] .glass-shutter__core,
+.glass-shutter[data-state="starting"] .glass-shutter__core {
+  border-color: #B8A89D;
+  background: #5E554E;
+}
+
+/* Capture flash overlay */
+.lg-capture-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.92);
+  animation: lg-capture-flash 320ms var(--lg-ease-out) both;
+  pointer-events: none;
+}
+
+/* Countdown pop animation */
+.lg-countdown-pop {
+  font-family: var(--at-font-editorial);
+  font-weight: 400;
+  font-size: clamp(80px, 14vw, 180px);
+  line-height: 1;
+  color: var(--lg-paper);
+  text-shadow:
+    0 2px 4px rgba(20, 16, 14, 0.36),
+    0 8px 24px rgba(74, 42, 28, 0.24);
+  animation: lg-countdown-pop 880ms var(--lg-ease-spring) both;
+  will-change: transform, opacity;
+}
+
+/* Glass Carousel */
+.glass-carousel {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch;
+}
+
+.glass-carousel::-webkit-scrollbar { display: none; }
+.glass-carousel[data-dragging="true"] {
+  scroll-snap-type: none;
+  cursor: grabbing;
+  user-select: none;
+}
+.glass-carousel__item { scroll-snap-align: center; scroll-snap-stop: always; }
+
+/* Focus visible for all interactive glass components */
+:is(.glass-button, .glass-shutter, .glass-card[data-interactive="true"]):focus-visible {
+  outline: 3px solid var(--lg-primary);
+  outline-offset: 4px;
+  box-shadow: 0 0 0 3px var(--lg-ivory), var(--lg-shadow-2);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  :is(.glass-card, .glass-button, .glass-sheet, .glass-shutter),
+  .glass-shutter__ring,
+  .glass-shutter__core,
+  .glass-photo-order {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .glass-touch-ripple { display: none; }
+  .glass-carousel { scroll-behavior: auto; }
+  .glass-button__spinner { animation: none; }
+
+  /* Keep state visible without movement. */
+  .glass-button[data-pressed="true"],
+  .glass-shutter[data-pressed="true"] { transform: none; }
+
+  .v1-countdown { animation: none !important; }
+  .v1-shutter-flash {
+    animation-duration: 80ms !important;
+    opacity: 0.18;
+  }
+}
+
+/* Reduced transparency and unsupported backdrop filter */
+@media (prefers-reduced-transparency: reduce) {
+  .glass-card,
+  .glass-button,
+  .glass-sheet {
+    background: var(--lg-paper);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .glass-sheet-backdrop {
+    background: rgba(26, 23, 21, 0.84);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .ambient-liquid-glass { display: none; }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-card,
+  .glass-button,
+  .glass-sheet {
+    background: var(--lg-paper);
+  }
+  .glass-sheet-backdrop { background: rgba(26, 23, 21, 0.84); }
+}
+
+/* Increased and forced contrast */
+@media (prefers-contrast: more) {
+  .glass-card,
+  .glass-button,
+  .glass-sheet {
+    border: 2px solid var(--lg-body);
+    background: var(--lg-paper);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: none;
+  }
+  .glass-button[data-tone="primary"] {
+    border-color: var(--lg-matte-black);
+    background: var(--lg-primary);
+    color: #FFFFFF;
+  }
+  .ambient-liquid-glass { display: none; }
+}
+
+@media (forced-colors: active) {
+  .glass-card,
+  .glass-button,
+  .glass-sheet,
+  .glass-shutter {
+    forced-color-adjust: auto;
+    border: 2px solid ButtonText;
+    background: Canvas;
+    color: CanvasText;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .glass-button[aria-pressed="true"],
+  .glass-card--photo[aria-pressed="true"] {
+    border-color: Highlight;
+    background: Highlight;
+    color: HighlightText;
+  }
+
+  :is(.glass-card, .glass-button, .glass-sheet, .glass-shutter)::before,
+  :is(.glass-button, .glass-card[data-interactive="true"], .glass-shutter)::after,
+  .glass-touch-ripple,
+  .ambient-liquid-glass {
+    display: none;
+  }
+
+  :focus-visible { outline: 3px solid Highlight; }
 }

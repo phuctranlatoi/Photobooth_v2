@@ -1,805 +1,764 @@
 {
-    "$schema": "https://opencode.ai/config.json",
-    "plugins": [
-        {
-            "package": "@omniroute/opencode-plugin-v2",
-            "options": {
-                "providerId": "omniroute",
-                "baseURL": "http://127.0.0.1:20129"
-            }
-        }
-    ],
-    "default_agent": "orchestrator",
-    "model": "omniroute/nvidia/nvidia/nemotron-3-ultra-550b-a55b",
-    "permissions": [
-        {
-            "action": "read",
-            "resource": "E:/HK1_2026_2027/PhotoboothDesktop/build/Cloudinary_Archive_*/*",
-            "effect": "deny"
-        },
-        {
-            "action": "edit",
-            "resource": "*",
-            "effect": "allow"
-        },
-        {
-            "action": "external_directory",
-            "resource": "*",
-            "effect": "ask"
-        },
-        {
-            "action": "external_directory",
-            "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
-            "effect": "allow"
-        },
-        {
-            "action": "read",
-            "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
-            "effect": "allow"
-        },
-        {
-            "action": "read",
-            "resource": "*.env",
-            "effect": "deny"
-        },
-        {
-            "action": "read",
-            "resource": "*.env.*",
-            "effect": "deny"
-        },
-        {
-            "action": "read",
-            "resource": "*.env.example",
-            "effect": "allow"
-        },
-        {
-            "action": "read",
-            "resource": "E:/HK1_2026_2027/PhotoboothDesktop/.env*",
-            "effect": "deny"
-        },
-        {
-            "action": "read",
-            "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*/.env*",
-            "effect": "deny"
-        },
-        {
-            "action": "read",
-            "resource": "E:/HK1_2026_2027/PhotoboothDesktop/build/Cloudinary_Archive_*",
-            "effect": "deny"
-        },
-        {
-            "action": "edit",
-            "resource": "E:/HK1_2026_2027/PhotoboothDesktop",
-            "effect": "deny"
-        },
-        {
-            "action": "edit",
-            "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
-            "effect": "deny"
-        },
-        {
-            "action": "shell",
-            "resource": "*",
-            "effect": "ask"
-        },
-        {
-            "action": "subagent",
-            "resource": "*",
-            "effect": "deny"
-        }
-    ],
-    "agents": {
-        "orchestrator": {
-            "mode": "primary",
-            "model": "omniroute/nvidia/nvidia/nemotron-3-ultra-550b-a55b",
-            "permissions": [
-                {
-                    "action": "external_directory",
-                    "resource": "*",
-                    "effect": "ask"
-                },
-                {
-                    "action": "external_directory",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
-                    "effect": "allow"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
-                    "effect": "allow"
-                },
-                {
-                    "action": "read",
-                    "resource": "*.env",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "*.env.*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "*.env.example",
-                    "effect": "allow"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/.env*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*/.env*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/build/Cloudinary_Archive_*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "edit",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop",
-                    "effect": "deny"
-                },
-                {
-                    "action": "edit",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "subagent",
-                    "resource": "*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "edit",
-                    "resource": "*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "shell",
-                    "resource": "*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "subagent",
-                    "resource": "legacy-auditor",
-                    "effect": "allow"
-                },
-                {
-                    "action": "subagent",
-                    "resource": "architect",
-                    "effect": "allow"
-                },
-                {
-                    "action": "subagent",
-                    "resource": "ui-designer",
-                    "effect": "allow"
-                },
-                {
-                    "action": "subagent",
-                    "resource": "frontend-coder",
-                    "effect": "allow"
-                },
-                {
-                    "action": "subagent",
-                    "resource": "camera-engineer",
-                    "effect": "allow"
-                },
-                {
-                    "action": "subagent",
-                    "resource": "printer-engineer",
-                    "effect": "allow"
-                },
-                {
-                    "action": "subagent",
-                    "resource": "backend-engineer",
-                    "effect": "allow"
-                },
-                {
-                    "action": "subagent",
-                    "resource": "tester-reviewer",
-                    "effect": "allow"
-                },
-                {
-                    "action": "subagent",
-                    "resource": "visual-reviewer",
-                    "effect": "allow"
-                }
-            ]
-        },
-        "legacy-auditor": {
-            "mode": "subagent",
-            "model": "9router/cx/gpt-5.6-sol-review",
-            "permissions": [
-                {
-                    "action": "external_directory",
-                    "resource": "*",
-                    "effect": "ask"
-                },
-                {
-                    "action": "external_directory",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
-                    "effect": "allow"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
-                    "effect": "allow"
-                },
-                {
-                    "action": "read",
-                    "resource": "*.env",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "*.env.*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "*.env.example",
-                    "effect": "allow"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/.env*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*/.env*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/build/Cloudinary_Archive_*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "edit",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop",
-                    "effect": "deny"
-                },
-                {
-                    "action": "edit",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "subagent",
-                    "resource": "*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "shell",
-                    "resource": "*",
-                    "effect": "ask"
-                }
-            ]
-        },
-        "architect": {
-            "mode": "subagent",
-            "model": "9router/cx/gpt-6.1-sol",
-            "permissions": [
-                {
-                    "action": "external_directory",
-                    "resource": "*",
-                    "effect": "ask"
-                },
-                {
-                    "action": "external_directory",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
-                    "effect": "allow"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
-                    "effect": "allow"
-                },
-                {
-                    "action": "read",
-                    "resource": "*.env",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "*.env.*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "*.env.example",
-                    "effect": "allow"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/.env*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*/.env*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/build/Cloudinary_Archive_*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "edit",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop",
-                    "effect": "deny"
-                },
-                {
-                    "action": "edit",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "subagent",
-                    "resource": "*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "shell",
-                    "resource": "*",
-                    "effect": "ask"
-                }
-            ]
-        },
-        "ui-designer": {
-            "mode": "subagent",
-            "model": "9router/oc/nemotron-3.5-super-vl-free",
-            "permissions": [
-                {
-                    "action": "external_directory",
-                    "resource": "*",
-                    "effect": "ask"
-                },
-                {
-                    "action": "external_directory",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
-                    "effect": "allow"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
-                    "effect": "allow"
-                },
-                {
-                    "action": "read",
-                    "resource": "*.env",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "*.env.*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "*.env.example",
-                    "effect": "allow"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/.env*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*/.env*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/build/Cloudinary_Archive_*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "edit",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop",
-                    "effect": "deny"
-                },
-                {
-                    "action": "edit",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "subagent",
-                    "resource": "*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "shell",
-                    "resource": "*",
-                    "effect": "ask"
-                }
-            ]
-        },
-        "frontend-coder": {
-            "mode": "subagent",
-            "model": "9router/ag/gemini-3.8-flash-high",
-            "permissions": [
-                {
-                    "action": "external_directory",
-                    "resource": "*",
-                    "effect": "ask"
-                },
-                {
-                    "action": "external_directory",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
-                    "effect": "allow"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
-                    "effect": "allow"
-                },
-                {
-                    "action": "read",
-                    "resource": "*.env",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "*.env.*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "*.env.example",
-                    "effect": "allow"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/.env*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*/.env*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/build/Cloudinary_Archive_*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "edit",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop",
-                    "effect": "deny"
-                },
-                {
-                    "action": "edit",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "subagent",
-                    "resource": "*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "shell",
-                    "resource": "*",
-                    "effect": "ask"
-                }
-            ]
-        },
-        "camera-engineer": {
-            "mode": "subagent",
-            "model": "9router/cx/gpt-6.1-terra",
-            "permissions": [
-                {
-                    "action": "external_directory",
-                    "resource": "*",
-                    "effect": "ask"
-                },
-                {
-                    "action": "external_directory",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
-                    "effect": "allow"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
-                    "effect": "allow"
-                },
-                {
-                    "action": "read",
-                    "resource": "*.env",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "*.env.*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "*.env.example",
-                    "effect": "allow"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/.env*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*/.env*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/build/Cloudinary_Archive_*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "edit",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop",
-                    "effect": "deny"
-                },
-                {
-                    "action": "edit",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "subagent",
-                    "resource": "*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "shell",
-                    "resource": "*",
-                    "effect": "ask"
-                }
-            ]
-        },
-        "printer-engineer": {
-            "mode": "subagent",
-            "model": "9router/cx/gpt-6.1-terra",
-            "permissions": [
-                {
-                    "action": "external_directory",
-                    "resource": "*",
-                    "effect": "ask"
-                },
-                {
-                    "action": "external_directory",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
-                    "effect": "allow"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
-                    "effect": "allow"
-                },
-                {
-                    "action": "read",
-                    "resource": "*.env",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "*.env.*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "*.env.example",
-                    "effect": "allow"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/.env*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*/.env*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/build/Cloudinary_Archive_*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "edit",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop",
-                    "effect": "deny"
-                },
-                {
-                    "action": "edit",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "subagent",
-                    "resource": "*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "shell",
-                    "resource": "*",
-                    "effect": "ask"
-                }
-            ]
-        },
-        "backend-engineer": {
-            "mode": "subagent",
-            "model": "9router/cx/gpt-6.1-sol",
-            "permissions": [
-                {
-                    "action": "external_directory",
-                    "resource": "*",
-                    "effect": "ask"
-                },
-                {
-                    "action": "external_directory",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
-                    "effect": "allow"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
-                    "effect": "allow"
-                },
-                {
-                    "action": "read",
-                    "resource": "*.env",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "*.env.*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "*.env.example",
-                    "effect": "allow"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/.env*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*/.env*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/build/Cloudinary_Archive_*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "edit",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop",
-                    "effect": "deny"
-                },
-                {
-                    "action": "edit",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "subagent",
-                    "resource": "*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "shell",
-                    "resource": "*",
-                    "effect": "ask"
-                }
-            ]
-        },
-        "tester-reviewer": {
-            "mode": "subagent",
-            "model": "9router/cx/gpt-5.6-sol-review",
-            "permissions": [
-                {
-                    "action": "external_directory",
-                    "resource": "*",
-                    "effect": "ask"
-                },
-                {
-                    "action": "external_directory",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
-                    "effect": "allow"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
-                    "effect": "allow"
-                },
-                {
-                    "action": "read",
-                    "resource": "*.env",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "*.env.*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "*.env.example",
-                    "effect": "allow"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/.env*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*/.env*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "read",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/build/Cloudinary_Archive_*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "edit",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop",
-                    "effect": "deny"
-                },
-                {
-                    "action": "edit",
-                    "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "subagent",
-                    "resource": "*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "shell",
-                    "resource": "*",
-                    "effect": "ask"
-                }
-            ]
-        },
-        "visual-reviewer": {
-            "description": "Reviews actual Photobooth V2 screenshots, Vietnamese typography, spacing, layout and visual quality. Read-only.",
-            "mode": "subagent",
-            "model": "omniroute/nvidia/nvidia/nemotron-3.5-super-vl-120b-a12b",
-            "system": "You are the LE SOUVENIR Photobooth V2 Visual Reviewer. Inspect actual screenshots at 1280x800 and 1920x1200. Identify Vietnamese font, diacritic, letter-spacing, word-spacing, alignment, clipping, responsive design and CSS defects. Report severity, screenshot evidence, and specific fixes. Preserve all functionality. Never claim to have inspected images you have not seen. Do not modify code.",
-            "permissions": [
-                {
-                    "action": "edit",
-                    "resource": "*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "shell",
-                    "resource": "*",
-                    "effect": "deny"
-                },
-                {
-                    "action": "subagent",
-                    "resource": "*",
-                    "effect": "deny"
-                }
-            ]
-        }
+  "$schema": "https://opencode.ai/config.json",
+  "plugins": [
+    {
+      "package": "@omniroute/opencode-plugin-v2",
+      "options": {
+        "providerId": "omniroute",
+        "baseURL": "http://127.0.0.1:20129"
+      }
     }
+  ],
+  "default_agent": "orchestrator",
+  "model": "9router/cx/gpt-6.1-sol",
+  "permissions": [
+    {
+      "action": "external_directory",
+      "resource": "*",
+      "effect": "ask"
+    },
+    {
+      "action": "external_directory",
+      "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
+      "effect": "allow"
+    },
+    {
+      "action": "read",
+      "resource": "*",
+      "effect": "allow"
+    },
+    {
+      "action": "read",
+      "resource": "*.env",
+      "effect": "deny"
+    },
+    {
+      "action": "read",
+      "resource": "*.env.*",
+      "effect": "deny"
+    },
+    {
+      "action": "read",
+      "resource": "*.env.example",
+      "effect": "allow"
+    },
+    {
+      "action": "read",
+      "resource": "*serviceAccountKey.json",
+      "effect": "deny"
+    },
+    {
+      "action": "read",
+      "resource": "*service-account*.json",
+      "effect": "deny"
+    },
+    {
+      "action": "read",
+      "resource": "*credentials*.json",
+      "effect": "deny"
+    },
+    {
+      "action": "read",
+      "resource": "E:/HK1_2026_2027/PhotoboothDesktop/.env*",
+      "effect": "deny"
+    },
+    {
+      "action": "read",
+      "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*/.env*",
+      "effect": "deny"
+    },
+    {
+      "action": "read",
+      "resource": "E:/HK1_2026_2027/PhotoboothDesktop/build/Cloudinary_Archive_*",
+      "effect": "deny"
+    },
+    {
+      "action": "read",
+      "resource": "E:/HK1_2026_2027/PhotoboothDesktop/build/Cloudinary_Archive_*/*",
+      "effect": "deny"
+    },
+    {
+      "action": "edit",
+      "resource": "*",
+      "effect": "deny"
+    },
+    {
+      "action": "shell",
+      "resource": "*",
+      "effect": "ask"
+    },
+    {
+      "action": "shell",
+      "resource": "git push *",
+      "effect": "deny"
+    },
+    {
+      "action": "shell",
+      "resource": "git reset *",
+      "effect": "deny"
+    },
+    {
+      "action": "shell",
+      "resource": "git clean *",
+      "effect": "deny"
+    },
+    {
+      "action": "shell",
+      "resource": "git rebase *",
+      "effect": "deny"
+    },
+    {
+      "action": "subagent",
+      "resource": "*",
+      "effect": "deny"
+    },
+    {
+      "action": "playwright_*",
+      "resource": "*",
+      "effect": "deny"
+    },
+    {
+      "action": "edit",
+      "resource": "E:/HK1_2026_2027/PhotoboothDesktop",
+      "effect": "deny"
+    },
+    {
+      "action": "edit",
+      "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
+      "effect": "deny"
+    }
+  ],
+  "mcp": {
+    "servers": {
+      "playwright": {
+        "type": "local",
+        "command": [
+          "npx",
+          "-y",
+          "@playwright/mcp@latest"
+        ],
+        "codemode": false,
+        "disabled": false
+      }
+    }
+  },
+  "agents": {
+    "orchestrator": {
+      "description": "Coordinates specialist agents and verifies results. No source edits or terminal execution.",
+      "mode": "primary",
+      "model": "9router/cx/gpt-6.1-sol",
+      "permissions": [
+        {
+          "action": "edit",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "shell",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "playwright_*",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "subagent",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "subagent",
+          "resource": "legacy-auditor",
+          "effect": "allow"
+        },
+        {
+          "action": "subagent",
+          "resource": "architect",
+          "effect": "allow"
+        },
+        {
+          "action": "subagent",
+          "resource": "ui-designer",
+          "effect": "allow"
+        },
+        {
+          "action": "subagent",
+          "resource": "frontend-coder",
+          "effect": "allow"
+        },
+        {
+          "action": "subagent",
+          "resource": "camera-engineer",
+          "effect": "allow"
+        },
+        {
+          "action": "subagent",
+          "resource": "printer-engineer",
+          "effect": "allow"
+        },
+        {
+          "action": "subagent",
+          "resource": "backend-engineer",
+          "effect": "allow"
+        },
+        {
+          "action": "subagent",
+          "resource": "tester-reviewer",
+          "effect": "allow"
+        },
+        {
+          "action": "subagent",
+          "resource": "visual-reviewer",
+          "effect": "allow"
+        },
+        {
+          "action": "subagent",
+          "resource": "ui-app-runner",
+          "effect": "allow"
+        }
+      ]
+    },
+    "legacy-auditor": {
+      "description": "Read-only parity auditor for legacy V1 and V2 workflows, settings, integrations, and tools.",
+      "mode": "subagent",
+      "model": "omniroute/nvidia/nvidia/nemotron-3-ultra-550b-a55b",
+      "permissions": [
+        {
+          "action": "edit",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "shell",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "subagent",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "playwright_*",
+          "resource": "*",
+          "effect": "deny"
+        }
+      ]
+    },
+    "architect": {
+      "description": "Read-only system architect who reviews dependencies, state machines and integration boundaries.",
+      "mode": "subagent",
+      "model": "omniroute/nvidia/nvidia/nemotron-3-ultra-550b-a55b",
+      "permissions": [
+        {
+          "action": "edit",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "shell",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "subagent",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "playwright_*",
+          "resource": "*",
+          "effect": "deny"
+        }
+      ]
+    },
+    "ui-designer": {
+      "description": "UI/UX designer for premium touchscreen Photobooth interfaces; proposes practical implementation guidance.",
+      "mode": "subagent",
+      "model": "9router/cx/gpt-5.6-sol-review",
+      "permissions": [
+        {
+          "action": "edit",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "shell",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "subagent",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "playwright_*",
+          "resource": "*",
+          "effect": "deny"
+        }
+      ]
+    },
+    "frontend-coder": {
+      "description": "React/TypeScript/CSS implementer restricted to V2 frontend and relevant tests.",
+      "mode": "subagent",
+      "model": "omniroute/nvidia/nvidia/nemotron-3-ultra-550b-a55b",
+      "permissions": [
+        {
+          "action": "shell",
+          "resource": "*",
+          "effect": "ask"
+        },
+        {
+          "action": "shell",
+          "resource": "git push *",
+          "effect": "deny"
+        },
+        {
+          "action": "shell",
+          "resource": "git reset *",
+          "effect": "deny"
+        },
+        {
+          "action": "shell",
+          "resource": "git clean *",
+          "effect": "deny"
+        },
+        {
+          "action": "shell",
+          "resource": "git rebase *",
+          "effect": "deny"
+        },
+        {
+          "action": "subagent",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "playwright_*",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "edit",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "edit",
+          "resource": "frontend/*",
+          "effect": "allow"
+        },
+        {
+          "action": "edit",
+          "resource": "E:/HK1_2026_2027/PhotoboothDesktop_v2/frontend/*",
+          "effect": "allow"
+        },
+        {
+          "action": "edit",
+          "resource": "tests/*",
+          "effect": "allow"
+        },
+        {
+          "action": "edit",
+          "resource": "E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/*",
+          "effect": "allow"
+        },
+        {
+          "action": "edit",
+          "resource": "E:/HK1_2026_2027/PhotoboothDesktop",
+          "effect": "deny"
+        },
+        {
+          "action": "edit",
+          "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
+          "effect": "deny"
+        }
+      ]
+    },
+    "camera-engineer": {
+      "description": "Camera lifecycle and mock/demo integration specialist for V2 backend; preserve existing Beauty algorithms.",
+      "mode": "subagent",
+      "model": "9router/cx/gpt-6.1-terra",
+      "permissions": [
+        {
+          "action": "shell",
+          "resource": "*",
+          "effect": "ask"
+        },
+        {
+          "action": "shell",
+          "resource": "git push *",
+          "effect": "deny"
+        },
+        {
+          "action": "shell",
+          "resource": "git reset *",
+          "effect": "deny"
+        },
+        {
+          "action": "shell",
+          "resource": "git clean *",
+          "effect": "deny"
+        },
+        {
+          "action": "shell",
+          "resource": "git rebase *",
+          "effect": "deny"
+        },
+        {
+          "action": "subagent",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "playwright_*",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "edit",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "edit",
+          "resource": "backend/*",
+          "effect": "allow"
+        },
+        {
+          "action": "edit",
+          "resource": "E:/HK1_2026_2027/PhotoboothDesktop_v2/backend/*",
+          "effect": "allow"
+        },
+        {
+          "action": "edit",
+          "resource": "tests/*",
+          "effect": "allow"
+        },
+        {
+          "action": "edit",
+          "resource": "E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/*",
+          "effect": "allow"
+        },
+        {
+          "action": "edit",
+          "resource": "src-tauri/*",
+          "effect": "allow"
+        },
+        {
+          "action": "edit",
+          "resource": "E:/HK1_2026_2027/PhotoboothDesktop_v2/src-tauri/*",
+          "effect": "allow"
+        },
+        {
+          "action": "edit",
+          "resource": "E:/HK1_2026_2027/PhotoboothDesktop",
+          "effect": "deny"
+        },
+        {
+          "action": "edit",
+          "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
+          "effect": "deny"
+        }
+      ]
+    },
+    "printer-engineer": {
+      "description": "DNP printer, frame composition and print/delivery workflow specialist.",
+      "mode": "subagent",
+      "model": "9router/cx/gpt-6.1-terra",
+      "permissions": [
+        {
+          "action": "shell",
+          "resource": "*",
+          "effect": "ask"
+        },
+        {
+          "action": "shell",
+          "resource": "git push *",
+          "effect": "deny"
+        },
+        {
+          "action": "shell",
+          "resource": "git reset *",
+          "effect": "deny"
+        },
+        {
+          "action": "shell",
+          "resource": "git clean *",
+          "effect": "deny"
+        },
+        {
+          "action": "shell",
+          "resource": "git rebase *",
+          "effect": "deny"
+        },
+        {
+          "action": "subagent",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "playwright_*",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "edit",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "edit",
+          "resource": "backend/*",
+          "effect": "allow"
+        },
+        {
+          "action": "edit",
+          "resource": "E:/HK1_2026_2027/PhotoboothDesktop_v2/backend/*",
+          "effect": "allow"
+        },
+        {
+          "action": "edit",
+          "resource": "tests/*",
+          "effect": "allow"
+        },
+        {
+          "action": "edit",
+          "resource": "E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/*",
+          "effect": "allow"
+        },
+        {
+          "action": "edit",
+          "resource": "src-tauri/*",
+          "effect": "allow"
+        },
+        {
+          "action": "edit",
+          "resource": "E:/HK1_2026_2027/PhotoboothDesktop_v2/src-tauri/*",
+          "effect": "allow"
+        },
+        {
+          "action": "edit",
+          "resource": "E:/HK1_2026_2027/PhotoboothDesktop",
+          "effect": "deny"
+        },
+        {
+          "action": "edit",
+          "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
+          "effect": "deny"
+        }
+      ]
+    },
+    "backend-engineer": {
+      "description": "Kotlin, Tauri IPC and API integration specialist; preserve payment and revenue correctness.",
+      "mode": "subagent",
+      "model": "9router/cx/gpt-6.1-sol",
+      "permissions": [
+        {
+          "action": "shell",
+          "resource": "*",
+          "effect": "ask"
+        },
+        {
+          "action": "shell",
+          "resource": "git push *",
+          "effect": "deny"
+        },
+        {
+          "action": "shell",
+          "resource": "git reset *",
+          "effect": "deny"
+        },
+        {
+          "action": "shell",
+          "resource": "git clean *",
+          "effect": "deny"
+        },
+        {
+          "action": "shell",
+          "resource": "git rebase *",
+          "effect": "deny"
+        },
+        {
+          "action": "subagent",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "playwright_*",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "edit",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "edit",
+          "resource": "backend/*",
+          "effect": "allow"
+        },
+        {
+          "action": "edit",
+          "resource": "E:/HK1_2026_2027/PhotoboothDesktop_v2/backend/*",
+          "effect": "allow"
+        },
+        {
+          "action": "edit",
+          "resource": "tests/*",
+          "effect": "allow"
+        },
+        {
+          "action": "edit",
+          "resource": "E:/HK1_2026_2027/PhotoboothDesktop_v2/tests/*",
+          "effect": "allow"
+        },
+        {
+          "action": "edit",
+          "resource": "src-tauri/*",
+          "effect": "allow"
+        },
+        {
+          "action": "edit",
+          "resource": "E:/HK1_2026_2027/PhotoboothDesktop_v2/src-tauri/*",
+          "effect": "allow"
+        },
+        {
+          "action": "edit",
+          "resource": "E:/HK1_2026_2027/PhotoboothDesktop",
+          "effect": "deny"
+        },
+        {
+          "action": "edit",
+          "resource": "E:/HK1_2026_2027/PhotoboothDesktop/*",
+          "effect": "deny"
+        }
+      ]
+    },
+    "tester-reviewer": {
+      "description": "Independent functionality and regression reviewer; requests real evidence from UI App Runner.",
+      "mode": "subagent",
+      "model": "9router/cx/gpt-5.6-sol-review",
+      "permissions": [
+        {
+          "action": "edit",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "shell",
+          "resource": "*",
+          "effect": "ask"
+        },
+        {
+          "action": "shell",
+          "resource": "git push *",
+          "effect": "deny"
+        },
+        {
+          "action": "shell",
+          "resource": "git reset *",
+          "effect": "deny"
+        },
+        {
+          "action": "shell",
+          "resource": "git clean *",
+          "effect": "deny"
+        },
+        {
+          "action": "shell",
+          "resource": "git rebase *",
+          "effect": "deny"
+        },
+        {
+          "action": "subagent",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "playwright_*",
+          "resource": "*",
+          "effect": "deny"
+        }
+      ]
+    },
+    "visual-reviewer": {
+      "description": "Read-only screenshot vision QA for typography, responsive layout, visual and touchscreen defects.",
+      "mode": "subagent",
+      "model": "omniroute/nvidia/nvidia/nemotron-3.5-super-vl-120b-a12b",
+      "permissions": [
+        {
+          "action": "edit",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "shell",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "subagent",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "playwright_*",
+          "resource": "*",
+          "effect": "deny"
+        }
+      ]
+    },
+    "ui-app-runner": {
+      "description": "Runs the existing app using approved shell commands, drives web UI via Playwright and captures real PNG evidence.",
+      "mode": "subagent",
+      "model": "9router/cx/gpt-5.6-terra-review",
+      "permissions": [
+        {
+          "action": "edit",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "shell",
+          "resource": "*",
+          "effect": "ask"
+        },
+        {
+          "action": "shell",
+          "resource": "git push *",
+          "effect": "deny"
+        },
+        {
+          "action": "shell",
+          "resource": "git reset *",
+          "effect": "deny"
+        },
+        {
+          "action": "shell",
+          "resource": "git clean *",
+          "effect": "deny"
+        },
+        {
+          "action": "shell",
+          "resource": "git rebase *",
+          "effect": "deny"
+        },
+        {
+          "action": "subagent",
+          "resource": "*",
+          "effect": "deny"
+        },
+        {
+          "action": "playwright_*",
+          "resource": "*",
+          "effect": "allow"
+        }
+      ]
+    }
+  }
 }

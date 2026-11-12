@@ -1,51 +1,205 @@
 :root {
   color-scheme: light;
-  --at-font-ui: 'Be Vietnam Pro', system-ui, 'Segoe UI', sans-serif;
-  --at-font-editorial: 'Playfair Display', 'Be Vietnam Pro', serif;
-  --at-font-sans: var(--at-font-ui);
-  --at-font-display: var(--at-font-editorial);
-  font-family: var(--at-font-ui);
-  font-synthesis: none;
 
-  --at-canvas: #FAF6F0;
-  --at-canvas-muted: #F5F0E8;
-  --at-paper: #FFFCF7;
-  --at-ink: #1A1715;
-  --at-body: #514842;
-  --at-muted: #625750;
-  --at-primary: #8E442D;
-  --at-primary-hover: #713721;
-  --at-accent: #C27357;
-  --at-champagne: #D8C7B5;
-  --at-rose: #F0DBD4;
-  --at-hairline: rgba(81, 72, 66, 0.24);
-  --at-white: #FFFFFF;
+  /* Required core palette */
+  --lg-ivory: #FAF6F0;
+  --lg-matte-black: #1A1715;
+  --lg-champagne: #D8C7B5;
+  --lg-soft-rose: #F0DBD4;
+  --lg-primary: #8E442D;
 
-  --at-glass: linear-gradient(148deg, rgba(255, 255, 255, 0.62) 0%, rgba(255, 249, 243, 0.42) 55%, rgba(244, 228, 217, 0.3) 100%);
-  --at-glass-strong: linear-gradient(150deg, rgba(255, 255, 255, 0.86) 0%, rgba(255, 249, 244, 0.68) 58%, rgba(247, 233, 223, 0.56) 100%);
-  --at-glass-border: rgba(255, 255, 255, 0.46);
-  --at-glass-rim: rgba(255, 255, 255, 0.62);
-  --at-control-border: rgba(90, 74, 64, 0.65);
-  --at-glass-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.42),
-    inset 0 -1px 0 rgba(142, 68, 45, 0.05),
-    inset 0 8px 20px rgba(255, 255, 255, 0.08),
-    0 1px 2px rgba(74, 42, 28, 0.04),
-    0 8px 24px rgba(74, 42, 28, 0.08),
-    0 20px 44px rgba(74, 42, 28, 0.06);
-  --at-glass-filter: blur(20px) saturate(132%);
-  --at-glass-filter-sm: blur(12px) saturate(118%);
+  /* Supporting semantic colors */
+  --lg-paper: #FFFCF7;
+  --lg-canvas-muted: #F5F0E8;
+  --lg-body: #514842;
+  --lg-muted: #625750;
+  --lg-primary-deep: #6F321F;
+  --lg-primary-bright: #A45136;
+  --lg-success: #245C42;
+  --lg-error: #8F3029;
+  --lg-darkroom: #0A090C;
+  --lg-darkroom-raised: #131115;
+
+  /* Surface layers: depth layer + base layer + ::before specular layer */
+  --lg-layer-card-base: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.76) 0%,
+    rgba(255, 252, 247, 0.58) 38%,
+    rgba(250, 246, 240, 0.48) 68%,
+    rgba(240, 219, 212, 0.30) 100%
+  );
+  --lg-layer-card-depth: radial-gradient(
+    120% 96% at 96% 100%,
+    rgba(216, 199, 181, 0.26) 0%,
+    rgba(240, 219, 212, 0.12) 42%,
+    rgba(255, 255, 255, 0) 72%
+  );
+  --lg-layer-control-base: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.90) 0%,
+    rgba(255, 252, 247, 0.76) 46%,
+    rgba(244, 232, 222, 0.64) 100%
+  );
+  --lg-layer-control-depth: radial-gradient(
+    110% 130% at 92% 110%,
+    rgba(240, 219, 212, 0.30) 0%,
+    rgba(216, 199, 181, 0.12) 48%,
+    transparent 72%
+  );
+  --lg-layer-sheet-base: linear-gradient(
+    148deg,
+    rgba(255, 255, 255, 0.96) 0%,
+    rgba(255, 252, 247, 0.91) 48%,
+    rgba(246, 235, 226, 0.84) 100%
+  );
+  --lg-layer-sheet-depth: radial-gradient(
+    100% 80% at 100% 100%,
+    rgba(240, 219, 212, 0.30) 0%,
+    transparent 68%
+  );
+  --lg-layer-dark-base: linear-gradient(
+    145deg,
+    rgba(49, 42, 52, 0.94) 0%,
+    rgba(26, 23, 21, 0.96) 48%,
+    rgba(10, 9, 12, 0.98) 100%
+  );
+  --lg-layer-primary: linear-gradient(
+    160deg,
+    #A45136 0%,
+    #8E442D 52%,
+    #692C1B 100%
+  );
+
+  /* Static reflected light. Apply with ::before; never animate continuously. */
+  --lg-layer-specular: radial-gradient(
+    125% 72% at 8% -12%,
+    rgba(255, 255, 255, 0.94) 0%,
+    rgba(255, 255, 255, 0.34) 39%,
+    rgba(255, 255, 255, 0) 68%
+  );
+  --lg-layer-specular-dark: radial-gradient(
+    110% 68% at 12% -8%,
+    rgba(255, 255, 255, 0.28) 0%,
+    rgba(255, 255, 255, 0.08) 42%,
+    transparent 70%
+  );
+  --lg-layer-press-glow: radial-gradient(
+    circle 92px at var(--touch-x, 50%) var(--touch-y, 50%),
+    rgba(255, 255, 255, 0.52) 0%,
+    rgba(240, 219, 212, 0.24) 42%,
+    rgba(255, 255, 255, 0) 74%
+  );
+  --lg-layer-press-glow-primary: radial-gradient(
+    circle 96px at var(--touch-x, 50%) var(--touch-y, 50%),
+    rgba(255, 255, 255, 0.34) 0%,
+    rgba(255, 232, 221, 0.18) 44%,
+    rgba(255, 255, 255, 0) 74%
+  );
+
+  /* Borders and inner optical edge */
+  --lg-border: rgba(255, 255, 255, 0.58);
+  --lg-border-strong: rgba(216, 199, 181, 0.82);
+  --lg-border-control: rgba(90, 74, 64, 0.62);
+  --lg-border-dark: rgba(216, 199, 181, 0.46);
+  --lg-inner-glow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.82),
+    inset 1px 0 0 rgba(255, 255, 255, 0.22),
+    inset 0 -1px 0 rgba(142, 68, 45, 0.08),
+    inset 0 -18px 30px rgba(240, 219, 212, 0.10);
+  --lg-inner-glow-dark:
+    inset 0 1px 0 rgba(255, 255, 255, 0.20),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.28),
+    inset 0 -14px 26px rgba(0, 0, 0, 0.16);
+
+  /* Shadow depth scale */
+  --lg-shadow-0: none;
+  --lg-shadow-1:
+    var(--lg-inner-glow),
+    0 2px 4px rgba(74, 42, 28, 0.05),
+    0 8px 20px rgba(74, 42, 28, 0.06);
+  --lg-shadow-2:
+    var(--lg-inner-glow),
+    0 3px 8px rgba(74, 42, 28, 0.06),
+    0 14px 32px rgba(74, 42, 28, 0.10),
+    0 28px 54px rgba(74, 42, 28, 0.05);
+  --lg-shadow-3:
+    var(--lg-inner-glow),
+    0 5px 12px rgba(74, 42, 28, 0.08),
+    0 22px 48px rgba(74, 42, 28, 0.14),
+    0 42px 72px rgba(74, 42, 28, 0.08);
+  --lg-shadow-4:
+    var(--lg-inner-glow),
+    0 8px 18px rgba(26, 23, 21, 0.12),
+    0 32px 80px rgba(26, 23, 21, 0.24);
+  --lg-shadow-dark:
+    var(--lg-inner-glow-dark),
+    0 8px 18px rgba(0, 0, 0, 0.32),
+    0 24px 52px rgba(0, 0, 0, 0.48);
+  --lg-shadow-selected:
+    0 0 0 3px rgba(194, 115, 87, 0.24),
+    0 14px 34px rgba(142, 68, 45, 0.22);
+
+  /* Backdrop levels */
+  --lg-filter-control: blur(14px) saturate(118%);
+  --lg-filter-card: blur(18px) saturate(122%);
+  --lg-filter-sheet: blur(24px) saturate(126%);
+
+  /* Geometry */
+  --lg-radius-control: 18px;
+  --lg-radius-card: 24px;
+  --lg-radius-sheet: 32px;
+  --lg-radius-pill: 999px;
+  --lg-border-width: 1px;
+  --lg-target-min: 56px;
+  --lg-target-comfort: 64px;
+  --lg-target-primary: 68px;
+  --lg-shutter-size: 104px;
+  --lg-edge-x: 32px;
+  --lg-edge-y: 16px;
+  --lg-layout-gap: 16px;
+  --lg-card-padding: 20px;
+
+  /* Motion */
+  --lg-duration-instant: 80ms;
+  --lg-duration-fast: 140ms;
+  --lg-duration-release: 180ms;
+  --lg-duration-standard: 240ms;
+  --lg-duration-settle: 360ms;
+  --lg-duration-ripple: 520ms;
+  --lg-ease-standard: cubic-bezier(0.20, 0, 0, 1);
+  --lg-ease-out: cubic-bezier(0.16, 1, 0.30, 1);
+  --lg-ease-spring: cubic-bezier(0.22, 1.28, 0.36, 1);
+
+  /* Aliases for existing --at-* tokens to avoid disruptive class migration */
+  --at-canvas: var(--lg-ivory);
+  --at-canvas-muted: var(--lg-canvas-muted);
+  --at-paper: var(--lg-paper);
+  --at-ink: var(--lg-matte-black);
+  --at-body: var(--lg-body);
+  --at-muted: var(--lg-muted);
+  --at-primary: var(--lg-primary);
+  --at-primary-deep: var(--lg-primary-deep);
+  --at-primary-bright: var(--lg-primary-bright);
+  --at-champagne: var(--lg-champagne);
+  --at-rose: var(--lg-soft-rose);
+  --at-success: var(--lg-success);
+  --at-error: var(--lg-error);
+  --at-darkroom: var(--lg-darkroom);
+  --at-darkroom-raised: var(--lg-darkroom-raised);
+
+  /* Glass aliases */
+  --at-glass: var(--lg-layer-card-base);
+  --at-glass-strong: var(--lg-layer-control-base);
+  --at-glass-border: var(--lg-border);
+  --at-glass-rim: var(--lg-border-strong);
+  --at-control-border: var(--lg-border-control);
+  --at-glass-filter: var(--lg-filter-card);
+  --at-glass-filter-sm: var(--lg-filter-control);
   --at-glow-warm: 0 14px 36px rgba(194, 115, 87, 0.16), 0 4px 12px rgba(142, 68, 45, 0.08);
+  --at-press: var(--lg-duration-instant) var(--lg-ease-out);
+  --at-card: var(--lg-duration-standard) var(--lg-ease-out);
 
-  --at-darkroom: #0A090C;
-  --at-darkroom-raised: #131115;
-  --at-success: #245C42;
-  --at-error: #8F3029;
-  --at-paper-shadow: drop-shadow(0 18px 28px rgba(44, 30, 23, 0.16)) drop-shadow(0 4px 8px rgba(44, 30, 23, 0.09));
-
-  --at-press: 0.16s cubic-bezier(0.2, 0.8, 0.25, 1);
-  --at-card: 0.24s ease;
-
+  /* Spacing */
   --at-space-1: 4px;
   --at-space-2: 8px;
   --at-space-3: 12px;
@@ -55,8 +209,52 @@
   --at-space-7: 48px;
   --at-space-8: 64px;
 
-  --at-gutter: clamp(24px, 3.33vw, 64px);
-  --at-kiosk-gutter-y: clamp(16px, 2.5dvh, 32px);
-  --at-target: 56px;
-  --at-primary-height: 72px;
+  --at-gutter: clamp(var(--lg-edge-x), 3.33vw, 64px);
+  --at-kiosk-gutter-y: clamp(var(--lg-edge-y), 2.5dvh, 32px);
+  --at-target: var(--lg-target-comfort);
+  --at-primary-height: var(--lg-target-primary);
+
+  /* Fonts */
+  --at-font-ui: 'Be Vietnam Pro', system-ui, 'Segoe UI', sans-serif;
+  --at-font-editorial: 'Playfair Display', 'Be Vietnam Pro', serif;
+  --at-font-sans: var(--at-font-ui);
+  --at-font-display: var(--at-font-editorial);
+  font-family: var(--at-font-ui);
+  font-synthesis: none;
+}
+
+/* Responsive breakpoints */
+@media (min-width: 1400px) and (min-height: 900px) {
+  :root {
+    --lg-edge-x: 48px;
+    --lg-edge-y: 24px;
+    --lg-layout-gap: 24px;
+    --lg-card-padding: 24px;
+    --lg-target-primary: 72px;
+    --lg-shutter-size: 112px;
+  }
+}
+
+@media (min-width: 1800px) and (min-height: 1100px) {
+  :root {
+    --lg-edge-x: 64px;
+    --lg-edge-y: 32px;
+    --lg-layout-gap: 32px;
+    --lg-card-padding: 28px;
+    --lg-target-primary: 72px;
+    --lg-shutter-size: 120px;
+  }
+}
+
+@media (max-width: 1099px), (max-height: 699px) {
+  :root {
+    --lg-edge-x: 20px;
+    --lg-edge-y: 12px;
+    --lg-layout-gap: 12px;
+    --lg-card-padding: 16px;
+    --lg-target-min: 56px;
+    --lg-target-comfort: 56px;
+    --lg-target-primary: 64px;
+    --lg-shutter-size: 96px;
+  }
 }
