@@ -1,5 +1,19 @@
 # Security Findings — Initial V1 Audit Review
 
+## CSS softening polish note — 2026-11-12 (post-checkpoint 7ca40ac)
+
+No new security, credential, or license finding was introduced by the CSS-only change (5 presentation files).
+
+| Severity | Finding | Evidence / mitigation |
+|---|---|---|
+| LOW | Untracked backend native runtime artifacts in working tree | `backend/io_grpc_netty_shaded_netty_tcnative_*.dll`, `backend/kotlin-compiler-*.alive`, `backend/onnxruntime-java*/`, `backend/sqlite-*.dll` are pre-existing build detritus (not introduced by this CSS change). Mitigation: gitignore or clean before packaging to prevent DLL collisions; confirm redistribution rights (B-001/B-002/D-005 scope). |
+| INFO | No new secret, URL, endpoint, or production DB reference | All 5 modified CSS files contain only tokens, gradients, shadows, and media-query fallbacks. |
+| INFO | Accessible fallbacks do not weaken kiosk security posture | `prefers-reduced-transparency` and `forced-colors` blocks alter styling only; they do not change state-machine commands, IPC, PIN/staff-cash gating, or revenue gating. |
+
+Carried forward (unresolved, pre-existing): B-001 Canon EDSDK redistribution terms (UNKNOWN); B-002/B-003 Beauty
+model/source and detector provenance manifests (BLOCKED); D-005 commercial redistribution of Canon DLLs/ONNX weights.
+No new license issue was created by this CSS-only change.
+
 ## 2026-11-08 verification note
 
 No secrets were read and no payment, database, upload, camera, or print side effect was performed. V1 `git status --short` was empty after the run. This is limited working-tree evidence, not a filesystem forensic guarantee.

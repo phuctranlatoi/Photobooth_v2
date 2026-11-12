@@ -21,12 +21,21 @@
   --at-hairline: rgba(81, 72, 66, 0.24);
   --at-white: #FFFFFF;
 
-  --at-glass: linear-gradient(148deg, rgba(255, 255, 255, 0.68) 0%, rgba(255, 250, 245, 0.44) 55%, rgba(246, 233, 224, 0.36) 100%);
-  --at-glass-strong: linear-gradient(150deg, rgba(255, 255, 255, 0.84) 0%, rgba(255, 249, 244, 0.64) 58%, rgba(247, 235, 226, 0.56) 100%);
-  --at-glass-border: rgba(255, 255, 255, 0.82);
-  --at-glass-shadow: inset 0 1.5px 1px rgba(255, 255, 255, 0.94), inset 0 -1px 2px rgba(142, 68, 45, 0.08), 0 18px 42px rgba(74, 42, 28, 0.11), 0 3px 12px rgba(194, 115, 87, 0.07);
-  --at-glass-filter: blur(22px) saturate(170%);
-  --at-glow-warm: 0 14px 36px rgba(194, 115, 87, 0.2), 0 4px 12px rgba(142, 68, 45, 0.1);
+  --at-glass: linear-gradient(148deg, rgba(255, 255, 255, 0.62) 0%, rgba(255, 249, 243, 0.42) 55%, rgba(244, 228, 217, 0.3) 100%);
+  --at-glass-strong: linear-gradient(150deg, rgba(255, 255, 255, 0.86) 0%, rgba(255, 249, 244, 0.68) 58%, rgba(247, 233, 223, 0.56) 100%);
+  --at-glass-border: rgba(255, 255, 255, 0.46);
+  --at-glass-rim: rgba(255, 255, 255, 0.62);
+  --at-control-border: rgba(90, 74, 64, 0.65);
+  --at-glass-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.42),
+    inset 0 -1px 0 rgba(142, 68, 45, 0.05),
+    inset 0 8px 20px rgba(255, 255, 255, 0.08),
+    0 1px 2px rgba(74, 42, 28, 0.04),
+    0 8px 24px rgba(74, 42, 28, 0.08),
+    0 20px 44px rgba(74, 42, 28, 0.06);
+  --at-glass-filter: blur(20px) saturate(132%);
+  --at-glass-filter-sm: blur(12px) saturate(118%);
+  --at-glow-warm: 0 14px 36px rgba(194, 115, 87, 0.16), 0 4px 12px rgba(142, 68, 45, 0.08);
 
   --at-darkroom: #0A090C;
   --at-darkroom-raised: #131115;

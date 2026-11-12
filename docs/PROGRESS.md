@@ -1,5 +1,20 @@
 ﻿# PROGRESS.md
 
+## CSS Softening Polish Milestone (2026-11-12, post-checkpoint 7ca40ac)
+
+**Status: SOFTWARE GREEN (regression) — RELEASE REMAINS BLOCKED / GATED.**
+
+- Independently reviewed the CSS-only softening applied after checkpoint `7ca40ac` ("checkpoint current workspace before UI softening"). `git diff --stat 7ca40ac..HEAD` confirms **no commits** after the checkpoint; the 5 modified files are uncommitted working-tree edits: `frontend/src/atelier/theme-tokens.css`, `atelier-core.css`, `atelier-customer.css`, `atelier-operator.css`, and `frontend/src/screens/payment.css`.
+- Diff audit: all changes are presentational (glass gradients, border alphas, blur/saturate, shadow softening) plus new `--at-glass-rim` / `--at-control-border` tokens. **No camera/countdown/shutter, QR/payment-layout, or business/IPC rule was modified.** No `.tsx`/`.ts` backend, state-machine, pricing, or revenue file changed.
+- Accessible fallbacks added (source-verified): `@media (prefers-reduced-transparency: reduce)` blocks (solid paper/surface backgrounds, `backdrop-filter: none`) and extended `@media (forced-colors: active)` blocks (2px ButtonText borders, Highlight on `aria-pressed="true"`) across all 5 CSS files.
+- New Vitest count: **85/85 tests across 11 files** (up from 61/61 in Phase 12, 2026-11-06; the +24-test growth is not scoped to the CSS change and is not documented elsewhere). Production build: **2,016 modules, 0 errors** (CSS 122.31 kB / JS 423.47 kB; module count drifted from 2,010 recorded in Phase 12).
+- The coder's claimed "1 Jest pass" refers to the pre-existing `frontend/src/basic-scaffold.jest.tsx` + root `jest.config.js` (both introduced **inside** checkpoint `7ca40ac`), not to this CSS change; there is **no npm `jest` script**, so it was only runnable via a synthesized config. **No CSS-specific automated test exists** for the softening.
+- **Visual outcome not verified:** no independent rendered-viewport, screenshot, or CDP measurement was produced. `tests/verify-demo-and-real-journey.mjs` (live Tauri/WebView + real-mode PayOS QR display + process spawn/kill + sqlite3 query) was **not run** in this offline review.
+- **Hardware boundary:** Canon DSLR, DNP DS-RX1HS physical print/cut, live PayOS/Neon/Cloudinary, Mini-PC, installer, and redistribution-license gates remain **BLOCKED / GATED**. Simulated regression is not physical-hardware or visual evidence.
+- No commit/push was made; no V1 write/build/cleanup/secret read or customer-photo operation occurred.
+
+---
+
 ## Complete UI/UX Reconstruction Milestone (Phase 12, 2026-11-06)
 
 **Status: COMPLETE for frontend software scope — PASS-AUTOMATED + PASS-SIMULATED; production release remains BLOCKED / GATED.**

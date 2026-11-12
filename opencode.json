@@ -10,7 +10,7 @@
         }
     ],
     "default_agent": "orchestrator",
-    "model": "9router/cf/@cf/zai-org/glm-4.7-flash",
+    "model": "omniroute/nvidia/nvidia/nemotron-3-ultra-550b-a55b",
     "permissions": [
         {
             "action": "read",
@@ -91,7 +91,7 @@
     "agents": {
         "orchestrator": {
             "mode": "primary",
-            "model": "9router/cf/@cf/zai-org/glm-4.7-flash",
+            "model": "omniroute/nvidia/nvidia/nemotron-3-ultra-550b-a55b",
             "permissions": [
                 {
                     "action": "external_directory",
@@ -201,6 +201,11 @@
                 {
                     "action": "subagent",
                     "resource": "tester-reviewer",
+                    "effect": "allow"
+                },
+                {
+                    "action": "subagent",
+                    "resource": "visual-reviewer",
                     "effect": "allow"
                 }
             ]
@@ -420,7 +425,7 @@
         },
         "frontend-coder": {
             "mode": "subagent",
-            "model": " 9router/ag/gemini-3.8-flash-high",
+            "model": "9router/ag/gemini-3.8-flash-high",
             "permissions": [
                 {
                     "action": "external_directory",
@@ -770,6 +775,29 @@
                     "action": "shell",
                     "resource": "*",
                     "effect": "ask"
+                }
+            ]
+        },
+        "visual-reviewer": {
+            "description": "Reviews actual Photobooth V2 screenshots, Vietnamese typography, spacing, layout and visual quality. Read-only.",
+            "mode": "subagent",
+            "model": "omniroute/nvidia/nvidia/nemotron-3.5-super-vl-120b-a12b",
+            "system": "You are the LE SOUVENIR Photobooth V2 Visual Reviewer. Inspect actual screenshots at 1280x800 and 1920x1200. Identify Vietnamese font, diacritic, letter-spacing, word-spacing, alignment, clipping, responsive design and CSS defects. Report severity, screenshot evidence, and specific fixes. Preserve all functionality. Never claim to have inspected images you have not seen. Do not modify code.",
+            "permissions": [
+                {
+                    "action": "edit",
+                    "resource": "*",
+                    "effect": "deny"
+                },
+                {
+                    "action": "shell",
+                    "resource": "*",
+                    "effect": "deny"
+                },
+                {
+                    "action": "subagent",
+                    "resource": "*",
+                    "effect": "deny"
                 }
             ]
         }

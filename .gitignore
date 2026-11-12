@@ -31,3 +31,10 @@ tests/journey-evidence/
 tests/**/evidence/
 backend/gradlew
 backend/gradlew.bat
+
+# Kotlin/Gradle JVM native runtime artifacts (downloaded per machine, not source)
+backend/*.dll
+backend/*.alive
+backend/onnxruntime-java*/
+*.bak
+/fix-visual-reviewer-permissions.ps1

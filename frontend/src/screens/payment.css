@@ -109,10 +109,10 @@ body:has(.atelier-customer) .v1-shell.v1-shell-payment {
   gap: 8px;
   padding: 8px 16px;
   border-radius: 999px;
-  border: 1px solid var(--at-glass-border);
-  border-top-color: rgba(255, 255, 255, 0.94);
+  border: 1px solid var(--at-glass-rim);
+  border-top-color: var(--at-glass-rim);
   background: var(--at-glass-strong);
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.9), 0 4px 12px rgba(74, 42, 28, 0.06);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42), 0 4px 12px rgba(74, 42, 28, 0.05);
   color: var(--at-ink);
   font-weight: 700;
   font-size: 15px;
@@ -219,10 +219,10 @@ body:has(.atelier-customer) .v1-shell.v1-shell-payment {
   gap: 8px;
   padding: 7px 16px;
   border-radius: 999px;
-  border: 1px solid var(--at-glass-border);
-  border-top-color: rgba(255, 255, 255, 0.94);
+  border: 1px solid var(--at-glass-rim);
+  border-top-color: var(--at-glass-rim);
   background: var(--at-glass-strong);
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.9), 0 4px 12px rgba(74, 42, 28, 0.06);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42), 0 4px 12px rgba(74, 42, 28, 0.05);
   color: var(--at-primary);
   font-weight: 600;
   font-size: 14px;
@@ -388,9 +388,9 @@ body:has(.atelier-customer) .v1-shell.v1-shell-payment {
   justify-content: center;
   gap: 2px;
   border-radius: 18px;
-  border: 1px solid rgba(90, 74, 64, 0.75);
+  border: 1px solid var(--at-control-border);
   background: var(--at-glass-strong);
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.92), 0 8px 18px rgba(74, 42, 28, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42), 0 8px 18px rgba(74, 42, 28, 0.06);
   color: var(--at-ink);
   font-weight: 700;
   transition: transform var(--at-press), background-color var(--at-press), border-color var(--at-press), box-shadow var(--at-press);
@@ -422,8 +422,8 @@ body:has(.atelier-customer) .v1-shell.v1-shell-payment {
 }
 
 .v1-pin-keypad button.v1-pin-utility {
-  background: linear-gradient(155deg, rgba(245, 240, 232, 0.94) 0%, rgba(235, 224, 214, 0.86) 100%);
-  border: 1px solid rgba(90, 74, 64, 0.75);
+  background: linear-gradient(155deg, rgba(245, 240, 232, 0.84) 0%, rgba(235, 224, 214, 0.72) 100%);
+  border: 1px solid var(--at-control-border);
   color: var(--at-primary);
 }
 
@@ -439,6 +439,25 @@ body:has(.atelier-customer) .v1-shell.v1-shell-payment {
   .v1-staff-cash-btn:not(:disabled),
   .v1-pin-keypad button {
     background: var(--at-paper);
+  }
+  .v1-payment-chip-amber {
+    background: #FAF1EA;
+  }
+  .v1-pin-keypad button.v1-pin-utility {
+    background: var(--at-canvas-muted);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .v1-payment-summary.v1-panel,
+  .v1-payment-qr-panel.v1-panel,
+  .v1-payment-chip,
+  .v1-payment-poll,
+  .v1-staff-cash-btn:not(:disabled),
+  .v1-pin-keypad button {
+    background: var(--at-paper);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
   }
   .v1-payment-chip-amber {
     background: #FAF1EA;

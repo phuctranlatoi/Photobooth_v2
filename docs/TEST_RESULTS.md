@@ -1,4 +1,25 @@
-﻿# Test Results â€” Independent Consolidated Review
+﻿# Test Results — Independent Consolidated Review
+
+## 2026-11-12 CSS softening polish — post-checkpoint 7ca40ac (V2 frontend CSS only)
+
+| Case | Status | Exact evidence / boundary |
+|---|---|---|
+| Checkpoint ordering | **PASS-AUTOMATED (inspection)** | `git log -1 7ca40ac...` → `7ca40ac02d90e020fe721208e3c1b94eef00a037` "checkpoint current workspace before UI softening"; `git diff --stat 7ca40ac..HEAD` → **no commits** after checkpoint; all CSS changes are uncommitted working-tree edits. Checkpoint predates the CSS change. |
+| Scope containment | **PASS-AUTOMATED (inspection)** | `git status --short` shows exactly `frontend/src/atelier/theme-tokens.css`, `atelier-core.css`, `atelier-customer.css`, `atelier-operator.css`, and `frontend/src/screens/payment.css` modified. No backend/Kotlin/Rust/IPC/pricing/revenue file changed. Four untracked backend runtime artifacts (`io_grpc_netty_*.dll`, `kotlin-compiler-*.alive`, `onnxruntime-java*/`, `sqlite-*.dll`) are pre-existing build detritus, not introduced by this change. |
+| No camera/countdown/shutter/QR/business impact | **PASS-AUTOMATED (diff audit)** | `git diff 7ca40ac -- frontend/src/atelier/* frontend/src/screens/payment.css`: no rule touching `.v1-camera`, `.v1-countdown`, `.v1-shutter`, `.v1-payment-qr-slot`, `.v1-payment-columns`, geometry, or business state was modified. Changes are glass gradients/borders/blur/saturate/shadow softening plus new `--at-glass-rim`/`--at-control-border` tokens. |
+| Accessible fallbacks added | **PASS-AUTOMATED (source)** / visual not verified | New `@media (prefers-reduced-transparency: reduce)` blocks (core/customer/operator/payment CSS: solid `--at-paper`/`--op-surface`, `backdrop-filter: none`) and extended `@media (forced-colors: active)` blocks (2px ButtonText borders, Highlight on `aria-pressed="true"`). Source-verified only; not rendered. |
+| Frontend Vitest | **PASS-AUTOMATED** | V2 `frontend`: `npm test` (Vitest 4.0.9) exit **0**; **11/11 files, 85/85 tests** in 6.29 s. Note: this is a **+24-test growth** over the 61/61 recorded in the 2026-11-06 Phase 12 row below; the growth is not scoped to this CSS change and is not documented elsewhere. |
+| Production build | **PASS-AUTOMATED** | V2 `frontend`: `npm run build` (`tsc --noEmit && vite build`) exit **0**; **2,016 modules**, CSS 122.31 kB, JS 423.47 kB, 3.24 s. Module count differs from the 2,010 recorded in Phase 12; drift is attributed to added frontend test files/scaffold since 11-06, not specifically to this CSS change. |
+| Jest scaffold | **PASS-AUTOMATED (bounded)** | Pre-existing `frontend/src/basic-scaffold.jest.tsx` + root `jest.config.js` (both introduced in checkpoint `7ca40ac`, not by this CSS change). No npm `jest` script; `npx jest` with a synthesized config ran **1/1 passed**. Not CSS-scoped; the claimed "1 Jest pass" was not reproducible via a standard command before this review synthesized a config. |
+| CSS-specific automated test | **NOT-RUN / MISSING** | No test asserts the new token values, reduced-transparency, or forced-colors blocks; the CSS polish is validated only by non-interference regression. |
+| Visual outcome at 1280×800 / 1920×1200, OS scaling | **VISUAL NOT VERIFIED** | No independent rendered-viewport, screenshot, or CDP measurement performed in this review. |
+| Physical Canon / DNP / live PayOS-Neon-Cloudinary / Mini-PC / installer | **BLOCKED / NOT-RUN** | No hardware, provider, or packaging run authorized or performed in this review. |
+| V1 isolation | **PASS-AUTOMATED (read-only)** | No V1 shell command, write, build, secret read, or customer-photo operation performed. |
+| Journey runner screenshots (`tests/verify-demo-and-real-journey.mjs`) | **NOT RUN** | Requires live Tauri/WebView + real-mode PayOS payment-link display + spawn/kill of V2 processes and a `sqlite3` DEMO-revenue query. Marked not run per policy: a live Tauri/WebView acceptance (not pure offline/mock), and its payment step touches a real PayOS QR display path, so it was **not** executed in this shell-approved offline review. |
+
+**Release gate: BLOCK.** CSS polish is software-regression green and free of camera/QR/business impact by diff audit, with new reduced-transparency/forced-colors accessible fallbacks; but it lacks a dedicated CSS automated test, its visual outcome is not verified, the test/build baseline is only partially recorded, and all physical/production/license gates remain blocked.
+
+---
 
 ## 2026-11-06 Phase 12 — Complete UI/UX Reconstruction
 

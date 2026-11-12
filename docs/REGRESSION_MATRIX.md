@@ -1,5 +1,29 @@
 # Regression Matrix — Source-Derived Gate Baseline
 
+## CSS softening polish delta — 2026-11-12 (post-checkpoint 7ca40ac)
+
+Case-by-case status for the CSS-only changes after `7ca40ac02d90e020fe721208e3c1b94eef00a037` (the 5 uncommitted
+working-tree CSS files). "AUTOMATED TESTED" = proven by a deterministic local test/build run; "VISUAL NOT
+VERIFIED" = source/diff-confirmed but not independently rendered or physically measured.
+
+| Case | Result | Evidence / boundary |
+|---|---|---|
+| Scope containment (5 CSS files only) | PASS-AUTOMATED (inspection) | `git status --short` shows exactly `theme-tokens.css`, `atelier-core.css`, `atelier-customer.css`, `atelier-operator.css`, `screens/payment.css` modified; checkpoint 7ca40ac is the parent, no commits since. |
+| No camera/countdown/shutter geometry impact | PASS-AUTOMATED (diff) | `git diff` grep: no rule touching `.v1-camera`, `.v1-countdown`, `.v1-shutter` or their containers modified; `:not(.v1-camera)` scoping intact. New `.v1-timer` rule only inside the reduced-transparency media block. |
+| No QR/payment layout-shift impact | PASS-AUTOMATED (diff) | `.v1-payment-qr-slot` / `.v1-payment-columns` clamp geometry unchanged; only chip/keypad/pill glass tones changed in `payment.css`. |
+| No business/IPC/state-machine impact | PASS-AUTOMATED (diff + suite) | No `.tsx`/`.ts` backend, IPC, pricing, or revenue file changed; 85/85 Vitest suite green. |
+| Accessible reduced-transparency fallback | PASS-AUTOMATED (source) / VISUAL NOT VERIFIED | New `@media (prefers-reduced-transparency: reduce)` blocks in core/customer/operator/payment CSS; source-verified, not rendered. |
+| Accessible forced-colors fallback | PASS-AUTOMATED (source) / VISUAL NOT VERIFIED | `@media (forced-colors: active)` in `atelier-core.css` (extended) and `atelier-customer.css`; source-verified, not rendered. |
+| Vitest regression (85/85, 11 files) | PASS-AUTOMATED | `npm test` exit 0, Vitest 4.0.9, 85 passed in 6.29 s (+24 over the 61/61 of Phase 12; growth not CSS-scoped). |
+| Production build (2,016 modules) | PASS-AUTOMATED | `npm run build` exit 0, CSS 122.31 kB / JS 423.47 kB. |
+| CSS-specific automated test | NOT-RUN / MISSING | No assertion on new tokens, reduced-transparency, or forced-colors blocks; validated by non-interference only. |
+| Jest scaffold (1/1) | PASS-AUTOMATED (bounded, pre-existing) | `basic-scaffold.jest.tsx` + `jest.config.js` introduced in checkpoint 7ca40ac, not CSS-scoped; no npm `jest` script. |
+| Softened appearance at 1280×800 / 1920×1200, OS scaling | VISUAL NOT VERIFIED | No independent rendered-viewport, screenshot, or CDP measurement in this review. |
+| Journey runner screenshots | NOT RUN | Live Tauri/WebView + real-mode PayOS QR display + process spawn/kill + sqlite3 query — not a pure offline/mock run, not executed here. |
+| Physical Canon / DNP / live PayOS-Neon-Cloudinary / Mini-PC / installer | BLOCKED / NOT-RUN | No hardware, provider, or packaging run authorized in this review. |
+
+---
+
 ## Verification delta — 2026-11-08
 
 | Case | Result | Evidence / boundary |

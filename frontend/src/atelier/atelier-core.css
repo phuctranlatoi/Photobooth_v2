@@ -282,7 +282,7 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
 .v1-secondary {
   background: var(--at-glass-strong);
   color: var(--at-ink);
-  border: 1px solid rgba(90, 74, 64, 0.75);
+  border: 1px solid var(--at-control-border);
   box-shadow: var(--at-glass-shadow);
   -webkit-backdrop-filter: var(--at-glass-filter);
   backdrop-filter: var(--at-glass-filter);
@@ -308,7 +308,7 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
   min-height: 56px;
   padding: 0;
   border-radius: 50%;
-  border: 1px solid rgba(90, 74, 64, 0.75);
+  border: 1px solid var(--at-control-border);
   background: var(--at-glass-strong);
   box-shadow: var(--at-glass-shadow);
   color: var(--at-ink);
@@ -383,12 +383,12 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
   display: inline-block;
   margin-bottom: 4px;
   padding: 4px 12px;
-  border: 1px solid var(--at-glass-border);
+  border: 1px solid var(--at-glass-rim);
   border-radius: 999px;
   background: var(--at-glass-strong);
-  -webkit-backdrop-filter: blur(14px) saturate(160%);
-  backdrop-filter: blur(14px) saturate(160%);
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.92), 0 4px 14px rgba(142, 68, 45, 0.08);
+  -webkit-backdrop-filter: var(--at-glass-filter-sm);
+  backdrop-filter: var(--at-glass-filter-sm);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42), 0 4px 14px rgba(142, 68, 45, 0.06);
   color: var(--at-primary);
   font-size: 13px;
   font-weight: 700;
@@ -441,7 +441,7 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
   position: relative;
   min-width: 0;
   border: 1px solid var(--at-glass-border);
-  border-top-color: rgba(255, 255, 255, 0.96);
+  border-top-color: var(--at-glass-rim);
   border-radius: 24px;
   background: var(--at-glass);
   box-shadow: var(--at-glass-shadow);
@@ -547,7 +547,7 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
   gap: 16px;
   padding: 12px clamp(18px, 2vw, 28px);
   border: 1px solid var(--at-glass-border);
-  border-top-color: rgba(255, 255, 255, 0.96);
+  border-top-color: var(--at-glass-rim);
   border-radius: 24px;
   background: var(--at-glass-strong);
   box-shadow: var(--at-glass-shadow);
@@ -584,12 +584,12 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
 
 .v1-pills span {
   padding: 8px 16px;
-  border: 1px solid var(--at-glass-border);
+  border: 1px solid var(--at-glass-rim);
   border-radius: 999px;
   background: var(--at-glass-strong);
-  -webkit-backdrop-filter: blur(12px) saturate(150%);
-  backdrop-filter: blur(12px) saturate(150%);
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.9), 0 4px 12px rgba(74, 42, 28, 0.06);
+  -webkit-backdrop-filter: var(--at-glass-filter-sm);
+  backdrop-filter: var(--at-glass-filter-sm);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42), 0 4px 12px rgba(74, 42, 28, 0.05);
   color: var(--at-body);
 }
 
@@ -605,7 +605,7 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
   height: 56px;
   min-width: 56px;
   min-height: 56px;
-  border: 1px solid rgba(90, 74, 64, 0.75);
+  border: 1px solid var(--at-control-border);
   border-radius: 50%;
   background: var(--at-glass-strong);
   box-shadow: var(--at-glass-shadow);
@@ -630,7 +630,7 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
   display: inline-flex;
   align-items: center;
   padding: 8px 18px;
-  border: 1px solid rgba(90, 74, 64, 0.75);
+  border: 1px solid var(--at-control-border);
   border-radius: 999px;
   background: var(--at-glass-strong);
   box-shadow: var(--at-glass-shadow);
@@ -655,9 +655,9 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
   display: grid;
   place-items: center;
   padding: 24px;
-  background: rgba(20, 16, 14, 0.56);
-  -webkit-backdrop-filter: blur(12px) saturate(135%);
-  backdrop-filter: blur(12px) saturate(135%);
+  background: rgba(20, 16, 14, 0.52);
+  -webkit-backdrop-filter: blur(10px) saturate(118%);
+  backdrop-filter: blur(10px) saturate(118%);
 }
 
 .v1-modal {
@@ -669,13 +669,13 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
   overscroll-behavior: contain;
   padding: clamp(24px, 3vw, 36px);
   border: 1px solid var(--at-glass-border);
-  border-top-color: rgba(255, 255, 255, 0.96);
+  border-top-color: var(--at-glass-rim);
   border-radius: 26px;
-  background: linear-gradient(150deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 250, 245, 0.85) 58%, rgba(247, 235, 226, 0.8) 100%);
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.88) 0%, rgba(255, 249, 244, 0.78) 58%, rgba(247, 233, 223, 0.68) 100%);
   -webkit-backdrop-filter: var(--at-glass-filter);
   backdrop-filter: var(--at-glass-filter);
   color: var(--at-ink);
-  box-shadow: inset 0 1.5px 1px rgba(255, 255, 255, 0.94), 0 28px 72px rgba(23, 16, 12, 0.34);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.44), 0 28px 72px rgba(23, 16, 12, 0.3);
 }
 
 .v1-modal p {
@@ -757,11 +757,11 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
   right: 24px;
   width: 64px;
   height: 64px;
-  border: 1px solid var(--at-glass-border);
+  border: 1px solid var(--at-glass-rim);
   border-radius: 50%;
-  background: linear-gradient(150deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 250, 245, 0.85) 58%, rgba(247, 235, 226, 0.8) 100%);
-  -webkit-backdrop-filter: blur(14px) saturate(160%);
-  backdrop-filter: blur(14px) saturate(160%);
+  background: var(--at-glass-strong);
+  -webkit-backdrop-filter: var(--at-glass-filter-sm);
+  backdrop-filter: var(--at-glass-filter-sm);
   box-shadow: var(--at-glass-shadow);
   color: var(--at-ink);
 }
@@ -816,6 +816,30 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
   }
 }
 
+/* Reduced transparency: replace glass with calm, solid paper surfaces. */
+@media (prefers-reduced-transparency: reduce) {
+  .v1-secondary,
+  .v1-back.backButton,
+  .v1-actionbar,
+  .v1-panel,
+  .v1-menu,
+  .v1-timer:not(.urgent),
+  .appHeader__eyebrow,
+  .v1-pills span,
+  .v1-modal,
+  .v1-lightbox button {
+    background: var(--at-paper);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: var(--at-glass-shadow);
+  }
+  .v1-overlay {
+    background: rgba(20, 16, 14, 0.84);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
 /* Ordered responsive breakpoints: >=1100 and >=760 standard, compact otherwise. */
 @media (max-width: 1099px), (max-height: 759px) {
   .v1-shell {
@@ -858,7 +882,9 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
   .v1-actionbar,
   .v1-modal,
   .v1-menu,
-  .v1-timer {
+  .v1-timer,
+  .v1-pills span,
+  .v1-lightbox button {
     border: 2px solid ButtonText;
   }
   :focus-visible {

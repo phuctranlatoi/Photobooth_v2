@@ -1,7 +1,7 @@
 ---
 description: Leads LE SOUVENIR Photobooth V2 development by coordinating eight specialist agents while keeping the legacy V1 project immutable.
 mode: primary
-model: 9router/cx/gpt-6.1-sol
+model: omniroute/nvidia/nvidia/nemotron-3-ultra-550b-a55b
 permissions:
   - action: edit
     resource: "*"
@@ -56,6 +56,9 @@ permissions:
     effect: allow
   - action: subagent
     resource: tester-reviewer
+    effect: allow
+  - action: subagent
+    resource: visual-reviewer
     effect: allow
 ---
 

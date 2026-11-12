@@ -1,5 +1,31 @@
 # Release Readiness Checklist — V2
 
+## CSS softening polish gate — 2026-11-12 (post-checkpoint 7ca40ac)
+
+**Verdict: BLOCK / NOT RELEASE READY** (unchanged from all prior gates; CSS polish does not clear any release gate).
+
+| Gate / item | Status | Evidence |
+|---|---|---|
+| CSS scope containment (5 files, no business/camera/QR impact) | **PASS-AUTOMATED (diff audit)** | `git diff 7ca40ac` shows only glass/border/blur/shadow softening + new `--at-glass-rim`/`--at-control-border` tokens; no `.v1-camera`, `.v1-countdown`, `.v1-shutter`, `.v1-payment-qr-slot`, `.v1-payment-columns` or business/IPC rule modified. |
+| Frontend regression | **PASS-AUTOMATED** | Vitest 85/85 across 11 files; production build 2,016 modules, 0 errors. |
+| Accessible reduced-transparency + forced-colors fallbacks | **PASS-AUTOMATED (source) / VISUAL NOT VERIFIED** | New `@media (prefers-reduced-transparency: reduce)` and extended `@media (forced-colors: active)` blocks across the 5 CSS files; source-verified, not rendered. |
+| CSS-specific automated test | **NOT RUN / MISSING** | No assertion on new tokens, reduced-transparency, or forced-colors blocks; validated by non-interference regression only. |
+| Visual outcome at 1280×800 / 1920×1200 (OS scaling) | **VISUAL NOT VERIFIED** | No independent screenshot/CDP measurement in this review. |
+| Journey runner screenshots | **NOT RUN** | Live Tauri/WebView + real-mode PayOS QR display + process spawn/kill + sqlite3 query — not a pure offline/mock run. |
+| Physical Canon DSLR | **BLOCKED / GATED** | No capture/Live View/reconnect test. |
+| DNP DS-RX1HS 5×15/10×15 print + cut + V1 comparison | **BLOCKED / GATED** | No physical print. |
+| Live PayOS / Neon / Cloudinary settlement & writes | **BLOCKED / GATED** | Simulated display only. |
+| 16:10 kiosk mounting (scaling, repeated taps, overflow) | **BLOCKED / GATED** | Not run. |
+| Commercial redistribution of Canon DLLs / ONNX weights | **BLOCKED — LEGAL SIGNOFF REQUIRED** | Pre-existing. |
+| Untracked native backend artifacts (packaging hygiene) | **BLOCKER** | `backend/io_grpc_netty_*.dll`, `kotlin-compiler-*.alive`, `onnxruntime-java*/`, `sqlite-*.dll` — pre-existing detritus; gitignore/clean before installer packaging. |
+
+**Next actions:** obtain a supervised live-WebView screenshot/CDP pass (no real capture/print/payment) to certify the
+softened appearance; add a small Vitest/CSS assertion for the new tokens + reduced-transparency/forced-colors blocks;
+clean or gitignore the untracked backend native artifacts; resolve B-001/B-002/D-005 legal gates. No commit/push
+performed by this review.
+
+---
+
 ## Independent gate update — 2026-11-08
 
 | Area | Status | Evidence |

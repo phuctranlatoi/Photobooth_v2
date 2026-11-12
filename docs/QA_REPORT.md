@@ -1,5 +1,48 @@
 # QA_REPORT.md
 
+## Independent review — CSS softening polish, post-checkpoint 7ca40ac (2026-11-12)
+
+Scope: the 5 CSS-only files modified after checkpoint `7ca40ac02d90e020fe721208e3c1b94eef00a037` ("checkpoint current
+workspace before UI softening"): `frontend/src/atelier/theme-tokens.css`, `atelier-core.css`, `atelier-customer.css`,
+`atelier-operator.css`, and `frontend/src/screens/payment.css`. No commits exist between the checkpoint and HEAD; all
+CSS changes are uncommitted working-tree edits, so the checkpoint predates the CSS change.
+
+| Case | Status | Exact evidence |
+|---|---|---|
+| Checkpoint predates CSS change | PASS-AUTOMATED (inspection) | `git diff --stat 7ca40ac..HEAD` → no commits after checkpoint; `git status --short` shows exactly the 5 declared CSS files modified. |
+| No camera/countdown/shutter/QR/business impact | PASS-AUTOMATED (diff audit) | `git diff 7ca40ac -- frontend/src/atelier/* frontend/src/screens/payment.css`: all changes are glass gradients/border alphas/blur/saturate/shadow softening plus new `--at-glass-rim` / `--at-control-border` tokens. No `.v1-camera`, `.v1-countdown`, `.v1-shutter`, `.v1-payment-qr-slot`, `.v1-payment-columns`, geometry, or business/IPC rule modified. No `.tsx`/`.ts` backend, pricing, or revenue file changed. |
+| Accessible reduced-transparency fallback | PASS-AUTOMATED (source) / visual not verified | New `@media (prefers-reduced-transparency: reduce)` blocks in core/customer/operator/payment CSS: solid `--at-paper` / `--op-surface` backgrounds, `backdrop-filter: none`. Source-verified only. |
+| Accessible forced-colors fallback | PASS-AUTOMATED (source) / visual not verified | `@media (forced-colors: active)` in `atelier-core.css` (extended with `.v1-pills span`, `.v1-lightbox button`) and `atelier-customer.css` (2px ButtonText borders, Highlight on `aria-pressed="true"`). Source-verified only. |
+| Frontend Vitest regression | PASS-AUTOMATED | V2 `frontend`: `npm test` (Vitest 4.0.9) exit 0; **85/85 tests across 11 files**, 6.29 s. This is +24 tests over the 61/61 recorded in the 2026-11-06 Phase 12 row; the growth is not scoped to this CSS change and is not documented elsewhere. |
+| Production build | PASS-AUTOMATED | V2 `frontend`: `npm run build` (`tsc --noEmit && vite build`) exit 0; **2,016 modules**, CSS 122.31 kB / JS 423.47 kB, 3.24 s. Module count drifted from 2,010 recorded in Phase 12; drift attributed to added frontend test files/scaffold since 11-06, not specifically to this CSS change. |
+| Jest scaffold (claimed "1 Jest pass") | PASS-AUTOMATED (bounded, pre-existing) | `frontend/src/basic-scaffold.jest.tsx` + root `jest.config.js` were both introduced **inside checkpoint `7ca40ac`** (see `git show 7ca40ac --stat`), not by the CSS change. No npm `jest` script exists; `npx jest` only runs via a synthesized config. The "1 Jest pass" covers a pre-existing scaffold, not the CSS change. |
+| CSS-specific automated test | NOT-RUN / MISSING | No test asserts the new token values, reduced-transparency, or forced-colors blocks; the CSS polish is validated only by non-interference regression. |
+| Visual outcome at 1280×800 / 1920×1200 (OS scaling) | NOT VERIFIED | No independent rendered-viewport, screenshot, or CDP measurement produced in this review. |
+| Journey runner screenshots (`tests/verify-demo-and-real-journey.mjs`) | NOT RUN | Requires live Tauri/WebView + real-mode PayOS payment-link display + spawn/kill of V2 processes + a `sqlite3` DEMO-revenue query. Marked not run: not a pure offline/mock run and its payment step touches a real PayOS QR display path. |
+| Physical Canon / DNP / live PayOS-Neon-Cloudinary / Mini-PC / installer | BLOCKED / NOT-RUN | No hardware, provider, or packaging run authorized or performed in this review. |
+| V1 isolation | PASS-AUTOMATED (read-only) | No V1 shell command, write, build, secret read, or customer-photo operation performed. |
+
+### Findings
+
+- **HIGH — test evidence incomplete / claim not fully reproducible.** The "85 Vitest + 1 Jest pass/build pass" is
+  arithmetic-consistent with the current tree, but (a) the +24-test Vitest growth and module-count drift are not
+  recorded against this milestone, (b) the "1 Jest pass" was not reproducible via a standard command (no npm
+  `jest` script; required a synthesized config) and is a pre-existing scaffold, not CSS-scoped, and (c) there is
+  **no CSS-specific automated test** for the softening.
+- **MEDIUM — visual outcome not verified.** A green unit/build suite is not a rendered-viewport, 16:10, touch, or
+  QR-scanner acceptance. The softened glass appearance, contrast, and touch feedback were not independently measured.
+- **LOW — untracked native backend artifacts.** `backend/io_grpc_netty_shaded_netty_tcnative_*.dll`,
+  `backend/kotlin-compiler-*.alive`, `backend/onnxruntime-java*/`, `backend/sqlite-*.dll` are pre-existing build
+  detritus (not introduced by this CSS change) that should be gitignored/cleaned before installer packaging to avoid
+  DLL collisions.
+
+**Verdict: BLOCK for release.** CSS polish is software-regression green and impact-free by diff audit, with new
+reduced-transparency/forced-colors accessible fallbacks; but it lacks a dedicated CSS automated test, its visual
+outcome is not verified, the claimed baseline is partially unrecorded, and all physical/production/license gates remain
+blocked.
+
+---
+
 ## Independent verification — 2026-11-08 14:32–14:35 +07:00
 
 | Case | Status | Exact evidence |

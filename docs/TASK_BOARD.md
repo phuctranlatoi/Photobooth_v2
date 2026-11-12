@@ -1,5 +1,27 @@
 ﻿# TASK_BOARD.md
 
+## CSS Softening Polish — post-checkpoint 7ca40ac REVIEW GATE — SOFTWARE GREEN, RELEASE BLOCKED (2026-11-12)
+
+| Task | Status | Evidence / next gate |
+|---|---|---|
+| Checkpoint predates CSS changes | **VERIFIED** | `git diff --stat 7ca40ac..HEAD` → no commits after `7ca40ac`; the 5 modified CSS files are uncommitted working-tree edits. `git log -1 7ca40ac` = "checkpoint current workspace before UI softening". |
+| Scope containment (5 CSS files only) | **VERIFIED** | `git status --short` shows exactly `theme-tokens.css`, `atelier-core.css`, `atelier-customer.css`, `atelier-operator.css`, `screens/payment.css` modified. No backend/Rust/IPC/pricing/revenue file changed. |
+| No camera/countdown/shutter/QR/business impact | **PASS-AUTOMATED (diff audit)** | `git diff` grep: no `.v1-camera`, `.v1-countdown`, `.v1-shutter`, `.v1-payment-qr-slot`, `.v1-payment-columns` or business-state rule modified. |
+| Accessible reduced-transparency + forced-colors fallbacks | **PASS-AUTOMATED (source) / VISUAL NOT VERIFIED** | New `@media (prefers-reduced-transparency: reduce)` and extended `@media (forced-colors: active)` blocks across all 5 CSS files; source-verified, not rendered. |
+| Frontend Vitest regression | **PASS-AUTOMATED** | `npm test`: exit 0, **85/85 tests across 11 files** (+24 over the 61/61 recorded in Phase 12; growth not scoped to this CSS change). |
+| Production build | **PASS-AUTOMATED** | `npm run build`: exit 0, **2,016 modules**, CSS 122.31 kB / JS 423.47 kB. |
+| CSS-specific automated test | **NOT RUN / MISSING** | No assertion on new tokens, reduced-transparency, or forced-colors blocks; CSS polish validated by non-interference only. |
+| Jest scaffold (1/1) | **PASS-AUTOMATED (bounded)** | Pre-existing `basic-scaffold.jest.tsx` + `jest.config.js` (introduced in checkpoint 7ca40ac); no npm `jest` script — required synthesized config; not CSS-scoped. |
+| Visual outcome (1280×800 / 1920×1200, OS scaling) | **NOT VERIFIED** | No independent screenshot/CDP measurement in this review. |
+| Journey runner screenshots | **NOT RUN** | `tests/verify-demo-and-real-journey.mjs` requires live Tauri/WebView + real-mode PayOS QR display + process spawn/kill + sqlite3 query — not executed in this offline review. |
+| Untracked backend native artifacts | **BLOCKER (packaging hygiene)** | `backend/io_grpc_netty_*.dll`, `kotlin-compiler-*.alive`, `onnxruntime-java*/`, `sqlite-*.dll` — pre-existing detritus; gitignore/clean before installer packaging (see B-001/B-002/D-005). |
+| Strict V1 isolation | **VERIFIED READ-ONLY** | No V1 command, write, build, secret read, or customer-photo operation performed. |
+| Physical hardware / production / legal gates | **BLOCKED / GATED** | Canon DSLR, DNP DS-RX1HS, live PayOS/Neon/Cloudinary, Mini-PC, installer, and redistribution licensing remain unverified. |
+
+**Gate: BLOCK.** CSS polish is software-green and impact-free by diff audit, but lacks a dedicated CSS automated test, has an unverified visual outcome, and inherits all hardware/production/license blockers.
+
+---
+
 ## Complete UI/UX Reconstruction Gate — FRONTEND SOFTWARE GREEN, RELEASE BLOCKED (Phase 12, 2026-11-06)
 
 | Task | Status | Evidence / next gate |

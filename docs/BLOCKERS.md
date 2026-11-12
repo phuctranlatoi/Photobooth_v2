@@ -1,5 +1,12 @@
 # Blockers & Escalations — V2
 
+## 2026-11-12 CSS softening polish — new/blocker notes (post-checkpoint 7ca40ac)
+
+- **P-001 (NEW, packaging hygiene)** Untracked native backend runtime artifacts in the working tree: `backend/io_grpc_netty_shaded_netty_tcnative_*.dll`, `backend/kotlin-compiler-*.alive`, `backend/onnxruntime-java*/`, `backend/sqlite-*.dll` (pre-existing build detritus, not introduced by the CSS change). **Status:** 🔴 **BLOCKS CLEAN INSTALLER PACKAGING** — gitignore or clean before building the installer to prevent DLL collisions. Resolution: owner cleans/gitignores and re-verifies `git status`.
+- **P-002 (NEW, test coverage)** No dedicated automated CSS test for the softening (new tokens, `prefers-reduced-transparency`, `forced-colors` blocks). Regression non-interference is green, but the CSS change is not asserted on its own. **Status:** 🟡 **GAP** — add a Vitest/CSS assertion for the new tokens + fallback media blocks before release.
+- **P-003 (NEW, traceability)** Vitest grew 61→85 and build modules 2,010→2,016 since Phase 12 without a recorded baseline attribution; Jest scaffold (`basic-scaffold.jest.tsx`/`jest.config.js`, introduced in checkpoint 7ca40ac) has no npm `jest` script. **Status:** 🟡 **GAP** — record the test/build baseline and wire a `jest` npm script (or document the scaffold as intentionally unscheduled).
+- Carried forward from prior gates: D-001 (Canon DSLR), D-002 (DNP RX1HS), D-003 (live PayOS/Neon/Cloudinary), D-004 (16:10 kiosk mounting), D-005 (commercial redistribution of Canon DLLs/ONNX weights) remain **GATED / BLOCKED**; B-001/B-002/B-003 licensing manifests remain **UNKNOWN / BLOCKED**. No new license issue was introduced by this CSS-only change.
+
 ## Deployment blockers — latest verified state (2026-11-01)
 
 All software integration, state-machine behavior, 600-DPI imaging compositor, ZXing QR decode, local SQLite persistence/revenue gating, dual-mode IPC, PayOS adapter parity, album URL composition wiring, and current regression suites are resolved and clean. Current evidence is backend **60/60 across 17 suites**, frontend **31/31 across 7 files**, and a zero-error production build of **2,014 modules**.
