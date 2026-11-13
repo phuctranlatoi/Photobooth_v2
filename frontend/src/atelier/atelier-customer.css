@@ -1,5 +1,81 @@
 /* Consolidated customer stage geometry, carousel scoping, face-safe capture, and breakpoints. */
 
+/* Motion polish: screen/panel entrance, selection transitions, modal fade */
+@keyframes lg-screen-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes lg-modal-backdrop-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes lg-modal-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes lg-badge-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Screen/panel entrance: opacity ≤240ms, no transform on screen roots */
+.v1-shell > .v1-start.atelier-welcome,
+.v1-shell > .v1-selection,
+.v1-shell > .v1-split.v1-frame-workspace,
+.v1-shell > .v1-confirm-screen,
+.v1-shell > .v1-payment-screen,
+.v1-shell > .v1-prepare-screen,
+.v1-shell > .v1-printing-screen,
+.v1-shell > .v1-delivery-screen,
+.v1-shell > .v1-split.v1-quantity-workspace {
+  animation: lg-screen-enter var(--lg-duration-standard) var(--lg-ease-out) forwards;
+}
+
+/* Panel/card entrance within screens: slightly faster */
+.v1-shell .v1-panel,
+.v1-shell .v1-quantity-picker,
+.v1-shell .v1-frame-preview-panel,
+.v1-shell .v1-selection-print,
+.v1-shell .v1-payment-summary,
+.v1-shell .v1-payment-qr-panel,
+.v1-shell .v1-summary,
+.v1-shell .v1-print-stage,
+.v1-shell .v1-center.v1-delivery,
+.v1-shell .v1-quantity-pricing {
+  animation: lg-screen-enter var(--lg-duration-fast) var(--lg-ease-out) forwards;
+}
+
+/* Selection transitions: photo tile & frame grid border/background/shadow 180ms */
+.v1-shell .v1-photo-tile > button,
+.v1-shell .v1-frame-grid button {
+  transition:
+    transform var(--at-press),
+    border-color var(--lg-duration-release) var(--lg-ease-out),
+    background-color var(--lg-duration-release) var(--lg-ease-out),
+    box-shadow var(--lg-duration-release) var(--lg-ease-out);
+}
+
+/* Badge/order number fade on selection */
+.v1-shell .v1-photo-order,
+.v1-shell .v1-frame-check {
+  animation: lg-badge-fade var(--lg-duration-release) var(--lg-ease-out) forwards;
+}
+
+/* Modal/overlay backdrop fade 180ms */
+.v1-overlay,
+.v1-shell .v1-lightbox {
+  animation: lg-modal-backdrop-enter var(--lg-duration-release) var(--lg-ease-out) forwards;
+}
+
+/* Modal content entrance 240ms */
+.v1-overlay > .v1-modal,
+.v1-shell .v1-lightbox > img {
+  animation: lg-modal-enter var(--lg-duration-standard) var(--lg-ease-out) forwards;
+}
+
 /* 1. Welcome (StartScreen) */
 .v1-shell .v1-start.atelier-welcome {
   position: relative;
@@ -1553,7 +1629,11 @@
   touch-action: pan-y;
   user-select: none;
   -webkit-user-select: none;
-  transition: transform var(--at-press), border-color var(--at-press), box-shadow var(--at-press);
+  transition:
+    transform var(--at-press),
+    border-color var(--lg-duration-release) var(--lg-ease-out),
+    background-color var(--lg-duration-release) var(--lg-ease-out),
+    box-shadow var(--lg-duration-release) var(--lg-ease-out);
 }
 
 .v1-shell .v1-photo-tile > button[aria-pressed="true"] {
@@ -1679,7 +1759,11 @@
   -webkit-backdrop-filter: var(--at-glass-filter);
   backdrop-filter: var(--at-glass-filter);
   color: var(--at-ink);
-  transition: transform var(--at-press), border-color var(--at-press), background-color var(--at-press), box-shadow var(--at-press);
+  transition:
+    transform var(--at-press),
+    border-color var(--lg-duration-release) var(--lg-ease-out),
+    background-color var(--lg-duration-release) var(--lg-ease-out),
+    box-shadow var(--lg-duration-release) var(--lg-ease-out);
 }
 
 @media (hover: hover) {
@@ -2516,5 +2600,42 @@
   .v1-shell .atelier-prism-glint {
     animation: none;
     display: none;
+  }
+  /* New motion polish: instant resolution preserving final visible state */
+  /* Elements with fade-in animations: force opacity:1, disable animation/transition */
+  .v1-shell > .v1-start.atelier-welcome,
+  .v1-shell > .v1-selection,
+  .v1-shell > .v1-split.v1-frame-workspace,
+  .v1-shell > .v1-confirm-screen,
+  .v1-shell > .v1-payment-screen,
+  .v1-shell > .v1-prepare-screen,
+  .v1-shell > .v1-printing-screen,
+  .v1-shell > .v1-delivery-screen,
+  .v1-shell > .v1-split.v1-quantity-workspace,
+  .v1-shell .v1-panel,
+  .v1-shell .v1-quantity-picker,
+  .v1-shell .v1-frame-preview-panel,
+  .v1-shell .v1-selection-print,
+  .v1-shell .v1-payment-summary,
+  .v1-shell .v1-payment-qr-panel,
+  .v1-shell .v1-summary,
+  .v1-shell .v1-print-stage,
+  .v1-shell .v1-center.v1-delivery,
+  .v1-shell .v1-quantity-pricing,
+  .v1-shell .v1-photo-order,
+  .v1-shell .v1-frame-check,
+  .v1-overlay,
+  .v1-shell .v1-lightbox,
+  .v1-overlay > .v1-modal,
+  .v1-shell .v1-lightbox > img {
+    animation: none;
+    opacity: 1;
+    transition: none;
+  }
+  /* Selection buttons: disable animation/transition only, preserve semantic opacity (.v1-photo-dimmed) */
+  .v1-shell .v1-photo-tile > button,
+  .v1-shell .v1-frame-grid button {
+    animation: none;
+    transition: none;
   }
 }

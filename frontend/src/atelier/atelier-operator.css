@@ -1,5 +1,36 @@
 /* Operator darkroom workspace, tabs, modals, and V1Settings styles. */
 
+/* Motion polish: operator tab entrance, modal fade */
+@keyframes lg-op-tab-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes lg-op-modal-backdrop-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes lg-op-modal-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Operator tab panel entrance: opacity 140ms when mount supports */
+.operator-workspace > .op-scroll {
+  animation: lg-op-tab-enter var(--lg-duration-fast) var(--lg-ease-out) forwards;
+}
+
+/* Modal/overlay backdrop fade 180ms */
+.op-overlay {
+  animation: lg-op-modal-backdrop-enter var(--lg-duration-release) var(--lg-ease-out) forwards;
+}
+
+/* Modal content entrance 240ms */
+.op-dialog {
+  animation: lg-op-modal-enter var(--lg-duration-standard) var(--lg-ease-out) forwards;
+}
+
 .operator-workspace {
   --op-bg: var(--at-darkroom);
   --op-surface: var(--at-darkroom-raised);
@@ -1376,5 +1407,12 @@
   }
   .operator-workspace > nav button {
     transition: none;
+  }
+  /* New motion polish: instant resolution preserving final visible state */
+  .operator-workspace > .op-scroll,
+  .op-overlay,
+  .op-dialog {
+    animation: none;
+    opacity: 1;
   }
 }
