@@ -62,17 +62,17 @@ export function StartScreen({
         <motion.span
           className="atelier-aurora-pool atelier-aurora-pool--1"
           animate={reduce ? {x: 0, y: 0, scale: 1} : {x: [0, 22, -10, 0], y: [0, -16, 12, 0], scale: [1, 1.06, 0.97, 1]}}
-          transition={reduce ? {duration: 0} : {duration: 14, repeat: Infinity, ease: 'easeInOut'}}
+          transition={reduce ? {duration: 0} : {duration: 20, repeat: Infinity, ease: 'easeInOut'}}
         />
         <motion.span
           className="atelier-aurora-pool atelier-aurora-pool--2"
           animate={reduce ? {x: 0, y: 0, scale: 1} : {x: [0, -24, 14, 0], y: [0, 18, -14, 0], scale: [1, 0.96, 1.07, 1]}}
-          transition={reduce ? {duration: 0} : {duration: 16, repeat: Infinity, ease: 'easeInOut', delay: 0.8}}
+          transition={reduce ? {duration: 0} : {duration: 22, repeat: Infinity, ease: 'easeInOut', delay: 0.8}}
         />
         <motion.span
           className="atelier-aurora-pool atelier-aurora-pool--3"
           animate={reduce ? {x: 0, y: 0, scale: 1} : {x: [0, 16, -18, 0], y: [0, 14, -10, 0], scale: [1, 1.05, 0.98, 1]}}
-          transition={reduce ? {duration: 0} : {duration: 18, repeat: Infinity, ease: 'easeInOut', delay: 1.6}}
+          transition={reduce ? {duration: 0} : {duration: 24, repeat: Infinity, ease: 'easeInOut', delay: 1.6}}
         />
       </div>
 
@@ -163,39 +163,39 @@ export function StartScreen({
             <motion.span
               className="atelier-glass-orb atelier-glass-orb--1"
               aria-hidden="true"
-              animate={reduce ? {y: 0, x: 0, scale: 1} : {y: [0, -8, 0], x: [0, 3, 0], scale: [1, 1.04, 1]}}
-              transition={reduce ? {duration: 0} : {duration: 5.8, repeat: Infinity, ease: 'easeInOut', delay: 0.2}}
+              animate={reduce ? {y: 0, x: 0, scale: 1} : {y: [0, -6, 0], x: [0, 3, 0], scale: [1, 1.03, 1]}}
+              transition={reduce ? {duration: 0} : {duration: 9.5, repeat: Infinity, ease: 'easeInOut', delay: 0.2}}
             />
             <motion.span
               className="atelier-glass-orb atelier-glass-orb--2"
               aria-hidden="true"
-              animate={reduce ? {y: 0, x: 0, scale: 1} : {y: [0, 7, 0], x: [0, -3, 0], scale: [1, 0.97, 1]}}
-              transition={reduce ? {duration: 0} : {duration: 6.6, repeat: Infinity, ease: 'easeInOut', delay: 1.1}}
+              animate={reduce ? {y: 0, x: 0, scale: 1} : {y: [0, 5, 0], x: [0, -3, 0], scale: [1, 0.975, 1]}}
+              transition={reduce ? {duration: 0} : {duration: 10.2, repeat: Infinity, ease: 'easeInOut', delay: 1.1}}
             />
             <motion.span
               className="atelier-glass-orb atelier-glass-orb--3"
               aria-hidden="true"
-              animate={reduce ? {y: 0, x: 0, scale: 1} : {y: [0, -6, 0], x: [0, 4, 0], scale: [1, 1.03, 1]}}
-              transition={reduce ? {duration: 0} : {duration: 7.2, repeat: Infinity, ease: 'easeInOut', delay: 2.0}}
+              animate={reduce ? {y: 0, x: 0, scale: 1} : {y: [0, -5, 0], x: [0, 4, 0], scale: [1, 1.025, 1]}}
+              transition={reduce ? {duration: 0} : {duration: 11, repeat: Infinity, ease: 'easeInOut', delay: 2.0}}
             />
 
             <motion.span
               className="atelier-prism-glint atelier-prism-glint--1"
               aria-hidden="true"
-              animate={reduce ? {opacity: 0, scale: 1} : {opacity: [0.35, 0.95, 0.35], scale: [0.85, 1.15, 0.85]}}
-              transition={reduce ? {duration: 0} : {duration: 3.6, repeat: Infinity, ease: 'easeInOut', delay: 0.4}}
+              animate={reduce ? {opacity: 0, scale: 1} : {opacity: [0.22, 0.72, 0.22], scale: [0.88, 1.08, 0.88]}}
+              transition={reduce ? {duration: 0} : {duration: 5.5, repeat: Infinity, ease: 'easeInOut', delay: 0.4}}
             />
             <motion.span
               className="atelier-prism-glint atelier-prism-glint--2"
               aria-hidden="true"
-              animate={reduce ? {opacity: 0, scale: 1} : {opacity: [0.28, 0.9, 0.28], scale: [0.82, 1.12, 0.82]}}
-              transition={reduce ? {duration: 0} : {duration: 4.2, repeat: Infinity, ease: 'easeInOut', delay: 1.5}}
+              animate={reduce ? {opacity: 0, scale: 1} : {opacity: [0.18, 0.65, 0.18], scale: [0.86, 1.06, 0.86]}}
+              transition={reduce ? {duration: 0} : {duration: 6.2, repeat: Infinity, ease: 'easeInOut', delay: 1.5}}
             />
             <motion.span
               className="atelier-prism-glint atelier-prism-glint--3"
               aria-hidden="true"
-              animate={reduce ? {opacity: 0, scale: 1} : {opacity: [0.32, 0.92, 0.32], scale: [0.86, 1.14, 0.86]}}
-              transition={reduce ? {duration: 0} : {duration: 3.9, repeat: Infinity, ease: 'easeInOut', delay: 2.3}}
+              animate={reduce ? {opacity: 0, scale: 1} : {opacity: [0.2, 0.68, 0.2], scale: [0.87, 1.07, 0.87]}}
+              transition={reduce ? {duration: 0} : {duration: 5.8, repeat: Infinity, ease: 'easeInOut', delay: 2.3}}
             />
 
             <span className="atelier-gallery-ticket" aria-hidden="true">
@@ -211,8 +211,8 @@ export function StartScreen({
                     transition={reduce ? {duration: 0} : {duration: 0.38, delay: 0.07, ease: EDITORIAL_EASE}}
                   >
                     <motion.div
-                      animate={reduce ? {y: 0, rotate: 0} : {y: [0, -5, 0], rotate: [0, -0.6, 0]}}
-                      transition={reduce ? {duration: 0} : {duration: 5.2, repeat: Infinity, ease: 'easeInOut', delay: 0.2}}
+                      animate={reduce ? {y: 0, rotate: 0} : {y: [0, -5, 0], rotate: [0, -0.4, 0]}}
+                      transition={reduce ? {duration: 0} : {duration: 7.2, repeat: Infinity, ease: 'easeInOut', delay: 0.2}}
                     >
                       <div className="atelier-snapshot-card atelier-snapshot-card--back">
                         <div className="atelier-snapshot-photo">
@@ -239,8 +239,8 @@ export function StartScreen({
                     transition={reduce ? {duration: 0} : {duration: 0.38, delay: 0.14, ease: EDITORIAL_EASE}}
                   >
                     <motion.div
-                      animate={reduce ? {y: 0, rotate: 0} : {y: [0, -5, 0], rotate: [0, 0.5, 0]}}
-                      transition={reduce ? {duration: 0} : {duration: 4.6, repeat: Infinity, ease: 'easeInOut', delay: 0.8}}
+                      animate={reduce ? {y: 0, rotate: 0} : {y: [0, -4, 0], rotate: [0, 0.35, 0]}}
+                      transition={reduce ? {duration: 0} : {duration: 6.8, repeat: Infinity, ease: 'easeInOut', delay: 0.8}}
                     >
                       <figure
                         className="atelier-print atelier-print--portrait"
@@ -265,8 +265,8 @@ export function StartScreen({
                       transition={reduce ? {duration: 0} : {duration: 0.38, delay: 0.21, ease: EDITORIAL_EASE}}
                     >
                       <motion.div
-                        animate={reduce ? {y: 0, rotate: 0} : {y: [0, 5, 0], rotate: [0, -0.55, 0]}}
-                        transition={reduce ? {duration: 0} : {duration: 5.4, repeat: Infinity, ease: 'easeInOut', delay: 0.4}}
+                        animate={reduce ? {y: 0, rotate: 0} : {y: [0, 5, 0], rotate: [0, -0.45, 0]}}
+                        transition={reduce ? {duration: 0} : {duration: 7.5, repeat: Infinity, ease: 'easeInOut', delay: 0.4}}
                       >
                         <figure
                           className="atelier-print atelier-print--strip"
@@ -286,8 +286,8 @@ export function StartScreen({
                     transition={reduce ? {duration: 0} : {duration: 0.38, delay: 0.28, ease: EDITORIAL_EASE}}
                   >
                     <motion.div
-                      animate={reduce ? {y: 0, rotate: 0} : {y: [0, -5, 0], rotate: [0, 0.65, 0]}}
-                      transition={reduce ? {duration: 0} : {duration: 4.8, repeat: Infinity, ease: 'easeInOut', delay: 1.1}}
+                      animate={reduce ? {y: 0, rotate: 0} : {y: [0, -6, 0], rotate: [0, 0.45, 0]}}
+                      transition={reduce ? {duration: 0} : {duration: 7.9, repeat: Infinity, ease: 'easeInOut', delay: 1.1}}
                     >
                       <div className="atelier-snapshot-card atelier-snapshot-card--front">
                         <div className="atelier-snapshot-photo">

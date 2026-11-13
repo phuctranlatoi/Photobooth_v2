@@ -299,7 +299,7 @@
   filter: blur(20px);
   pointer-events: none;
   z-index: 0;
-  animation: at-cta-glow 4.8s ease-in-out infinite;
+  animation: at-cta-glow 8s ease-in-out infinite;
 }
 
 /* Settled glint sweep on CTA frame (finite, not looping) */
@@ -324,12 +324,12 @@
 @keyframes at-cta-glow {
   0%,
   100% {
-    opacity: 0.78;
-    transform: scale(0.985);
+    opacity: 0.62;
+    transform: scale(0.99);
   }
   50% {
-    opacity: 1;
-    transform: scale(1.02);
+    opacity: 0.88;
+    transform: scale(1.012);
   }
 }
 
@@ -343,14 +343,14 @@
   background:
     linear-gradient(148deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 250, 245, 0.28) 48%, rgba(244, 228, 217, 0.20) 100%),
     var(--lg-layer-card-depth);
-  -webkit-backdrop-filter: var(--at-glass-filter);
-  backdrop-filter: var(--at-glass-filter);
+  -webkit-backdrop-filter: blur(18px) saturate(135%);
+  backdrop-filter: blur(18px) saturate(135%);
   border: 1px solid var(--at-glass-rim);
   box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.48),
+    inset 0 -1px 0 rgba(142, 68, 45, 0.05),
     0 18px 40px rgba(142, 68, 45, 0.08),
-    0 6px 16px rgba(142, 68, 45, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.42),
-    inset 0 -1px 0 rgba(142, 68, 45, 0.05);
+    0 6px 16px rgba(142, 68, 45, 0.06);
   transition: transform var(--at-press), box-shadow var(--at-press);
 }
 
@@ -383,12 +383,12 @@
 
 .v1-shell .atelier-cta-frame.is-disabled .atelier-cta-glass {
   background:
-    linear-gradient(148deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 250, 245, 0.26) 50%, rgba(244, 228, 217, 0.18) 100%),
+    linear-gradient(148deg, rgba(255, 255, 255, 0.36) 0%, rgba(255, 250, 245, 0.22) 50%, rgba(244, 228, 217, 0.16) 100%),
     var(--lg-layer-card-depth);
-  border-color: rgba(216, 199, 181, 0.65);
+  border-color: rgba(216, 199, 181, 0.55);
   box-shadow:
-    0 6px 16px rgba(74, 42, 28, 0.04),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 4px 12px rgba(74, 42, 28, 0.035),
+    inset 0 1px 0 rgba(255, 255, 255, 0.26),
     inset 0 -1px 0 rgba(142, 68, 45, 0.03);
 }
 
@@ -397,38 +397,78 @@
   z-index: 1;
   min-width: clamp(260px, 28vw, 380px);
   font-size: clamp(17px, 1.25vw, 20px);
-  background: var(--lg-layer-primary);
-  border: 1px solid rgba(255, 255, 255, 0.40);
-  box-shadow: var(--lg-shadow-cta);
+  /* Translucent warm-brown liquid fill: layered rgba, no solid fallback needed
+     because the outer .atelier-cta-glass already provides a glass base. */
+  background:
+    linear-gradient(160deg,
+      rgba(201, 104, 61, 0.72) 0%,
+      rgba(160, 82, 45, 0.68) 50%,
+      rgba(123, 62, 31, 0.74) 100%),
+    rgba(255, 252, 247, 0.08);
+  -webkit-backdrop-filter: blur(18px) saturate(135%);
+  backdrop-filter: blur(18px) saturate(135%);
+  color: var(--at-white);
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -1px 0 rgba(54, 20, 10, 0.18),
+    0 12px 28px rgba(112, 46, 28, 0.22),
+    0 26px 60px rgba(142, 68, 45, 0.22);
 }
 
+/* Specular optical rim on the inner CTA pill — static, finite settle */
 .v1-shell .atelier-cta-frame .v1-primary::before {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
   background: var(--lg-layer-specular);
-  opacity: 0.36;
+  opacity: 0.28;
   pointer-events: none;
   z-index: 0;
   animation: glint-settle var(--lg-duration-settle) var(--lg-ease-out) forwards;
 }
 
 .v1-shell .atelier-cta-frame .v1-primary:not(:disabled) {
-  background: var(--lg-layer-primary);
+  background:
+    linear-gradient(160deg,
+      rgba(201, 104, 61, 0.72) 0%,
+      rgba(160, 82, 45, 0.68) 50%,
+      rgba(123, 62, 31, 0.74) 100%),
+    rgba(255, 252, 247, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.40);
-  box-shadow: var(--lg-shadow-cta);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.32),
+    inset 0 -1px 0 rgba(54, 20, 10, 0.20),
+    0 12px 28px rgba(112, 46, 28, 0.24),
+    0 26px 60px rgba(142, 68, 45, 0.26);
+}
+
+/* Disabled inner CTA: distinct muted solid, no luminous gradient or blur */
+.v1-shell .atelier-cta-frame .v1-primary:disabled {
+  background: rgba(228, 219, 210, 0.88);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  border-color: rgba(184, 168, 157, 0.72);
+  color: rgba(78, 68, 62, 0.62);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 4px 12px rgba(74, 42, 28, 0.04);
+}
+
+.v1-shell .atelier-cta-frame .v1-primary:disabled::before {
+  opacity: 0.12;
+  animation: none;
 }
 
 @media (hover: hover) {
   .v1-shell .atelier-cta-frame .v1-primary:hover:not(:disabled) {
-    background: linear-gradient(162deg, rgba(154, 76, 50, 0.98) 0%, rgba(113, 55, 33, 0.96) 56%, rgba(92, 36, 21, 0.99) 100%);
     border-color: rgba(255, 255, 255, 0.46);
   }
 }
 
 .v1-shell .atelier-cta-frame .v1-primary:active:not(:disabled) {
-  transform: scale(0.975);
+  transform: scale(0.985);
 }
 
 .v1-shell .atelier-cta-frame .v1-primary:focus-visible {
@@ -455,6 +495,17 @@
   height: 100%;
   min-width: 0;
   min-height: 0;
+}
+
+/* When the error banner is visible in welcome state, the banner occupies top space
+   and the gallery must shrink to avoid clipping at 1280×800 (height: 70dvh ≈ 560px). */
+.v1-shell:has(> .v1-error) .atelier-welcome__gallery {
+  max-height: min(58dvh, 540px);
+}
+
+.v1-shell:has(> .v1-error) .v1-start.atelier-welcome {
+  align-items: start;
+  padding-top: clamp(4px, 0.8dvh, 10px);
 }
 
 .v1-shell .atelier-welcome__gallery {
@@ -2984,6 +3035,30 @@
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
   }
+  .v1-shell .atelier-cta-glass {
+    background:
+      linear-gradient(148deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 250, 245, 0.60) 50%, rgba(244, 228, 217, 0.52) 100%),
+      var(--at-paper);
+  }
+  .v1-shell .atelier-cta-frame.is-disabled .atelier-cta-glass {
+    background:
+      linear-gradient(148deg, rgba(240, 235, 228, 0.88) 0%, rgba(232, 224, 216, 0.78) 100%);
+  }
+  /* Reduced-transparency: inner CTA becomes solid warm-brown, no backdrop blur */
+  .v1-shell .atelier-cta-frame .v1-primary:not(:disabled) {
+    background: linear-gradient(160deg, #C9683D 0%, #A0522D 50%, #7B3E1F 100%);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: var(--lg-shadow-cta);
+  }
+  .v1-shell .atelier-cta-frame .v1-primary:disabled {
+    background: #E4DBD2;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border-color: #B8A89D;
+    color: #4E443E;
+    box-shadow: none;
+  }
   .v1-shell .v1-quantity-total,
   .v1-shell .v1-summary-total,
   .v1-shell .v1-print-stage__number,
@@ -3044,6 +3119,30 @@
   .v1-shell .v1-frame-grid button[aria-pressed="true"] {
     border-color: Highlight;
   }
+  .v1-shell .atelier-cta-glow {
+    display: none;
+  }
+  .v1-shell .atelier-cta-frame.is-disabled .atelier-cta-glass {
+    background: transparent;
+    border-color: GrayText;
+  }
+  /* Forced colors: inner CTA preserves button role */
+  .v1-shell .atelier-cta-frame .v1-primary:not(:disabled) {
+    background: Highlight;
+    color: HighlightText;
+    border-color: Highlight;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .v1-shell .atelier-cta-frame .v1-primary:disabled {
+    background: ButtonFace;
+    color: GrayText;
+    border-color: GrayText;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -3096,7 +3195,7 @@
     animation: none;
   }
   .v1-shell .atelier-cta-glow {
-    opacity: 0.9;
+    opacity: 0.72;
   }
   .v1-shell .atelier-gallery-arch::after,
   .v1-shell .atelier-prism-glint {
