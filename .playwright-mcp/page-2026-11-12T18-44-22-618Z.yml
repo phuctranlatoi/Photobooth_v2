@@ -1,0 +1,50 @@
+- main [ref=e3]:
+  - alert [ref=e4]:
+    - paragraph [ref=e5]: "Error: Không kết nối được với backend simulator. Mở ứng dụng desktop để tiếp tục."
+    - button "Kiểm tra lại trạng thái · Không gửi lại lệnh" [active] [ref=e6] [cursor=pointer]
+  - generic [ref=e8]:
+    - generic [ref=e9]:
+      - button "LE SOUVENIR" [ref=e12] [cursor=pointer]
+      - generic [ref=e13]:
+        - heading "Lưu giữ khoảnh khắc thanh xuân Yours forever." [level=1] [ref=e14]:
+          - text: Lưu giữ khoảnh khắcthanh xuân
+          - generic [ref=e15]: Yours forever.
+        - paragraph [ref=e16]: Chụp ảnh lấy ngay · Đậm chất nghệ thuật Hàn Quốc
+      - generic [ref=e17]:
+        - button "CHẠM ĐỂ BẮT ĐẦU →" [disabled] [ref=e20]
+        - paragraph [ref=e22]: Chạm để chọn bố cục yêu thích
+    - complementary "Mẫu bản in LE SOUVENIR" [ref=e23]:
+      - generic [ref=e24]:
+        - generic [ref=e25]:
+          - generic [aria-hidden]: ATELIER 400 · 35MM
+          - generic [aria-hidden]:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic: ATELIER
+                    - generic: "01"
+          - generic:
+            - generic:
+              - generic:
+                - figure:
+                  - img "Minh họa Khung ảnh 10x15 cm":
+                    - generic: LE SOUVENIR · ATELIER
+                    - generic: SEOUL × SAIGON · 2026
+          - generic:
+            - generic:
+              - generic:
+                - figure:
+                  - img "Minh họa Dải ảnh 5x15 cm":
+                    - generic: LE SOUVENIR · ATELIER
+                    - generic: SEOUL × SAIGON · 2026
+          - generic [aria-hidden]:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic: MOMENT
+                    - generic: "02"
+        - paragraph [ref=e26]:
+          - text: LE SOUVENIR · PHOTO ATELIER
+          - generic [ref=e27]: · MẪU MINH HỌA

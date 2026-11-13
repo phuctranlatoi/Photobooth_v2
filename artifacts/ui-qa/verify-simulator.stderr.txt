@@ -1,0 +1,32 @@
+file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/frontend/verify-simulator.mjs:14
+ const wait=async expression=>{for(let i=0;i<160;i++){if(await run(expression))return;await delay(250);}throw Error('Timeout '+expression+'\n'+await run('document.body.innerText'));};
+                                                                                                              ^
+
+Error: Timeout document.querySelector('[data-testid="welcome-start"]')?.disabled===false
+LE SOUVENIR
+Lưu giữ khoảnh khắc
+thanh xuân
+Yours forever.
+
+Chụp ảnh lấy ngay · Đậm chất nghệ thuật Hàn Quốc
+
+CHẠM ĐỂ BẮT ĐẦU →
+
+Chạm để chọn bố cục yêu thích
+
+ATELIER 400 · 35MM
+ATELIER
+01
+LE SOUVENIR · ATELIER
+SEOUL × SAIGON · 2026
+LE SOUVENIR · ATELIER
+SEOUL × SAIGON · 2026
+MOMENT
+02
+
+LE SOUVENIR · PHOTO ATELIER
+· MẪU MINH HỌA
+    at wait (file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/frontend/verify-simulator.mjs:14:111)
+    at async file:///E:/HK1_2026_2027/PhotoboothDesktop_v2/frontend/verify-simulator.mjs:34:3
+
+Node.js v24.22.3

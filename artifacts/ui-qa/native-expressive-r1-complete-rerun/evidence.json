@@ -1,0 +1,154 @@
+{
+  "status": "BLOCKED_OR_PARTIAL",
+  "root": "E:\\HK1_2026_2027\\PhotoboothDesktop_v2",
+  "out": "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-expressive-r1-complete-rerun",
+  "actions": [
+    "start",
+    "confirm default layout",
+    "increase quantity",
+    "continue quantity",
+    "pin 2",
+    "pin 3",
+    "pin 4",
+    "simulator mock cash approval",
+    "start synthetic capture",
+    "select photo 2",
+    "continue selected photos"
+  ],
+  "screenshots": [
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-expressive-r1-complete-rerun\\01-welcome.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-expressive-r1-complete-rerun\\02-layout.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-expressive-r1-complete-rerun\\03-quantity-default.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-expressive-r1-complete-rerun\\04-quantity-increased-price.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-expressive-r1-complete-rerun\\05-payment.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-expressive-r1-complete-rerun\\06-payment-staff-pin.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-expressive-r1-complete-rerun\\07-pin-filled-immediate.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-expressive-r1-complete-rerun\\08-pin-reduced-motion.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-expressive-r1-complete-rerun\\09-live-view.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-expressive-r1-complete-rerun\\10-countdown.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-expressive-r1-complete-rerun\\11-photo-selection-empty.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-expressive-r1-complete-rerun\\12-photo-selected-immediate.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-expressive-r1-complete-rerun\\13-photo-reduced-motion.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-expressive-r1-complete-rerun\\14-photo-selection-complete.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-expressive-r1-complete-rerun\\15-frame-list.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-expressive-r1-complete-rerun\\16-frame-selected-immediate.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-expressive-r1-complete-rerun\\17-frame-reduced-motion.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-expressive-r1-complete-rerun\\18-frame-selected.png"
+  ],
+  "errors": [
+    "Error: Timeout final dry-run confirmation; text=Bước 5\nChọn khung trang trí\n\nChọn khung phù hợp với khoảnh khắc\n\nBản in xem trước\nLE SOUVENIR fallback frame\nQuay lại\nXem bản in →\n⋮"
+  ],
+  "backendMode": "Picked up JAVA_TOOL_OPTIONS: -Djava.io.tmpdir=\"E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\src-tauri/.tmp\" -Duser.home=\"E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\src-tauri/.tmp\"\r\nV2 backend ready: mode=--simulator",
+  "pinNormal": {
+    "dotCount": 4,
+    "filledCount": 1,
+    "filled": [
+      {
+        "name": "lg-pin-dot-pop",
+        "duration": "0.18s",
+        "delay": "0s",
+        "opacity": "0.901824",
+        "count": 2
+      }
+    ],
+    "keypad": {
+      "name": "lg-modal-content-enter",
+      "duration": "0.24s",
+      "delay": "0s",
+      "opacity": "1",
+      "count": 1
+    }
+  },
+  "pinReduced": {
+    "media": true,
+    "dot": {
+      "animation": "none",
+      "opacity": "1",
+      "transition": "0s"
+    },
+    "keypad": {
+      "animation": "none",
+      "opacity": "1",
+      "transition": "0s"
+    }
+  },
+  "configuredSelectionCount": 2,
+  "configuredShotCount": 0,
+  "photoNormal": {
+    "buttonCount": 3,
+    "badgeCount": 1,
+    "selectedBadgeCount": 1,
+    "badge": {
+      "name": "lg-badge-settle",
+      "duration": "0.24s",
+      "delay": "0s",
+      "opacity": "1",
+      "count": 1
+    },
+    "after": {
+      "name": "lg-photo-glint",
+      "duration": "0.28s",
+      "display": "block",
+      "opacity": "0.594891"
+    },
+    "buttonAnimations": [
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  "photoReduced": {
+    "media": true,
+    "badge": {
+      "animation": "none",
+      "opacity": "1",
+      "transition": "0s"
+    },
+    "after": {
+      "animation": "none",
+      "opacity": "0",
+      "display": "none"
+    },
+    "dimmed": {
+      "animation": "none",
+      "opacity": "0.45",
+      "transition": "0s"
+    }
+  },
+  "frameNormal": {
+    "buttonCount": 1,
+    "checkCount": 1,
+    "selectedCheckCount": 1,
+    "check": {
+      "name": "lg-frame-check-settle",
+      "duration": "0.24s",
+      "opacity": "1",
+      "count": 1
+    },
+    "after": {
+      "name": "lg-frame-foil",
+      "duration": "0.3s",
+      "display": "block",
+      "opacity": "0"
+    }
+  },
+  "frameReduced": {
+    "media": true,
+    "check": {
+      "animation": "none",
+      "opacity": "1",
+      "transition": "0s"
+    },
+    "after": {
+      "animation": "none",
+      "opacity": "0",
+      "display": "none"
+    }
+  },
+  "frameContinueBefore": {
+    "exists": true,
+    "disabled": false,
+    "text": "Xem bản in →"
+  }
+}

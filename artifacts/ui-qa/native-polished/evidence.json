@@ -1,0 +1,86 @@
+{
+  "status": "PASS-SIMULATED",
+  "root": "E:\\HK1_2026_2027\\PhotoboothDesktop_v2",
+  "out": "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-polished",
+  "actions": [
+    "start",
+    "confirm default layout",
+    "increase quantity",
+    "continue quantity",
+    "pin 1",
+    "pin 2",
+    "pin 3",
+    "pin 4",
+    "simulator mock cash approval",
+    "start synthetic capture",
+    "select photo 1",
+    "select photo 2",
+    "continue selected photos",
+    "select first frame",
+    "confirm simulator dry-run",
+    "finish simulator session",
+    "operator layouts",
+    "operator settings",
+    "operator tools",
+    "operator colors",
+    "operator revenue",
+    "operator settings scroll check",
+    "operator revenue overflow check",
+    "operator frames reduced motion"
+  ],
+  "screenshots": [
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-polished\\01-welcome.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-polished\\02-layout.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-polished\\03-quantity-default.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-polished\\04-quantity-increased-price.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-polished\\05-payment.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-polished\\06-payment-staff-pin.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-polished\\07-payment-staff-approved-control.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-polished\\08-live-view.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-polished\\09-countdown.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-polished\\10-photo-selection-empty.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-polished\\11-photo-selection-complete.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-polished\\12-frame-list.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-polished\\13-13-frame-selected.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-polished\\14-14-final-dryrun-confirmation.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-polished\\15-15-delivery.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-polished\\16-16-operator-frames.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-polished\\17-operator-layouts.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-polished\\18-operator-settings.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-polished\\19-operator-tools.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-polished\\20-operator-colors.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-polished\\21-operator-revenue.png",
+    "E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\artifacts\\ui-qa\\native-polished\\22-operator-frames-reduced-motion.png"
+  ],
+  "errors": [],
+  "backendMode": "Picked up JAVA_TOOL_OPTIONS: -Djava.io.tmpdir=\"E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\src-tauri/.tmp\" -Duser.home=\"E:\\HK1_2026_2027\\PhotoboothDesktop_v2\\src-tauri/.tmp\"\r\nV2 backend ready: mode=--simulator",
+  "normalMotion": {
+    "animationName": "lg-screen-enter",
+    "animationDuration": "0.24s",
+    "opacity": "1",
+    "visibility": "visible"
+  },
+  "configuredSelectionCount": 2,
+  "configuredShotCount": 0,
+  "settingsScroll": {
+    "before": {
+      "top": 0,
+      "height": 348,
+      "scroll": 1563
+    },
+    "after": 1216,
+    "canScroll": true
+  },
+  "revenueOverflow": {
+    "container": {
+      "client": 1219,
+      "scroll": 1219
+    },
+    "overflow": []
+  },
+  "reducedMotion": {
+    "media": true,
+    "opacity": "1",
+    "animatedCount": 0
+  }
+}
