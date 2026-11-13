@@ -223,7 +223,7 @@
     "legacy-auditor": {
       "description": "Read-only parity auditor for legacy V1 and V2 workflows, settings, integrations, and tools.",
       "mode": "subagent",
-      "model": "omniroute/nvidia/nvidia/nemotron-3-ultra-550b-a55b",
+      "model": "omniroute/agentrouter/gpt-5.6-sol",
       "permissions": [
         {
           "action": "edit",
@@ -250,7 +250,7 @@
     "architect": {
       "description": "Read-only system architect who reviews dependencies, state machines and integration boundaries.",
       "mode": "subagent",
-      "model": "omniroute/nvidia/nvidia/nemotron-3-ultra-550b-a55b",
+      "model": "omniroute/agentrouter/gpt-5.6-sol",
       "permissions": [
         {
           "action": "edit",
@@ -304,7 +304,7 @@
     "frontend-coder": {
       "description": "React/TypeScript/CSS implementer restricted to V2 frontend and relevant tests.",
       "mode": "subagent",
-      "model": "omniroute/nvidia/nvidia/nemotron-3-ultra-550b-a55b",
+      "model": "omniroute/agnescn/agnes-3.0-flash",
       "permissions": [
         {
           "action": "shell",
