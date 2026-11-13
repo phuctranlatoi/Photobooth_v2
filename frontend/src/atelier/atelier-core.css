@@ -227,22 +227,15 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
   transition: transform var(--at-press), background-color var(--at-press), border-color var(--at-press), box-shadow var(--at-press);
 }
 
-.v1-button-label {
-  position: relative;
-  z-index: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1.4;
-  text-align: center;
-}
-
-.v1-primary {
-  min-height: var(--at-primary-height);
-  background: linear-gradient(162deg, #94442A 0%, var(--at-primary) 54%, #692C19 100%);
-  border: 1px solid rgba(255, 255, 255, 0.34);
-  color: var(--at-white);
-  box-shadow: inset 0 1.5px 1px rgba(255, 255, 255, 0.36), inset 0 -2px 4px rgba(54, 20, 10, 0.24), var(--at-glow-warm);
+.v1-primary:not(:disabled)::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--lg-layer-specular);
+  opacity: 0.22;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .v1-primary:not(:disabled)::after {
@@ -259,6 +252,47 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
   pointer-events: none;
   z-index: 0;
   animation: at-primary-sheen 6.4s ease-in-out infinite;
+}
+
+.v1-button-label {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.v1-primary {
+  min-height: var(--at-primary-height);
+  background: linear-gradient(162deg, #94442A 0%, var(--at-primary) 54%, #692C19 100%);
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  color: var(--at-white);
+  box-shadow: var(--lg-shadow-cta);
+}
+
+.v1-primary:not(:disabled)::after {
+  content: '';
+  position: absolute;
+  inset: -35% -60%;
+  background: linear-gradient(
+    115deg,
+    rgba(255, 255, 255, 0) 36%,
+    rgba(255, 255, 255, 0.11) 50%,
+    rgba(255, 255, 255, 0) 64%
+  );
+  transform: translate3d(-120%, 0, 0);
+  pointer-events: none;
+  z-index: 0;
+  animation: at-primary-sheen 6.4s ease-in-out infinite;
+}
+
+/* Settled glint for primary CTA - finite, settles */
+.v1-primary:not(:disabled):focus-visible::before,
+.v1-primary:not(:disabled)[data-glint="true"]::before {
+  animation: glint-settle var(--lg-duration-settle) var(--lg-ease-out) forwards;
+  opacity: 1;
 }
 
 @keyframes at-primary-sheen {
@@ -280,12 +314,43 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
 }
 
 .v1-secondary {
+  position: relative;
   background: var(--at-glass-strong);
   color: var(--at-ink);
   border: 1px solid var(--at-control-border);
   box-shadow: var(--at-glass-shadow);
   -webkit-backdrop-filter: var(--at-glass-filter);
   backdrop-filter: var(--at-glass-filter);
+}
+
+.v1-secondary:not(:disabled)::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--lg-layer-specular);
+  opacity: 0.22;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.v1-secondary:not(:disabled)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--lg-layer-press-glow);
+  opacity: 0;
+  transform: scale(0.82);
+  transition: opacity var(--lg-duration-instant) linear, transform var(--lg-duration-fast) var(--lg-ease-out);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.v1-secondary[data-pressed="true"]::after,
+.v1-secondary:active:not(:disabled)::after {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .v1-secondary:disabled {
@@ -315,6 +380,36 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
   -webkit-backdrop-filter: var(--at-glass-filter);
   backdrop-filter: var(--at-glass-filter);
   transition: transform var(--at-press), background-color var(--at-press), border-color var(--at-press), box-shadow var(--at-press);
+}
+
+.v1-back.backButton:not(:disabled)::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--lg-layer-specular);
+  opacity: 0.22;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.v1-back.backButton:not(:disabled)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--lg-layer-press-glow);
+  opacity: 0;
+  transform: scale(0.82);
+  transition: opacity var(--lg-duration-instant) linear, transform var(--lg-duration-fast) var(--lg-ease-out);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.v1-back.backButton[data-pressed="true"]::after,
+.v1-back.backButton:active:not(:disabled)::after {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .v1-back.backButton svg {
@@ -589,7 +684,7 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
   background: var(--at-glass-strong);
   -webkit-backdrop-filter: var(--at-glass-filter-sm);
   backdrop-filter: var(--at-glass-filter-sm);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42), 0 4px 12px rgba(74, 42, 28, 0.05);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.38), 0 4px 12px rgba(74, 42, 28, 0.04);
   color: var(--at-body);
 }
 
@@ -655,9 +750,9 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
   display: grid;
   place-items: center;
   padding: 24px;
-  background: rgba(20, 16, 14, 0.52);
-  -webkit-backdrop-filter: blur(10px) saturate(118%);
-  backdrop-filter: blur(10px) saturate(118%);
+  background: rgba(20, 16, 14, 0.56);
+  -webkit-backdrop-filter: blur(12px) saturate(118%);
+  backdrop-filter: blur(12px) saturate(118%);
 }
 
 .v1-modal {
@@ -668,14 +763,19 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
   overflow: auto;
   overscroll-behavior: contain;
   padding: clamp(24px, 3vw, 36px);
-  border: 1px solid var(--at-glass-border);
-  border-top-color: var(--at-glass-rim);
+  border: 1px solid var(--at-glass-rim);
   border-radius: 26px;
-  background: linear-gradient(150deg, rgba(255, 255, 255, 0.88) 0%, rgba(255, 249, 244, 0.78) 58%, rgba(247, 233, 223, 0.68) 100%);
-  -webkit-backdrop-filter: var(--at-glass-filter);
-  backdrop-filter: var(--at-glass-filter);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.38) 0%, rgba(255, 250, 245, 0.24) 55%, rgba(244, 228, 217, 0.18) 100%),
+    var(--lg-layer-sheet-depth);
+  -webkit-backdrop-filter: var(--lg-filter-sheet);
+  backdrop-filter: var(--lg-filter-sheet);
   color: var(--at-ink);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.44), 0 28px 72px rgba(23, 16, 12, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.38),
+    inset 0 -1px 0 rgba(142, 68, 45, 0.05),
+    0 24px 56px rgba(23, 16, 12, 0.18),
+    0 8px 24px rgba(74, 42, 28, 0.08);
 }
 
 .v1-modal p {
@@ -896,6 +996,20 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
     animation: none;
     display: none;
   }
+  /* Disable new finite glint animations for reduced motion */
+  .glass-card--photo[aria-pressed="true"]::after,
+  .glass-button[aria-pressed="true"]::after,
+  .glass-card[data-interactive="true"][aria-pressed="true"]::after,
+  .glass-photo-order::after,
+  .v1-primary:not(:disabled)::after,
+  .v1-primary:not(:disabled)::before,
+  .glass-button[data-tone="primary"]::before,
+  .glass-sheet::before,
+  .glass-shutter::before,
+  .v1-secondary::before,
+  .v1-back.backButton::before {
+    animation: none;
+  }
 }
 
 /* ============================================================================
@@ -941,7 +1055,7 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
 }
 
 @keyframes lg-selection-set {
-  0% { transform: scale(0.94); opacity: 0.36; }
+  0% { transform: scale(0.94); opacity: 0.3; }
   62% { transform: scale(1.06); opacity: 1; }
   100% { transform: scale(1); opacity: 1; }
 }
@@ -1005,7 +1119,7 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
   inset: 0;
   border-radius: inherit;
   background: var(--lg-layer-specular);
-  opacity: 0.26;
+  opacity: 0.28;
   pointer-events: none;
 }
 
@@ -1037,6 +1151,27 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
 .glass-shutter__core {
   position: relative;
   z-index: 2;
+}
+
+/* Sub-surface glint for selected photo/frame cards (finite, settles) */
+.glass-card--photo[aria-pressed="true"]::after,
+.glass-button[aria-pressed="true"]::after,
+.glass-card[data-interactive="true"][aria-pressed="true"]::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    108deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.28) 48%,
+    rgba(255, 240, 230, 0.18) 52%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  opacity: 0;
+  pointer-events: none;
+  animation: var(--lg-glint-animation);
 }
 
 /* Glass Card */
@@ -1099,11 +1234,31 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
   -webkit-user-select: none;
   -webkit-touch-callout: none;
 }
-.glass-card--photo::before { opacity: 0.26; }
+.glass-card--photo::before { opacity: 0.28; }
 .glass-card--photo[aria-pressed="true"] {
   border: 3px solid var(--lg-primary);
   box-shadow: var(--lg-shadow-selected);
 }
+
+/* Sub-surface settled glint for selected photo tile (finite, settles) */
+.glass-card--photo[aria-pressed="true"]::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  border-radius: 18px;
+  background: linear-gradient(
+    108deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.28) 48%,
+    rgba(255, 240, 230, 0.18) 52%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  opacity: 0;
+  pointer-events: none;
+  animation: var(--lg-glint-animation);
+}
+
 .glass-card--photo[data-unavailable="true"] {
   opacity: 0.54;
   filter: saturate(0.72);
@@ -1127,6 +1282,35 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   animation: lg-selection-set var(--lg-duration-standard) var(--lg-ease-spring) both;
+}
+
+.glass-photo-order::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--lg-layer-specular);
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* Persistent tasteful rim for selected photo/frame order badge - finite glint */
+.glass-photo-order::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(
+    108deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.32) 48%,
+    rgba(255, 240, 230, 0.22) 52%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  opacity: 0;
+  pointer-events: none;
+  animation: glint-settle var(--lg-duration-settle) var(--lg-ease-out) forwards;
 }
 
 /* Glass Button */
@@ -1179,17 +1363,24 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
 .glass-button[data-tone="primary"] {
   border-color: rgba(255, 255, 255, 0.40);
   background: var(--lg-layer-primary);
-  box-shadow:
-    inset 0 1.5px 1px rgba(255, 255, 255, 0.36),
-    inset 0 -2px 4px rgba(54, 20, 10, 0.26),
-    0 8px 18px rgba(142, 68, 45, 0.18),
-    0 18px 38px rgba(142, 68, 45, 0.18);
+  box-shadow: var(--lg-shadow-cta);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
   color: #FFFFFF;
 }
+.glass-button[data-tone="primary"]::before {
+  background: var(--lg-layer-specular);
+  opacity: 0.3;
+}
 .glass-button[data-tone="primary"]::after {
   background: var(--lg-layer-press-glow-primary);
+}
+
+/* Settled glint for primary glass-button - finite, settles */
+.glass-button[data-tone="primary"][aria-pressed="true"]::before,
+.glass-button[data-tone="primary"][data-glint="true"]::before {
+  animation: glint-settle var(--lg-duration-settle) var(--lg-ease-out) forwards;
+  opacity: 1;
 }
 
 .glass-button[data-pressed="true"],
@@ -1201,6 +1392,25 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
 .glass-button[aria-pressed="true"] {
   border: 2px solid var(--lg-primary);
   box-shadow: var(--lg-shadow-selected), var(--lg-shadow-1);
+}
+
+/* Sub-surface settled glint for selected glass-button (finite, settles) */
+.glass-button[aria-pressed="true"]::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    108deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.28) 48%,
+    rgba(255, 240, 230, 0.18) 52%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  opacity: 0;
+  pointer-events: none;
+  animation: var(--lg-glint-animation);
 }
 
 .glass-button:disabled,
@@ -1258,6 +1468,16 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
   backdrop-filter: var(--lg-filter-sheet);
   color: var(--lg-matte-black);
 }
+.glass-sheet::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--lg-layer-specular);
+  opacity: 0.3;
+  pointer-events: none;
+}
 .glass-sheet[data-state="open"] {
   animation: lg-sheet-in 320ms var(--lg-ease-out) both;
 }
@@ -1302,7 +1522,7 @@ body:has(.atelier-customer) .v1-shell.atelier-customer:not(.v1-camera):not(:has(
   -webkit-tap-highlight-color: transparent;
   transition: transform var(--lg-duration-release) var(--lg-ease-out);
 }
-.glass-shutter::before { background: var(--lg-layer-specular-dark); opacity: 0.26; }
+.glass-shutter::before { background: var(--lg-layer-specular-dark); opacity: 0.25; }
 .glass-shutter::after { background: var(--lg-layer-press-glow-primary); }
 
 .glass-shutter__ring {

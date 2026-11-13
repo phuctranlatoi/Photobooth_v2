@@ -1,148 +1,165 @@
 :root {
   color-scheme: light;
 
-  /* Required core palette */
+  /* Premium warm palette — ivory, blush, peach, terracotta */
   --lg-ivory: #FAF6F0;
+  --lg-ivory-warm: #FDF8F3;
+  --lg-blush: #F5E6E0;
+  --lg-peach: #F0DBD4;
+  --lg-terracotta: #C27357;
   --lg-matte-black: #1A1715;
   --lg-champagne: #D8C7B5;
   --lg-soft-rose: #F0DBD4;
-  --lg-primary: #8E442D;
+  --lg-primary: #A0522D;
+  --lg-primary-deep: #7B3E1F;
+  --lg-primary-bright: #C9683D;
+  --lg-primary-amber: #D4833E;
 
   /* Supporting semantic colors */
   --lg-paper: #FFFCF7;
   --lg-canvas-muted: #F5F0E8;
-  --lg-body: #514842;
-  --lg-muted: #625750;
-  --lg-primary-deep: #6F321F;
-  --lg-primary-bright: #A45136;
-  --lg-success: #245C42;
-  --lg-error: #8F3029;
+  --lg-body: #5C4F47;
+  --lg-muted: #6E625A;
+  --lg-success: #2D6A4F;
+  --lg-error: #A03A2D;
   --lg-darkroom: #0A090C;
   --lg-darkroom-raised: #131115;
 
   /* Surface layers: depth layer + base layer + ::before specular layer */
   --lg-layer-card-base: linear-gradient(
     145deg,
-    rgba(255, 255, 255, 0.76) 0%,
-    rgba(255, 252, 247, 0.58) 38%,
-    rgba(250, 246, 240, 0.48) 68%,
-    rgba(240, 219, 212, 0.30) 100%
+    rgba(255, 255, 255, 0.32) 0%,
+    rgba(255, 252, 247, 0.24) 35%,
+    rgba(250, 246, 240, 0.18) 65%,
+    rgba(240, 219, 212, 0.12) 100%
   );
   --lg-layer-card-depth: radial-gradient(
     120% 96% at 96% 100%,
-    rgba(216, 199, 181, 0.26) 0%,
-    rgba(240, 219, 212, 0.12) 42%,
-    rgba(255, 255, 255, 0) 72%
+    rgba(216, 199, 181, 0.28) 0%,
+    rgba(240, 219, 212, 0.16) 40%,
+    rgba(255, 255, 255, 0) 70%
   );
   --lg-layer-control-base: linear-gradient(
     145deg,
-    rgba(255, 255, 255, 0.90) 0%,
-    rgba(255, 252, 247, 0.76) 46%,
-    rgba(244, 232, 222, 0.64) 100%
+    rgba(255, 255, 255, 0.42) 0%,
+    rgba(255, 252, 247, 0.32) 44%,
+    rgba(244, 232, 222, 0.24) 100%
   );
   --lg-layer-control-depth: radial-gradient(
     110% 130% at 92% 110%,
     rgba(240, 219, 212, 0.30) 0%,
-    rgba(216, 199, 181, 0.12) 48%,
-    transparent 72%
+    rgba(216, 199, 181, 0.14) 46%,
+    transparent 70%
   );
   --lg-layer-sheet-base: linear-gradient(
     148deg,
-    rgba(255, 255, 255, 0.96) 0%,
-    rgba(255, 252, 247, 0.91) 48%,
-    rgba(246, 235, 226, 0.84) 100%
+    rgba(255, 255, 255, 0.72) 0%,
+    rgba(255, 252, 247, 0.58) 46%,
+    rgba(246, 235, 226, 0.48) 100%
   );
   --lg-layer-sheet-depth: radial-gradient(
     100% 80% at 100% 100%,
-    rgba(240, 219, 212, 0.30) 0%,
-    transparent 68%
+    rgba(240, 219, 212, 0.42) 0%,
+    transparent 66%
   );
   --lg-layer-dark-base: linear-gradient(
     145deg,
-    rgba(49, 42, 52, 0.94) 0%,
-    rgba(26, 23, 21, 0.96) 48%,
-    rgba(10, 9, 12, 0.98) 100%
+    rgba(49, 42, 52, 0.92) 0%,
+    rgba(26, 23, 21, 0.94) 46%,
+    rgba(10, 9, 12, 0.96) 100%
   );
   --lg-layer-primary: linear-gradient(
     160deg,
-    #A45136 0%,
-    #8E442D 52%,
-    #692C1B 100%
+    #C9683D 0%,
+    #A0522D 50%,
+    #7B3E1F 100%
   );
 
   /* Static reflected light. Apply with ::before; never animate continuously. */
   --lg-layer-specular: radial-gradient(
-    125% 72% at 8% -12%,
-    rgba(255, 255, 255, 0.94) 0%,
-    rgba(255, 255, 255, 0.34) 39%,
-    rgba(255, 255, 255, 0) 68%
+    135% 80% at 5% -8%,
+    rgba(255, 255, 255, 0.48) 0%,
+    rgba(255, 255, 255, 0.18) 34%,
+    rgba(255, 255, 255, 0.06) 56%,
+    rgba(255, 255, 255, 0) 70%
   );
   --lg-layer-specular-dark: radial-gradient(
-    110% 68% at 12% -8%,
-    rgba(255, 255, 255, 0.28) 0%,
-    rgba(255, 255, 255, 0.08) 42%,
-    transparent 70%
+    120% 76% at 8% -5%,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.06) 38%,
+    transparent 66%
   );
+
+  /* Ripple opacity tokens for glass-touch-ripple keyframe */
+  --lg-ripple-opacity: 0.52;
+  --lg-ripple-mid-opacity: 0.26;
+  --lg-ripple-end-opacity: 0.14;
   --lg-layer-press-glow: radial-gradient(
-    circle 92px at var(--touch-x, 50%) var(--touch-y, 50%),
-    rgba(255, 255, 255, 0.52) 0%,
-    rgba(240, 219, 212, 0.24) 42%,
-    rgba(255, 255, 255, 0) 74%
+    circle 96px at var(--touch-x, 50%) var(--touch-y, 50%),
+    rgba(255, 255, 255, 0.56) 0%,
+    rgba(240, 219, 212, 0.28) 40%,
+    rgba(255, 255, 255, 0) 72%
   );
   --lg-layer-press-glow-primary: radial-gradient(
-    circle 96px at var(--touch-x, 50%) var(--touch-y, 50%),
-    rgba(255, 255, 255, 0.34) 0%,
-    rgba(255, 232, 221, 0.18) 44%,
-    rgba(255, 255, 255, 0) 74%
+    circle 100px at var(--touch-x, 50%) var(--touch-y, 50%),
+    rgba(255, 255, 255, 0.38) 0%,
+    rgba(255, 232, 221, 0.22) 42%,
+    rgba(255, 255, 255, 0) 72%
   );
 
   /* Borders and inner optical edge */
-  --lg-border: rgba(255, 255, 255, 0.58);
-  --lg-border-strong: rgba(216, 199, 181, 0.82);
-  --lg-border-control: rgba(90, 74, 64, 0.62);
-  --lg-border-dark: rgba(216, 199, 181, 0.46);
+  --lg-border: rgba(255, 255, 255, 0.56);
+  --lg-border-strong: rgba(216, 199, 181, 0.94);
+  --lg-border-control: rgba(90, 74, 64, 0.68);
+  --lg-border-dark: rgba(216, 199, 181, 0.56);
   --lg-inner-glow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.82),
-    inset 1px 0 0 rgba(255, 255, 255, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    inset 1px 0 0 rgba(255, 255, 255, 0.18),
     inset 0 -1px 0 rgba(142, 68, 45, 0.08),
-    inset 0 -18px 30px rgba(240, 219, 212, 0.10);
+    inset 0 -20px 32px rgba(240, 219, 212, 0.08);
   --lg-inner-glow-dark:
-    inset 0 1px 0 rgba(255, 255, 255, 0.20),
-    inset 0 -2px 0 rgba(0, 0, 0, 0.28),
-    inset 0 -14px 26px rgba(0, 0, 0, 0.16);
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.30),
+    inset 0 -16px 28px rgba(0, 0, 0, 0.18);
 
   /* Shadow depth scale */
   --lg-shadow-0: none;
   --lg-shadow-1:
     var(--lg-inner-glow),
     0 2px 4px rgba(74, 42, 28, 0.05),
-    0 8px 20px rgba(74, 42, 28, 0.06);
+    0 8px 22px rgba(74, 42, 28, 0.05);
   --lg-shadow-2:
     var(--lg-inner-glow),
-    0 3px 8px rgba(74, 42, 28, 0.06),
-    0 14px 32px rgba(74, 42, 28, 0.10),
-    0 28px 54px rgba(74, 42, 28, 0.05);
+    0 4px 10px rgba(74, 42, 28, 0.05),
+    0 16px 36px rgba(74, 42, 28, 0.08),
+    0 30px 58px rgba(74, 42, 28, 0.04);
   --lg-shadow-3:
     var(--lg-inner-glow),
-    0 5px 12px rgba(74, 42, 28, 0.08),
-    0 22px 48px rgba(74, 42, 28, 0.14),
-    0 42px 72px rgba(74, 42, 28, 0.08);
+    0 6px 14px rgba(74, 42, 28, 0.07),
+    0 24px 52px rgba(74, 42, 28, 0.12),
+    0 46px 78px rgba(74, 42, 28, 0.07);
   --lg-shadow-4:
     var(--lg-inner-glow),
-    0 8px 18px rgba(26, 23, 21, 0.12),
-    0 32px 80px rgba(26, 23, 21, 0.24);
+    0 10px 22px rgba(26, 23, 21, 0.12),
+    0 36px 88px rgba(26, 23, 21, 0.22);
   --lg-shadow-dark:
     var(--lg-inner-glow-dark),
-    0 8px 18px rgba(0, 0, 0, 0.32),
-    0 24px 52px rgba(0, 0, 0, 0.48);
+    0 10px 22px rgba(0, 0, 0, 0.32),
+    0 28px 58px rgba(0, 0, 0, 0.48);
   --lg-shadow-selected:
-    0 0 0 3px rgba(194, 115, 87, 0.24),
-    0 14px 34px rgba(142, 68, 45, 0.22);
+    0 0 0 3px rgba(194, 115, 87, 0.28),
+    0 16px 38px rgba(142, 68, 45, 0.24);
+  --lg-shadow-cta:
+    0 0 0 3px rgba(255, 255, 255, 0.20),
+    inset 0 1.5px 1px rgba(255, 255, 255, 0.38),
+    inset 0 -2px 4px rgba(54, 20, 10, 0.26),
+    0 12px 28px rgba(112, 46, 28, 0.26),
+    0 26px 60px rgba(142, 68, 45, 0.30);
 
   /* Backdrop levels */
-  --lg-filter-control: blur(14px) saturate(118%);
-  --lg-filter-card: blur(18px) saturate(122%);
-  --lg-filter-sheet: blur(24px) saturate(126%);
+  --lg-filter-control: blur(12px) saturate(115%);
+  --lg-filter-card: blur(16px) saturate(118%);
+  --lg-filter-sheet: blur(20px) saturate(122%);
 
   /* Geometry */
   --lg-radius-control: 18px;
@@ -169,6 +186,10 @@
   --lg-ease-standard: cubic-bezier(0.20, 0, 0, 1);
   --lg-ease-out: cubic-bezier(0.16, 1, 0.30, 1);
   --lg-ease-spring: cubic-bezier(0.22, 1.28, 0.36, 1);
+  --lg-ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Selective settled glint for photo/frame selection */
+  --lg-glint-animation: glint-settle var(--lg-duration-settle) var(--lg-ease-out) forwards;
 
   /* Aliases for existing --at-* tokens to avoid disruptive class migration */
   --at-canvas: var(--lg-ivory);
@@ -195,7 +216,7 @@
   --at-control-border: var(--lg-border-control);
   --at-glass-filter: var(--lg-filter-card);
   --at-glass-filter-sm: var(--lg-filter-control);
-  --at-glow-warm: 0 14px 36px rgba(194, 115, 87, 0.16), 0 4px 12px rgba(142, 68, 45, 0.08);
+  --at-glow-warm: 0 14px 36px rgba(194, 115, 87, 0.18), 0 4px 12px rgba(142, 68, 45, 0.10);
   --at-press: var(--lg-duration-instant) var(--lg-ease-out);
   --at-card: var(--lg-duration-standard) var(--lg-ease-out);
 
@@ -257,4 +278,20 @@
     --lg-target-primary: 64px;
     --lg-shutter-size: 96px;
   }
+}
+
+/* Glass sub-surface shimmer (finite, not looping) */
+@keyframes glint-settle {
+  0% { transform: translateX(-140%) skewX(-18deg); opacity: 0; }
+  18% { opacity: 0.28; }
+  44% { opacity: 0.42; }
+  72% { opacity: 0.22; }
+  100% { transform: translateX(140%) skewX(-18deg); opacity: 0; }
+}
+
+/* Completion glow for delivery success */
+@keyframes completion-glow {
+  0% { transform: scale(0.7); opacity: 0; }
+  40% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.6; }
 }

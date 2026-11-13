@@ -46,7 +46,19 @@ body:has(.atelier-customer) .v1-shell.v1-shell-payment {
   justify-content: center;
   gap: clamp(12px, 1.8dvh, 20px);
   min-width: 0;
-  background: var(--at-glass-strong);
+  border: 1px solid var(--at-glass-rim);
+  border-radius: 24px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.38) 0%, rgba(255, 250, 245, 0.24) 55%, rgba(244, 228, 217, 0.18) 100%),
+    var(--lg-layer-control-depth);
+  -webkit-backdrop-filter: var(--at-glass-filter-sm);
+  backdrop-filter: var(--at-glass-filter-sm);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.38),
+    inset 0 -1px 0 rgba(142, 68, 45, 0.05),
+    0 12px 28px rgba(74, 42, 28, 0.06),
+    0 3px 10px rgba(194, 115, 87, 0.04);
+  padding: clamp(20px, 2.5vw, 32px);
 }
 
 .v1-payment-label {
@@ -110,9 +122,14 @@ body:has(.atelier-customer) .v1-shell.v1-shell-payment {
   padding: 8px 16px;
   border-radius: 999px;
   border: 1px solid var(--at-glass-rim);
-  border-top-color: var(--at-glass-rim);
-  background: var(--at-glass-strong);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42), 0 4px 12px rgba(74, 42, 28, 0.05);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.38) 0%, rgba(255, 250, 245, 0.24) 55%, rgba(244, 228, 217, 0.18) 100%),
+    var(--lg-layer-control-depth);
+  -webkit-backdrop-filter: var(--at-glass-filter-sm);
+  backdrop-filter: var(--at-glass-filter-sm);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.38),
+    0 4px 12px rgba(74, 42, 28, 0.04);
   color: var(--at-ink);
   font-weight: 700;
   font-size: 15px;
@@ -140,7 +157,19 @@ body:has(.atelier-customer) .v1-shell.v1-shell-payment {
   gap: clamp(14px, 2dvh, 22px);
   min-width: 0;
   text-align: center;
-  background: var(--at-glass-strong);
+  border: 1px solid var(--at-glass-rim);
+  border-radius: 24px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.38) 0%, rgba(255, 250, 245, 0.24) 55%, rgba(244, 228, 217, 0.18) 100%),
+    var(--lg-layer-control-depth);
+  -webkit-backdrop-filter: var(--at-glass-filter-sm);
+  backdrop-filter: var(--at-glass-filter-sm);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.38),
+    inset 0 -1px 0 rgba(142, 68, 45, 0.05),
+    0 12px 28px rgba(74, 42, 28, 0.06),
+    0 3px 10px rgba(194, 115, 87, 0.04);
+  padding: clamp(20px, 2.5vw, 32px);
 }
 
 .v1-payment-qr-slot {
@@ -220,9 +249,14 @@ body:has(.atelier-customer) .v1-shell.v1-shell-payment {
   padding: 7px 16px;
   border-radius: 999px;
   border: 1px solid var(--at-glass-rim);
-  border-top-color: var(--at-glass-rim);
-  background: var(--at-glass-strong);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42), 0 4px 12px rgba(74, 42, 28, 0.05);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.38) 0%, rgba(255, 250, 245, 0.24) 55%, rgba(244, 228, 217, 0.18) 100%),
+    var(--lg-layer-control-depth);
+  -webkit-backdrop-filter: var(--at-glass-filter-sm);
+  backdrop-filter: var(--at-glass-filter-sm);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.38),
+    0 4px 12px rgba(74, 42, 28, 0.04);
   color: var(--at-primary);
   font-weight: 600;
   font-size: 14px;
@@ -263,19 +297,37 @@ body:has(.atelier-customer) .v1-shell.v1-shell-payment {
 
 .v1-staff-cash-btn {
   min-height: var(--at-target);
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 10px;
   padding: 12px 24px;
   border-radius: 999px;
-  border: 1px solid rgba(90, 74, 64, 0.75);
-  background: var(--at-glass-strong);
+  border: 1px solid var(--at-glass-rim);
+  background:
+    linear-gradient(148deg, rgba(255, 255, 255, 0.38) 0%, rgba(255, 250, 245, 0.24) 50%, rgba(244, 228, 217, 0.18) 100%),
+    var(--lg-layer-control-depth);
   -webkit-backdrop-filter: var(--at-glass-filter);
   backdrop-filter: var(--at-glass-filter);
   color: var(--at-primary);
   font-weight: 700;
-  box-shadow: var(--at-glass-shadow);
-  transition: transform var(--at-press), background-color var(--at-press), border-color var(--at-press), box-shadow var(--at-press);
+  box-shadow:
+    0 8px 24px rgba(142, 68, 45, 0.06),
+    0 2px 6px rgba(194, 115, 87, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.38),
+    inset 0 -1px 0 rgba(142, 68, 45, 0.04);
+  transition: transform var(--at-press), box-shadow var(--at-press);
+}
+
+.v1-staff-cash-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--lg-layer-specular);
+  opacity: 0.22;
+  pointer-events: none;
+  z-index: 0;
 }
 
 @media (hover: hover) {
@@ -382,18 +434,36 @@ body:has(.atelier-customer) .v1-shell.v1-shell-payment {
 
 .v1-pin-keypad button {
   min-height: 64px;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 2px;
   border-radius: 18px;
-  border: 1px solid var(--at-control-border);
-  background: var(--at-glass-strong);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42), 0 8px 18px rgba(74, 42, 28, 0.06);
+  border: 1px solid var(--at-glass-rim);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.38) 0%, rgba(255, 250, 245, 0.24) 55%, rgba(244, 228, 217, 0.18) 100%),
+    var(--lg-layer-control-depth);
+  -webkit-backdrop-filter: var(--at-glass-filter-sm);
+  backdrop-filter: var(--at-glass-filter-sm);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.38),
+    0 4px 12px rgba(74, 42, 28, 0.04);
   color: var(--at-ink);
   font-weight: 700;
   transition: transform var(--at-press), background-color var(--at-press), border-color var(--at-press), box-shadow var(--at-press);
+}
+
+.v1-pin-keypad button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--lg-layer-specular);
+  opacity: 0.22;
+  pointer-events: none;
+  z-index: 0;
 }
 
 @media (hover: hover) {
