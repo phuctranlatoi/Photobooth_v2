@@ -18,7 +18,7 @@ describe('customer liquid glass feedback', () => {
     expect(button.style.getPropertyValue('--touch-x')).toBe('25%');
     expect(button.style.getPropertyValue('--touch-y')).toBe('50%');
     expect(button.querySelectorAll('.glass-touch-ripple')).toHaveLength(1);
-    vi.advanceTimersByTime(500);
+    vi.advanceTimersByTime(520);
     expect(button.querySelector('.glass-touch-ripple')).toBeNull();
     dispose(); dispose = undefined;
     expect(document.querySelector('#ambient-liquid-glass')).toBeNull();

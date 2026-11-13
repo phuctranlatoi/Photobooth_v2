@@ -6,5 +6,10 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: { port: 1420, strictPort: true },
   build: { assetsInlineLimit: 0 },
-  test: { environment: 'jsdom', setupFiles: ['./src/test-setup.ts'], testTimeout: 15000 },
+  test: { 
+    environment: 'jsdom', 
+    setupFiles: ['./src/test-setup.ts'], 
+    testTimeout: 15000,
+    include: ['src/**/*.test.{ts,tsx}'],
+  },
 });
