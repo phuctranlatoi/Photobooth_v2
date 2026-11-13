@@ -295,7 +295,7 @@
   position: absolute;
   inset: -16px -24px;
   border-radius: 999px;
-  background: radial-gradient(ellipse 70% 70% at 50% 54%, rgba(212, 131, 62, 0.48) 0%, rgba(238, 174, 152, 0.28) 48%, rgba(240, 219, 212, 0) 74%);
+  background: radial-gradient(ellipse 70% 70% at 50% 54%, rgba(10, 104, 101, 0.44) 0%, rgba(40, 160, 150, 0.24) 48%, rgba(6, 68, 72, 0) 74%);
   filter: blur(20px);
   pointer-events: none;
   z-index: 0;
@@ -397,23 +397,18 @@
   z-index: 1;
   min-width: clamp(260px, 28vw, 380px);
   font-size: clamp(17px, 1.25vw, 20px);
-  /* Translucent warm-brown liquid fill: layered rgba, no solid fallback needed
-     because the outer .atelier-cta-glass already provides a glass base. */
-  background:
-    linear-gradient(160deg,
-      rgba(201, 104, 61, 0.72) 0%,
-      rgba(160, 82, 45, 0.68) 50%,
-      rgba(123, 62, 31, 0.74) 100%),
-    rgba(255, 252, 247, 0.08);
+  /* Deep teal liquid fill: high-opacity layered rgba over glass base,
+     solid #075f60 fallback in reduced-transparency / no-backdrop rules. */
+  background: linear-gradient(160deg, rgba(8, 76, 78, 0.96) 0%, rgba(10, 104, 101, 0.92) 50%, rgba(6, 68, 72, 0.97) 100%);
   -webkit-backdrop-filter: blur(18px) saturate(135%);
   backdrop-filter: blur(18px) saturate(135%);
   color: var(--at-white);
   border: 1px solid rgba(255, 255, 255, 0.38);
   box-shadow:
-    inset 0 1.5px 0 rgba(255, 255, 255, 0.28),
-    inset 0 -1px 0 rgba(54, 20, 10, 0.18),
-    0 12px 28px rgba(112, 46, 28, 0.22),
-    0 26px 60px rgba(142, 68, 45, 0.22);
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.24),
+    inset 0 -1px 0 rgba(2, 38, 40, 0.28),
+    0 12px 28px rgba(2, 38, 40, 0.28),
+    0 26px 60px rgba(2, 38, 40, 0.32);
 }
 
 /* Specular optical rim on the inner CTA pill — static, finite settle */
@@ -432,16 +427,16 @@
 .v1-shell .atelier-cta-frame .v1-primary:not(:disabled) {
   background:
     linear-gradient(160deg,
-      rgba(201, 104, 61, 0.72) 0%,
-      rgba(160, 82, 45, 0.68) 50%,
-      rgba(123, 62, 31, 0.74) 100%),
+      rgba(8, 76, 78, 0.96) 0%,
+      rgba(10, 104, 101, 0.92) 50%,
+      rgba(6, 68, 72, 0.97) 100%),
     rgba(255, 252, 247, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.40);
+  border: 1px solid rgba(120, 255, 240, 0.40);
   box-shadow:
     inset 0 1.5px 0 rgba(255, 255, 255, 0.32),
-    inset 0 -1px 0 rgba(54, 20, 10, 0.20),
-    0 12px 28px rgba(112, 46, 28, 0.24),
-    0 26px 60px rgba(142, 68, 45, 0.26);
+    inset 0 -1px 0 rgba(2, 38, 40, 0.30),
+    0 12px 28px rgba(2, 38, 40, 0.30),
+    0 26px 60px rgba(2, 38, 40, 0.34);
 }
 
 /* Disabled inner CTA: distinct muted solid, no luminous gradient or blur */
@@ -463,7 +458,7 @@
 
 @media (hover: hover) {
   .v1-shell .atelier-cta-frame .v1-primary:hover:not(:disabled) {
-    border-color: rgba(255, 255, 255, 0.46);
+    border-color: rgba(140, 255, 240, 0.52);
   }
 }
 
@@ -473,7 +468,7 @@
 
 .v1-shell .atelier-cta-frame .v1-primary:focus-visible {
   outline: none;
-  box-shadow: var(--lg-shadow-cta), 0 0 0 3px rgba(194, 115, 87, 0.35);
+  box-shadow: var(--lg-shadow-cta), 0 0 0 3px rgba(2, 38, 40, 0.38);
 }
 
 .v1-shell .atelier-cta-note {
@@ -2975,6 +2970,23 @@
   .v1-shell .atelier-cta-frame.is-disabled .atelier-cta-glass {
     background: #F4ECE4;
   }
+  /* No-backdrop: inner CTA enabled state becomes solid deep teal, no blur */
+  .v1-shell .atelier-cta-frame .v1-primary:not(:disabled) {
+    background: #075f60;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  /* No-backdrop: disabled inner CTA keeps the original muted appearance */
+  .v1-shell .atelier-cta-frame .v1-primary:disabled {
+    background: rgba(228, 219, 210, 0.88);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border-color: rgba(184, 168, 157, 0.72);
+    color: rgba(78, 68, 62, 0.62);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.22),
+      0 4px 12px rgba(74, 42, 28, 0.04);
+  }
   .v1-shell .v1-quantity-total,
   .v1-shell .v1-summary-total,
   .v1-shell .v1-print-stage__number,
@@ -3044,9 +3056,10 @@
     background:
       linear-gradient(148deg, rgba(240, 235, 228, 0.88) 0%, rgba(232, 224, 216, 0.78) 100%);
   }
-  /* Reduced-transparency: inner CTA becomes solid warm-brown, no backdrop blur */
+  /* Reduced-transparency: inner CTA becomes solid deep teal, no backdrop blur.
+     Specificity beats :disabled so a forced solid #075f60 wins. */
   .v1-shell .atelier-cta-frame .v1-primary:not(:disabled) {
-    background: linear-gradient(160deg, #C9683D 0%, #A0522D 50%, #7B3E1F 100%);
+    background: #075f60;
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
     box-shadow: var(--lg-shadow-cta);

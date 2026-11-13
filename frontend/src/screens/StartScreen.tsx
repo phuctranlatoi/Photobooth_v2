@@ -145,7 +145,7 @@ export function StartScreen({
             {!startDisabled && <span className="atelier-cta-glow" aria-hidden="true" />}
             <div className="atelier-cta-glass">
               <KioskPrimaryButton disabled={startDisabled} onClick={() => layoutId && start(layoutId)}>
-                CHẠM ĐỂ BẮT ĐẦU →
+                CHẠM ĐỂ BẮT ĐẦU
               </KioskPrimaryButton>
             </div>
           </div>

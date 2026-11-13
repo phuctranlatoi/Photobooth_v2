@@ -19,7 +19,7 @@ it('shows both print artworks before catalog IPC resolves and never starts from 
   const view=render(<KioskSimulator/>);
   expect(view.container.querySelector('.atelier-print--portrait')).toBeInTheDocument();
   expect(view.container.querySelector('.atelier-print--strip')).toBeInTheDocument();
-  expect(screen.getByRole('button',{name:'CHẠM ĐỂ BẮT ĐẦU →'})).toBeDisabled();
+  expect(screen.getByRole('button',{name:'CHẠM ĐỂ BẮT ĐẦU'})).toBeDisabled();
   expect(screen.queryByText('Chưa có bố cục khả dụng. Vui lòng liên hệ nhân viên.')).not.toBeInTheDocument();
   resolveCatalog({defaultLayoutId:'strip-5x15',layouts:[],pricing:{stripAllowedQuantities:[],printAllowedQuantities:[]},simulator:true,catalogSource:'UNAVAILABLE'});
   await waitFor(()=>expect(screen.getByText('Chưa có bố cục khả dụng. Vui lòng liên hệ nhân viên.')).toBeInTheDocument());
@@ -53,10 +53,10 @@ it('shares a single in-flight catalog.get across StrictMode double-mount and imm
     throw Error(`Unexpected ${method}`);
   });
   render(<React.StrictMode><KioskSimulator/></React.StrictMode>);
-  expect(screen.getByRole('button',{name:'CHẠM ĐỂ BẮT ĐẦU →'})).toBeDisabled();
+  expect(screen.getByRole('button',{name:'CHẠM ĐỂ BẮT ĐẦU'})).toBeDisabled();
   expect(api.invoke.mock.calls.filter(([,payload])=>payload.method==='catalog.get')).toHaveLength(1);
   resolveCatalog({defaultLayoutId:'strip-5x15',layouts:[catalogLayout],pricing:{stripAllowedQuantities:[2,4],printAllowedQuantities:[2,3]},simulator:true,catalogSource:'STATIC_FALLBACK'});
-  await waitFor(()=>expect(screen.getByRole('button',{name:'CHẠM ĐỂ BẮT ĐẦU →'})).toBeEnabled());
+  await waitFor(()=>expect(screen.getByRole('button',{name:'CHẠM ĐỂ BẮT ĐẦU'})).toBeEnabled());
   expect(api.invoke.mock.calls.filter(([,payload])=>payload.method==='catalog.get')).toHaveLength(1);
   expect(api.invoke).not.toHaveBeenCalledWith('simulator_request',expect.objectContaining({method:'session.getState'}));
 });
@@ -76,22 +76,22 @@ it('rolls back failed session.start to StartScreen and allows a clean restart af
   });
   render(<KioskSimulator/>);
   const startButton=await waitFor(()=>{
-    const button=screen.getByRole('button',{name:'CHẠM ĐỂ BẮT ĐẦU →'});
+    const button=screen.getByRole('button',{name:'CHẠM ĐỂ BẮT ĐẦU'});
     expect(button).toBeEnabled();
     return button;
   });
   fireEvent.click(startButton);
   await waitFor(()=>expect(screen.getByRole('alert')).toBeInTheDocument());
   expect(screen.queryByText('Đang kết nối…')).not.toBeInTheDocument();
-  expect(screen.getByRole('button',{name:'CHẠM ĐỂ BẮT ĐẦU →'})).toBeDisabled();
+  expect(screen.getByRole('button',{name:'CHẠM ĐỂ BẮT ĐẦU'})).toBeDisabled();
   expect(sessionStorage.getItem('v2-simulator-session')).toBeNull();
   expect(sessionStorage.getItem('v2-simulator-generation')).toBeNull();
   expect(sessionStorage.getItem('v2-simulator-uncertain')).toBeNull();
   failStart=false;
   fireEvent.click(screen.getByRole('button',{name:'Kiểm tra lại trạng thái · Không gửi lại lệnh'}));
   await waitFor(()=>expect(screen.queryByRole('alert')).not.toBeInTheDocument());
-  await waitFor(()=>expect(screen.getByRole('button',{name:'CHẠM ĐỂ BẮT ĐẦU →'})).toBeEnabled());
-  fireEvent.click(screen.getByRole('button',{name:'CHẠM ĐỂ BẮT ĐẦU →'}));
+  await waitFor(()=>expect(screen.getByRole('button',{name:'CHẠM ĐỂ BẮT ĐẦU'})).toBeEnabled());
+  fireEvent.click(screen.getByRole('button',{name:'CHẠM ĐỂ BẮT ĐẦU'}));
   await waitFor(()=>expect(screen.getByRole('heading',{name:'Bố cục'})).toBeInTheDocument());
   expect(api.invoke.mock.calls.filter(([,payload])=>payload.method==='session.start')).toHaveLength(2);
 });
